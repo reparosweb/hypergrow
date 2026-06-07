@@ -21,8 +21,16 @@ responsivo, mobile-first, com gradientes e efeitos de hover (glow).
 | Pasta | `C:\Users\user\Downloads\nexlab` |
 | GitHub | `reparosweb/hypergrow` (https://github.com/reparosweb/hypergrow.git) |
 | Supabase | `htaxogmtaxebfbyetxel` (https://htaxogmtaxebfbyetxel.supabase.co) — conta reparosweb |
-| Vercel | conta reparosweb (a confirmar projeto) |
+| Vercel | projeto `hypergrow`, time `reparosweb-2430s-projects` (Hobby) — **LIVE** |
+| URL produção | https://hypergrow-lovat.vercel.app |
 | Domínio | hypergrow.com.br _(a registrar/confirmar)_ |
+
+## Status FASE 1 — NO AR (2026-06-07)
+- ✅ Deploy Vercel READY (auto-deploy do branch `main`).
+- ✅ Env vars setadas: NEXT_PUBLIC_SUPABASE_URL, NEXT_PUBLIC_SUPABASE_ANON_KEY, SUPABASE_SERVICE_ROLE_KEY.
+- ✅ Tabela `leads` criada no Supabase + RLS.
+- ✅ Testado end-to-end: POST /api/lead → 200 → row inserida no banco → confirmada e teste removido.
+- ⏳ Falta: NEXT_PUBLIC_WHATSAPP (número), notificação por e-mail (Resend), domínio próprio.
 
 > ⚠️ O Supabase MCP NÃO tem acesso a `htaxogmtaxebfbyetxel` (está em outra conta:
 > só vê ConviteVip1 e Fácilbicas). Operar esse Supabase pelo NAVEGADOR do usuário (logado).
