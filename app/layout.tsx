@@ -11,11 +11,11 @@ const display = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Nexlab — Estúdio de produtos digitais que vendem",
+  title: "Hypergrow — Estúdio de produtos digitais que vendem",
   description:
-    "Nexlab cria e opera SaaS de verdade: agendamento, captação para profissionais, sorteios com IA, nutrição por foto e logística. Produtos no ar, gerando receita.",
+    "Hypergrow cria e opera SaaS de verdade: agendamento, captação para profissionais, sorteios com IA, nutrição por foto e logística. Produtos no ar, gerando receita.",
   keywords: [
-    "Nexlab",
+    "Hypergrow",
     "estúdio de software",
     "SaaS",
     "Agentop",
@@ -26,12 +26,12 @@ export const metadata: Metadata = {
     "Packslog",
   ],
   openGraph: {
-    title: "Nexlab — Estúdio de produtos digitais que vendem",
+    title: "Hypergrow — Estúdio de produtos digitais que vendem",
     description:
-      "Produtos SaaS reais, no ar e gerando receita. Conheça o portfólio da Nexlab.",
+      "Produtos SaaS reais, no ar e gerando receita. Conheça o portfólio da Hypergrow.",
     type: "website",
   },
-  metadataBase: new URL("https://nexlab.com.br"),
+  metadataBase: new URL("https://hypergrow.com.br"),
 };
 
 export default function RootLayout({

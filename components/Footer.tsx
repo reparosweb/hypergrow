@@ -11,7 +11,7 @@ export default function Footer() {
               <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-500 to-accent-cyan text-white">
                 N
               </span>
-              Nex<span className="gradient-text">lab</span>
+              Hyper<span className="gradient-text">grow</span>
             </div>
             <p className="mt-4 max-w-sm text-sm text-slate-400">
               Estúdio de produtos digitais. Criamos, lançamos e operamos SaaS de
@@ -48,7 +48,7 @@ export default function Footer() {
         </div>
 
         <div className="mt-12 flex flex-col items-center justify-between gap-3 border-t border-white/5 pt-6 text-xs text-slate-500 sm:flex-row">
-          <p>© {year} Nexlab. Todos os direitos reservados.</p>
+          <p>© {year} Hypergrow. Todos os direitos reservados.</p>
           <p>Feito com tecnologia própria e IA.</p>
         </div>
       </div>

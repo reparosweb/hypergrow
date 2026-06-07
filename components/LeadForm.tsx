@@ -41,7 +41,7 @@ export default function LeadForm() {
 
   const whatsappHref = WHATSAPP
     ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(
-        "Olá! Vim pelo site da Nexlab e quero conversar sobre um produto."
+        "Olá! Vim pelo site da Hypergrow e quero conversar sobre um produto."
       )}`
     : null;
 

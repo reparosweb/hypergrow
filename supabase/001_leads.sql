@@ -1,6 +1,6 @@
 -- ============================================================
--- Nexlab — tabela de leads do site (FASE 1)
--- Rode isto no SQL Editor do Supabase do projeto Nexlab.
+-- Hypergrow — tabela de leads do site (FASE 1)
+-- Rode isto no SQL Editor do Supabase do projeto Hypergrow.
 -- ============================================================
 
 create table if not exists public.leads (

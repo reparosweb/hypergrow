@@ -41,7 +41,7 @@ export default function Hero() {
           transition={{ duration: 0.7, delay: 0.15 }}
           className="mx-auto mt-6 max-w-2xl text-base text-slate-300 sm:text-lg"
         >
-          A Nexlab cria, lança e opera SaaS de verdade — agendamento, captação,
+          A Hypergrow cria, lança e opera SaaS de verdade — agendamento, captação,
           IA, saúde e logística. Não fazemos demonstrações: entregamos produtos
           no ar, com clientes pagando.
         </motion.p>

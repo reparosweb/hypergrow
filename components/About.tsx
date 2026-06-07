@@ -13,13 +13,13 @@ export default function About() {
           <div className="relative grid items-center gap-10 md:grid-cols-2">
             <div>
               <p className="text-sm font-semibold uppercase tracking-widest text-brand-300">
-                Sobre a Nexlab
+                Sobre a Hypergrow
               </p>
               <h2 className="mt-3 font-display text-3xl font-bold text-white sm:text-4xl">
                 Um estúdio que <span className="gradient-text">opera</span>, não só desenha.
               </h2>
               <p className="mt-4 text-slate-400">
-                A Nexlab não entrega protótipo bonito que morre na gaveta.
+                A Hypergrow não entrega protótipo bonito que morre na gaveta.
                 Construímos, lançamos e operamos cada produto como um negócio:
                 com IA real, banco de dados, painel administrativo, pagamento e
                 automação de ponta a ponta.

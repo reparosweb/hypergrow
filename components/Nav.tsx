@@ -38,7 +38,7 @@ export default function Nav() {
               N
             </span>
             <span className="tracking-tight">
-              Nex<span className="gradient-text">lab</span>
+              Hyper<span className="gradient-text">grow</span>
             </span>
           </a>
 
@@ -59,7 +59,7 @@ export default function Nav() {
               href="#contato"
               className="shine inline-flex items-center rounded-full bg-gradient-to-r from-brand-500 to-accent-violet px-5 py-2.5 text-sm font-semibold text-white shadow-lg shadow-brand-600/30 transition-transform hover:scale-[1.03]"
             >
-              Falar com a Nexlab
+              Falar com a Hypergrow
             </a>
           </div>
 
@@ -89,7 +89,7 @@ export default function Nav() {
               onClick={() => setOpen(false)}
               className="mt-1 block rounded-xl bg-gradient-to-r from-brand-500 to-accent-violet px-4 py-3 text-center font-semibold text-white"
             >
-              Falar com a Nexlab
+              Falar com a Hypergrow
             </a>
           </div>
         )}

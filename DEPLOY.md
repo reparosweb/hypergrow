@@ -1,4 +1,4 @@
-# 🚀 Como colocar o Nexlab no ar (passo a passo)
+# 🚀 Como colocar o Hypergrow no ar (passo a passo)
 
 Você não precisa ser programador. Siga na ordem. Onde aparecer **[CLIQUE]**, é botão pra clicar.
 
@@ -42,7 +42,7 @@ Os passos abaixo são para: (1) publicar na internet e (2) salvar os leads num b
 
 ## PARTE 3 — Publicar na Vercel — ~5 min
 
-1. Acesse https://vercel.com e faça login **com a conta que você quer usar para a Nexlab**.
+1. Acesse https://vercel.com e faça login **com a conta que você quer usar para a Hypergrow**.
 2. **[CLIQUE]** em **Add New… → Project**.
 3. Escolha o repositório `nexlab` que você criou e **[CLIQUE]** em **Import**.
 4. Antes de finalizar, abra **Environment Variables** e adicione (uma por uma):

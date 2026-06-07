@@ -20,7 +20,7 @@ export default function Contact() {
             Vamos construir o seu <span className="gradient-text">próximo produto</span>
           </h2>
           <p className="mt-4 max-w-md text-slate-400">
-            Quer um dos produtos da Nexlab para o seu negócio ou uma solução sob
+            Quer um dos produtos da Hypergrow para o seu negócio ou uma solução sob
             medida? Deixe seus dados — respondemos rápido, por e-mail ou WhatsApp.
           </p>
 
@@ -40,7 +40,7 @@ export default function Contact() {
 
           <div className="mt-8 flex flex-wrap gap-4 text-sm text-slate-400">
             <span className="inline-flex items-center gap-2">
-              <Mail size={16} className="text-brand-300" /> contato@nexlab.com.br
+              <Mail size={16} className="text-brand-300" /> contato@hypergrow.com.br
             </span>
             <span className="inline-flex items-center gap-2">
               <MessageCircle size={16} className="text-emerald-400" /> Atendimento via WhatsApp
