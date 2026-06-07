@@ -17,11 +17,11 @@ export default function Contact() {
             Contato
           </p>
           <h2 className="mt-3 font-display text-3xl font-bold text-white sm:text-5xl">
-            Vamos construir o seu <span className="gradient-text">próximo produto</span>
+            Solicite seu <span className="gradient-text">orçamento</span>
           </h2>
           <p className="mt-4 max-w-md text-slate-400">
-            Quer um dos produtos da Hypergrow para o seu negócio ou uma solução sob
-            medida? Deixe seus dados — respondemos rápido, por e-mail ou WhatsApp.
+            Conte o que sua empresa precisa — site, e-commerce, sistema, automação
+            ou IA. Respondemos rápido, por e-mail ou WhatsApp, com uma proposta sob medida.
           </p>
 
           <div className="mt-8 space-y-4">

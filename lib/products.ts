@@ -13,7 +13,18 @@ export type Product = {
   gradient: string;
   accent: string; // hex for glows
   icon: string; // lucide icon name
+  tags: string[]; // portfolio categories
 };
+
+export const portfolioCategories = [
+  "Todos",
+  "Websites",
+  "E-commerces",
+  "Sistemas",
+  "Aplicativos",
+  "IA",
+  "Automações",
+] as const;
 
 export const products: Product[] = [
   {
@@ -37,6 +48,7 @@ export const products: Product[] = [
     gradient: "from-indigo-500 via-violet-500 to-fuchsia-500",
     accent: "#6366f1",
     icon: "CalendarCheck",
+    tags: ["Sistemas", "IA"],
   },
   {
     slug: "marido-de-aluguel",
@@ -59,6 +71,7 @@ export const products: Product[] = [
     gradient: "from-amber-400 via-orange-500 to-rose-500",
     accent: "#f97316",
     icon: "Wrench",
+    tags: ["Websites"],
   },
   {
     slug: "sorteio-bilionario",
@@ -81,6 +94,7 @@ export const products: Product[] = [
     gradient: "from-emerald-400 via-teal-500 to-cyan-500",
     accent: "#10b981",
     icon: "Sparkles",
+    tags: ["IA", "Sistemas"],
   },
   {
     slug: "nutrisnap",
@@ -103,6 +117,7 @@ export const products: Product[] = [
     gradient: "from-lime-400 via-green-500 to-emerald-500",
     accent: "#22c55e",
     icon: "Camera",
+    tags: ["Aplicativos", "IA"],
   },
   {
     slug: "unixx",
@@ -125,6 +140,7 @@ export const products: Product[] = [
     gradient: "from-sky-400 via-blue-500 to-indigo-500",
     accent: "#3b82f6",
     icon: "Radar",
+    tags: ["Sistemas", "IA"],
   },
   {
     slug: "packslog",
@@ -147,6 +163,7 @@ export const products: Product[] = [
     gradient: "from-orange-400 via-amber-500 to-yellow-500",
     accent: "#f18216",
     icon: "Truck",
+    tags: ["Sistemas", "Automações"],
   },
 ];
 

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { Send, Loader2, CheckCircle2, MessageCircle } from "lucide-react";
-import { products } from "@/lib/products";
+import { services } from "@/lib/content";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || ""; // ex: 5532999999999
 
@@ -112,13 +112,13 @@ export default function LeadForm() {
         </Field>
         <Field label="Tenho interesse em">
           <select name="product" defaultValue="" className="input">
-            <option value="">Selecione um produto</option>
-            {products.map((p) => (
-              <option key={p.slug} value={p.name}>
-                {p.name}
+            <option value="">Selecione um serviço</option>
+            {services.map((s) => (
+              <option key={s.slug} value={s.title}>
+                {s.title}
               </option>
             ))}
-            <option value="Produto sob medida">Um produto sob medida</option>
+            <option value="Solução sob medida">Uma solução sob medida</option>
           </select>
         </Field>
       </div>
