@@ -1,0 +1,100 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  @apply bg-ink-950 text-slate-200 antialiased;
+  background-image:
+    radial-gradient(60% 50% at 15% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+    radial-gradient(50% 50% at 95% 10%, rgba(34, 211, 238, 0.08) 0%, transparent 55%);
+  background-attachment: fixed;
+}
+
+/* Subtle grid texture so it never looks flat / "AI generated" */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(148, 163, 184, 0.06) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(148, 163, 184, 0.06) 1px, transparent 1px);
+  background-size: 56px 56px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 80%);
+  mask-image: radial-gradient(ellipse 80% 60% at 50% 0%, #000 40%, transparent 80%);
+}
+
+.glass {
+  background: rgba(17, 19, 31, 0.55);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(148, 163, 184, 0.10);
+}
+
+@layer components {
+  .input {
+    @apply w-full rounded-xl border border-white/10 bg-ink-900/70 px-4 py-3 text-sm text-white placeholder:text-slate-500 outline-none transition-colors;
+  }
+  .input:focus {
+    @apply border-brand-400 ring-2 ring-brand-500/30;
+  }
+}
+
+.gradient-text {
+  @apply bg-clip-text text-transparent;
+  background-image: linear-gradient(120deg, #c7d2fe 0%, #818cf8 35%, #22d3ee 100%);
+}
+
+/* Glow border that lights up on hover */
+.card-glow {
+  position: relative;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.35s ease;
+}
+.card-glow::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(130deg, rgba(99, 102, 241, 0.0), rgba(99, 102, 241, 0.0));
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  opacity: 0;
+  transition: opacity 0.35s ease, background 0.35s ease;
+  pointer-events: none;
+}
+.card-glow:hover {
+  transform: translateY(-6px);
+}
+.card-glow:hover::before {
+  opacity: 1;
+  background: linear-gradient(130deg, rgba(99, 102, 241, 0.7), rgba(34, 211, 238, 0.5), rgba(168, 85, 247, 0.6));
+}
+
+/* Shine sweep on buttons */
+.shine {
+  position: relative;
+  overflow: hidden;
+}
+.shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -120%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  transform: skewX(-20deg);
+}
+.shine:hover::after {
+  animation: shimmer 1s forwards;
+}
+
+::selection {
+  background: rgba(99, 102, 241, 0.35);
+}
