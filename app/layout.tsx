@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
@@ -48,6 +48,15 @@ export const metadata: Metadata = {
   },
   robots: { index: true, follow: true },
   metadataBase: new URL(SITE_URL),
+  icons: { icon: "/icon.svg", apple: "/icon.svg" },
+  appleWebApp: { capable: true, statusBarStyle: "black-translucent", title: "HyperGrow" },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#0a0c16",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 5,
 };
 
 const orgSchema = {

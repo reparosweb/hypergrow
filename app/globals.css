@@ -76,10 +76,14 @@ body {
   background: linear-gradient(130deg, rgba(99, 102, 241, 0.7), rgba(34, 211, 238, 0.5), rgba(168, 85, 247, 0.6));
 }
 
-/* Shine sweep on buttons */
+/* Shine sweep + glow on buttons */
 .shine {
   position: relative;
   overflow: hidden;
+  transition: box-shadow 0.35s ease, transform 0.2s ease;
+}
+.shine:hover {
+  box-shadow: 0 0 28px 2px rgba(99, 102, 241, 0.55), 0 0 64px 10px rgba(34, 211, 238, 0.22);
 }
 .shine::after {
   content: "";

@@ -7,6 +7,7 @@ import Portfolio from "@/components/Portfolio";
 import Process from "@/components/Process";
 import Testimonials from "@/components/Testimonials";
 import About from "@/components/About";
+import WhyUs from "@/components/WhyUs";
 import FAQ from "@/components/FAQ";
 import FinalCTA from "@/components/FinalCTA";
 import Contact from "@/components/Contact";
@@ -25,6 +26,7 @@ export default function Home() {
       <Process />
       <Testimonials />
       <About />
+      <WhyUs />
       <FAQ />
       <FinalCTA />
       <Contact />
