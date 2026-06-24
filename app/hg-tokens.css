@@ -1,0 +1,274 @@
+/* ============================================================================
+   agentop — DESIGN TOKENS
+   "Gestão inteligente. Resultados reais."
+   Brand: navy #081A3A · blue #1565FF · magenta #FF2D7A · pink #FF4D94 · green #00C896
+   Single source of truth. Import this before anything else.
+   NOTE: legacy scale names (--violet-*, --orange-*) are retained for cascade
+   compatibility but now carry agentop BLUE and MAGENTA values respectively.
+   ============================================================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap');
+
+:root {
+  /* ============================================================
+     COLOR — CANONICAL SCALE
+     ============================================================ */
+
+  /* Navy — primary deep surface */
+  --navy-950: #050f24;
+  --navy-900: #081A3A;   /* BRAND navy */
+  --navy-800: #0c2147;
+  --navy-700: #102a57;
+  --navy-600: #163568;
+  --navy-500: #1d427d;
+  --navy-400: #2a5599;
+  --navy-300: #4574bd;
+
+  /* Light — app canvas */
+  --cream-50:  #F5F7FA;   /* BRAND light bg */
+  --cream-100: #eef2f8;
+  --cream-150: #e8eef6;
+  --cream-200: #e1e8f2;
+  --cream-300: #d3dcea;
+
+  /* Ink / Slate — text on light */
+  --ink-900: #081A3A;
+  --ink-800: #11233f;
+  --ink-700: #1e2f4a;
+  --ink-600: #3a4a63;
+  --ink-500: #64748B;   /* BRAND slate */
+  --ink-400: #8190a3;
+  --ink-300: #a6b2c2;
+  --ink-200: #cbd4e0;
+  --ink-100: #e2e8f0;
+
+  /* "Violet" scale → now agentop BLUE (primary brand) */
+  --violet-50:  #eaf1ff;
+  --violet-100: #d6e4ff;
+  --violet-200: #a9c6ff;
+  --violet-300: #7da8ff;
+  --violet-400: #4d8bff;
+  --violet-500: #1565FF;  /* PRIMARY blue */
+  --violet-600: #0d4fd6;
+  --violet-700: #0a3fb0;
+  --violet-800: #08308a;
+  --violet-900: #081A3A;
+
+  /* "Orange" scale → now agentop MAGENTA (conversion / CTA) */
+  --orange-50:  #ffe6f0;
+  --orange-100: #ffd0e0;
+  --orange-200: #ffa6c6;
+  --orange-300: #ff79ab;
+  --orange-400: #FF4D94;   /* pink */
+  --orange-500: #FF2D7A;   /* PRIMARY magenta */
+  --orange-600: #e01f67;
+  --orange-700: #b81551;
+  --orange-800: #8a1040;
+
+  /* Pure brand magenta + pink (explicit names) */
+  --magenta-500: #FF2D7A;
+  --magenta-400: #FF4D94;
+  --magenta-300: #ff79ab;
+  --pink-500: #FF4D94;
+  --pink-400: #ff79ab;
+  --pink-600: #e01f67;
+
+  /* Green — confirmation */
+  --green-50:  #e0fbf3;
+  --green-100: #b5f4e2;
+  --green-200: #7df0cf;
+  --green-300: #3ee6b5;
+  --green-400: #11d8a2;
+  --green-500: #00C896;   /* BRAND green */
+  --green-600: #00a87f;
+  --green-700: #00876a;
+
+  /* Blue — informational (same family as primary, slightly distinct) */
+  --blue-50:  #eaf1ff;
+  --blue-100: #cfe0ff;
+  --blue-200: #9dbeff;
+  --blue-300: #6699ff;
+  --blue-400: #3b82f6;
+  --blue-500: #1565FF;
+  --blue-600: #0d4fd6;
+  --blue-700: #0a3fb0;
+
+  /* Teal */
+  --teal-400: #2dd4bf;
+  --teal-500: #14b8a6;
+  --teal-600: #0d9488;
+
+  /* Red / alert */
+  --red-50:  #fdecec;
+  --red-100: #fcc6c6;
+  --red-400: #f87171;
+  --red-500: #ef4444;
+  --red-600: #dc2626;
+  --red-700: #b91c1c;
+
+  /* Gold / amber — warning microcopy */
+  --gold-400: #fbbf24;
+  --gold-500: #f59e0b;
+  --gold-600: #d97706;
+
+  /* ============================================================
+     SEMANTIC TOKENS
+     ============================================================ */
+
+  --surface-canvas:        var(--cream-50);
+  --surface-canvas-alt:    #ffffff;
+  --surface-card:          #ffffff;
+  --surface-card-dark:     var(--navy-800);
+  --surface-cine:          var(--navy-900);
+  --surface-cine-deep:     var(--navy-950);
+  --surface-hairline:      rgba(8, 26, 58, 0.08);
+  --surface-hairline-dark: rgba(255, 255, 255, 0.08);
+
+  --fg-1:        var(--ink-900);
+  --fg-2:        var(--ink-500);
+  --fg-3:        var(--ink-400);
+  --fg-1-dark:   #ffffff;
+  --fg-2-dark:   rgba(255, 255, 255, 0.88);
+  --fg-3-dark:   rgba(255, 255, 255, 0.70);
+
+  --brand-primary:   var(--violet-500);   /* blue */
+  --brand-primary-h: var(--violet-400);
+  --brand-cta:       var(--orange-500);    /* magenta */
+  --brand-cta-h:     var(--orange-400);
+  --brand-success:   var(--green-500);
+  --brand-info:      var(--blue-500);
+  --brand-alert:     var(--red-500);
+  --brand-warn:      var(--gold-500);
+
+  /* ============================================================
+     TYPOGRAPHY — Poppins
+     ============================================================ */
+
+  --font-sans:    'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    ui-monospace, 'SF Mono', 'Roboto Mono', Menlo, monospace;
+  --font-display: 'Poppins', var(--font-sans);
+  --font-serif:   'Poppins', var(--font-sans);   /* accent words use Poppins italic, magenta */
+
+  --fs-display-xl: 64px;
+  --fs-display-lg: 48px;
+  --fs-h1:         32px;
+  --fs-h2:         24px;
+  --fs-h3:         18px;
+  --fs-body-lg:    17px;
+  --fs-body:       15px;
+  --fs-body-sm:    13px;
+  --fs-label:      11px;
+  --fs-mono:       13px;
+
+  --lh-display:    1.05;
+  --lh-tight:      1.2;
+  --lh-snug:       1.3;
+  --lh-normal:     1.5;
+  --lh-relaxed:    1.6;
+
+  --tr-tightest:  -0.03em;
+  --tr-tighter:   -0.02em;
+  --tr-tight:     -0.01em;
+  --tr-normal:     0em;
+  --tr-wide:       0.04em;
+  --tr-wider:      0.08em;
+
+  --fw-regular:  400;
+  --fw-medium:   500;
+  --fw-semibold: 600;
+  --fw-bold:     700;
+  --fw-black:    800;
+
+  /* ============================================================
+     SPACING (4px base)
+     ============================================================ */
+  --space-1: 4px;  --space-2: 8px;  --space-3: 12px; --space-4: 16px;
+  --space-5: 20px; --space-6: 24px; --space-7: 32px; --space-8: 40px;
+  --space-9: 48px; --space-10: 64px; --space-11: 80px; --space-12: 96px;
+
+  /* ============================================================
+     RADIUS
+     ============================================================ */
+  --r-xs: 8px; --r-sm: 12px; --r-md: 16px; --r-lg: 20px; --r-xl: 28px; --r-pill: 999px;
+
+  --border-thin:    1px solid var(--surface-hairline);
+  --border-thin-d:  1px solid var(--surface-hairline-dark);
+
+  /* ============================================================
+     ELEVATION
+     ============================================================ */
+  --shadow-xs: 0 1px 2px rgba(8, 26, 58, 0.05);
+  --shadow-sm: 0 2px 4px rgba(8, 26, 58, 0.05), 0 1px 2px rgba(8, 26, 58, 0.04);
+  --shadow-md: 0 10px 28px -10px rgba(8, 26, 58, 0.14), 0 2px 6px rgba(8, 26, 58, 0.05);
+  --shadow-lg: 0 26px 52px -14px rgba(8, 26, 58, 0.18), 0 4px 12px rgba(8, 26, 58, 0.05);
+  --shadow-xl: 0 36px 70px -18px rgba(8, 26, 58, 0.22);
+
+  /* Dark glows — blue + magenta */
+  --glow-violet: 0 0 0 1px rgba(21, 101, 255, 0.30), 0 20px 60px -20px rgba(21, 101, 255, 0.60);
+  --glow-orange: 0 0 0 1px rgba(255, 45, 122, 0.35), 0 16px 40px -12px rgba(255, 45, 122, 0.55);
+  --glow-blue:   0 0 0 1px rgba(21, 101, 255, 0.35), 0 16px 40px -12px rgba(21, 101, 255, 0.55);
+  --glow-green:  0 0 0 1px rgba(0, 200, 150, 0.35),  0 16px 40px -12px rgba(0, 200, 150, 0.45);
+  --glow-magenta:0 0 0 1px rgba(255, 45, 122, 0.35), 0 16px 40px -12px rgba(255, 45, 122, 0.55);
+
+  /* ============================================================
+     MOTION
+     ============================================================ */
+  --ease-out-premium: cubic-bezier(0.2, 0.6, 0.2, 1);
+  --ease-in-out-premium: cubic-bezier(0.6, 0, 0.2, 1);
+  --dur-fast: 140ms; --dur-base: 180ms; --dur-entrance: 260ms; --dur-drawer: 420ms;
+
+  /* ============================================================
+     GRADIENTS
+     ============================================================ */
+  --grad-hero:    radial-gradient(120% 80% at 20% 0%, #0e2456 0%, var(--navy-900) 55%, var(--navy-950) 100%);
+  --grad-brand:   linear-gradient(120deg, #1565FF 0%, #5b3cff 45%, #FF2D7A 100%);  /* the agentop A+arrow gradient */
+  --grad-violet:  linear-gradient(135deg, var(--violet-400) 0%, var(--violet-600) 100%);
+  --grad-orange:  linear-gradient(135deg, var(--orange-400) 0%, var(--orange-600) 100%);
+  --grad-magenta: linear-gradient(135deg, #FF4D94 0%, #FF2D7A 60%, #e01f67 100%);
+  --grad-green:   linear-gradient(135deg, var(--green-400) 0%, var(--green-600) 100%);
+  --grad-blue:    linear-gradient(135deg, var(--blue-400) 0%, var(--blue-700) 100%);
+  --grad-pink:    linear-gradient(135deg, #FF4D94 0%, #e01f67 100%);
+  --grad-teal:    linear-gradient(135deg, var(--teal-400) 0%, var(--teal-600) 100%);
+  --grad-gold:    linear-gradient(135deg, var(--gold-400) 0%, var(--gold-600) 100%);
+  --grad-red:     linear-gradient(135deg, var(--red-400) 0%, var(--red-700) 100%);
+
+  /* Plan colors */
+  --plan-gold:    linear-gradient(165deg, #fef3c7 0%, #f59e0b 100%);
+  --plan-prime:   linear-gradient(165deg, #4d8bff 0%, #1565FF 100%);
+  --plan-black:   linear-gradient(165deg, #11233f 0%, #050f24 100%);
+  --plan-elite:   linear-gradient(165deg, #FF4D94 0%, #b81551 100%);
+}
+
+/* ============================================================
+   SEMANTIC TYPE CLASSES
+   ============================================================ */
+
+.t-display-xl { font-family: var(--font-display); font-size: var(--fs-display-xl); font-weight: var(--fw-bold); line-height: var(--lh-display); letter-spacing: var(--tr-tightest); }
+.t-display-lg { font-family: var(--font-display); font-size: var(--fs-display-lg); font-weight: var(--fw-bold); line-height: var(--lh-display); letter-spacing: var(--tr-tighter); }
+.t-h1 { font-family: var(--font-display); font-size: var(--fs-h1); font-weight: var(--fw-bold); line-height: var(--lh-tight); letter-spacing: var(--tr-tight); }
+.t-h2 { font-family: var(--font-display); font-size: var(--fs-h2); font-weight: var(--fw-semibold); line-height: var(--lh-snug); letter-spacing: var(--tr-tight); }
+.t-h3 { font-family: var(--font-sans); font-size: var(--fs-h3); font-weight: var(--fw-semibold); line-height: var(--lh-snug); }
+.t-body-lg { font-family: var(--font-sans); font-size: var(--fs-body-lg); font-weight: var(--fw-regular); line-height: var(--lh-normal); }
+.t-body { font-family: var(--font-sans); font-size: var(--fs-body); font-weight: var(--fw-regular); line-height: var(--lh-normal); }
+.t-body-sm { font-family: var(--font-sans); font-size: var(--fs-body-sm); font-weight: var(--fw-regular); line-height: var(--lh-normal); }
+.t-label { font-family: var(--font-sans); font-size: var(--fs-label); font-weight: var(--fw-semibold); line-height: var(--lh-tight); letter-spacing: var(--tr-wider); text-transform: uppercase; }
+.t-mono { font-family: var(--font-mono); font-size: var(--fs-mono); font-weight: var(--fw-regular); line-height: var(--lh-normal); }
+.t-serif-italic { font-family: var(--font-serif); font-style: italic; font-weight: var(--fw-medium); }
+
+/* ============================================================
+   BASELINE
+   ============================================================ */
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0;
+  font-family: var(--font-sans);
+  font-size: var(--fs-body); line-height: var(--lh-normal);
+  color: var(--fg-1); background: var(--surface-canvas);
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+h1, h2, h3, h4, h5, h6, p { margin: 0; }
+h1 { font: var(--fw-bold) var(--fs-h1)/var(--lh-tight) var(--font-display); letter-spacing: var(--tr-tight); }
+h2 { font: var(--fw-semibold) var(--fs-h2)/var(--lh-snug) var(--font-display); letter-spacing: var(--tr-tight); }
+h3 { font: var(--fw-semibold) var(--fs-h3)/var(--lh-snug) var(--font-sans); }
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }

@@ -1,0 +1,208 @@
+/* ============================================================================
+   HYPERGROW — neon / cinematic landing system
+   Built on the agentop token set (colors_and_type.css). Navy canvas,
+   blue→violet→magenta light. Restraint over saturation: light is concentrated
+   in a few points so it reads as crafted, not auto-generated.
+   ============================================================================ */
+
+:root {
+  --hg-blue:    #1565FF;
+  --hg-violet:  #5b3cff;
+  --hg-magenta: #FF2D7A;
+  --hg-pink:    #FF4D94;
+  --hg-cyan:    #34e1ff;
+  --hg-green:   #00C896;
+  --maxw: 1200px;
+}
+
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: #050b1a;
+  color: #fff;
+  font-family: var(--font-sans);
+  overflow-x: hidden;
+}
+::selection { background: rgba(91,60,255,0.45); color: #fff; }
+
+/* Custom scrollbar to match the cinematic mood */
+::-webkit-scrollbar { width: 11px; height: 11px; }
+::-webkit-scrollbar-track { background: #070e20; }
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #1d427d, #0c2147);
+  border-radius: 999px; border: 2px solid #070e20;
+}
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #2a5599, #163568); }
+
+/* ── Film grain: the single biggest "this was made by a human" tell.
+   A faint animated noise plate over the whole page kills the flat-vector
+   AI look and gives everything a filmic tooth. ──────────────────────────── */
+.grain {
+  position: fixed; inset: -200%; z-index: 9999; pointer-events: none;
+  opacity: 0.045; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain-shift 7s steps(6) infinite;
+}
+@keyframes grain-shift {
+  0%   { transform: translate(0,0); }
+  20%  { transform: translate(-6%,4%); }
+  40%  { transform: translate(4%,-6%); }
+  60%  { transform: translate(-4%,6%); }
+  80%  { transform: translate(6%,-4%); }
+  100% { transform: translate(0,0); }
+}
+
+/* Section rhythm */
+.wrap { max-width: var(--maxw); margin: 0 auto; padding: 0 32px; }
+.sec  { position: relative; padding: 104px 0; }
+@media (max-width: 760px) { .sec { padding: 72px 0; } .wrap { padding: 0 20px; } }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 9px;
+  padding: 7px 14px; border-radius: 999px;
+  font: 600 11px var(--font-sans); letter-spacing: 0.18em; text-transform: uppercase;
+  color: #a9c6ff; background: rgba(21,101,255,0.10);
+  border: 1px solid rgba(91,60,255,0.30);
+  box-shadow: 0 0 18px -6px rgba(91,60,255,0.5), inset 0 0 18px -10px rgba(21,101,255,0.6);
+}
+.eyebrow .dot {
+  width: 6px; height: 6px; border-radius: 999px; background: var(--hg-cyan);
+  box-shadow: 0 0 10px var(--hg-cyan), 0 0 4px #fff;
+}
+
+.h-sec {
+  font: 700 clamp(30px, 4vw, 46px)/1.06 var(--font-display);
+  letter-spacing: -0.03em; text-wrap: balance; margin: 18px 0 0;
+}
+.h-sec .accent {
+  background: linear-gradient(110deg, #4d8bff 0%, #5b3cff 45%, #FF2D7A 100%);
+  -webkit-background-clip: text; background-clip: text; color: transparent;
+}
+.sub {
+  font: 400 17px/1.6 var(--font-sans); color: rgba(255,255,255,0.62);
+  max-width: 560px; margin: 18px 0 0; text-wrap: pretty;
+}
+
+/* ── TUBE NEON text — used once, on the hero accent. Layered text-shadows
+   build the bloom of a real glass neon tube; a slow, subtle un-even flicker
+   (not the cliché strobe) sells the "physical sign" illusion. ───────────── */
+.neon-tube {
+  color: #fff;
+  text-shadow:
+    0 0 4px #fff,
+    0 0 11px var(--hg-pink),
+    0 0 22px var(--hg-magenta),
+    0 0 42px var(--hg-magenta),
+    0 0 78px rgba(255,45,122,0.55);
+  animation: neon-flicker 5.2s infinite alternate;
+}
+.neon-tube.blue {
+  text-shadow:
+    0 0 4px #fff,
+    0 0 11px #7da8ff,
+    0 0 22px var(--hg-blue),
+    0 0 42px var(--hg-blue),
+    0 0 80px rgba(21,101,255,0.55);
+}
+@keyframes neon-flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0.86; }
+  19%, 56%      { opacity: 0.72; }
+}
+@media (prefers-reduced-motion: reduce) { .neon-tube { animation: none; } }
+
+/* ── Traveling neon border on hover (circulatory). Lifted from the kit and
+   tuned. The conic gradient rotates around the card edge only on hover. ─── */
+@property --na { syntax: '<angle>'; initial-value: 0deg; inherits: false; }
+.neon-card { position: relative; isolation: isolate; transition: transform .4s var(--ease-out-premium), box-shadow .4s var(--ease-out-premium); }
+.neon-card::after {
+  content: ''; position: absolute; inset: 0; border-radius: inherit;
+  padding: 1.5px; pointer-events: none; z-index: 6; opacity: 0;
+  background: conic-gradient(from var(--na),
+    transparent 0deg, var(--hg-blue) 40deg, var(--hg-violet) 85deg,
+    var(--hg-magenta) 135deg, var(--hg-cyan) 175deg, transparent 215deg, transparent 360deg);
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  transition: opacity .4s ease;
+}
+.neon-card:hover::after { opacity: 1; animation: na-rotate 2.6s linear infinite; }
+@keyframes na-rotate { to { --na: 360deg; } }
+.neon-card:hover { transform: translateY(-4px); }
+.neon-card:hover svg.bob { animation: icon-bob 1s ease-in-out infinite; }
+@keyframes icon-bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-3px); } }
+@media (prefers-reduced-motion: reduce) {
+  .neon-card:hover::after { animation: none; }
+  .neon-card:hover { transform: none; }
+}
+
+/* ── Cursor spotlight: a soft radial light that follows the pointer across a
+   grid, driven by --mx/--my set in JS. This is the "light applied" feel. ── */
+.spotlight { position: relative; }
+.spotlight::before {
+  content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  border-radius: inherit; opacity: 0; transition: opacity .5s ease;
+  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
+    rgba(91,60,255,0.16), rgba(21,101,255,0.07) 40%, transparent 66%);
+}
+.spotlight:hover::before { opacity: 1; }
+
+/* Per-card pointer glow (color shifts toward each card's own accent on hover) */
+.glowcard {
+  position: relative; overflow: hidden;
+  background: linear-gradient(180deg, rgba(255,255,255,0.045), rgba(255,255,255,0.015));
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: border-color .4s var(--ease-out-premium), background .4s var(--ease-out-premium);
+}
+.glowcard::before {
+  content: ''; position: absolute; width: 280px; height: 280px; border-radius: 999px;
+  left: var(--gx, 50%); top: var(--gy, 50%); transform: translate(-50%,-50%);
+  background: radial-gradient(circle, var(--cardglow, rgba(91,60,255,0.4)), transparent 68%);
+  opacity: 0; transition: opacity .45s ease; pointer-events: none; z-index: 0;
+}
+.glowcard:hover::before { opacity: 0.55; }
+.glowcard > * { position: relative; z-index: 1; }
+
+/* Buttons */
+.btn {
+  display: inline-flex; align-items: center; gap: 10px; cursor: pointer;
+  border: none; border-radius: 14px; font: 600 15px var(--font-sans);
+  padding: 15px 24px; transition: transform .2s var(--ease-out-premium), box-shadow .3s ease, filter .2s ease;
+}
+.btn:active { transform: scale(0.98); }
+.btn-cta {
+  color: #fff; background: linear-gradient(135deg, #FF4D94, #FF2D7A);
+  box-shadow: 0 0 0 1px rgba(255,45,122,0.4), 0 18px 48px -14px rgba(255,45,122,0.7);
+}
+.btn-cta:hover { transform: translateY(-2px); filter: brightness(1.07); box-shadow: 0 0 0 1px rgba(255,45,122,0.5), 0 24px 60px -14px rgba(255,45,122,0.9), 0 0 30px -4px rgba(255,77,148,0.6); }
+.btn-ghost {
+  color: #fff; background: rgba(255,255,255,0.05); backdrop-filter: blur(16px);
+  border: 1px solid rgba(255,255,255,0.16);
+}
+.btn-ghost:hover { transform: translateY(-2px); border-color: rgba(91,60,255,0.6); box-shadow: 0 0 24px -6px rgba(91,60,255,0.6); }
+.btn-blue {
+  color: #fff; background: linear-gradient(135deg, #4d8bff, #1565FF);
+  box-shadow: 0 0 0 1px rgba(21,101,255,0.4), 0 18px 48px -14px rgba(21,101,255,0.7);
+}
+.btn-blue:hover { transform: translateY(-2px); filter: brightness(1.07); box-shadow: 0 24px 60px -14px rgba(21,101,255,0.9), 0 0 30px -4px rgba(77,139,255,0.6); }
+
+.pill {
+  display: inline-flex; align-items: center; gap: 7px; padding: 7px 13px; border-radius: 999px;
+  font: 500 12.5px var(--font-sans); color: rgba(255,255,255,0.78);
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.10);
+  transition: all .25s ease; cursor: default;
+}
+.pill:hover { color: #fff; border-color: rgba(52,225,255,0.5); box-shadow: 0 0 16px -4px rgba(52,225,255,0.5); }
+
+/* Entrance reveal on scroll */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .7s var(--ease-out-premium), transform .7s var(--ease-out-premium); }
+.reveal.in { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
+
+/* Thin hairline divider with a glowing centre */
+.beam-divider {
+  height: 1px; border: none; margin: 0;
+  background: linear-gradient(90deg, transparent, rgba(91,60,255,0.55), rgba(255,45,122,0.55), transparent);
+  box-shadow: 0 0 18px -2px rgba(91,60,255,0.5);
+}
+
+.mono { font-family: var(--font-mono); }
