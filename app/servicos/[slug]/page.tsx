@@ -115,7 +115,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
 
       {/* incluído + resultados */}
       <section className="sec" style={{ paddingTop: 0 }}>
-        <div className="wrap" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20 }}>
+        <div className="wrap" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: 20 }}>
           <div className="neon-card" style={{ borderRadius: 22, padding: 30, background: "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)" }}>
             <h2 style={{ font: "700 20px var(--font-display)", color: "#fff", margin: 0 }}>O que está incluído</h2>
             <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 18 }}>

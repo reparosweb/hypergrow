@@ -284,7 +284,9 @@ function Hero() {
         .scroll-track { width: 22px; height: 36px; border: 1.5px solid rgba(255,255,255,0.32); border-radius: 999px; display: flex; justify-content: center; padding-top: 6px; }
         .scroll-dot { width: 4px; height: 8px; border-radius: 999px; background: #34e1ff; box-shadow: 0 0 8px #34e1ff; animation: scroll-bob 1.6s ease-in-out infinite; }
         @keyframes scroll-bob { 0%,100% { transform: translateY(0); opacity: 1; } 60% { transform: translateY(12px); opacity: 0.2; } }
-        @media (max-width: 760px) { .hero-video { transform: scale(1.05); object-position: 50% 38%; } .grade-left { background: linear-gradient(180deg, transparent 30%, rgba(4,6,15,0.75) 100%); } .tele { top: 76px; right: 14px; transform: scale(0.82); transform-origin: top right; } .hero-lead { margin-left: 0; } }
+        @media (max-width: 760px) { .hero-video { transform: scale(1.05); object-position: 50% 38%; } .grade-left { background: linear-gradient(180deg, transparent 30%, rgba(4,6,15,0.75) 100%); } .tele { top: 70px; right: 12px; transform: scale(0.74); transform-origin: top right; } .hero-lead { margin-left: 0; } }
+        /* Celular estreito: o HUD de telemetria sobrepunha o eyebrow/titulo — escondido para nada ficar colado */
+        @media (max-width: 600px) { .tele { display: none; } }
         @media (prefers-reduced-motion: reduce) { .scroll-dot, .dot-live { animation: none; } }
       `}</style>
     </section>
@@ -380,7 +382,7 @@ function Differentiators() {
           ))}
         </div>
       </div>
-      <style>{`@media (max-width:900px){ #ia .spotlight { grid-template-columns: 1fr 1fr !important; } .diff-grid { grid-template-columns: 1fr 1fr !important; } }`}</style>
+      <style>{`@media (max-width:900px){ #ia .spotlight { grid-template-columns: 1fr 1fr !important; } .diff-grid { grid-template-columns: 1fr 1fr !important; } } @media (max-width:560px){ #ia .spotlight { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }
@@ -729,11 +731,11 @@ function Footer() {
           </div>
         </div>
       </div>
-      <div className="wrap" style={{ padding: "20px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, font: "400 13px var(--font-sans)", color: "rgba(255,255,255,0.45)" }}>
+      <div className="wrap foot-legal" style={{ padding: "20px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, font: "400 13px var(--font-sans)", color: "rgba(255,255,255,0.45)" }}>
         <span>© 2026 Hypergrow · Todos os direitos reservados</span>
         <span>Feito com tecnologia, IA e automação</span>
       </div>
-      <style>{`@media (max-width:900px){ .foot-grid { grid-template-columns: 1fr 1fr !important; } }`}</style>
+      <style>{`@media (max-width:900px){ .foot-grid { grid-template-columns: 1fr 1fr !important; } } @media (max-width:760px){ .foot-legal { padding-bottom: 96px !important; flex-direction: column; gap: 6px; text-align: center; justify-content: center; } }`}</style>
     </footer>
   );
 }
