@@ -16,7 +16,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const s = getService(params.slug);
   if (!s) return { title: "Serviço — HyperGrow" };
   const title = `${s.title} — HyperGrow`;
-  const description = s.long;
+  const description = s.metaDescription;
   return {
     title,
     description,
@@ -41,15 +41,36 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
   const wa = WHATSAPP
     ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá! Quero falar sobre ${s.title}.`)}`
     : "/#contato";
-  const others = siteServices.filter((o) => o.slug !== s.slug).slice(0, 6);
+  const others = siteServices.filter((o) => o.slug !== s.slug);
 
   const schema = {
     "@context": "https://schema.org",
-    "@type": "Service",
-    name: s.title,
-    description: s.long,
-    provider: { "@type": "Organization", name: "HyperGrow", url: SITE_URL },
-    areaServed: "BR",
+    "@graph": [
+      {
+        "@type": "Service",
+        name: s.title,
+        description: s.long,
+        provider: { "@type": "Organization", name: "HyperGrow", url: SITE_URL },
+        areaServed: "BR",
+        url: `${SITE_URL}/servicos/${s.slug}`,
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Início", item: SITE_URL },
+          { "@type": "ListItem", position: 2, name: "Serviços", item: `${SITE_URL}/#servicos` },
+          { "@type": "ListItem", position: 3, name: s.title, item: `${SITE_URL}/servicos/${s.slug}` },
+        ],
+      },
+      {
+        "@type": "FAQPage",
+        mainEntity: s.faq.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+    ],
   };
 
   return (
@@ -113,6 +134,18 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
         `}</style>
       </section>
 
+      {/* conteúdo */}
+      <section className="sec" style={{ paddingTop: 0 }}>
+        <div className="wrap" style={{ maxWidth: 820, display: "flex", flexDirection: "column", gap: 30 }}>
+          {s.body.map((b) => (
+            <div key={b.h}>
+              <h2 style={{ font: "700 clamp(20px,2.6vw,26px) var(--font-display)", color: "#fff", margin: "0 0 12px", letterSpacing: "-0.02em" }}>{b.h}</h2>
+              <p style={{ font: "400 16px/1.7 var(--font-sans)", color: "rgba(255,255,255,0.74)", margin: 0, textWrap: "pretty" }}>{b.p}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
       {/* incluído + resultados */}
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="wrap" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: 20 }}>
@@ -131,6 +164,21 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
                 </li>
               ))}
             </ul>
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="sec" style={{ paddingTop: 0 }}>
+        <div className="wrap" style={{ maxWidth: 820 }}>
+          <h2 style={{ font: "700 clamp(24px,3.2vw,34px) var(--font-display)", color: "#fff", margin: "0 0 24px", letterSpacing: "-0.025em" }}>Perguntas frequentes</h2>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {s.faq.map((f) => (
+              <details key={f.q} className="neon-card" style={{ borderRadius: 16, background: "rgba(255,255,255,0.03)", border: "1px solid rgba(255,255,255,0.08)", padding: "0 22px" }}>
+                <summary style={{ cursor: "pointer", listStyle: "none", padding: "18px 0", font: "600 16px var(--font-sans)", color: "#fff" }}>{f.q}</summary>
+                <p style={{ font: "400 14.5px/1.65 var(--font-sans)", color: "rgba(255,255,255,0.72)", margin: 0, padding: "0 0 18px" }}>{f.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>
