@@ -67,18 +67,50 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
 
       {/* hero */}
       <section className="sec" style={{ paddingTop: 48 }}>
-        <div className="wrap">
-          <Link href="/#servicos" style={{ font: "500 13px var(--font-sans)", color: "rgba(255,255,255,0.6)" }}>← Todos os serviços</Link>
-          <div className="eyebrow" style={{ marginTop: 18 }}><span className="dot" style={{ background: s.accent, boxShadow: `0 0 10px ${s.accent}` }} />Serviço</div>
-          <h1 style={{ font: "800 clamp(34px,5vw,64px)/1.04 var(--font-display)", letterSpacing: "-0.04em", color: "#fff", margin: "16px 0 0", maxWidth: 820, textWrap: "balance" }}>
-            {s.title}
-          </h1>
-          <p style={{ font: "400 18px/1.6 var(--font-sans)", color: "rgba(255,255,255,0.72)", margin: "20px 0 0", maxWidth: 640, textWrap: "pretty" }}>{s.long}</p>
-          <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 32 }}>
-            <Link href="/#contato" className="btn btn-cta">Solicitar orçamento</Link>
-            <a href={wa} target={WHATSAPP ? "_blank" : undefined} rel="noopener noreferrer" className="btn btn-ghost">Falar no WhatsApp</a>
+        <div className="wrap svc-hero" style={{ display: "grid", gridTemplateColumns: "1.05fr 0.95fr", gap: 44, alignItems: "center" }}>
+          <div>
+            <Link href="/#servicos" style={{ font: "500 13px var(--font-sans)", color: "rgba(255,255,255,0.6)" }}>← Todos os serviços</Link>
+            <div className="eyebrow" style={{ marginTop: 18 }}><span className="dot" style={{ background: s.accent, boxShadow: `0 0 10px ${s.accent}` }} />Serviço</div>
+            <h1 style={{ font: "800 clamp(34px,5vw,60px)/1.04 var(--font-display)", letterSpacing: "-0.04em", color: "#fff", margin: "16px 0 0", textWrap: "balance" }}>
+              {s.title}
+            </h1>
+            <p style={{ font: "400 18px/1.6 var(--font-sans)", color: "rgba(255,255,255,0.72)", margin: "20px 0 0", maxWidth: 560, textWrap: "pretty" }}>{s.long}</p>
+            <div style={{ display: "flex", gap: 14, flexWrap: "wrap", marginTop: 32 }}>
+              <Link href="/#contato" className="btn btn-cta">Solicitar orçamento</Link>
+              <a href={wa} target={WHATSAPP ? "_blank" : undefined} rel="noopener noreferrer" className="btn btn-ghost">Falar no WhatsApp</a>
+            </div>
+          </div>
+
+          {/* visual futurista animado */}
+          <div className="svc-visual" style={{ position: "relative", aspectRatio: "1/1", borderRadius: 28, overflow: "hidden", border: "1px solid rgba(255,255,255,0.12)", background: `radial-gradient(120% 100% at 28% 18%, ${s.accent}33, rgba(8,16,36,0.85) 60%)`, boxShadow: `0 40px 100px -40px ${s.accent}66` }}>
+            <span className="svc-grid" aria-hidden />
+            <span className="svc-ring" aria-hidden style={{ borderColor: `${s.accent}55` }} />
+            <span className="svc-ring svc-ring2" aria-hidden style={{ borderColor: "rgba(255,255,255,0.12)" }} />
+            <span className="svc-orb" aria-hidden style={{ background: `radial-gradient(circle, ${s.accent}, ${s.accent}00 70%)` }} />
+            <span className="svc-core" aria-hidden style={{ background: `linear-gradient(135deg, #fff, ${s.accent})`, boxShadow: `0 0 60px 6px ${s.accent}` }} />
+            <span className="svc-chip a" style={{ borderColor: `${s.accent}66` }}>{s.tags[0]}</span>
+            <span className="svc-chip b" style={{ borderColor: "rgba(255,255,255,0.18)" }}>{s.tags[1] || s.tags[0]}</span>
+            <span className="svc-chip c" style={{ borderColor: `${s.accent}66` }}>{s.outcomes[0]?.split(" ").slice(0, 3).join(" ")}</span>
           </div>
         </div>
+
+        <style>{`
+          .svc-grid { position:absolute; inset:0; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 36px 36px; -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 80%); mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 80%); }
+          .svc-orb { position:absolute; width:75%; height:75%; left:50%; top:50%; transform:translate(-50%,-50%); filter: blur(24px); opacity:0.8; animation: svc-pulse 4.5s ease-in-out infinite; }
+          .svc-core { position:absolute; width:60px; height:60px; left:50%; top:50%; transform:translate(-50%,-50%); border-radius:999px; animation: svc-float 5s ease-in-out infinite; }
+          .svc-ring { position:absolute; width:62%; height:62%; left:50%; top:50%; transform:translate(-50%,-50%); border:1.5px solid; border-radius:999px; border-right-color:transparent !important; border-bottom-color:transparent !important; animation: svc-spin 9s linear infinite; }
+          .svc-ring2 { width:84%; height:84%; border-left-color:transparent !important; border-top-color:transparent !important; animation-duration:14s; animation-direction:reverse; }
+          .svc-chip { position:absolute; padding:8px 13px; border-radius:999px; font:600 12px var(--font-sans); color:#fff; background:rgba(8,16,36,0.7); border:1px solid; backdrop-filter:blur(8px); white-space:nowrap; animation: svc-float 6s ease-in-out infinite; }
+          .svc-chip.a { left:8%; top:16%; }
+          .svc-chip.b { right:8%; top:42%; animation-delay:1.2s; }
+          .svc-chip.c { left:14%; bottom:14%; animation-delay:2.1s; }
+          @keyframes svc-spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+          @keyframes svc-float { 0%,100% { transform: translate(-50%,-50%) translateY(0); } 50% { transform: translate(-50%,-50%) translateY(-8px); } }
+          @keyframes svc-pulse { 0%,100% { opacity:0.6; } 50% { opacity:0.95; } }
+          .svc-chip { transform: none; } .svc-chip { animation-name: svc-chipfloat; } @keyframes svc-chipfloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-7px); } }
+          @media (max-width: 860px) { .svc-hero { grid-template-columns: 1fr !important; } .svc-visual { display:none; } }
+          @media (prefers-reduced-motion: reduce) { .svc-orb,.svc-core,.svc-ring,.svc-chip { animation: none !important; } }
+        `}</style>
       </section>
 
       {/* incluído + resultados */}
