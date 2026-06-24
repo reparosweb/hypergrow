@@ -2,7 +2,7 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { LogOut, RefreshCw, Mail, Phone, Tag, AlertTriangle } from "lucide-react";
+import { LogOut, RefreshCw, Mail, Phone, Tag, AlertTriangle, CreditCard } from "lucide-react";
 
 export type Lead = {
   id: string;
@@ -83,6 +83,12 @@ export default function Kanban({ initialLeads, dbError }: { initialLeads: Lead[]
           </div>
           <div className="flex items-center gap-2">
             <span className="hidden text-sm text-slate-400 sm:block">{leads.length} leads</span>
+            <a
+              href="/admin/cobrancas"
+              className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200 hover:bg-white/10"
+            >
+              <CreditCard size={15} /> Cobranças
+            </a>
             <button
               onClick={() => router.refresh()}
               className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200 hover:bg-white/10"
