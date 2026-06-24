@@ -208,12 +208,12 @@ function Hero() {
     <section id="top" style={{ position: "relative", height: "100svh", minHeight: 620, overflow: "hidden", background: "#04060f" }}>
       <div className="hero-video-wrap" aria-hidden="true">
         {vidOn ? (
-          <video ref={vidRef} className="hero-video" poster="/media/launch-poster.png" autoPlay muted loop playsInline preload="metadata">
+          <video ref={vidRef} className="hero-video" poster="/media/launch-poster.webp" autoPlay muted loop playsInline preload="metadata">
             <source src="/media/launch.mp4" type="video/mp4" />
           </video>
         ) : (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img className="hero-video" src="/media/launch-poster.png" alt="Lançamento" />
+          <img className="hero-video" src="/media/launch-poster.webp" alt="Foguete em lançamento — Hypergrow, tecnologia e IA para crescimento de e-commerce" fetchPriority="high" />
         )}
       </div>
 
@@ -755,7 +755,7 @@ export default function HypergrowSite() {
 
   return (
     <>
-      <Script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" strategy="afterInteractive" onLoad={() => { try { window.lucide?.createIcons?.(); } catch {} }} />
+      <Script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js" strategy="afterInteractive" onLoad={() => { try { window.lucide?.createIcons?.(); } catch {} }} />
       <div id="bg-field" aria-hidden="true"></div>
       <div className="neon-lights" aria-hidden="true"></div>
       <div className="grain" aria-hidden="true"></div>
@@ -790,7 +790,7 @@ export default function HypergrowSite() {
             conic-gradient(from 60deg at 50% 110%, transparent 0deg, rgba(0,200,150,0.22) 30deg, transparent 80deg, transparent 360deg);
           animation: club-spin 18s linear infinite; }
         @keyframes club-spin { to { transform: rotate(360deg); } }
-        @media (max-width: 760px) { .neon-lights { opacity: 0.6; filter: blur(20px); animation-duration: 26s; } }
+        @media (max-width: 760px) { .neon-lights { opacity: 0.4; filter: none; animation: none; } }
         @media (prefers-reduced-motion: reduce) { .neon-lights { animation: none; } }
         .h-sec .accent { filter: drop-shadow(0 0 22px rgba(91,60,255,0.55)) drop-shadow(0 0 38px rgba(255,45,122,0.35)); }
         .glowcard:hover { border-color: rgba(120,80,255,0.45) !important; }

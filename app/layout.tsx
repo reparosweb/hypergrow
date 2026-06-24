@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk } from "next/font/google";
+import { Inter, Space_Grotesk, Poppins } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 
@@ -9,6 +9,15 @@ const display = Space_Grotesk({
   variable: "--font-display",
   display: "swap",
   weight: ["500", "600", "700"],
+});
+// Poppins auto-hospedada (substitui o @import render-blocking que estava no hg-tokens.css).
+// É a fonte do site público. Só os pesos/estilos realmente usados.
+const poppins = Poppins({
+  subsets: ["latin"],
+  variable: "--font-poppins",
+  display: "swap",
+  weight: ["400", "500", "600", "700", "800"],
+  style: ["normal", "italic"],
 });
 
 const SITE_URL = "https://hypergrow.com.br";
@@ -75,7 +84,7 @@ const orgSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${display.variable}`}>
+    <html lang="pt-BR" className={`${inter.variable} ${display.variable} ${poppins.variable}`}>
       <body>
         <Analytics />
         <script

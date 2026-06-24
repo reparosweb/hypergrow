@@ -7,7 +7,9 @@
    compatibility but now carry agentop BLUE and MAGENTA values respectively.
    ============================================================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400;1,500;1,600&display=swap');
+/* Poppins agora é carregada via next/font no app/layout.tsx (--font-poppins),
+   auto-hospedada e NÃO render-blocking. O @import do Google Fonts foi removido
+   por travar a renderização (FCP/LCP). */
 
 :root {
   /* ============================================================
@@ -144,10 +146,10 @@
      TYPOGRAPHY — Poppins
      ============================================================ */
 
-  --font-sans:    'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-sans:    var(--font-poppins), 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono:    ui-monospace, 'SF Mono', 'Roboto Mono', Menlo, monospace;
-  --font-display: 'Poppins', var(--font-sans);
-  --font-serif:   'Poppins', var(--font-sans);   /* accent words use Poppins italic, magenta */
+  --font-display: var(--font-poppins), 'Poppins', var(--font-sans);
+  --font-serif:   var(--font-poppins), 'Poppins', var(--font-sans);   /* accent words use Poppins italic, magenta */
 
   --fs-display-xl: 64px;
   --fs-display-lg: 48px;
