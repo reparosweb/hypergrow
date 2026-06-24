@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Loader2, Copy, Check, AlertTriangle, RefreshCw } from "lucide-react";
 
@@ -32,6 +32,9 @@ export default function Billing({ initialCharges, asaasReady, dbReady }: { initi
   const [error, setError] = useState("");
   const [result, setResult] = useState<any>(null);
   const [copied, setCopied] = useState(false);
+
+  // Sincroniza a lista quando o servidor recarrega (botão Atualizar / router.refresh).
+  useEffect(() => { setCharges(initialCharges); }, [initialCharges]);
 
   const set = (k: string) => (e: any) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
