@@ -390,7 +390,7 @@ function Portfolio() {
   const cats = ["Todos", "E-commerce", "Websites", "Marketing", "Sistemas", "Aplicativos", "IA", "Automações"];
   const [active, setActive] = useState("Todos");
   const projects = [
-    { id: "clicouenviou", name: "Clicou Enviou", url: "https://www.clicouenviou.com.br", cat: ["E-commerce", "Marketing", "Automações"], tags: ["E-commerce", "Marketing"], grad: "linear-gradient(150deg,#1565FF,#5b3cff)", desc: "Plataforma de e-commerce e marketing com automação de campanhas e captação de clientes." },
+    { id: "clicouenviou", name: "Clicou Enviou", url: "https://www.clicouenviou.com.br", cat: ["E-commerce", "Sistemas", "Automações"], tags: ["Logística", "Plataforma"], grad: "linear-gradient(150deg,#1565FF,#5b3cff)", desc: "Plataforma que reúne múltiplas transportadoras num único painel para simplificar os envios do e-commerce." },
     { id: "ebcorretora", name: "EB Corretora", url: "https://www.ebcorretora.com.br", cat: ["Websites", "Sistemas"], tags: ["Site", "Institucional"], grad: "linear-gradient(150deg,#0d4fd6,#34e1ff)", desc: "Presença digital e site institucional para corretora de seguros, com captação de leads." },
     { id: "odontomed", name: "OdontoMed Saúde", url: "https://www.odontomedsaude.com.br", cat: ["Websites", "Sistemas"], tags: ["Site", "Saúde"], grad: "linear-gradient(150deg,#00a87f,#11d8a2)", desc: "Site e presença digital para clínica de odontologia e saúde, com agendamento." },
     { id: "pneusmaninho", name: "Pneus Maninho", url: "https://www.pneusmaninho.com.br", cat: ["E-commerce", "Websites"], tags: ["E-commerce", "Loja"], grad: "linear-gradient(150deg,#FF2D7A,#b81551)", desc: "Loja virtual de pneus com catálogo, presença digital e captação de clientes." },
@@ -415,7 +415,7 @@ function Portfolio() {
           {shown.map((p) => (
             <article key={p.id} className="glowcard neon-card reveal in" {...cardGlow("rgba(91,60,255,0.4)")} style={{ borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <div style={{ position: "relative", aspectRatio: "16/10", background: p.grad }}>
-                <ImageSlot placeholder={`Print do ${p.name}`} src={p.url ? `https://image.thum.io/get/width/1200/crop/750/${p.url}` : undefined} />
+                <ImageSlot placeholder={`Print do ${p.name}`} src={p.url ? `https://api.microlink.io/?url=${encodeURIComponent(p.url)}&screenshot=true&embed=screenshot.url&waitUntil=networkidle2` : undefined} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(5,11,26,0.55))", pointerEvents: "none" }}></div>
                 <div style={{ position: "absolute", left: 14, top: 14, display: "flex", gap: 6, pointerEvents: "none" }}>
                   {p.tags.map((t) => <span key={t} style={{ font: "600 10px var(--font-sans)", letterSpacing: "0.04em", textTransform: "uppercase", color: "#fff", padding: "4px 9px", borderRadius: 999, background: "rgba(5,11,26,0.55)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}>{t}</span>)}
