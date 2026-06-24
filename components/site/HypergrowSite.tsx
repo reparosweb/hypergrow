@@ -755,6 +755,7 @@ export default function HypergrowSite() {
     <>
       <Script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js" strategy="afterInteractive" onLoad={() => { try { window.lucide?.createIcons?.(); } catch {} }} />
       <div id="bg-field" aria-hidden="true"></div>
+      <div className="neon-lights" aria-hidden="true"></div>
       <div className="grain" aria-hidden="true"></div>
       <Nav />
       <main>
@@ -779,6 +780,15 @@ export default function HypergrowSite() {
         #bg-field { position: fixed; inset: 0; z-index: -1; pointer-events: none;
           background: radial-gradient(80% 50% at 15% -5%, rgba(21,101,255,0.20), transparent 60%), radial-gradient(70% 45% at 92% 8%, rgba(255,45,122,0.16), transparent 60%), radial-gradient(90% 60% at 50% 108%, rgba(91,60,255,0.18), transparent 62%), #050b1a; }
         #bg-field::after { content: ''; position: absolute; inset: 0; opacity: 0.5; background-image: linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px); background-size: 96px 96px; -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%); mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%); }
+        /* Luzes de balada — feixes neon girando (GPU: transform numa camada fixa) */
+        .neon-lights { position: fixed; inset: -25%; z-index: -1; pointer-events: none; opacity: 0.55; filter: blur(28px); will-change: transform;
+          background:
+            conic-gradient(from 0deg at 28% 18%, transparent 0deg, rgba(21,101,255,0.20) 34deg, transparent 78deg, transparent 200deg, rgba(52,225,255,0.14) 240deg, transparent 290deg, transparent 360deg),
+            conic-gradient(from 140deg at 78% 26%, transparent 0deg, rgba(255,45,122,0.18) 44deg, transparent 96deg, transparent 250deg, rgba(91,60,255,0.16) 300deg, transparent 350deg, transparent 360deg);
+          animation: club-spin 22s linear infinite; }
+        @keyframes club-spin { to { transform: rotate(360deg); } }
+        @media (max-width: 760px) { .neon-lights { display: none; } }
+        @media (prefers-reduced-motion: reduce) { .neon-lights { animation: none; } }
         @keyframes wa-pulse { 0%,100% { box-shadow: 0 12px 34px -8px rgba(0,200,150,0.7), 0 0 0 0 rgba(0,200,150,0.5); } 50% { box-shadow: 0 12px 34px -8px rgba(0,200,150,0.7), 0 0 0 12px rgba(0,200,150,0); } }
       `}</style>
     </>
