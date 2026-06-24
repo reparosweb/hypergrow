@@ -3,6 +3,7 @@
 
 import { useState, useEffect, useRef, useCallback, useId } from "react";
 import Script from "next/script";
+import TrustMarquee from "./TrustMarquee";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
 const waUrl = WHATSAPP
@@ -754,6 +755,7 @@ export default function HypergrowSite() {
       <Nav />
       <main>
         <Hero />
+        <TrustMarquee />
         <Services />
         <AIAgent />
         <Differentiators />
