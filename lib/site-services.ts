@@ -1,4 +1,4 @@
-// Serviços da Hypergrow (agência e-commerce/marketing) — fonte única.
+// Serviços da HyperGrow (agência e-commerce/marketing) — fonte única.
 // Usado na home (cards) e nas páginas /servicos/[slug].
 
 export type SiteService = {

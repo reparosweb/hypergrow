@@ -4,6 +4,7 @@ import { ArrowLeft, PenSquare } from "lucide-react";
 export const metadata = {
   title: "Blog — HyperGrow",
   description: "Conteúdos sobre tecnologia, IA, automação e crescimento digital.",
+  alternates: { canonical: "/blog" },
 };
 
 export default function BlogPage() {

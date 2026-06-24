@@ -8,7 +8,7 @@ import { siteServices } from "@/lib/site-services";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
 const waUrl = WHATSAPP
-  ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Quero falar com a Hypergrow.")}`
+  ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Quero falar com a HyperGrow.")}`
   : "#contato";
 
 /* ───────────────────────── Logo ───────────────────────── */
@@ -47,7 +47,7 @@ function Logo({ height = 34, showWord = true }) {
       </svg>
       {showWord && (
         <span style={{ font: `700 ${height * 0.62}px var(--font-display)`, letterSpacing: "-0.04em", color: "#fff", lineHeight: 1 }}>
-          Hyper<span style={{ background: "linear-gradient(120deg,#4d8bff,#5b3cff 55%,#FF2D7A)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>grow</span>
+          Hyper<span style={{ background: "linear-gradient(120deg,#4d8bff,#5b3cff 55%,#FF2D7A)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Grow</span>
         </span>
       )}
     </div>
@@ -125,7 +125,7 @@ function Nav() {
   return (
     <header style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, transition: "all .4s var(--ease-out-premium)", background: solid ? "rgba(7,13,28,0.72)" : "transparent", backdropFilter: solid ? "blur(20px) saturate(1.3)" : "none", borderBottom: solid ? "1px solid rgba(255,255,255,0.07)" : "1px solid transparent" }}>
       <div className="wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 70 }}>
-        <a href="#top" aria-label="Hypergrow"><Logo height={32} /></a>
+        <a href="#top" aria-label="HyperGrow"><Logo height={32} /></a>
         <nav style={{ display: "flex", gap: 30 }} className="nav-links">
           {links.map(([l, h]) => (
             <a key={l} href={h} style={{ font: "500 14px var(--font-sans)", color: "rgba(255,255,255,0.74)", transition: "color .2s" }}
@@ -213,7 +213,7 @@ function Hero() {
           </video>
         ) : (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img className="hero-video" src="/media/launch-poster.webp" alt="Foguete em lançamento — Hypergrow, tecnologia e IA para crescimento de e-commerce" fetchPriority="high" />
+          <img className="hero-video" src="/media/launch-poster.webp" alt="Foguete em lançamento — HyperGrow, tecnologia e IA para crescimento de e-commerce" fetchPriority="high" />
         )}
       </div>
 
@@ -370,7 +370,7 @@ function Differentiators() {
   return (
     <section className="sec" style={{ paddingTop: 0 }}>
       <div className="wrap">
-        <SectionHead center eyebrow="Diferenciais" title="Por que escolher a" accent="Hypergrow?" dotColor="#FF4D94" sub="Não vendemos código. Entregamos resultado — no ar, gerando receita." />
+        <SectionHead center eyebrow="Diferenciais" title="Por que escolher a" accent="HyperGrow?" dotColor="#FF4D94" sub="Não vendemos código. Entregamos resultado — no ar, gerando receita." />
         <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal diff-grid" style={{ marginTop: 48, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, borderRadius: 24 }}>
           {items.map(([ic, t, c]) => (
             <div key={t} className="glowcard neon-card" {...cardGlow(c + "66")} style={{ borderRadius: 16, padding: "26px 20px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
@@ -475,7 +475,7 @@ function Process() {
 /* ───────────────────────── Testimonials + About ───────────────────────── */
 function Testimonials() {
   const items = [
-    { q: "A Hypergrow entregou nosso sistema no prazo e com uma qualidade muito acima do que esperávamos. A automação de atendimento mudou nossa operação por completo.", n: "Diretor de operações", r: "Clínica multiprofissional", c: "#34e1ff" },
+    { q: "A HyperGrow entregou nosso sistema no prazo e com uma qualidade muito acima do que esperávamos. A automação de atendimento mudou nossa operação por completo.", n: "Diretor de operações", r: "Clínica multiprofissional", c: "#34e1ff" },
     { q: "Em três meses o agente de IA já respondia 80% dos atendimentos sozinho. Voltamos a ter tempo para crescer em vez de apagar incêndio.", n: "Founder", r: "Marketplace de serviços", c: "#FF4D94" },
     { q: "Saímos de planilhas para um sistema sob medida que fala com tudo que usamos. Parece que a empresa virou outra — mais rápida e previsível.", n: "Sócia", r: "Operação logística", c: "#5b3cff" },
   ];
@@ -532,9 +532,9 @@ function About() {
       <div className="wrap">
         <div className="neon-card reveal about-card" style={{ borderRadius: 28, overflow: "hidden", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 0, background: "linear-gradient(150deg, rgba(13,33,71,0.7), rgba(8,16,36,0.7))", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 50px 120px -50px rgba(0,0,0,0.8)" }}>
           <div style={{ padding: "52px 48px" }} className="about-copy">
-            <div className="eyebrow" style={{ marginBottom: 22 }}><span className="dot"></span>Sobre a Hypergrow</div>
+            <div className="eyebrow" style={{ marginBottom: 22 }}><span className="dot"></span>Sobre a HyperGrow</div>
             <h2 style={{ font: "700 clamp(28px,3.4vw,40px)/1.08 var(--font-display)", letterSpacing: "-0.03em", color: "#fff", margin: 0, textWrap: "balance" }}>Um estúdio que <span className="accent">opera</span>,<br />não só desenha.</h2>
-            <p style={{ font: "400 16px/1.65 var(--font-sans)", color: "rgba(255,255,255,0.64)", margin: "22px 0 0", maxWidth: 460, textWrap: "pretty" }}>A Hypergrow não entrega projeto bonito que morre na gaveta. Construímos, botamos e operamos cada produto como se fosse o nosso — testando em mercados reais, evoluindo com dados e automação por padrão.</p>
+            <p style={{ font: "400 16px/1.65 var(--font-sans)", color: "rgba(255,255,255,0.64)", margin: "22px 0 0", maxWidth: 460, textWrap: "pretty" }}>A HyperGrow não entrega projeto bonito que morre na gaveta. Construímos, botamos e operamos cada produto como se fosse o nosso — testando em mercados reais, evoluindo com dados e automação por padrão.</p>
             <p style={{ font: "400 16px/1.65 var(--font-sans)", color: "rgba(255,255,255,0.64)", margin: "16px 0 0", maxWidth: 460, textWrap: "pretty" }}>Nosso portfólio cobre saúde, serviços, apostas, funções e logística — sempre com a mesma régua: nível premium, experiência supersônica e foco em metas reais.</p>
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 18, marginTop: 34, maxWidth: 420 }}>
               {stats.map((s) => (<div key={s.l}><div style={{ font: "800 38px/1 var(--font-display)", letterSpacing: "-0.03em", color: s.c, textShadow: `0 0 26px ${s.c}66` }}>{s.v}</div><div style={{ font: "500 13px var(--font-sans)", color: "rgba(255,255,255,0.6)", marginTop: 6 }}>{s.l}</div></div>))}
@@ -660,7 +660,7 @@ function Contact() {
               <div style={{ textAlign: "center", padding: "40px 10px" }}>
                 <span style={{ width: 66, height: 66, borderRadius: 20, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", background: "linear-gradient(135deg,#11d8a2,#00a87f)", boxShadow: "0 0 40px -10px rgba(0,200,150,0.8)" }}><i data-lucide="check" style={{ width: 32, height: 32 }}></i></span>
                 <h3 style={{ font: "700 22px var(--font-display)", color: "#fff", margin: "20px 0 8px" }}>Mensagem enviada!</h3>
-                <p style={{ font: "400 15px var(--font-sans)", color: "rgba(255,255,255,0.62)", margin: 0 }}>Em breve a Hypergrow entra em contato com sua proposta.</p>
+                <p style={{ font: "400 15px var(--font-sans)", color: "rgba(255,255,255,0.62)", margin: 0 }}>Em breve a HyperGrow entra em contato com sua proposta.</p>
               </div>
             ) : (
               <form onSubmit={submit}>
@@ -732,7 +732,7 @@ function Footer() {
         </div>
       </div>
       <div className="wrap foot-legal" style={{ padding: "20px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, font: "400 13px var(--font-sans)", color: "rgba(255,255,255,0.45)" }}>
-        <span>© 2026 Hypergrow · Todos os direitos reservados</span>
+        <span>© 2026 HyperGrow · Todos os direitos reservados</span>
         <span>Feito com tecnologia, IA e automação</span>
       </div>
       <style>{`@media (max-width:900px){ .foot-grid { grid-template-columns: 1fr 1fr !important; } } @media (max-width:760px){ .foot-legal { padding-bottom: 96px !important; flex-direction: column; gap: 6px; text-align: center; justify-content: center; } }`}</style>

@@ -4,8 +4,8 @@ import Link from "next/link";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { siteServices, getService } from "@/lib/site-services";
+import { SITE_URL } from "@/lib/seo";
 
-const SITE = "https://hypergrow-lovat.vercel.app";
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
 
 export function generateStaticParams() {
@@ -20,8 +20,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return {
     title,
     description,
-    alternates: { canonical: `${SITE}/servicos/${s.slug}` },
-    openGraph: { title, description, url: `${SITE}/servicos/${s.slug}`, type: "website", images: ["/media/launch-poster.png"] },
+    alternates: { canonical: `${SITE_URL}/servicos/${s.slug}` },
+    openGraph: { title, description, url: `${SITE_URL}/servicos/${s.slug}`, type: "website", images: ["/media/launch-poster.png"] },
     twitter: { card: "summary_large_image", title, description },
   };
 }
@@ -48,7 +48,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
     "@type": "Service",
     name: s.title,
     description: s.long,
-    provider: { "@type": "Organization", name: "HyperGrow", url: SITE },
+    provider: { "@type": "Organization", name: "HyperGrow", url: SITE_URL },
     areaServed: "BR",
   };
 
@@ -60,7 +60,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       {/* top bar */}
       <div className="wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 70 }}>
         <Link href="/" style={{ font: "700 18px var(--font-display)", letterSpacing: "-0.04em", color: "#fff" }}>
-          Hyper<span style={{ background: "linear-gradient(120deg,#4d8bff,#5b3cff 55%,#FF2D7A)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>grow</span>
+          Hyper<span style={{ background: "linear-gradient(120deg,#4d8bff,#5b3cff 55%,#FF2D7A)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Grow</span>
         </Link>
         <Link href="/#contato" className="btn btn-cta" style={{ padding: "10px 18px", fontSize: 14, borderRadius: 12 }}>Solicitar orçamento</Link>
       </div>
@@ -163,7 +163,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
 
       <footer style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}>
         <div className="wrap" style={{ padding: "24px 32px", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, font: "400 13px var(--font-sans)", color: "rgba(255,255,255,0.45)" }}>
-          <span>© 2026 Hypergrow</span>
+          <span>© 2026 HyperGrow</span>
           <Link href="/" style={{ color: "rgba(255,255,255,0.6)" }}>Voltar ao site →</Link>
         </div>
       </footer>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk, Poppins } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
+import { SITE_URL } from "@/lib/seo";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const display = Space_Grotesk({
@@ -19,8 +20,6 @@ const poppins = Poppins({
   weight: ["400", "500", "600", "700", "800"],
   style: ["normal", "italic"],
 });
-
-const SITE_URL = "https://hypergrow.com.br";
 
 export const metadata: Metadata = {
   title: "HyperGrow — Crescimento Exponencial Através da Tecnologia",

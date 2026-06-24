@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 export const metadata = {
   title: "Política de Privacidade — HyperGrow",
   description: "Como a HyperGrow coleta, usa e protege seus dados.",
+  alternates: { canonical: "/privacidade" },
 };
 
 export default function PrivacidadePage() {

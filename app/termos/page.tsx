@@ -4,6 +4,7 @@ import { ArrowLeft } from "lucide-react";
 export const metadata = {
   title: "Termos de Uso — HyperGrow",
   description: "Termos e condições de uso do site e serviços da HyperGrow.",
+  alternates: { canonical: "/termos" },
 };
 
 export default function TermosPage() {
