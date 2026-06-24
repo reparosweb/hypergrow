@@ -417,7 +417,7 @@ function Portfolio() {
           {shown.map((p) => (
             <article key={p.id} className="glowcard neon-card reveal in" {...cardGlow("rgba(91,60,255,0.4)")} style={{ borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <div style={{ position: "relative", aspectRatio: "16/10", background: p.grad }}>
-                <ImageSlot placeholder={`Print do ${p.name}`} src={p.url ? `https://api.microlink.io/?url=${encodeURIComponent(p.url)}&screenshot=true&embed=screenshot.url&waitUntil=networkidle2` : undefined} />
+                <ImageSlot placeholder={`Print do ${p.name}`} src={p.url && p.id !== "nutri" ? `/portfolio/${p.id}.webp` : undefined} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(5,11,26,0.55))", pointerEvents: "none" }}></div>
                 <div style={{ position: "absolute", left: 14, top: 14, display: "flex", gap: 6, pointerEvents: "none" }}>
                   {p.tags.map((t) => <span key={t} style={{ font: "600 10px var(--font-sans)", letterSpacing: "0.04em", textTransform: "uppercase", color: "#fff", padding: "4px 9px", borderRadius: 999, background: "rgba(5,11,26,0.55)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}>{t}</span>)}
@@ -755,7 +755,7 @@ export default function HypergrowSite() {
 
   return (
     <>
-      <Script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js" strategy="afterInteractive" onLoad={() => { try { window.lucide?.createIcons?.(); } catch {} }} />
+      <Script src="/lucide.min.js" strategy="afterInteractive" onLoad={() => { try { window.lucide?.createIcons?.(); } catch {} }} />
       <div id="bg-field" aria-hidden="true"></div>
       <div className="neon-lights" aria-hidden="true"></div>
       <div className="grain" aria-hidden="true"></div>
