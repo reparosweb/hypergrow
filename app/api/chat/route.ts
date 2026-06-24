@@ -95,6 +95,52 @@ async function callOpenAI(messages: any[]) {
   return res.json();
 }
 
+/** Auto-aprendizado: busca Q&A passadas relevantes (overlap de palavras). */
+async function fetchKnowledge(question: string): Promise<string> {
+  const supabase = getServerSupabase();
+  if (!supabase) return "";
+  try {
+    const { data, error } = await supabase
+      .from("agent_qa")
+      .select("question, answer")
+      .order("created_at", { ascending: false })
+      .limit(60);
+    if (error || !data?.length) return "";
+    const words = new Set(
+      question.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "")
+        .split(/[^a-z0-9]+/).filter((w) => w.length > 3)
+    );
+    const scored = data
+      .map((qa: any) => {
+        const qw = (qa.question || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+        let score = 0;
+        words.forEach((w) => { if (qw.includes(w)) score++; });
+        return { qa, score };
+      })
+      .filter((x) => x.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .slice(0, 5);
+    if (!scored.length) return "";
+    const block = scored.map((x) => `P: ${x.qa.question}\nR: ${x.qa.answer}`).join("\n\n");
+    return `\n\nBASE DE CONHECIMENTO (perguntas reais de clientes e como já respondemos — use como referência, mantendo coerência):\n${block}`;
+  } catch {
+    return "";
+  }
+}
+
+/** Salva a pergunta + resposta para o agente aprender com o tempo (best-effort). */
+async function saveQA(question: string, answer: string) {
+  const supabase = getServerSupabase();
+  if (!supabase) return;
+  if (!question || !answer || answer.length < 12) return;
+  try {
+    await supabase.from("agent_qa").insert({
+      question: question.slice(0, 600),
+      answer: answer.slice(0, 2000),
+    });
+  } catch { /* tabela pode não existir ainda — ignora */ }
+}
+
 export async function POST(req: NextRequest) {
   const body = await req.json().catch(() => ({}));
   const history: Msg[] = Array.isArray(body?.messages) ? body.messages : [];
@@ -112,7 +158,10 @@ export async function POST(req: NextRequest) {
     .slice(-12)
     .map((m) => ({ role: m.role, content: m.content.toString().slice(0, 2000) }));
 
-  const msgs: any[] = [{ role: "system", content: systemPrompt() }, ...clean];
+  const lastUser = [...clean].reverse().find((m) => m.role === "user")?.content || "";
+  const knowledge = await fetchKnowledge(lastUser);
+
+  const msgs: any[] = [{ role: "system", content: systemPrompt() + knowledge }, ...clean];
 
   try {
     let data = await callOpenAI(msgs);
@@ -142,8 +191,12 @@ export async function POST(req: NextRequest) {
       choice = data.choices?.[0]?.message;
     }
 
+    const reply = choice?.content || "Pode me contar um pouco mais sobre o que você precisa?";
+    // Auto-aprendizado: registra a interação para o agente melhorar com o tempo.
+    await saveQA(lastUser, reply);
+
     return NextResponse.json({
-      reply: choice?.content || "Pode me contar um pouco mais sobre o que você precisa?",
+      reply,
       savedLead,
       schedulingLink: CAL || null,
     });
