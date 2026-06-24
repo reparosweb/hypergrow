@@ -39,12 +39,14 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     url: SITE_URL,
     siteName: "HyperGrow",
+    images: [{ url: "/media/launch-poster.png", width: 1200, height: 630, alt: "HyperGrow" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "HyperGrow — Crescimento Exponencial Através da Tecnologia",
     description:
       "Websites, sistemas, automação e inteligência artificial para a sua empresa.",
+    images: ["/media/launch-poster.png"],
   },
   robots: { index: true, follow: true },
   metadataBase: new URL(SITE_URL),

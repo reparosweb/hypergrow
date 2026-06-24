@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef, useCallback, useId } from "react";
 import Script from "next/script";
 import TrustMarquee from "./TrustMarquee";
+import { siteServices } from "@/lib/site-services";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
 const waUrl = WHATSAPP
@@ -90,11 +91,21 @@ function cardGlow(color) {
   };
 }
 
-function ImageSlot({ placeholder }) {
+function ImageSlot({ placeholder, src }) {
+  const [ok, setOk] = useState(true);
   return (
-    <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", textAlign: "center", padding: 16, color: "rgba(255,255,255,0.6)", font: "500 12px var(--font-sans)" }}>
-      {placeholder}
-    </div>
+    <>
+      {src && ok && (
+        /* eslint-disable-next-line @next/next/no-img-element */
+        <img src={src} alt={placeholder} loading="lazy" referrerPolicy="no-referrer" onError={() => setOk(false)}
+          style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
+      )}
+      {(!src || !ok) && (
+        <div style={{ position: "absolute", inset: 0, display: "grid", placeItems: "center", textAlign: "center", padding: 16, color: "rgba(255,255,255,0.6)", font: "500 12px var(--font-sans)" }}>
+          {placeholder}
+        </div>
+      )}
+    </>
   );
 }
 
@@ -283,24 +294,14 @@ function Hero() {
 /* ───────────────────────── Services ───────────────────────── */
 function Services() {
   const spot = useSpotlight();
-  const data = [
-    { icon: "store", title: "Criação de Loja Virtual", desc: "E-commerce completo, rápido e pronto para vender e escalar.", glow: "rgba(21,101,255,0.45)", accent: "#4d8bff", tags: ["Shopify", "WooCommerce", "Nuvemshop", "Checkout"] },
-    { icon: "megaphone", title: "Campanhas de Marketing", desc: "Tráfego pago e estratégia para vender todos os dias.", glow: "rgba(91,60,255,0.45)", accent: "#7da8ff", tags: ["Meta Ads", "Google Ads", "Performance", "Funil"] },
-    { icon: "bot", title: "Automações & IA", desc: "Agentes de IA e fluxos que trabalham por você 24/7.", glow: "rgba(52,225,255,0.42)", accent: "#34e1ff", tags: ["Agentes IA", "n8n", "Atendimento", "Fluxos"] },
-    { icon: "instagram", title: "Gestão de Redes Sociais", desc: "Conteúdo, calendário e engajamento que constroem marca.", glow: "rgba(255,45,122,0.42)", accent: "#FF4D94", tags: ["Conteúdo", "Calendário", "Community", "Stories"] },
-    { icon: "image", title: "Design & Criação", desc: "Peças, banners e identidade visual de altíssimo nível.", glow: "rgba(245,158,11,0.40)", accent: "#fbbf24", tags: ["Banners", "Peças", "Identidade", "Social"] },
-    { icon: "layout-template", title: "Landing Pages", desc: "Páginas de alta conversão para suas ofertas e campanhas.", glow: "rgba(21,101,255,0.42)", accent: "#4d8bff", tags: ["Alta conversão", "A/B", "Captura"] },
-    { icon: "mail", title: "E-mail Marketing", desc: "Réguas e automações de e-mail que recuperam e fidelizam.", glow: "rgba(0,200,150,0.40)", accent: "#3ee6b5", tags: ["Fluxos", "Réguas", "Recuperação", "Newsletter"] },
-    { icon: "truck", title: "Gestão de Transportes", desc: "Logística e fretes para e-commerce, do pedido à entrega.", glow: "rgba(52,225,255,0.40)", accent: "#34e1ff", tags: ["Fretes", "Rastreio", "Fulfillment", "Etiquetas"] },
-    { icon: "compass", title: "Consultoria Especializada", desc: "Estratégia de crescimento sob medida para o seu e-commerce.", glow: "rgba(255,45,122,0.40)", accent: "#FF4D94", tags: ["Estratégia", "Diagnóstico", "Roadmap", "KPIs"] },
-  ];
+  const data = siteServices;
   return (
     <section id="servicos" className="sec">
       <div className="wrap">
         <SectionHead center eyebrow="Serviços" title="A operação completa do seu" accent="e-commerce" dotColor="#4d8bff" sub="Da loja virtual ao tráfego, design, automação, e-mail, IA e logística — tudo num só lugar." />
         <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal" style={{ marginTop: 52, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, borderRadius: 24, padding: 2 }}>
           {data.map((s) => (
-            <article key={s.title} className="glowcard neon-card" {...cardGlow(s.glow)} style={{ borderRadius: 20, padding: 26, minHeight: 220 }}>
+            <a key={s.slug} href={`/servicos/${s.slug}`} className="glowcard neon-card" {...cardGlow(s.glow)} style={{ borderRadius: 20, padding: 26, minHeight: 220, display: "block", color: "inherit" }}>
               <span style={{ width: 50, height: 50, borderRadius: 14, display: "inline-flex", alignItems: "center", justifyContent: "center", color: s.accent, background: "rgba(255,255,255,0.05)", border: `1px solid ${s.accent}44`, boxShadow: `inset 0 0 22px -10px ${s.accent}, 0 0 22px -12px ${s.accent}` }}>
                 <i data-lucide={s.icon} className="bob" style={{ width: 23, height: 23 }}></i>
               </span>
@@ -309,7 +310,10 @@ function Services() {
               <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
                 {s.tags.map((t) => (<span key={t} style={{ font: "500 11.5px var(--font-sans)", color: "rgba(255,255,255,0.72)", padding: "5px 10px", borderRadius: 999, background: "rgba(255,255,255,0.045)", border: "1px solid rgba(255,255,255,0.09)" }}>{t}</span>))}
               </div>
-            </article>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 16, font: "600 13px var(--font-sans)", color: s.accent }}>
+                Saiba mais <i data-lucide="arrow-right" style={{ width: 14, height: 14 }}></i>
+              </span>
+            </a>
           ))}
         </div>
       </div>
@@ -411,7 +415,7 @@ function Portfolio() {
           {shown.map((p) => (
             <article key={p.id} className="glowcard neon-card reveal in" {...cardGlow("rgba(91,60,255,0.4)")} style={{ borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <div style={{ position: "relative", aspectRatio: "16/10", background: p.grad }}>
-                <ImageSlot placeholder={`Print do ${p.name}`} />
+                <ImageSlot placeholder={`Print do ${p.name}`} src={p.url ? `https://image.thum.io/get/width/1200/crop/750/${p.url}` : undefined} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(5,11,26,0.55))", pointerEvents: "none" }}></div>
                 <div style={{ position: "absolute", left: 14, top: 14, display: "flex", gap: 6, pointerEvents: "none" }}>
                   {p.tags.map((t) => <span key={t} style={{ font: "600 10px var(--font-sans)", letterSpacing: "0.04em", textTransform: "uppercase", color: "#fff", padding: "4px 9px", borderRadius: 999, background: "rgba(5,11,26,0.55)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}>{t}</span>)}

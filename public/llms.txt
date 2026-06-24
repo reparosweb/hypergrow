@@ -1,0 +1,29 @@
+# HyperGrow
+
+> Agência de tecnologia e crescimento para e-commerce: criação de loja virtual, marketing e tráfego pago, automações e inteligência artificial, gestão de redes sociais, design, produção de vídeo e foto, e-mail marketing, logística e consultoria.
+
+HyperGrow cria, lança e opera soluções digitais de ponta a ponta para empresas que querem crescer — com foco em performance, automação e resultado real.
+
+## Serviços
+- Criação de Site & Landing Pages: /servicos/criacao-de-site
+- Criação de Loja Virtual (E-commerce): /servicos/loja-virtual
+- Consultoria E-commerce & Marketplaces: /servicos/consultoria-ecommerce
+- Marketing Digital & Tráfego Pago: /servicos/marketing-trafego
+- Gestão de Redes Sociais: /servicos/redes-sociais
+- Design & Identidade Visual: /servicos/design-identidade
+- Produção de Vídeo: /servicos/producao-de-video
+- Produção Fotográfica: /servicos/producao-fotografica
+- Podcast & YouTube: /servicos/podcast-youtube
+- E-mail Marketing: /servicos/email-marketing
+- Automações & Inteligência Artificial: /servicos/automacoes-ia
+- Gestão de Transportes (logística e-commerce): /servicos/gestao-de-transportes
+
+## Diferenciais
+- Agentes de IA que atendem, qualificam e agendam reuniões 24/7
+- Performance extrema: páginas que carregam num piscar de olhos
+- Responsivo e mobile-first em todos os dispositivos
+- Projetos reais no ar, gerando receita
+
+## Contato
+- E-mail: contato@hypergrow.com.br
+- Site: https://hypergrow-lovat.vercel.app
