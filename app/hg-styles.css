@@ -17,13 +17,17 @@
   --maxw: 1440px;
 }
 
-html { scroll-behavior: smooth; }
+/* Fundo escuro também no <html> (sem isso, ao dar pinça/zoom-out o celular revela
+   uma faixa clara/morta nas bordas). overflow-x:clip impede que qualquer elemento
+   decorativo largo torne a página "afastável" — comportamento de app nativo. */
+html { scroll-behavior: smooth; background: #050b1a; overflow-x: clip; }
 body {
   margin: 0;
+  max-width: 100%;
   background: #050b1a;
   color: #fff;
   font-family: var(--font-sans);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 ::selection { background: rgba(91,60,255,0.45); color: #fff; }
 

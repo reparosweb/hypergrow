@@ -336,7 +336,7 @@ function AIAgent() {
   const chips = ["Chatbots", "Agentes IA", "IA para vendas", "IA para suporte", "Análise de dados"];
   return (
     <section id="ia" className="sec" style={{ position: "relative" }}>
-      <div aria-hidden="true" style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: 780, height: 360, background: "radial-gradient(ellipse, rgba(52,225,255,0.12), transparent 64%)", pointerEvents: "none" }}></div>
+      <div aria-hidden="true" style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: "min(780px, 100%)", height: 360, background: "radial-gradient(ellipse, rgba(52,225,255,0.12), transparent 64%)", pointerEvents: "none" }}></div>
       <div className="wrap" style={{ position: "relative" }}>
         <SectionHead center eyebrow="Soluções de Inteligência Artificial" dotColor="#34e1ff" title="Um agente de IA que atende, agenda e" accent="vende por você" sub="Implantamos agentes que conversam com seus clientes, marcam reuniões no Google Meet e alimentam seu CRM — sem intervenção manual, 24 horas por dia." />
         <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal" style={{ marginTop: 52, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, borderRadius: 24 }}>
