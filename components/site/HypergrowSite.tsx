@@ -394,10 +394,10 @@ function Portfolio() {
     { id: "ebcorretora", name: "EB Corretora", url: "https://www.ebcorretora.com.br", cat: ["Websites", "Sistemas"], tags: ["Site", "Institucional"], grad: "linear-gradient(150deg,#0d4fd6,#34e1ff)", desc: "Presença digital e site institucional para corretora de seguros, com captação de leads." },
     { id: "odontomed", name: "OdontoMed Saúde", url: "https://www.odontomedsaude.com.br", cat: ["Websites", "Sistemas"], tags: ["Site", "Saúde"], grad: "linear-gradient(150deg,#00a87f,#11d8a2)", desc: "Site e presença digital para clínica de odontologia e saúde, com agendamento." },
     { id: "pneusmaninho", name: "Pneus Maninho", url: "https://www.pneusmaninho.com.br", cat: ["E-commerce", "Websites"], tags: ["E-commerce", "Loja"], grad: "linear-gradient(150deg,#FF2D7A,#b81551)", desc: "Loja virtual de pneus com catálogo, presença digital e captação de clientes." },
-    { id: "agentop", name: "Agentop", cat: ["Sistemas", "IA"], tags: ["Sistema", "IA"], grad: "linear-gradient(150deg,#0d4fd6,#5b3cff)", desc: "Agenda, CRM, financeiro e conteúdo com IA num sistema só para profissionais que vivem de atender." },
+    { id: "agentop", name: "Agentop", url: "https://agentop.com.br", cat: ["Sistemas", "IA"], tags: ["Sistema", "IA"], grad: "linear-gradient(150deg,#0d4fd6,#5b3cff)", desc: "Agenda, CRM, financeiro e conteúdo com IA num sistema só para profissionais que vivem de atender." },
     { id: "marido", name: "Marido de Aluguel", cat: ["Websites", "Sistemas"], tags: ["Site", "Sistema"], grad: "linear-gradient(150deg,#1565FF,#34e1ff)", desc: "Site e sistema de orçamentos para prestadores de reparos, com captação de leads automática." },
-    { id: "sorteio", name: "Sorteio Bilionário IA", cat: ["Aplicativos", "IA"], tags: ["App", "IA"], grad: "linear-gradient(150deg,#5b3cff,#FF2D7A)", desc: "Plataforma de sorteios com geração de números, pagamentos e validação automatizada por IA." },
-    { id: "nutri", name: "NutriSnap", cat: ["Aplicativos", "IA"], tags: ["App", "IA"], grad: "linear-gradient(150deg,#00a87f,#11d8a2)", desc: "Conte calorias tirando uma foto. Visão computacional estimando macros em tempo real." },
+    { id: "sorteio", name: "Sorteio Bilionário IA", url: "https://www.sorteiobilionario.com.br", cat: ["Aplicativos", "IA"], tags: ["App", "IA"], grad: "linear-gradient(150deg,#5b3cff,#FF2D7A)", desc: "Plataforma de sorteios com geração de números, pagamentos e validação automatizada por IA." },
+    { id: "nutri", name: "NutriSnap", url: "https://calorias.app.br", cat: ["Aplicativos", "IA"], tags: ["App", "IA"], grad: "linear-gradient(150deg,#00a87f,#11d8a2)", desc: "Conte calorias tirando uma foto. Visão computacional estimando macros em tempo real." },
     { id: "unixx", name: "Unixx", cat: ["Sistemas", "Automações"], tags: ["CRM", "Automação"], grad: "linear-gradient(150deg,#0d4fd6,#1565FF)", desc: "CRM e site integrados com disparos automáticos e funil de vendas para a equipe comercial." },
     { id: "packslog", name: "Packslog", cat: ["Sistemas", "Automações"], tags: ["Sistema", "Logística"], grad: "linear-gradient(150deg,#FF2D7A,#b81551)", desc: "Sistema de operações logísticas com rastreio, etiquetas e painel de operação em tempo real." },
   ];
@@ -781,14 +781,17 @@ export default function HypergrowSite() {
           background: radial-gradient(80% 50% at 15% -5%, rgba(21,101,255,0.20), transparent 60%), radial-gradient(70% 45% at 92% 8%, rgba(255,45,122,0.16), transparent 60%), radial-gradient(90% 60% at 50% 108%, rgba(91,60,255,0.18), transparent 62%), #050b1a; }
         #bg-field::after { content: ''; position: absolute; inset: 0; opacity: 0.5; background-image: linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px); background-size: 96px 96px; -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%); mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%); }
         /* Luzes de balada — feixes neon girando (GPU: transform numa camada fixa) */
-        .neon-lights { position: fixed; inset: -25%; z-index: -1; pointer-events: none; opacity: 0.55; filter: blur(28px); will-change: transform;
+        .neon-lights { position: fixed; inset: -25%; z-index: -1; pointer-events: none; opacity: 0.85; filter: blur(26px) saturate(1.3); will-change: transform;
           background:
-            conic-gradient(from 0deg at 28% 18%, transparent 0deg, rgba(21,101,255,0.20) 34deg, transparent 78deg, transparent 200deg, rgba(52,225,255,0.14) 240deg, transparent 290deg, transparent 360deg),
-            conic-gradient(from 140deg at 78% 26%, transparent 0deg, rgba(255,45,122,0.18) 44deg, transparent 96deg, transparent 250deg, rgba(91,60,255,0.16) 300deg, transparent 350deg, transparent 360deg);
-          animation: club-spin 22s linear infinite; }
+            conic-gradient(from 0deg at 26% 16%, transparent 0deg, rgba(21,101,255,0.42) 30deg, transparent 76deg, transparent 190deg, rgba(52,225,255,0.30) 232deg, transparent 286deg, transparent 360deg),
+            conic-gradient(from 140deg at 80% 24%, transparent 0deg, rgba(255,45,122,0.40) 40deg, transparent 92deg, transparent 244deg, rgba(91,60,255,0.34) 296deg, transparent 348deg, transparent 360deg),
+            conic-gradient(from 60deg at 50% 110%, transparent 0deg, rgba(0,200,150,0.22) 30deg, transparent 80deg, transparent 360deg);
+          animation: club-spin 18s linear infinite; }
         @keyframes club-spin { to { transform: rotate(360deg); } }
-        @media (max-width: 760px) { .neon-lights { display: none; } }
+        @media (max-width: 760px) { .neon-lights { opacity: 0.6; filter: blur(20px); animation-duration: 26s; } }
         @media (prefers-reduced-motion: reduce) { .neon-lights { animation: none; } }
+        .h-sec .accent { filter: drop-shadow(0 0 22px rgba(91,60,255,0.55)) drop-shadow(0 0 38px rgba(255,45,122,0.35)); }
+        .glowcard:hover { border-color: rgba(120,80,255,0.45) !important; }
         @keyframes wa-pulse { 0%,100% { box-shadow: 0 12px 34px -8px rgba(0,200,150,0.7), 0 0 0 0 rgba(0,200,150,0.5); } 50% { box-shadow: 0 12px 34px -8px rgba(0,200,150,0.7), 0 0 0 12px rgba(0,200,150,0); } }
       `}</style>
     </>
