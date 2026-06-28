@@ -217,6 +217,9 @@
      ============================================================ */
   --ease-out-premium: cubic-bezier(0.2, 0.6, 0.2, 1);
   --ease-in-out-premium: cubic-bezier(0.6, 0, 0.2, 1);
+  /* Curvas extras de respiro premium — overshoot suave p/ entradas e hover. */
+  --ease-spring:  cubic-bezier(0.34, 1.32, 0.42, 1);
+  --ease-silk:    cubic-bezier(0.16, 1, 0.3, 1);
   --dur-fast: 140ms; --dur-base: 180ms; --dur-entrance: 260ms; --dur-drawer: 420ms;
 
   /* ============================================================

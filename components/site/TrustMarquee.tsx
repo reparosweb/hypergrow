@@ -47,7 +47,7 @@ export default function TrustMarquee() {
       </div>
 
       <div className="wrap">
-        <div className="reveal stat-strip">
+        <div className="reveal stagger stat-strip">
           {STATS.map((s) => (
             <div key={s.l} className="stat-cell">
               <div className="stat-v">{s.v}</div>
@@ -83,13 +83,21 @@ export default function TrustMarquee() {
         @media (prefers-reduced-motion: reduce) { .mq-track { animation: none; } }
 
         .stat-strip {
+          position: relative; overflow: hidden;
           margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
-          padding: 26px; border-radius: 20px;
-          background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
-          border: 1px solid rgba(255,255,255,0.09);
-          box-shadow: 0 40px 90px -50px rgba(0,0,0,0.8);
+          padding: 30px 26px; border-radius: 22px;
+          background:
+            radial-gradient(120% 100% at 50% -20%, rgba(91,60,255,0.10), transparent 60%),
+            linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018));
+          border: 1px solid rgba(255,255,255,0.10);
+          box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 44px 100px -54px rgba(0,0,0,0.85);
         }
-        .stat-cell { text-align: center; }
+        .stat-strip::before { content: ''; position: absolute; top: 0; left: 10%; right: 10%; height: 1px;
+          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent); opacity: 0.6; }
+        .stat-cell { text-align: center; position: relative; }
+        .stat-cell:not(:last-child)::after { content: ''; position: absolute; right: -9px; top: 18%; height: 64%; width: 1px;
+          background: linear-gradient(180deg, transparent, rgba(255,255,255,0.12), transparent); }
+        @media (max-width: 760px) { .stat-cell:not(:last-child)::after { display: none; } }
         .stat-v { font: 800 40px/1 var(--font-display); letter-spacing: -0.03em; background: linear-gradient(120deg,#4d8bff,#5b3cff 50%,#FF2D7A); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .stat-l { margin-top: 8px; font: 500 13px var(--font-sans); color: rgba(255,255,255,0.6); }
         @media (max-width: 760px) { .stat-strip { grid-template-columns: 1fr 1fr; } .stat-v { font-size: 32px; } }

@@ -216,6 +216,7 @@ function Hero() {
       <div className="grade grade-bottom" aria-hidden="true"></div>
       <div className="grade grade-vignette" aria-hidden="true"></div>
       <div className="grade grade-tint" aria-hidden="true"></div>
+      <div className="grade-bloom" aria-hidden="true"></div>
       <div className="hud-scan" aria-hidden="true"></div>
 
       <div className="tele">
@@ -254,16 +255,25 @@ function Hero() {
         .grade-top { background: linear-gradient(180deg, rgba(4,6,15,0.92) 0%, rgba(4,6,15,0.32) 26%, transparent 46%); }
         .grade-bottom { background: linear-gradient(0deg, #050b1a 0%, rgba(5,11,26,0.6) 12%, transparent 34%); }
         .grade-left { background: linear-gradient(90deg, rgba(4,6,15,0.94) 0%, rgba(4,6,15,0.55) 30%, transparent 60%); }
-        .grade-vignette { background: radial-gradient(120% 100% at 60% 45%, transparent 42%, rgba(2,4,10,0.72) 100%); }
-        .grade-tint { background: linear-gradient(135deg, rgba(21,101,255,0.16), transparent 45%, rgba(91,60,255,0.14)); mix-blend-mode: soft-light; }
+        .grade-vignette { background: radial-gradient(120% 100% at 60% 45%, transparent 40%, rgba(2,4,10,0.78) 100%); }
+        /* Color grade cinematográfico: azul-frio nas sombras, magenta quente no realce — teal&orange invertido p/ tech. */
+        .grade-tint { background: linear-gradient(132deg, rgba(21,101,255,0.18) 0%, transparent 42%, rgba(91,60,255,0.10) 70%, rgba(255,45,122,0.12) 100%); mix-blend-mode: soft-light; }
+        /* Bloom: ponto de luz suave no alto à esquerda, como reflexo de lente. */
+        .grade-bloom { position: absolute; left: 4%; top: 8%; width: min(560px,70%); height: 360px; pointer-events: none;
+          background: radial-gradient(closest-side, rgba(110,160,255,0.16), transparent 72%); filter: blur(6px); }
         .hero-inner { position: relative; z-index: 6; height: 100%; display: flex; flex-direction: column; justify-content: center; }
-        .hero-copy { max-width: 600px; }
+        .hero-copy { position: relative; max-width: 600px; }
+        /* halo de luz suave atrás do copy — separa o texto do vídeo de forma cinematográfica */
+        .hero-copy::before { content: ''; position: absolute; left: -8%; top: -14%; width: 116%; height: 128%; z-index: -1; pointer-events: none;
+          background: radial-gradient(60% 56% at 24% 42%, rgba(8,16,40,0.55), transparent 72%); filter: blur(8px); }
         .hero-h1 { margin: 0; text-transform: uppercase; }
-        .hero-h1 .l1 { display: block; font: 800 clamp(46px,8vw,104px)/0.9 var(--font-display); letter-spacing: -0.05em; color: #fff; text-shadow: 0 6px 50px rgba(0,0,0,0.7); }
-        .hero-h1 .l2 { display: block; font: 800 italic clamp(46px,8vw,104px)/0.9 var(--font-display); letter-spacing: -0.05em; }
-        .hero-lead { font: 400 19px/1.6 var(--font-sans); color: rgba(255,255,255,0.82); max-width: 450px; margin: 24px 0 0; text-wrap: pretty; text-shadow: 0 2px 18px rgba(0,0,0,0.7); }
-        .hero-lead strong { color: #fff; }
-        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 36px; }
+        .hero-h1 .l1 { display: block; font: 800 clamp(46px,8vw,108px)/0.9 var(--font-display); letter-spacing: -0.052em; color: #fff;
+          background: linear-gradient(178deg, #ffffff 0%, #dce8ff 70%, #b9cdf5 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+          text-shadow: 0 6px 50px rgba(0,0,0,0.7); }
+        .hero-h1 .l2 { display: block; font: 800 italic clamp(46px,8vw,108px)/0.9 var(--font-display); letter-spacing: -0.052em; }
+        .hero-lead { font: 400 clamp(17px,1.6vw,19.5px)/1.62 var(--font-sans); color: rgba(255,255,255,0.84); max-width: 460px; margin: 26px 0 0; text-wrap: pretty; text-shadow: 0 2px 18px rgba(0,0,0,0.7); }
+        .hero-lead strong { color: #fff; font-weight: 600; }
+        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 38px; }
         .tele { position: absolute; top: 92px; right: 28px; z-index: 6; text-align: right; }
         .tele-t { font: 700 13px var(--font-mono); color: #34e1ff; letter-spacing: 0.18em; text-shadow: 0 0 12px rgba(52,225,255,0.8); }
         .tele-stack { margin-top: 10px; display: flex; flex-direction: column; gap: 7px; align-items: flex-end; }
@@ -295,7 +305,7 @@ function Services() {
     <section id="servicos" className="sec">
       <div className="wrap">
         <SectionHead center eyebrow="Serviços" title="A operação completa do seu" accent="e-commerce" dotColor="#4d8bff" sub="Da loja virtual ao tráfego, design, automação, e-mail, IA e logística — tudo num só lugar." />
-        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal" style={{ marginTop: 52, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, borderRadius: 24, padding: 2 }}>
+        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal stagger" style={{ marginTop: 52, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, borderRadius: 24, padding: 2 }}>
           {data.map((s) => (
             <a key={s.slug} href={`/servicos/${s.slug}`} className="glowcard neon-card" {...cardGlow(s.glow)} style={{ borderRadius: 20, padding: 26, minHeight: 220, display: "block", color: "inherit" }}>
               <span style={{ width: 50, height: 50, borderRadius: 14, display: "inline-flex", alignItems: "center", justifyContent: "center", color: s.accent, background: "rgba(255,255,255,0.05)", border: `1px solid ${s.accent}44`, boxShadow: `inset 0 0 22px -10px ${s.accent}, 0 0 22px -12px ${s.accent}` }}>
@@ -333,7 +343,7 @@ function AIAgent() {
       <div aria-hidden="true" style={{ position: "absolute", top: "20%", left: "50%", transform: "translateX(-50%)", width: "min(780px, 100%)", height: 360, background: "radial-gradient(ellipse, rgba(52,225,255,0.12), transparent 64%)", pointerEvents: "none" }}></div>
       <div className="wrap" style={{ position: "relative" }}>
         <SectionHead center eyebrow="Soluções de Inteligência Artificial" dotColor="#34e1ff" title="Um agente de IA que atende, agenda e" accent="vende por você" sub="Implantamos agentes que conversam com seus clientes, marcam reuniões no Google Meet e alimentam seu CRM — sem intervenção manual, 24 horas por dia." />
-        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal" style={{ marginTop: 52, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, borderRadius: 24 }}>
+        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal stagger" style={{ marginTop: 52, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, borderRadius: 24 }}>
           {steps.map((s) => (
             <article key={s.n} className="glowcard neon-card" {...cardGlow(s.c + "70")} style={{ borderRadius: 18, padding: 24, position: "relative" }}>
               <div className="mono" style={{ font: "700 13px var(--font-mono)", color: s.c, opacity: 0.7, marginBottom: 16 }}>{s.n}</div>
@@ -365,7 +375,7 @@ function Differentiators() {
     <section className="sec" style={{ paddingTop: 0 }}>
       <div className="wrap">
         <SectionHead center eyebrow="Diferenciais" title="Por que escolher a" accent="HyperGrow?" dotColor="#FF4D94" sub="Não vendemos código. Entregamos resultado — no ar, gerando receita." />
-        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal diff-grid" style={{ marginTop: 48, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, borderRadius: 24 }}>
+        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal stagger diff-grid" style={{ marginTop: 48, display: "grid", gridTemplateColumns: "repeat(4,1fr)", gap: 16, borderRadius: 24 }}>
           {items.map(([ic, t, c]) => (
             <div key={t} className="glowcard neon-card" {...cardGlow(c + "66")} style={{ borderRadius: 16, padding: "26px 20px", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", gap: 14 }}>
               <span style={{ width: 52, height: 52, borderRadius: 15, display: "inline-flex", alignItems: "center", justifyContent: "center", color: c, background: "rgba(255,255,255,0.05)", border: `1px solid ${c}44`, boxShadow: `0 0 26px -14px ${c}` }}>
@@ -447,7 +457,7 @@ function Process() {
     <section id="processo" className="sec">
       <div className="wrap">
         <SectionHead center eyebrow="Processo" title="Do diagnóstico ao" accent="crescimento" dotColor="#3ee6b5" sub="Um método claro, do primeiro diagnóstico ao crescimento que não para." />
-        <div className="reveal proc-grid" style={{ position: "relative", marginTop: 56, display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 12 }}>
+        <div className="reveal stagger proc-grid" style={{ position: "relative", marginTop: 56, display: "grid", gridTemplateColumns: "repeat(5,1fr)", gap: 12 }}>
           <div aria-hidden="true" className="proc-beam" style={{ position: "absolute", top: 30, left: "10%", right: "10%", height: 2, background: "linear-gradient(90deg, #1565FF, #5b3cff, #FF2D7A)", boxShadow: "0 0 16px -2px rgba(91,60,255,0.8)", opacity: 0.5 }}></div>
           {steps.map((s) => (
             <div key={s.n} style={{ position: "relative", textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
@@ -482,7 +492,7 @@ function Testimonials() {
       <div className="wrap">
         <SectionHead center eyebrow="Depoimentos" title="Quem trabalha com a gente," accent="cresce" dotColor="#FF4D94" />
         <div className="reveal" style={{ maxWidth: 800, margin: "44px auto 0" }}>
-          <div className="neon-card" style={{ position: "relative", borderRadius: 24, padding: "44px 44px 36px", background: "linear-gradient(165deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)", overflow: "hidden" }}>
+          <div className="neon-card glass-top" style={{ position: "relative", borderRadius: 24, padding: "44px 44px 36px", background: "linear-gradient(165deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)", overflow: "hidden" }}>
             <div aria-hidden="true" style={{ position: "absolute", top: -40, right: -20, width: 220, height: 220, background: `radial-gradient(circle, ${t.c}33, transparent 66%)`, transition: "all .6s", pointerEvents: "none" }}></div>
             <i data-lucide="quote" style={{ width: 40, height: 40, color: t.c, opacity: 0.65, marginBottom: 18 }}></i>
             <p style={{ font: "500 23px/1.5 var(--font-display)", letterSpacing: "-0.015em", color: "#fff", margin: 0, textWrap: "pretty", minHeight: 140 }}>&ldquo;{t.q}&rdquo;</p>
@@ -524,7 +534,7 @@ function About() {
   return (
     <section id="sobre" className="sec">
       <div className="wrap">
-        <div className="neon-card reveal about-card" style={{ borderRadius: 28, overflow: "hidden", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 0, background: "linear-gradient(150deg, rgba(13,33,71,0.7), rgba(8,16,36,0.7))", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 50px 120px -50px rgba(0,0,0,0.8)" }}>
+        <div className="neon-card reveal about-card glass-top" style={{ borderRadius: 28, overflow: "hidden", display: "grid", gridTemplateColumns: "1.1fr 0.9fr", gap: 0, background: "linear-gradient(150deg, rgba(13,33,71,0.7), rgba(8,16,36,0.7))", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 50px 120px -50px rgba(0,0,0,0.8)" }}>
           <div style={{ padding: "52px 48px" }} className="about-copy">
             <div className="eyebrow" style={{ marginBottom: 22 }}><span className="dot"></span>Sobre a HyperGrow</div>
             <h2 style={{ font: "700 clamp(28px,3.4vw,40px)/1.08 var(--font-display)", letterSpacing: "-0.03em", color: "#fff", margin: 0, textWrap: "balance" }}>Um estúdio que <span className="accent">opera</span>,<br />não só desenha.</h2>
@@ -588,7 +598,7 @@ function FinalCTA() {
   return (
     <section className="sec">
       <div className="wrap">
-        <div className="neon-card reveal" style={{ position: "relative", borderRadius: 28, padding: "64px 40px", textAlign: "center", overflow: "hidden", background: "radial-gradient(120% 120% at 50% -20%, rgba(91,60,255,0.35), rgba(13,33,71,0.6) 55%, rgba(8,16,36,0.7))", border: "1px solid rgba(91,60,255,0.35)", boxShadow: "0 0 80px -30px rgba(91,60,255,0.7)" }}>
+        <div className="neon-card reveal reveal--scale glass-top" style={{ position: "relative", borderRadius: 28, padding: "64px 40px", textAlign: "center", overflow: "hidden", background: "radial-gradient(120% 120% at 50% -20%, rgba(91,60,255,0.35), rgba(13,33,71,0.6) 55%, rgba(8,16,36,0.7))", border: "1px solid rgba(91,60,255,0.35)", boxShadow: "0 0 80px -30px rgba(91,60,255,0.7)" }}>
           <div aria-hidden="true" style={{ position: "absolute", bottom: -120, left: "50%", transform: "translateX(-50%)", width: 600, height: 300, background: "radial-gradient(ellipse, rgba(255,45,122,0.3), transparent 64%)", pointerEvents: "none" }}></div>
           <div style={{ position: "relative" }}>
             <h2 style={{ font: "800 clamp(30px,4.4vw,52px)/1.05 var(--font-display)", letterSpacing: "-0.035em", color: "#fff", margin: 0, textWrap: "balance", maxWidth: 720, marginInline: "auto" }}>Pronto para acelerar o <span className="neon-tube blue" style={{ fontStyle: "italic" }}>crescimento</span> da sua empresa?</h2>
@@ -649,7 +659,7 @@ function Contact() {
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i data-lucide="message-circle" style={{ width: 16, height: 16, color: "#3ee6b5" }}></i> Atendimento via WhatsApp</span>
             </div>
           </div>
-          <div className="neon-card" style={{ borderRadius: 22, padding: 30, background: "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)" }}>
+          <div className="neon-card glass-top" style={{ borderRadius: 22, padding: 30, background: "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)" }}>
             {sent ? (
               <div style={{ textAlign: "center", padding: "40px 10px" }}>
                 <span style={{ width: 66, height: 66, borderRadius: 20, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", background: "linear-gradient(135deg,#11d8a2,#00a87f)", boxShadow: "0 0 40px -10px rgba(0,200,150,0.8)" }}><i data-lucide="check" style={{ width: 32, height: 32 }}></i></span>
