@@ -120,7 +120,7 @@ function Nav() {
   }, []);
   const links = [
     ["Serviços", "#servicos"], ["Soluções IA", "#ia"], ["Portfólio", "#portfolio"],
-    ["Processo", "#processo"], ["Sobre", "#sobre"], ["Contato", "#contato"],
+    ["Processo", "#processo"], ["Sobre", "#sobre"], ["Blog", "/blog"], ["Contato", "#contato"],
   ];
   return (
     <header style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, transition: "all .4s var(--ease-out-premium)", background: solid ? "rgba(7,13,28,0.72)" : "transparent", backdropFilter: solid ? "blur(20px) saturate(1.3)" : "none", borderBottom: solid ? "1px solid rgba(255,255,255,0.07)" : "1px solid transparent" }}>
