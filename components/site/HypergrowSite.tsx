@@ -167,22 +167,16 @@ function Hero() {
     if (!small && !reduce && !save) setVidOn(true);
   }, []);
 
+  // Loop NATIVO (atributo `loop` no <video>) — roda liso. O loop manual com seek+flicker
+  // foi removido: ele causava stall de buffer e piscadas a cada ciclo ("travando").
   useEffect(() => {
     if (!vidOn) return;
     const v = vidRef.current; if (!v) return;
-    const IN = 6.0, OUT = 15.5;
-    const onMeta = () => { v.play().catch(() => {}); };
-    const onTime = () => {
-      if (v.currentTime >= OUT) {
-        v.style.transition = "none"; v.style.opacity = "0.3";
-        try { v.currentTime = IN; } catch (e) {}
-        requestAnimationFrame(() => { v.style.transition = "opacity .55s ease"; v.style.opacity = "1"; });
-      }
-    };
-    v.addEventListener("loadedmetadata", onMeta);
-    v.addEventListener("timeupdate", onTime);
-    if (v.readyState >= 1) onMeta();
-    return () => { v.removeEventListener("loadedmetadata", onMeta); v.removeEventListener("timeupdate", onTime); };
+    const play = () => { v.play().catch(() => {}); };
+    v.addEventListener("loadedmetadata", play);
+    v.addEventListener("canplay", play);
+    if (v.readyState >= 2) play();
+    return () => { v.removeEventListener("loadedmetadata", play); v.removeEventListener("canplay", play); };
   }, [vidOn]);
 
   useEffect(() => {
