@@ -211,87 +211,49 @@ function Hero() {
         )}
       </div>
 
-      <div className="grade grade-top" aria-hidden="true"></div>
-      <div className="grade grade-left" aria-hidden="true"></div>
-      <div className="grade grade-bottom" aria-hidden="true"></div>
-      <div className="grade grade-vignette" aria-hidden="true"></div>
-      <div className="grade grade-tint" aria-hidden="true"></div>
-      <div className="grade-bloom" aria-hidden="true"></div>
-      <div className="hud-scan" aria-hidden="true"></div>
-
-      <div className="tele">
-        <div className="mono tele-t" ref={telT}>T+ 00:00</div>
-        <div className="tele-stack">
-          <div className="tele-row"><span className="tele-lbl">ALT</span><span className="mono tele-val" ref={telAlt}>000.0</span><span className="tele-u">km</span></div>
-          <div className="tele-row"><span className="tele-lbl">VEL</span><span className="mono tele-val" ref={telVel}>0</span><span className="tele-u">km/h</span></div>
-          <div className="tele-row"><span className="tele-lbl">STATUS</span><span className="mono tele-val" style={{ color: "#3ee6b5" }}>NOMINAL</span><span className="dot-live"></span></div>
-        </div>
-      </div>
+      {/* overlays estilo YLIP: leitura + vinheta de marca (azul/magenta) + fade inferior */}
+      <div className="hero-grade-read" aria-hidden="true"></div>
+      <div className="hero-grade-brand" aria-hidden="true"></div>
+      <div className="hero-grade-foot" aria-hidden="true"></div>
 
       <div className="wrap hero-inner">
         <div className="hero-copy">
-          <div className="eyebrow" style={{ marginBottom: 24 }}><span className="dot"></span>E-commerce · Marketing · IA · Automação</div>
-          <h1 className="hero-h1">
-            <span className="l1">Crescimento</span>
-            <span className="neon-tube l2">exponencial</span>
-          </h1>
-          <p className="hero-lead">Loja virtual, marketing, design, automação e IA para colocar o seu e-commerce em órbita. <strong>Ignição imediata.</strong></p>
+          <div className="eyebrow" style={{ marginBottom: 26 }}><span className="dot"></span>E-commerce · Marketing · IA · Automação</div>
+          <h1 className="hero-h1">Crescimento <span className="hero-accent">exponencial</span></h1>
+          <p className="hero-lead">Loja virtual, marketing, design, automação e IA para colocar o seu e-commerce em órbita — construído, no ar e gerando receita.</p>
           <div className="hero-actions">
-            <a href="#contato" className="btn btn-cta" style={{ padding: "17px 28px", fontSize: 16 }}>Iniciar decolagem <i data-lucide="rocket" style={{ width: 19, height: 19 }}></i></a>
-            <a href="#servicos" className="btn btn-ghost" style={{ padding: "17px 26px", fontSize: 16 }}><i data-lucide="play" style={{ width: 17, height: 17 }}></i> Ver missões</a>
+            <a href="#contato" className="btn btn-cta" style={{ padding: "16px 28px", fontSize: 16 }}>Solicitar orçamento <i data-lucide="arrow-right" style={{ width: 18, height: 18 }}></i></a>
+            <a href="#servicos" className="btn btn-ghost" style={{ padding: "16px 26px", fontSize: 16 }}><i data-lucide="play" style={{ width: 16, height: 16 }}></i> Ver serviços</a>
           </div>
         </div>
       </div>
 
       <div className="scroll-cue" aria-hidden="true">
-        <span className="mono" style={{ font: "600 10px var(--font-mono)", letterSpacing: "0.2em", color: "rgba(255,255,255,0.6)" }}>SCROLL</span>
         <span className="scroll-track"><span className="scroll-dot"></span></span>
       </div>
 
       <style>{`
         .hero-video-wrap { position: absolute; inset: 0; overflow: hidden; }
-        .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 42%; transform: scale(1.12) translateX(7%); }
-        .grade { position: absolute; inset: 0; pointer-events: none; }
-        .grade-top { background: linear-gradient(180deg, rgba(4,6,15,0.92) 0%, rgba(4,6,15,0.32) 26%, transparent 46%); }
-        .grade-bottom { background: linear-gradient(0deg, #050b1a 0%, rgba(5,11,26,0.6) 12%, transparent 34%); }
-        .grade-left { background: linear-gradient(90deg, rgba(4,6,15,0.94) 0%, rgba(4,6,15,0.55) 30%, transparent 60%); }
-        .grade-vignette { background: radial-gradient(120% 100% at 60% 45%, transparent 40%, rgba(2,4,10,0.78) 100%); }
-        /* Color grade cinematográfico: azul-frio nas sombras, magenta quente no realce — teal&orange invertido p/ tech. */
-        .grade-tint { background: linear-gradient(132deg, rgba(21,101,255,0.18) 0%, transparent 42%, rgba(91,60,255,0.10) 70%, rgba(255,45,122,0.12) 100%); mix-blend-mode: soft-light; }
-        /* Bloom: ponto de luz suave no alto à esquerda, como reflexo de lente. */
-        .grade-bloom { position: absolute; left: 4%; top: 8%; width: min(560px,70%); height: 360px; pointer-events: none;
-          background: radial-gradient(closest-side, rgba(110,160,255,0.16), transparent 72%); filter: blur(6px); }
+        /* Vídeo protagonista (estilo YLIP): full-bleed, loop nativo, opacity alta — sem zoom/crop. */
+        .hero-video { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; opacity: 0.85; }
+        /* 3 camadas elegantes: leitura + vinheta de marca + fade inferior. */
+        .hero-grade-read { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(5,11,26,0.62) 0%, rgba(5,11,26,0.30) 38%, rgba(5,11,26,0.55) 72%, rgba(5,11,26,0.96) 100%); }
+        .hero-grade-brand { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen;
+          background: radial-gradient(900px 620px at 6% 28%, rgba(21,101,255,0.34), transparent 60%), radial-gradient(880px 600px at 96% 78%, rgba(255,45,122,0.26), transparent 62%); }
+        .hero-grade-foot { position: absolute; left: 0; right: 0; bottom: 0; height: 170px; pointer-events: none; background: linear-gradient(180deg, transparent, #050b1a); }
         .hero-inner { position: relative; z-index: 6; height: 100%; display: flex; flex-direction: column; justify-content: center; }
-        .hero-copy { position: relative; max-width: 600px; }
-        /* halo de luz suave atrás do copy — separa o texto do vídeo de forma cinematográfica */
-        .hero-copy::before { content: ''; position: absolute; left: -8%; top: -14%; width: 116%; height: 128%; z-index: -1; pointer-events: none;
-          background: radial-gradient(60% 56% at 24% 42%, rgba(8,16,40,0.55), transparent 72%); filter: blur(8px); }
-        .hero-h1 { margin: 0; text-transform: uppercase; }
-        .hero-h1 .l1 { display: block; font: 800 clamp(46px,8vw,108px)/0.9 var(--font-display); letter-spacing: -0.052em; color: #fff;
-          background: linear-gradient(178deg, #ffffff 0%, #dce8ff 70%, #b9cdf5 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
-          text-shadow: 0 6px 50px rgba(0,0,0,0.7); }
-        .hero-h1 .l2 { display: block; font: 800 italic clamp(46px,8vw,108px)/0.9 var(--font-display); letter-spacing: -0.052em; }
-        .hero-lead { font: 400 clamp(17px,1.6vw,19.5px)/1.62 var(--font-sans); color: rgba(255,255,255,0.84); max-width: 460px; margin: 26px 0 0; text-wrap: pretty; text-shadow: 0 2px 18px rgba(0,0,0,0.7); }
+        .hero-copy { max-width: 760px; }
+        .hero-h1 { margin: 0; font: 800 clamp(40px,7.4vw,88px)/1.02 var(--font-display); letter-spacing: -0.045em; color: #fff; text-wrap: balance; text-shadow: 0 6px 44px rgba(0,0,0,0.6); }
+        .hero-accent { background: linear-gradient(104deg, #7da8ff 0%, #5b3cff 46%, #FF4D94 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+        .hero-lead { font: 400 clamp(16px,1.5vw,20px)/1.6 var(--font-sans); color: rgba(255,255,255,0.86); max-width: 600px; margin: 24px 0 0; text-wrap: pretty; text-shadow: 0 2px 16px rgba(0,0,0,0.6); }
         .hero-lead strong { color: #fff; font-weight: 600; }
-        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 38px; }
-        .tele { position: absolute; top: 92px; right: 28px; z-index: 6; text-align: right; }
-        .tele-t { font: 700 13px var(--font-mono); color: #34e1ff; letter-spacing: 0.18em; text-shadow: 0 0 12px rgba(52,225,255,0.8); }
-        .tele-stack { margin-top: 10px; display: flex; flex-direction: column; gap: 7px; align-items: flex-end; }
-        .tele-row { display: inline-flex; align-items: center; gap: 9px; }
-        .tele-lbl { font: 600 9px var(--font-sans); letter-spacing: 0.16em; color: rgba(255,255,255,0.55); width: 46px; text-align: right; }
-        .tele-val { font: 700 16px var(--font-mono); color: #fff; min-width: 84px; text-align: right; text-shadow: 0 0 12px rgba(255,255,255,0.35); }
-        .tele-u { font: 500 10px var(--font-sans); color: rgba(255,255,255,0.5); width: 32px; text-align: left; }
-        .dot-live { width: 7px; height: 7px; border-radius: 999px; background: #3ee6b5; box-shadow: 0 0 10px #3ee6b5; animation: blink 1.4s steps(2) infinite; }
-        @keyframes blink { 50% { opacity: 0.25; } }
-        .hud-scan { position: absolute; inset: 0; z-index: 5; pointer-events: none; mix-blend-mode: overlay; opacity: 0.35; background: repeating-linear-gradient(0deg, rgba(255,255,255,0.05) 0px, rgba(255,255,255,0.05) 1px, transparent 2px, transparent 4px); }
-        .scroll-cue { position: absolute; left: 50%; bottom: 24px; transform: translateX(-50%); z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 9px; }
-        .scroll-track { width: 22px; height: 36px; border: 1.5px solid rgba(255,255,255,0.32); border-radius: 999px; display: flex; justify-content: center; padding-top: 6px; }
+        .hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 36px; }
+        .scroll-cue { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 6; }
+        .scroll-track { width: 22px; height: 36px; border: 1.5px solid rgba(255,255,255,0.30); border-radius: 999px; display: flex; justify-content: center; padding-top: 6px; }
         .scroll-dot { width: 4px; height: 8px; border-radius: 999px; background: #34e1ff; box-shadow: 0 0 8px #34e1ff; animation: scroll-bob 1.6s ease-in-out infinite; }
         @keyframes scroll-bob { 0%,100% { transform: translateY(0); opacity: 1; } 60% { transform: translateY(12px); opacity: 0.2; } }
-        @media (max-width: 760px) { .hero-video { transform: scale(1.05); object-position: 50% 38%; } .grade-left { background: linear-gradient(180deg, transparent 30%, rgba(4,6,15,0.75) 100%); } .tele { top: 70px; right: 12px; transform: scale(0.74); transform-origin: top right; } .hero-lead { margin-left: 0; } }
-        /* Celular estreito: o HUD de telemetria sobrepunha o eyebrow/titulo — escondido para nada ficar colado */
-        @media (max-width: 600px) { .tele { display: none; } }
-        @media (prefers-reduced-motion: reduce) { .scroll-dot, .dot-live { animation: none; } }
+        @media (max-width: 760px) { .hero-video { object-position: 50% 40%; } .hero-grade-read { background: linear-gradient(180deg, rgba(5,11,26,0.5) 0%, rgba(5,11,26,0.42) 45%, rgba(5,11,26,0.97) 100%); } }
+        @media (prefers-reduced-motion: reduce) { .scroll-dot { animation: none; } }
       `}</style>
     </section>
   );
