@@ -93,6 +93,9 @@ function cardGlow(color) {
 
 function ImageSlot({ placeholder, src }) {
   const [ok, setOk] = useState(true);
+  // Reseta o estado de erro quando o src muda — sem isso, uma imagem que falhou
+  // uma vez ficava presa no fallback mesmo trocando para outro src válido.
+  useEffect(() => { setOk(true); }, [src]);
   return (
     <>
       {src && ok && (
@@ -355,7 +358,7 @@ function Differentiators() {
 
 /* ───────────────────────── Portfolio + Process ───────────────────────── */
 function Portfolio() {
-  const cats = ["Todos", "E-commerce", "Websites", "Marketing", "Sistemas", "Aplicativos", "IA", "Automações"];
+  const cats = ["Todos", "E-commerce", "Websites", "Sistemas", "Aplicativos", "IA", "Automações"];
   const [active, setActive] = useState("Todos");
   const projects = [
     { id: "clicouenviou", name: "Clicou Enviou", url: "https://www.clicouenviou.com.br", cat: ["E-commerce", "Sistemas", "Automações"], tags: ["Logística", "Plataforma"], grad: "linear-gradient(150deg,#0FA968,#0B7A4C)", desc: "Plataforma que reúne múltiplas transportadoras num único painel para simplificar os envios do e-commerce." },
@@ -383,7 +386,8 @@ function Portfolio() {
           {shown.map((p) => (
             <article key={p.id} className="glowcard neon-card reveal in" {...cardGlow("rgba(11,122,76,0.4)")} style={{ borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <div style={{ position: "relative", aspectRatio: "16/10", background: p.grad }}>
-                <ImageSlot placeholder={`Print do ${p.name}`} src={p.url && p.id !== "nutri" ? `/portfolio/${p.id}.webp` : undefined} />
+                {/* Todos os 10 projetos têm capa real em /portfolio/ — print do site (6) ou card de marca desenhado (4, sem URL pública). */}
+                <ImageSlot placeholder={`Print do ${p.name}`} src={`/portfolio/${p.id}.webp`} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(5,11,26,0.55))", pointerEvents: "none" }}></div>
                 <div style={{ position: "absolute", left: 14, top: 14, display: "flex", gap: 6, pointerEvents: "none" }}>
                   {p.tags.map((t) => <span key={t} style={{ font: "600 10px var(--font-sans)", letterSpacing: "0.04em", textTransform: "uppercase", color: "#fff", padding: "4px 9px", borderRadius: 999, background: "rgba(5,11,26,0.55)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}>{t}</span>)}
@@ -506,8 +510,13 @@ function About() {
               {stats.map((s) => (<div key={s.l}><div style={{ font: "800 38px/1 var(--font-display)", letterSpacing: "-0.03em", color: s.c, textShadow: `0 0 26px ${s.c}66` }}>{s.v}</div><div style={{ font: "500 13px var(--font-sans)", color: "rgba(255,255,255,0.6)", marginTop: 6 }}>{s.l}</div></div>))}
             </div>
           </div>
-          <div style={{ position: "relative", minHeight: 380, background: "linear-gradient(160deg,#0A7048,#0B7A4C 60%,#C4763C)" }} className="about-photo">
-            <ImageSlot placeholder="Foto do time / estúdio" />
+          {/* Composição de marca (não uma foto — a HyperGrow ainda não tem fotos reais do time
+              para usar aqui; um placeholder de "foto" seria enganoso). */}
+          <div style={{ position: "relative", minHeight: 380, display: "flex", alignItems: "center", justifyContent: "center", overflow: "hidden", background: "linear-gradient(160deg,#0A7048,#0B7A4C 60%,#C4763C)" }} className="about-photo">
+            <span aria-hidden style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(255,255,255,0.06) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px)", backgroundSize: "38px 38px", WebkitMaskImage: "radial-gradient(70% 70% at 50% 50%, #000, transparent 82%)", maskImage: "radial-gradient(70% 70% at 50% 50%, #000, transparent 82%)" }}></span>
+            <span aria-hidden style={{ position: "absolute", width: 220, height: 220, borderRadius: "50%", border: "1.5px solid rgba(255,255,255,0.18)" }}></span>
+            <span aria-hidden style={{ position: "absolute", width: 300, height: 300, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.1)" }}></span>
+            <div style={{ position: "relative", transform: "scale(2.1)" }}><Logo height={34} showWord={false} /></div>
             <div style={{ position: "absolute", inset: 0, background: "linear-gradient(110deg, rgba(13,16,19,0.5), transparent 40%)", pointerEvents: "none" }}></div>
           </div>
         </div>
