@@ -34,7 +34,7 @@ export default function TrustMarquee() {
     <section className="sec" style={{ paddingTop: 56, paddingBottom: 56 }}>
       <div className="wrap">
         <div className="reveal" style={{ textAlign: "center", marginBottom: 34 }}>
-          <div className="eyebrow"><span className="dot" style={{ background: "#3ee6b5", boxShadow: "0 0 10px #3ee6b5, 0 0 4px #fff" }} />Prova social</div>
+          <div className="eyebrow"><span className="dot" style={{ background: "#6FE3B4", boxShadow: "0 0 10px #6FE3B4, 0 0 4px #fff" }} />Prova social</div>
           <h2 className="h-sec" style={{ marginLeft: "auto", marginRight: "auto" }}>
             Empresas que crescem com a <span className="accent">HyperGrow</span>
           </h2>
@@ -75,11 +75,11 @@ export default function TrustMarquee() {
           font: 600 15px var(--font-display); letter-spacing: -0.01em; color: rgba(255,255,255,0.86);
           background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
           border: 1px solid rgba(255,255,255,0.10);
-          box-shadow: inset 0 0 24px -16px rgba(91,60,255,0.8);
+          box-shadow: inset 0 0 24px -16px rgba(11,122,76,0.8);
           transition: border-color .3s, color .3s, box-shadow .3s;
         }
-        .mq-pill:hover { color: #fff; border-color: rgba(52,225,255,0.55); box-shadow: 0 0 24px -6px rgba(52,225,255,0.55); }
-        .mq-dot { width: 8px; height: 8px; border-radius: 999px; background: linear-gradient(135deg, #1565FF, #FF2D7A); box-shadow: 0 0 10px rgba(91,60,255,0.8); }
+        .mq-pill:hover { color: #fff; border-color: rgba(111,191,154,0.55); box-shadow: 0 0 24px -6px rgba(111,191,154,0.55); }
+        .mq-dot { width: 8px; height: 8px; border-radius: 999px; background: linear-gradient(135deg, #0FA968, #C4763C); box-shadow: 0 0 10px rgba(11,122,76,0.8); }
         @media (prefers-reduced-motion: reduce) { .mq-track { animation: none; } }
 
         .stat-strip {
@@ -87,7 +87,7 @@ export default function TrustMarquee() {
           margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px;
           padding: 30px 26px; border-radius: 22px;
           background:
-            radial-gradient(120% 100% at 50% -20%, rgba(91,60,255,0.10), transparent 60%),
+            radial-gradient(120% 100% at 50% -20%, rgba(11,122,76,0.10), transparent 60%),
             linear-gradient(180deg, rgba(255,255,255,0.055), rgba(255,255,255,0.018));
           border: 1px solid rgba(255,255,255,0.10);
           box-shadow: 0 1px 0 rgba(255,255,255,0.06) inset, 0 44px 100px -54px rgba(0,0,0,0.85);
@@ -98,7 +98,7 @@ export default function TrustMarquee() {
         .stat-cell:not(:last-child)::after { content: ''; position: absolute; right: -9px; top: 18%; height: 64%; width: 1px;
           background: linear-gradient(180deg, transparent, rgba(255,255,255,0.12), transparent); }
         @media (max-width: 760px) { .stat-cell:not(:last-child)::after { display: none; } }
-        .stat-v { font: 800 40px/1 var(--font-display); letter-spacing: -0.03em; background: linear-gradient(120deg,#4d8bff,#5b3cff 50%,#FF2D7A); -webkit-background-clip: text; background-clip: text; color: transparent; }
+        .stat-v { font: 800 40px/1 var(--font-display); letter-spacing: -0.03em; background: linear-gradient(120deg,#2DD4A0,#0B7A4C 50%,#C4763C); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .stat-l { margin-top: 8px; font: 500 13px var(--font-sans); color: rgba(255,255,255,0.6); }
         @media (max-width: 760px) { .stat-strip { grid-template-columns: 1fr 1fr; } .stat-v { font-size: 32px; } }
       `}</style>

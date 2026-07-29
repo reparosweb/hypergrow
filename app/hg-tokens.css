@@ -1,117 +1,125 @@
 /* ============================================================================
-   agentop — DESIGN TOKENS
-   "Gestão inteligente. Resultados reais."
-   Brand: navy #081A3A · blue #1565FF · magenta #FF2D7A · pink #FF4D94 · green #00C896
+   HyperGrow — DESIGN TOKENS
+   "Verde receita sobre grafite." Marca: jade #0FA968 · cobre #C4763C · ink #12151A
    Single source of truth. Import this before anything else.
-   NOTE: legacy scale names (--violet-*, --orange-*) are retained for cascade
-   compatibility but now carry agentop BLUE and MAGENTA values respectively.
-   ============================================================================ */
 
-/* Poppins agora é carregada via next/font no app/layout.tsx (--font-poppins),
-   auto-hospedada e NÃO render-blocking. O @import do Google Fonts foi removido
-   por travar a renderização (FCP/LCP). */
+   2026-06 REDESIGN: saiu a paleta azul/violeta/magenta herdada do agentop
+   (era a assinatura visual nº1 de "site feito por IA"). Os nomes de escala
+   legados (--violet-*, --orange-*, --blue-*, --green-*) são mantidos por
+   compatibilidade de cascata, mas agora carregam os valores da NOVA paleta
+   jade/cobre — ver a tabela de mapeamento no fim deste comentário.
+   Os nomes "verdadeiros" da paleta (--jade-*, --copper-*, --ink-*, --bone-*)
+   são a fonte preferida para código novo.
+
+   Mapeamento (antigo → novo), usado para recolorir o restante do site:
+     azul   #1565FF/#4d8bff/#7da8ff/#0d4fd6/#0a3fb0/#08308a → jade   (--jade-500/300/100/700/900)
+     violeta#5b3cff (+ rgba(91,60,255,*))                    → jade-deep (--jade-800)
+     magenta#FF2D7A/#FF4D94/#e01f67/#b81551/#8a1040          → cobre  (--copper-500/300/700/900)
+     ciano  #34e1ff (+ rgba(52,225,255,*))                   → sage   (--sage)
+     verde  #00C896/#3ee6b5/#11d8a2/#00a87f/#00876a          → jade   (consolidado na mesma família)
+   ============================================================================ */
 
 :root {
   /* ============================================================
      COLOR — CANONICAL SCALE
      ============================================================ */
 
-  /* Navy — primary deep surface */
-  --navy-950: #050f24;
-  --navy-900: #081A3A;   /* BRAND navy */
-  --navy-800: #0c2147;
-  --navy-700: #102a57;
-  --navy-600: #163568;
-  --navy-500: #1d427d;
-  --navy-400: #2a5599;
-  --navy-300: #4574bd;
+  /* Ink — canvas escuro (substitui "navy") */
+  --navy-950: #0D1013;   /* --ink-deep */
+  --navy-900: #12151A;   /* BRAND ink — canvas */
+  --navy-800: #171B20;   /* --surface — cards */
+  --navy-700: #1D2229;
+  --navy-600: #232A32;
+  --navy-500: #2C343D;
+  --navy-400: #3A444F;
+  --navy-300: #4C5964;
 
-  /* Light — app canvas */
-  --cream-50:  #F5F7FA;   /* BRAND light bg */
-  --cream-100: #eef2f8;
-  --cream-150: #e8eef6;
-  --cream-200: #e1e8f2;
-  --cream-300: #d3dcea;
+  /* Light — app canvas (telas claras do admin/legado) */
+  --cream-50:  #F7F5F0;
+  --cream-100: #F0ECE4;
+  --cream-150: #EAE4D9;
+  --cream-200: #E3DBCC;
+  --cream-300: #D6CAB4;
 
-  /* Ink / Slate — text on light */
-  --ink-900: #081A3A;
-  --ink-800: #11233f;
-  --ink-700: #1e2f4a;
-  --ink-600: #3a4a63;
-  --ink-500: #64748B;   /* BRAND slate */
-  --ink-400: #8190a3;
-  --ink-300: #a6b2c2;
-  --ink-200: #cbd4e0;
-  --ink-100: #e2e8f0;
+  /* Ink / texto sobre claro */
+  --ink-900: #12151A;
+  --ink-800: #1D2229;
+  --ink-700: #2A3138;
+  --ink-600: #414B54;
+  --ink-500: #6B7680;   /* BRAND slate */
+  --ink-400: #8B949C;
+  --ink-300: #A8AFB5;
+  --ink-200: #C7CCD0;
+  --ink-100: #E2E5E7;
 
-  /* "Violet" scale → now agentop BLUE (primary brand) */
-  --violet-50:  #eaf1ff;
-  --violet-100: #d6e4ff;
-  --violet-200: #a9c6ff;
-  --violet-300: #7da8ff;
-  --violet-400: #4d8bff;
-  --violet-500: #1565FF;  /* PRIMARY blue */
-  --violet-600: #0d4fd6;
-  --violet-700: #0a3fb0;
-  --violet-800: #08308a;
-  --violet-900: #081A3A;
+  /* "Violet" scale → agora JADE (primário da marca) */
+  --violet-50:  #E4F7EE;
+  --violet-100: #C3EDD9;
+  --violet-200: #8FE0BB;
+  --violet-300: #6FE3B4;
+  --violet-400: #2DD4A0;
+  --violet-500: #0FA968;  /* PRIMARY jade */
+  --violet-600: #0C8956;
+  --violet-700: #0A7048;
+  --violet-800: #086840;
+  --violet-900: #064A2E;
 
-  /* "Orange" scale → now agentop MAGENTA (conversion / CTA) */
-  --orange-50:  #ffe6f0;
-  --orange-100: #ffd0e0;
-  --orange-200: #ffa6c6;
-  --orange-300: #ff79ab;
-  --orange-400: #FF4D94;   /* pink */
-  --orange-500: #FF2D7A;   /* PRIMARY magenta */
-  --orange-600: #e01f67;
-  --orange-700: #b81551;
-  --orange-800: #8a1040;
+  /* "Orange" scale → agora COBRE (conversão / CTA) */
+  --orange-50:  #FBF0E7;
+  --orange-100: #F3DBC3;
+  --orange-200: #E8BE93;
+  --orange-300: #D99461;   /* copper light */
+  --orange-400: #D0854E;
+  --orange-500: #C4763C;   /* PRIMARY copper */
+  --orange-600: #A35F2D;
+  --orange-700: #7A4720;
+  --orange-800: #5C3618;
 
-  /* Pure brand magenta + pink (explicit names) */
-  --magenta-500: #FF2D7A;
-  --magenta-400: #FF4D94;
-  --magenta-300: #ff79ab;
-  --pink-500: #FF4D94;
-  --pink-400: #ff79ab;
-  --pink-600: #e01f67;
+  /* Cobre puro + variante clara (nomes explícitos) */
+  --magenta-500: #C4763C;
+  --magenta-400: #D99461;
+  --magenta-300: #E8BE93;
+  --pink-500: #D99461;
+  --pink-400: #E8BE93;
+  --pink-600: #A35F2D;
 
-  /* Green — confirmation */
-  --green-50:  #e0fbf3;
-  --green-100: #b5f4e2;
-  --green-200: #7df0cf;
-  --green-300: #3ee6b5;
-  --green-400: #11d8a2;
-  --green-500: #00C896;   /* BRAND green */
-  --green-600: #00a87f;
-  --green-700: #00876a;
+  /* Jade — confirmação (consolidado com a escala primária) */
+  --green-50:  #E4F7EE;
+  --green-100: #C3EDD9;
+  --green-200: #8FE0BB;
+  --green-300: #6FE3B4;
+  --green-400: #2DD4A0;
+  --green-500: #0FA968;   /* BRAND jade */
+  --green-600: #0C8956;
+  --green-700: #086840;
 
-  /* Blue — informational (same family as primary, slightly distinct) */
-  --blue-50:  #eaf1ff;
-  --blue-100: #cfe0ff;
-  --blue-200: #9dbeff;
-  --blue-300: #6699ff;
-  --blue-400: #3b82f6;
-  --blue-500: #1565FF;
-  --blue-600: #0d4fd6;
-  --blue-700: #0a3fb0;
+  /* Jade informacional — mesma família da primária, tom levemente distinto */
+  --blue-50:  #E4F7EE;
+  --blue-100: #C3EDD9;
+  --blue-200: #8FE0BB;
+  --blue-300: #6FE3B4;
+  --blue-400: #3FC98F;
+  --blue-500: #0FA968;
+  --blue-600: #0C8956;
+  --blue-700: #0A7048;
 
-  /* Teal */
-  --teal-400: #2dd4bf;
-  --teal-500: #14b8a6;
-  --teal-600: #0d9488;
+  /* Sage — acento terciário (substitui o ciano neon) */
+  --teal-400: #8AD1B0;
+  --teal-500: #6FBF9A;
+  --teal-600: #559E7E;
 
-  /* Red / alert */
-  --red-50:  #fdecec;
-  --red-100: #fcc6c6;
-  --red-400: #f87171;
-  --red-500: #ef4444;
-  --red-600: #dc2626;
-  --red-700: #b91c1c;
+  /* Red / alert (inalterado — não faz parte do "kit IA") */
+  --red-50:  #FBEBEA;
+  --red-100: #F3C6C3;
+  --red-400: #E0736A;
+  --red-500: #CC4A3F;
+  --red-600: #A93A31;
+  --red-700: #822C25;
 
-  /* Gold / amber — warning microcopy */
-  --gold-400: #fbbf24;
-  --gold-500: #f59e0b;
-  --gold-600: #d97706;
+  /* Gold / amber — microcopy de aviso (inalterado) */
+  --gold-400: #D9A441;
+  --gold-500: #C4862A;
+  --gold-600: #9C6A1F;
 
   /* ============================================================
      SEMANTIC TOKENS
@@ -123,33 +131,46 @@
   --surface-card-dark:     var(--navy-800);
   --surface-cine:          var(--navy-900);
   --surface-cine-deep:     var(--navy-950);
-  --surface-hairline:      rgba(8, 26, 58, 0.08);
-  --surface-hairline-dark: rgba(255, 255, 255, 0.08);
+  --surface-hairline:      rgba(18, 21, 26, 0.08);
+  --surface-hairline-dark: rgba(232, 226, 217, 0.08);
 
   --fg-1:        var(--ink-900);
   --fg-2:        var(--ink-500);
   --fg-3:        var(--ink-400);
   --fg-1-dark:   #ffffff;
-  --fg-2-dark:   rgba(255, 255, 255, 0.88);
-  --fg-3-dark:   rgba(255, 255, 255, 0.70);
+  --fg-2-dark:   rgba(232, 226, 217, 0.88);
+  --fg-3-dark:   rgba(232, 226, 217, 0.70);
 
-  --brand-primary:   var(--violet-500);   /* blue */
+  --brand-primary:   var(--violet-500);   /* jade */
   --brand-primary-h: var(--violet-400);
-  --brand-cta:       var(--orange-500);    /* magenta */
+  --brand-cta:       var(--orange-500);    /* cobre */
   --brand-cta-h:     var(--orange-400);
   --brand-success:   var(--green-500);
   --brand-info:      var(--blue-500);
   --brand-alert:     var(--red-500);
   --brand-warn:      var(--gold-500);
 
+  /* Nomes "verdadeiros" da paleta nova — usar em código novo em vez dos
+     apelidos legados acima. */
+  --ink:        #12151A;
+  --ink-deep:   #0D1013;
+  --surface:    #171B20;
+  --jade:       #0FA968;
+  --jade-hi:    #16C77E;
+  --jade-deep:  #086840;
+  --copper:     #C4763C;
+  --sage:       #6FBF9A;
+  --bone:       #E8E2D9;
+  --bone-mute:  #9AA39E;
+
   /* ============================================================
-     TYPOGRAPHY — Poppins
+     TYPOGRAPHY — Archivo (display) · IBM Plex Sans (corpo) · IBM Plex Mono (dados)
      ============================================================ */
 
-  --font-sans:    var(--font-poppins), 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --font-mono:    ui-monospace, 'SF Mono', 'Roboto Mono', Menlo, monospace;
-  --font-display: var(--font-poppins), 'Poppins', var(--font-sans);
-  --font-serif:   var(--font-poppins), 'Poppins', var(--font-sans);   /* accent words use Poppins italic, magenta */
+  --font-sans:    var(--font-plex-sans), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono:    var(--font-plex-mono), ui-monospace, 'SF Mono', 'Roboto Mono', Menlo, monospace;
+  --font-display: var(--font-archivo), var(--font-sans);
+  --font-serif:   var(--font-archivo), var(--font-sans);   /* palavras de acento usam Archivo italic */
 
   --fs-display-xl: 64px;
   --fs-display-lg: 48px;
@@ -205,12 +226,12 @@
   --shadow-lg: 0 26px 52px -14px rgba(8, 26, 58, 0.18), 0 4px 12px rgba(8, 26, 58, 0.05);
   --shadow-xl: 0 36px 70px -18px rgba(8, 26, 58, 0.22);
 
-  /* Dark glows — blue + magenta */
-  --glow-violet: 0 0 0 1px rgba(21, 101, 255, 0.30), 0 20px 60px -20px rgba(21, 101, 255, 0.60);
-  --glow-orange: 0 0 0 1px rgba(255, 45, 122, 0.35), 0 16px 40px -12px rgba(255, 45, 122, 0.55);
-  --glow-blue:   0 0 0 1px rgba(21, 101, 255, 0.35), 0 16px 40px -12px rgba(21, 101, 255, 0.55);
-  --glow-green:  0 0 0 1px rgba(0, 200, 150, 0.35),  0 16px 40px -12px rgba(0, 200, 150, 0.45);
-  --glow-magenta:0 0 0 1px rgba(255, 45, 122, 0.35), 0 16px 40px -12px rgba(255, 45, 122, 0.55);
+  /* Dark glows — jade + cobre */
+  --glow-violet: 0 0 0 1px rgba(15, 169, 104, 0.30), 0 20px 60px -20px rgba(15, 169, 104, 0.60);
+  --glow-orange: 0 0 0 1px rgba(196, 118, 60, 0.35), 0 16px 40px -12px rgba(196, 118, 60, 0.55);
+  --glow-blue:   0 0 0 1px rgba(15, 169, 104, 0.35), 0 16px 40px -12px rgba(15, 169, 104, 0.55);
+  --glow-green:  0 0 0 1px rgba(15, 169, 104, 0.35), 0 16px 40px -12px rgba(15, 169, 104, 0.45);
+  --glow-magenta:0 0 0 1px rgba(196, 118, 60, 0.35), 0 16px 40px -12px rgba(196, 118, 60, 0.55);
 
   /* ============================================================
      MOTION
@@ -225,23 +246,23 @@
   /* ============================================================
      GRADIENTS
      ============================================================ */
-  --grad-hero:    radial-gradient(120% 80% at 20% 0%, #0e2456 0%, var(--navy-900) 55%, var(--navy-950) 100%);
-  --grad-brand:   linear-gradient(120deg, #1565FF 0%, #5b3cff 45%, #FF2D7A 100%);  /* the agentop A+arrow gradient */
+  --grad-hero:    radial-gradient(120% 80% at 20% 0%, #1A2E22 0%, var(--navy-900) 55%, var(--navy-950) 100%);
+  --grad-brand:   linear-gradient(120deg, #0FA968 0%, #0B7A4C 45%, #C4763C 100%);  /* jade → jade-deep → cobre */
   --grad-violet:  linear-gradient(135deg, var(--violet-400) 0%, var(--violet-600) 100%);
   --grad-orange:  linear-gradient(135deg, var(--orange-400) 0%, var(--orange-600) 100%);
-  --grad-magenta: linear-gradient(135deg, #FF4D94 0%, #FF2D7A 60%, #e01f67 100%);
+  --grad-magenta: linear-gradient(135deg, #D99461 0%, #C4763C 60%, #A35F2D 100%);
   --grad-green:   linear-gradient(135deg, var(--green-400) 0%, var(--green-600) 100%);
   --grad-blue:    linear-gradient(135deg, var(--blue-400) 0%, var(--blue-700) 100%);
-  --grad-pink:    linear-gradient(135deg, #FF4D94 0%, #e01f67 100%);
+  --grad-pink:    linear-gradient(135deg, #D99461 0%, #A35F2D 100%);
   --grad-teal:    linear-gradient(135deg, var(--teal-400) 0%, var(--teal-600) 100%);
   --grad-gold:    linear-gradient(135deg, var(--gold-400) 0%, var(--gold-600) 100%);
   --grad-red:     linear-gradient(135deg, var(--red-400) 0%, var(--red-700) 100%);
 
   /* Plan colors */
-  --plan-gold:    linear-gradient(165deg, #fef3c7 0%, #f59e0b 100%);
-  --plan-prime:   linear-gradient(165deg, #4d8bff 0%, #1565FF 100%);
-  --plan-black:   linear-gradient(165deg, #11233f 0%, #050f24 100%);
-  --plan-elite:   linear-gradient(165deg, #FF4D94 0%, #b81551 100%);
+  --plan-gold:    linear-gradient(165deg, #F3E4C7 0%, #C4862A 100%);
+  --plan-prime:   linear-gradient(165deg, #2DD4A0 0%, #0FA968 100%);
+  --plan-black:   linear-gradient(165deg, #1D2229 0%, #0D1013 100%);
+  --plan-elite:   linear-gradient(165deg, #D99461 0%, #A35F2D 100%);
 }
 
 /* ============================================================

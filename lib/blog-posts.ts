@@ -23,7 +23,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-06-28",
     category: "Sites",
     keyword: "quanto custa criar um site",
-    accent: "#4d8bff",
+    accent: "#2DD4A0",
     intro: "Em 2026, criar um site profissional no Brasil custa, em média, de R$ 1.500 a R$ 5.000 para um site institucional, de R$ 800 a R$ 3.000 para uma landing page e de R$ 4.000 a R$ 20.000 para um e-commerce. O preço varia conforme número de páginas, design sob medida, integrações e quem executa (freelancer, agência ou plataforma). Um projeto sério já inclui design responsivo, SEO técnico, hospedagem inicial e domínio configurado.",
     body: [
       { h: "Quanto custa cada tipo de site (faixas reais de 2026)", p: "No mercado brasileiro, os valores se organizam por complexidade. Uma landing page (página única de captação ou venda) fica entre R$ 800 e R$ 3.000. Um site institucional, com 5 a 10 páginas (home, sobre, serviços, blog, contato), custa de R$ 1.500 a R$ 5.000 — e pode passar de R$ 8.000 quando exige design exclusivo e copy estratégica. Já um e-commerce começa em R$ 4.000 e chega facilmente a R$ 20.000 ou mais, dependendo do catálogo, meios de pagamento e automações. Sistemas e plataformas sob medida (SaaS, portais, áreas logadas) são outro patamar: R$ 15.000 a R$ 80.000+. Esses números refletem projetos entregues por profissionais e agências sérias, não templates genéricos." },
@@ -50,7 +50,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-06-28",
     category: "Inteligência Artificial",
     keyword: "agente de ia para atendimento",
-    accent: "#1565FF",
+    accent: "#0FA968",
     intro: "Um agente de IA para atendimento é um assistente virtual inteligente que conversa com seus clientes em linguagem natural, 24 horas por dia, no WhatsApp, site ou redes sociais. Diferente do chatbot antigo de botões, ele entende perguntas escritas livremente, responde dúvidas, qualifica o lead, agenda reuniões e registra tudo no seu CRM automaticamente. Na prática, é um atendente que nunca dorme, não fica em férias e responde em segundos a qualquer hora.",
     body: [
       { h: "O que é, de fato, um agente de IA", p: "Um agente de IA é um software que usa modelos de linguagem (a mesma tecnologia por trás do ChatGPT) para entender e responder mensagens como um humano. Em vez de seguir um roteiro fixo de 'aperte 1 para vendas, 2 para suporte', ele interpreta o que a pessoa realmente quer, mesmo com erros de digitação, gírias ou perguntas fora de ordem. Você o treina com as informações do seu negócio — produtos, preços, políticas, horários — e ele passa a atender como se fosse um membro da sua equipe que conhece tudo da empresa. A diferença central: ele raciocina sobre o pedido em vez de apenas reagir a palavras-chave." },
@@ -77,7 +77,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-06-28",
     category: "E-commerce",
     keyword: "quanto custa loja virtual",
-    accent: "#5b3cff",
+    accent: "#0B7A4C",
     intro: "Criar uma loja virtual no Brasil custa de R$ 0 (plano gratuito de plataformas como Nuvemshop ou Loja Integrada) até R$ 80 mil ou mais para um e-commerce sob medida. O cenário mais comum para um negócio profissional fica entre R$ 2.000 e R$ 15.000 de investimento inicial, somado a custos mensais recorrentes de R$ 50 a R$ 500 com plataforma, gateway de pagamento e domínio. O valor depende menos da 'aparência' e mais de catálogo, integrações e quanto a operação precisa escalar.",
     body: [
       { h: "As três faixas de preço de uma loja virtual", p: "Na prática existem três caminhos. O primeiro é a plataforma pronta no plano básico: Nuvemshop, Loja Integrada, Shopify ou Bagy oferecem planos de R$ 0 a R$ 150/mês, e você mesmo monta a loja usando temas prontos — investimento inicial perto de zero, ideal para validar uma ideia. O segundo é a plataforma pronta com personalização profissional: você contrata uma agência ou freelancer para configurar tema, identidade visual, fotos, integrações de frete e pagamento, e isso fica entre R$ 2.000 e R$ 15.000 de setup, mais a mensalidade da plataforma. O terceiro é o e-commerce sob medida (headless, VTEX, Magento ou desenvolvimento próprio em React/Next.js), com investimento de R$ 30.000 a R$ 150.000 — reservado para quem tem catálogo grande, regras de negócio complexas ou volume alto de pedidos." },
@@ -104,7 +104,7 @@ export const blogPosts: BlogPost[] = [
     date: "2026-06-28",
     category: "SEO & IA",
     keyword: "como aparecer no chatgpt",
-    accent: "#34e1ff",
+    accent: "#6FBF9A",
     intro: "Para aparecer no ChatGPT e ser citado pela IA, você precisa publicar conteúdo claro, em formato de resposta direta, sustentado por dados verificáveis, marcação de schema e sinais fortes de autoridade — porque os modelos de IA priorizam fontes que respondem perguntas de forma objetiva e confiável. Isso é GEO (Generative Engine Optimization) ou AEO (Answer Engine Optimization): a evolução do SEO para a era da busca por IA. Não há como 'comprar' uma menção; você conquista a citação tornando seu conteúdo a melhor e mais extraível resposta para uma pergunta específica.",
     body: [
       { h: "O que é GEO/AEO e por que importa agora", p: "GEO (Generative Engine Optimization) e AEO (Answer Engine Optimization) são as disciplinas de otimizar conteúdo para ser encontrado, entendido e citado por mecanismos de IA como ChatGPT, Gemini, Perplexity e o AI Overviews do Google. O SEO clássico mira a primeira página de links azuis; o GEO/AEO mira algo diferente: ser a frase que a IA usa para montar a resposta. A diferença prática é brutal — o usuário não vê dez links, vê uma resposta sintetizada, e ou sua marca está dentro dela, ou você é invisível. Com a busca por IA crescendo, aparecer nessas respostas deixou de ser luxo e virou questão de sobrevivência de tráfego." },

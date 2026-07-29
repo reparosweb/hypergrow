@@ -75,13 +75,13 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
 
   return (
     <main style={{ minHeight: "100vh", position: "relative" }}>
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none", background: `radial-gradient(70% 50% at 15% -5%, ${s.accent}22, transparent 60%), radial-gradient(70% 45% at 92% 8%, rgba(255,45,122,0.14), transparent 60%), #050b1a` }} />
+      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none", background: `radial-gradient(70% 50% at 15% -5%, ${s.accent}22, transparent 60%), radial-gradient(70% 45% at 92% 8%, rgba(196,118,60,0.14), transparent 60%), #0D1013` }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       {/* top bar */}
       <div className="wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", height: 70 }}>
         <Link href="/" style={{ font: "700 18px var(--font-display)", letterSpacing: "-0.04em", color: "#fff" }}>
-          Hyper<span style={{ background: "linear-gradient(120deg,#4d8bff,#5b3cff 55%,#FF2D7A)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Grow</span>
+          Hyper<span style={{ background: "linear-gradient(120deg,#2DD4A0,#0B7A4C 55%,#C4763C)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Grow</span>
         </Link>
         <Link href="/#contato" className="btn btn-cta" style={{ padding: "10px 18px", fontSize: 14, borderRadius: 12 }}>Solicitar orçamento</Link>
       </div>
@@ -186,7 +186,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       {/* final CTA */}
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="neon-card" style={{ position: "relative", borderRadius: 28, padding: "56px 40px", textAlign: "center", overflow: "hidden", background: `radial-gradient(120% 120% at 50% -20%, ${s.accent}40, rgba(13,33,71,0.6) 55%, rgba(8,16,36,0.7))`, border: "1px solid rgba(91,60,255,0.35)" }}>
+          <div className="neon-card" style={{ position: "relative", borderRadius: 28, padding: "56px 40px", textAlign: "center", overflow: "hidden", background: `radial-gradient(120% 120% at 50% -20%, ${s.accent}40, rgba(13,33,71,0.6) 55%, rgba(8,16,36,0.7))`, border: "1px solid rgba(11,122,76,0.35)" }}>
             <h2 style={{ font: "800 clamp(26px,3.6vw,40px)/1.08 var(--font-display)", letterSpacing: "-0.03em", color: "#fff", margin: 0, maxWidth: 640, marginInline: "auto", textWrap: "balance" }}>
               Pronto para {s.title.toLowerCase()}?
             </h2>

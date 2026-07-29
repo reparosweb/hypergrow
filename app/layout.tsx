@@ -1,9 +1,11 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Space_Grotesk, Poppins } from "next/font/google";
+import { Inter, Space_Grotesk, Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 import { SITE_URL } from "@/lib/seo";
 
+// inter/display (Space_Grotesk) são dependência do Tailwind legado (tailwind.config.ts
+// font-sans/font-display, usado pelo admin) — mantidos intocados, fora do escopo do redesign.
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter", display: "swap" });
 const display = Space_Grotesk({
   subsets: ["latin"],
@@ -11,14 +13,27 @@ const display = Space_Grotesk({
   display: "swap",
   weight: ["500", "600", "700"],
 });
-// Poppins auto-hospedada (substitui o @import render-blocking que estava no hg-tokens.css).
-// É a fonte do site público. Só os pesos/estilos realmente usados.
-const poppins = Poppins({
+// Sistema tipográfico do site público (substitui Poppins, fonte genérica de gerador de IA):
+// Archivo p/ display (grotesca densa, títulos), IBM Plex Sans p/ corpo (humanista, credibilidade
+// técnica), IBM Plex Mono p/ dados/rótulos. Auto-hospedadas via next/font — não bloqueiam render.
+const archivo = Archivo({
   subsets: ["latin"],
-  variable: "--font-poppins",
+  variable: "--font-archivo",
   display: "swap",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["600", "700", "800", "900"],
   style: ["normal", "italic"],
+});
+const plexSans = IBM_Plex_Sans({
+  subsets: ["latin"],
+  variable: "--font-plex-sans",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
+});
+const plexMono = IBM_Plex_Mono({
+  subsets: ["latin"],
+  variable: "--font-plex-mono",
+  display: "swap",
+  weight: ["400", "500", "600", "700"],
 });
 
 export const metadata: Metadata = {
@@ -63,7 +78,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: "#050b1a",
+  themeColor: "#0D1013",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -83,7 +98,7 @@ const orgSchema = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={`${inter.variable} ${display.variable} ${poppins.variable}`}>
+    <html lang="pt-BR" className={`${inter.variable} ${display.variable} ${archivo.variable} ${plexSans.variable} ${plexMono.variable}`}>
       <body>
         <Analytics />
         <script

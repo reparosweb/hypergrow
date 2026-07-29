@@ -1,17 +1,27 @@
 /* ============================================================================
-   HYPERGROW — neon / cinematic landing system
-   Built on the agentop token set (colors_and_type.css). Navy canvas,
-   blue→violet→magenta light. Restraint over saturation: light is concentrated
-   in a few points so it reads as crafted, not auto-generated.
+   HYPERGROW — sistema de landing premium
+   Canvas grafite (ink), luz jade + cobre. Restraint over saturation: light is
+   concentrated in a few points so it reads as crafted, not auto-generated.
+
+   2026-06 REDESIGN: saiu a paleta azul→violeta→magenta (assinatura de "site
+   feito por IA"). Os NOMES das variáveis --hg-* foram mantidos (evita ter que
+   caçar cada consumidor), só os VALORES mudaram para jade/cobre/sage.
    ============================================================================ */
 
 :root {
-  --hg-blue:    #1565FF;
-  --hg-violet:  #5b3cff;
-  --hg-magenta: #FF2D7A;
-  --hg-pink:    #FF4D94;
-  --hg-cyan:    #34e1ff;
-  --hg-green:   #00C896;
+  --hg-blue:    #0FA968;   /* jade — era azul primário */
+  --hg-violet:  #0B7A4C;   /* jade profundo — era violeta (stop do meio) */
+  --hg-magenta: #C4763C;   /* cobre — era magenta/CTA */
+  --hg-pink:    #D99461;   /* cobre claro — era pink */
+  --hg-cyan:    #6FBF9A;   /* sage — era ciano */
+  --hg-green:   #0FA968;   /* jade — consolidado com a família primária */
+  /* Variantes RGB p/ uso em rgba(var(--hg-*-rgb), alpha) — evita hex+alpha solto. */
+  --hg-blue-rgb:    15,169,104;
+  --hg-violet-rgb:  11,122,76;
+  --hg-magenta-rgb: 196,118,60;
+  --hg-pink-rgb:    217,148,97;
+  --hg-cyan-rgb:    111,191,154;
+  --hg-jade-light-rgb: 79,203,155;   /* tom claro p/ rings/focus/beams */
   /* Largura de conteúdo "full": mais largo no desktop (estilo next4), sem perder leitura.
      Override por seção via .wrap-narrow / .wrap-wide quando precisar. */
   --maxw: 1440px;
@@ -20,25 +30,25 @@
 /* Fundo escuro também no <html> (sem isso, ao dar pinça/zoom-out o celular revela
    uma faixa clara/morta nas bordas). overflow-x:clip impede que qualquer elemento
    decorativo largo torne a página "afastável" — comportamento de app nativo. */
-html { scroll-behavior: smooth; background: #050b1a; overflow-x: clip; }
+html { scroll-behavior: smooth; background: #0D1013; overflow-x: clip; }
 body {
   margin: 0;
   max-width: 100%;
-  background: #050b1a;
-  color: #fff;
+  background: #0D1013;
+  color: #E8E2D9;
   font-family: var(--font-sans);
   overflow-x: clip;
 }
-::selection { background: rgba(91,60,255,0.45); color: #fff; }
+::selection { background: rgba(11,122,76,0.45); color: #fff; }
 
 /* Custom scrollbar to match the cinematic mood */
 ::-webkit-scrollbar { width: 11px; height: 11px; }
-::-webkit-scrollbar-track { background: #070e20; }
+::-webkit-scrollbar-track { background: #12151A; }
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #1d427d, #0c2147);
-  border-radius: 999px; border: 2px solid #070e20;
+  background: linear-gradient(180deg, #2C343D, #171B20);
+  border-radius: 999px; border: 2px solid #12151A;
 }
-::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #2a5599, #163568); }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #3A444F, #232A32); }
 
 /* ── Film grain: the single biggest "this was made by a human" tell.
    A faint animated noise plate over the whole page kills the flat-vector
@@ -77,21 +87,21 @@ body {
   display: inline-flex; align-items: center; gap: 9px;
   padding: 8px 15px 8px 13px; border-radius: 999px;
   font: 600 10.5px var(--font-sans); letter-spacing: 0.2em; text-transform: uppercase;
-  color: #cbdcff;
+  color: #CFE9DC;
   background:
-    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.015)),
-    rgba(21,101,255,0.06);
-  border: 1px solid rgba(255,255,255,0.10);
+    linear-gradient(180deg, rgba(232,226,217,0.07), rgba(232,226,217,0.015)),
+    rgba(15,169,104,0.07);
+  border: 1px solid rgba(232,226,217,0.10);
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.06) inset,
-    0 8px 26px -16px rgba(91,60,255,0.9),
-    0 0 0 0.5px rgba(91,60,255,0.18);
+    0 1px 0 rgba(232,226,217,0.06) inset,
+    0 8px 26px -16px rgba(11,122,76,0.9),
+    0 0 0 0.5px rgba(11,122,76,0.18);
   backdrop-filter: blur(8px);
 }
 /* anel de gradiente sutil ao redor do badge */
 .eyebrow::before {
   content: ''; position: absolute; inset: 0; border-radius: inherit; padding: 1px;
-  background: linear-gradient(120deg, rgba(77,139,255,0.55), rgba(91,60,255,0.25) 45%, rgba(255,45,122,0.4));
+  background: linear-gradient(120deg, rgba(47,166,110,0.55), rgba(11,122,76,0.25) 45%, rgba(196,118,60,0.4));
   -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
   -webkit-mask-composite: xor; mask-composite: exclude;
   opacity: 0.5; pointer-events: none; z-index: -1;
@@ -109,13 +119,13 @@ body {
   letter-spacing: -0.035em; text-wrap: balance; margin: 20px 0 0;
 }
 .h-sec .accent {
-  background: linear-gradient(108deg, #6ea0ff 0%, #5b3cff 42%, #FF4D94 100%);
+  background: linear-gradient(108deg, #4FCB9B 0%, #0B7A4C 42%, #D99461 100%);
   -webkit-background-clip: text; background-clip: text; color: transparent;
   /* leve realce de luz no topo do glifo p/ dar volume ao degradê */
   background-size: 100% 100%;
 }
 .sub {
-  font: 400 clamp(15.5px, 1.4vw, 17.5px)/1.62 var(--font-sans); color: rgba(255,255,255,0.6);
+  font: 400 clamp(15.5px, 1.4vw, 17.5px)/1.62 var(--font-sans); color: rgba(232,226,217,0.6);
   max-width: 580px; margin: 20px 0 0; text-wrap: pretty; letter-spacing: 0.002em;
 }
 
@@ -129,16 +139,16 @@ body {
     0 0 11px var(--hg-pink),
     0 0 22px var(--hg-magenta),
     0 0 42px var(--hg-magenta),
-    0 0 78px rgba(255,45,122,0.55);
+    0 0 78px rgba(196,118,60,0.55);
   animation: neon-flicker 5.2s infinite alternate;
 }
 .neon-tube.blue {
   text-shadow:
     0 0 4px #fff,
-    0 0 11px #7da8ff,
+    0 0 11px #6FE3B4,
     0 0 22px var(--hg-blue),
     0 0 42px var(--hg-blue),
-    0 0 80px rgba(21,101,255,0.55);
+    0 0 80px rgba(15,169,104,0.55);
 }
 @keyframes neon-flicker {
   0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
@@ -178,7 +188,7 @@ body {
   content: ''; position: absolute; inset: 0; z-index: 0; pointer-events: none;
   border-radius: inherit; opacity: 0; transition: opacity .5s ease;
   background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%),
-    rgba(91,60,255,0.16), rgba(21,101,255,0.07) 40%, transparent 66%);
+    rgba(11,122,76,0.16), rgba(15,169,104,0.07) 40%, transparent 66%);
 }
 .spotlight:hover::before { opacity: 1; }
 
@@ -188,11 +198,11 @@ body {
 .glowcard {
   position: relative; overflow: hidden;
   background:
-    radial-gradient(140% 100% at 50% -10%, rgba(255,255,255,0.06), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.014));
-  border: 1px solid rgba(255,255,255,0.08);
+    radial-gradient(140% 100% at 50% -10%, rgba(232,226,217,0.06), transparent 55%),
+    linear-gradient(180deg, rgba(232,226,217,0.05), rgba(232,226,217,0.014));
+  border: 1px solid rgba(232,226,217,0.08);
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.05) inset,
+    0 1px 0 rgba(232,226,217,0.05) inset,
     0 20px 50px -34px rgba(0,0,0,0.85);
   transition: border-color .45s var(--ease-silk), background .45s var(--ease-silk),
               box-shadow .45s var(--ease-silk), transform .45s var(--ease-spring);
@@ -200,25 +210,25 @@ body {
 /* fina linha de luz no topo (capto de borda iluminada) */
 .glowcard::after {
   content: ''; position: absolute; top: 0; left: 12%; right: 12%; height: 1px; z-index: 2;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background: linear-gradient(90deg, transparent, rgba(232,226,217,0.4), transparent);
   opacity: 0.5; pointer-events: none; transition: opacity .45s ease;
 }
 .glowcard:hover::after { opacity: 0.9; }
 .glowcard::before {
   content: ''; position: absolute; width: 300px; height: 300px; border-radius: 999px;
   left: var(--gx, 50%); top: var(--gy, 50%); transform: translate(-50%,-50%);
-  background: radial-gradient(circle, var(--cardglow, rgba(91,60,255,0.4)), transparent 66%);
+  background: radial-gradient(circle, var(--cardglow, rgba(11,122,76,0.4)), transparent 66%);
   opacity: 0; transition: opacity .5s ease; pointer-events: none; z-index: 0;
 }
 .glowcard:hover::before { opacity: 0.6; }
 .glowcard:hover {
   background:
-    radial-gradient(140% 100% at 50% -10%, rgba(255,255,255,0.09), transparent 55%),
-    linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.02));
+    radial-gradient(140% 100% at 50% -10%, rgba(232,226,217,0.09), transparent 55%),
+    linear-gradient(180deg, rgba(232,226,217,0.07), rgba(232,226,217,0.02));
   box-shadow:
-    0 1px 0 rgba(255,255,255,0.08) inset,
+    0 1px 0 rgba(232,226,217,0.08) inset,
     0 30px 70px -34px rgba(0,0,0,0.9),
-    0 0 40px -22px rgba(91,60,255,0.5);
+    0 0 40px -22px rgba(11,122,76,0.5);
 }
 .glowcard > * { position: relative; z-index: 1; }
 
@@ -249,44 +259,44 @@ body {
 .btn > * { position: relative; z-index: 3; }
 .btn:active { transform: scale(0.975); }
 .btn-cta {
-  color: #fff; background: linear-gradient(140deg, #FF6AA6 0%, #FF2D7A 55%, #e01f67 100%);
+  color: #fff; background: linear-gradient(140deg, #E8A374 0%, #C4763C 55%, #A35F2D 100%);
   box-shadow:
-    0 0 0 1px rgba(255,45,122,0.45),
+    0 0 0 1px rgba(196,118,60,0.45),
     0 1px 0 rgba(255,255,255,0.3) inset,
-    0 16px 40px -14px rgba(255,45,122,0.7),
+    0 16px 40px -14px rgba(196,118,60,0.7),
     0 4px 10px -4px rgba(0,0,0,0.4);
 }
-.btn-cta:hover { transform: translateY(-2px); filter: brightness(1.05) saturate(1.05); box-shadow: 0 0 0 1px rgba(255,45,122,0.55), 0 1px 0 rgba(255,255,255,0.35) inset, 0 26px 64px -14px rgba(255,45,122,0.85), 0 0 36px -8px rgba(255,106,166,0.6); }
+.btn-cta:hover { transform: translateY(-2px); filter: brightness(1.05) saturate(1.05); box-shadow: 0 0 0 1px rgba(196,118,60,0.55), 0 1px 0 rgba(255,255,255,0.35) inset, 0 26px 64px -14px rgba(196,118,60,0.85), 0 0 36px -8px rgba(232,163,116,0.6); }
 .btn-ghost {
   color: #fff;
-  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.025));
+  background: linear-gradient(180deg, rgba(232,226,217,0.08), rgba(232,226,217,0.025));
   backdrop-filter: blur(16px);
-  border: 1px solid rgba(255,255,255,0.16);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.1) inset, 0 12px 30px -18px rgba(0,0,0,0.6);
+  border: 1px solid rgba(232,226,217,0.16);
+  box-shadow: 0 1px 0 rgba(232,226,217,0.1) inset, 0 12px 30px -18px rgba(0,0,0,0.6);
 }
 .btn-ghost::before { opacity: 0.4; }
-.btn-ghost:hover { transform: translateY(-2px); border-color: rgba(122,168,255,0.65); box-shadow: 0 1px 0 rgba(255,255,255,0.12) inset, 0 0 28px -6px rgba(91,60,255,0.55), 0 16px 40px -18px rgba(0,0,0,0.6); }
+.btn-ghost:hover { transform: translateY(-2px); border-color: rgba(111,227,180,0.65); box-shadow: 0 1px 0 rgba(232,226,217,0.12) inset, 0 0 28px -6px rgba(11,122,76,0.55), 0 16px 40px -18px rgba(0,0,0,0.6); }
 .btn-blue {
-  color: #fff; background: linear-gradient(140deg, #6ea0ff 0%, #1565FF 55%, #0d4fd6 100%);
+  color: #fff; background: linear-gradient(140deg, #4FCB9B 0%, #0FA968 55%, #0A7048 100%);
   box-shadow:
-    0 0 0 1px rgba(21,101,255,0.45),
+    0 0 0 1px rgba(15,169,104,0.45),
     0 1px 0 rgba(255,255,255,0.3) inset,
-    0 16px 40px -14px rgba(21,101,255,0.7),
+    0 16px 40px -14px rgba(15,169,104,0.7),
     0 4px 10px -4px rgba(0,0,0,0.4);
 }
-.btn-blue:hover { transform: translateY(-2px); filter: brightness(1.05) saturate(1.05); box-shadow: 0 0 0 1px rgba(21,101,255,0.55), 0 1px 0 rgba(255,255,255,0.35) inset, 0 26px 64px -14px rgba(21,101,255,0.85), 0 0 36px -8px rgba(110,160,255,0.6); }
+.btn-blue:hover { transform: translateY(-2px); filter: brightness(1.05) saturate(1.05); box-shadow: 0 0 0 1px rgba(15,169,104,0.55), 0 1px 0 rgba(255,255,255,0.35) inset, 0 26px 64px -14px rgba(15,169,104,0.85), 0 0 36px -8px rgba(79,203,155,0.6); }
 @media (prefers-reduced-motion: reduce) { .btn::after { display: none; } }
 
 .pill {
   display: inline-flex; align-items: center; gap: 7px; padding: 8px 14px; border-radius: 999px;
-  font: 500 12.5px var(--font-sans); color: rgba(255,255,255,0.78);
-  background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-  border: 1px solid rgba(255,255,255,0.10);
-  box-shadow: 0 1px 0 rgba(255,255,255,0.05) inset;
+  font: 500 12.5px var(--font-sans); color: rgba(232,226,217,0.78);
+  background: linear-gradient(180deg, rgba(232,226,217,0.06), rgba(232,226,217,0.02));
+  border: 1px solid rgba(232,226,217,0.10);
+  box-shadow: 0 1px 0 rgba(232,226,217,0.05) inset;
   transition: color .3s var(--ease-silk), border-color .3s var(--ease-silk), box-shadow .3s var(--ease-silk), transform .3s var(--ease-spring);
   cursor: default;
 }
-.pill:hover { color: #fff; transform: translateY(-1px); border-color: rgba(52,225,255,0.5); box-shadow: 0 1px 0 rgba(255,255,255,0.08) inset, 0 0 18px -4px rgba(52,225,255,0.5); }
+.pill:hover { color: #fff; transform: translateY(-1px); border-color: rgba(111,191,154,0.5); box-shadow: 0 1px 0 rgba(232,226,217,0.08) inset, 0 0 18px -4px rgba(111,191,154,0.5); }
 
 /* ── Entrance reveal on scroll — sobe com leve respiro (ease-silk) e um toque
    de profundidade. Variantes opcionais via .reveal--up/.reveal--scale. ──── */
@@ -299,13 +309,13 @@ body {
 /* Thin hairline divider with a glowing centre */
 .beam-divider {
   height: 1px; border: none; margin: 0;
-  background: linear-gradient(90deg, transparent, rgba(110,160,255,0.5) 28%, rgba(91,60,255,0.6) 50%, rgba(255,45,122,0.5) 72%, transparent);
-  box-shadow: 0 0 18px -2px rgba(91,60,255,0.5);
+  background: linear-gradient(90deg, transparent, rgba(79,203,155,0.5) 28%, rgba(11,122,76,0.6) 50%, rgba(196,118,60,0.5) 72%, transparent);
+  box-shadow: 0 0 18px -2px rgba(11,122,76,0.5);
 }
 /* Divisor "feixe" decorativo centralizado — usável entre seções. */
 .beam-dot {
   position: relative; height: 1px; border: none; margin: 0;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10) 30%, rgba(255,255,255,0.14) 50%, rgba(255,255,255,0.10) 70%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(232,226,217,0.10) 30%, rgba(232,226,217,0.14) 50%, rgba(232,226,217,0.10) 70%, transparent);
 }
 .beam-dot::after {
   content: ''; position: absolute; left: 50%; top: 50%; width: 5px; height: 5px;
@@ -324,29 +334,29 @@ body {
 .h-sec .accent,
 .about-copy .accent,
 .contact-left .accent {
-  text-shadow: 0 0 38px rgba(91,60,255,0.18);
+  text-shadow: 0 0 38px rgba(11,122,76,0.18);
 }
 
 /* Stat / número de destaque: degradê + brilho contido. Reutilizável. */
 .stat-num {
   font: 800 clamp(34px, 4vw, 44px)/1 var(--font-display);
   letter-spacing: -0.035em;
-  background: linear-gradient(120deg, #8fb6ff, #5b3cff 52%, #FF4D94);
+  background: linear-gradient(120deg, #6FE3B4, #0B7A4C 52%, #D99461);
   -webkit-background-clip: text; background-clip: text; color: transparent;
-  filter: drop-shadow(0 0 22px rgba(91,60,255,0.3));
+  filter: drop-shadow(0 0 22px rgba(11,122,76,0.3));
 }
 
 /* Hairline de seção: linha quase-invisível que dá ritmo entre blocos. */
 .hairline {
   height: 1px; border: none; margin: 0; width: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.09) 18%, rgba(255,255,255,0.12) 50%, rgba(255,255,255,0.09) 82%, transparent);
+  background: linear-gradient(90deg, transparent, rgba(232,226,217,0.09) 18%, rgba(232,226,217,0.12) 50%, rgba(232,226,217,0.09) 82%, transparent);
 }
 
 /* Foco visível e elegante para teclado (acessibilidade + acabamento). */
 a:focus-visible, button:focus-visible, input:focus-visible,
 select:focus-visible, textarea:focus-visible {
   outline: none;
-  box-shadow: 0 0 0 2px #050b1a, 0 0 0 4px rgba(110,160,255,0.65);
+  box-shadow: 0 0 0 2px #0D1013, 0 0 0 4px rgba(79,203,155,0.65);
   border-radius: 10px;
 }
 
@@ -355,9 +365,9 @@ a.glowcard, a.btn, button.btn { cursor: pointer; }
 
 /* Scrollbar afinada — combina com o tom cinematográfico (refinada). */
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #2a5599, #102a57);
+  background: linear-gradient(180deg, #3A444F, #1D2229);
 }
-::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #3a6bb5, #163568); }
+::-webkit-scrollbar-thumb:hover { background: linear-gradient(180deg, #4C5964, #232A32); }
 
 /* Imagem/print de card: leve realce para parecer "produzido". */
 .glowcard img { transition: transform .6s var(--ease-silk), filter .6s var(--ease-silk); }
@@ -390,14 +400,14 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 [data-lucide="arrow-right"] { transition: transform .35s var(--ease-spring); }
 
 /* Selection refinada (mantém marca). */
-::selection { background: rgba(91,60,255,0.4); color: #fff; }
+::selection { background: rgba(11,122,76,0.4); color: #fff; }
 
 /* ── Glass premium genérico p/ painéis grandes (about/cta/contato/depoimento):
    leve linha de luz no topo via classe opcional .glass-top ───────────────── */
 .glass-top { position: relative; }
 .glass-top::before {
   content: ''; position: absolute; top: 0; left: 8%; right: 8%; height: 1px; z-index: 3;
-  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.45), transparent);
+  background: linear-gradient(90deg, transparent, rgba(232,226,217,0.45), transparent);
   opacity: 0.6; pointer-events: none; border-radius: inherit;
 }
 

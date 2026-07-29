@@ -8,8 +8,8 @@ export default function manifest(): MetadataRoute.Manifest {
       "Websites, sistemas, automação e inteligência artificial para acelerar o crescimento da sua empresa.",
     start_url: "/",
     display: "standalone",
-    background_color: "#05060c",
-    theme_color: "#0a0c16",
+    background_color: "#0D1013",
+    theme_color: "#0D1013",
     lang: "pt-BR",
     orientation: "portrait-primary",
     icons: [

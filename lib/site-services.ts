@@ -29,7 +29,7 @@ export const siteServices: SiteService[] = [
       { h: "O que entregamos", p: "Site institucional ou landing page com design exclusivo (nada de template genérico), copywriting orientado a conversão, integração com WhatsApp, formulários e ferramentas de analytics (GA4, Meta Pixel, GTM). Você recebe SSL, domínio configurado, SEO on-page completo (títulos, metadados, dados estruturados), hospedagem otimizada e um painel simples para editar textos e imagens sem depender de programador." },
       { h: "Para quem é", p: "Para empresas que querem um cartão de visita digital à altura da marca, profissionais liberais que precisam captar clientes e negócios que vão rodar tráfego pago e precisam de uma landing page que realmente converta. Se a sua página atual é lenta, feia ou não gera contato, é aqui que resolvemos." },
     ],
-    glow: "rgba(21,101,255,0.45)", accent: "#4d8bff",
+    glow: "rgba(15,169,104,0.45)", accent: "#2DD4A0",
     tags: ["Institucional", "Landing Pages", "SEO", "Alta conversão"],
     outcomes: ["Carregamento em um piscar de olhos", "Otimizado para Google e redes sociais", "Responsivo e mobile-first", "Páginas que vendem, não só bonitas"],
     faq: [
@@ -52,7 +52,7 @@ export const siteServices: SiteService[] = [
       { h: "O que entregamos", p: "Loja no ar com identidade visual própria, páginas de produto persuasivas, checkout sem fricção, gateway de pagamento aprovado, regras de frete e cupons de desconto. Configuramos e-mails automáticos (confirmação, recuperação de carrinho), SEO de produto e categoria, certificado SSL e integração com Instagram Shopping e Google Shopping. Você recebe um painel completo para gerir pedidos, estoque e clientes — e treinamento para operar tudo sozinho." },
       { h: "Para quem é", p: "Para quem vai começar a vender online e quer estrutura profissional desde o primeiro dia, e para lojistas que já vendem mas estão presos a uma loja lenta, mal configurada ou com checkout que perde vendas. Também migramos lojas de uma plataforma para outra com segurança, preservando histórico e SEO." },
     ],
-    glow: "rgba(91,60,255,0.45)", accent: "#5b3cff",
+    glow: "rgba(11,122,76,0.45)", accent: "#0B7A4C",
     tags: ["Shopify", "WooCommerce", "Nuvemshop", "Checkout"],
     outcomes: ["Checkout sem fricção", "Integrações de pagamento e frete", "Pronta para escalar vendas", "Painel para gerir tudo"],
     faq: [
@@ -75,7 +75,7 @@ export const siteServices: SiteService[] = [
       { h: "O que entregamos", p: "Plano estratégico sob medida com posicionamento, estratégia de precificação e margem, definição de mix de produtos e estruturação de presença em marketplaces (cadastro, reputação, Buy Box, anúncios patrocinados e logística como Mercado Envios e FBA da Amazon). Definimos os KPIs que importam e montamos um painel de acompanhamento para você decidir com base em números. Inclui reuniões de acompanhamento para ajustar a rota." },
       { h: "Para quem é", p: "Para lojistas que vendem mas sentem que poderiam vender muito mais, que querem entrar (ou crescer) nos marketplaces sem queimar margem, ou que estão perdidos em meio a métricas e não sabem onde focar. Ideal para quem quer escalar com previsibilidade em vez de depender só de promoção." },
     ],
-    glow: "rgba(0,200,150,0.40)", accent: "#00C896",
+    glow: "rgba(15,169,104,0.40)", accent: "#0FA968",
     tags: ["Estratégia", "Marketplaces", "Precificação", "KPIs"],
     outcomes: ["Diagnóstico completo da operação", "Plano de crescimento sob medida", "Presença lucrativa em marketplaces", "Decisão baseada em dados"],
     faq: [
@@ -97,7 +97,7 @@ export const siteServices: SiteService[] = [
       { h: "O que entregamos", p: "SEO técnico (correção de Core Web Vitals, sitemap, robots, schema, indexação), otimização on-page de páginas e produtos (títulos, headings, metadados, links internos), produção de conteúdo otimizado que responde às dúvidas do seu cliente, e link building com backlinks de qualidade para aumentar a autoridade do domínio. Você recebe relatórios claros de posições, tráfego orgânico e conversões — sem jargão, com foco em resultado." },
       { h: "Para quem é", p: "Para empresas que querem reduzir a dependência de tráfego pago e construir um fluxo constante de visitas qualificadas, e-commerces que precisam ranquear categorias e produtos, e negócios locais que querem aparecer quando o cliente busca por serviços na região. SEO é um investimento de médio e longo prazo que se paga em previsibilidade." },
     ],
-    glow: "rgba(52,225,255,0.42)", accent: "#34e1ff",
+    glow: "rgba(111,191,154,0.42)", accent: "#6FBF9A",
     tags: ["SEO Técnico", "Conteúdo", "Link Building", "Ranqueamento Google"],
     outcomes: ["Mais tráfego qualificado e orgânico", "Primeiras posições no Google", "Menos dependência de anúncios", "Relatórios claros de ranqueamento"],
     faq: [
@@ -120,7 +120,7 @@ export const siteServices: SiteService[] = [
       { h: "O que entregamos", p: "Hospedagem gerenciada com uptime monitorado, SSL renovado automaticamente, registro e configuração de domínio, e-mails profissionais, backups diários com restauração rápida e proteção contra ataques e malware. Tudo com suporte humano em português — sem ticket genérico em inglês e sem você precisar entender de servidor. Migramos seu site atual sem downtime perceptível." },
       { h: "Para quem é", p: "Para quem está cansado de hospedagem barata que vive lenta ou fora do ar, empresas que não têm equipe de TI e precisam de tranquilidade, e qualquer negócio que dependa do site para vender ou captar clientes. Se o seu site cair, você perde dinheiro — e é justamente isso que evitamos." },
     ],
-    glow: "rgba(62,230,181,0.42)", accent: "#3ee6b5",
+    glow: "rgba(111,227,180,0.42)", accent: "#6FE3B4",
     tags: ["Gerenciada", "SSL & Domínio", "E-mail Profissional", "Uptime 24/7"],
     outcomes: ["Site rápido e sempre no ar", "SSL, domínio e e-mail incluídos", "Backups e monitoramento 24/7", "Suporte humano em português"],
     faq: [
@@ -143,7 +143,7 @@ export const siteServices: SiteService[] = [
       { h: "O que entregamos", p: "Cartão digital responsivo com design alinhado à sua identidade, link curto e personalizado, QR Code em alta resolução para imprimir, botões de ação direta (clicou, conversou), integração com WhatsApp e redes, e a opção de link na bio para usar no Instagram e TikTok. Você pode atualizar telefone, promoções e links quando quiser, sem reimprimir nada — e acompanhar quantas pessoas acessaram." },
       { h: "Para quem é", p: "Para profissionais autônomos, vendedores, corretores, médicos, cabeleireiros e qualquer pessoa que faz networking e quer causar uma ótima primeira impressão. Ideal também para quem usa Instagram e TikTok e precisa concentrar todos os links em um só lugar, e para equipes comerciais que querem padronizar o contato de todo mundo." },
     ],
-    glow: "rgba(255,45,122,0.42)", accent: "#FF4D94",
+    glow: "rgba(196,118,60,0.42)", accent: "#D99461",
     tags: ["Link na Bio", "QR Code", "vCard", "Redes Sociais"],
     outcomes: ["Todos os contatos em um link", "QR Code para compartilhar na hora", "Salva direto na agenda (vCard)", "Atualizável quando quiser"],
     faq: [
@@ -167,7 +167,7 @@ export const siteServices: SiteService[] = [
       { h: "Otimização contínua e relatórios que você entende", p: "Campanha não é 'configurar e esquecer'. Acompanhamos diariamente CPA, ROAS, CTR e taxa de conversão, ajustando lances, públicos e criativos para extrair o máximo do orçamento. Você recebe relatórios claros, sem jargão, mostrando exatamente quanto entrou, quanto saiu e qual o retorno. Transparência total para você enxergar o crescimento acontecer mês a mês." },
       { h: "Previsibilidade para escalar com segurança", p: "Quando o funil está validado e os números fazem sentido, escalar deixa de ser aposta. Ajudamos você a crescer o investimento de forma controlada, mantendo a rentabilidade e abrindo novos canais e públicos. O objetivo é simples: um motor de aquisição de clientes que roda todos os dias e cresce junto com a sua empresa." },
     ],
-    glow: "rgba(255,45,122,0.42)", accent: "#FF4D94",
+    glow: "rgba(196,118,60,0.42)", accent: "#D99461",
     tags: ["Meta Ads", "Google Ads", "Performance", "Funil"],
     outcomes: ["Mais vendas com previsibilidade", "Otimização contínua de ROI", "Criativos que convertem", "Relatórios claros e sem jargão"],
     faq: [
@@ -191,7 +191,7 @@ export const siteServices: SiteService[] = [
       { h: "Community management que gera relacionamento", p: "Rede social é via de mão dupla. Monitoramos e respondemos comentários e mensagens, interagimos com seguidores e acompanhamos o que a audiência fala sobre a marca. Esse cuidado com a comunidade aumenta o alcance orgânico, transforma seguidores em fãs e abre portas para vendas que começam em uma simples conversa na DM." },
       { h: "Métricas e ajuste de rota mês a mês", p: "Acompanhamos crescimento de seguidores, alcance, engajamento e os conteúdos que mais performam. Com esses dados, refinamos a estratégia continuamente, dobrando a aposta no que funciona e cortando o que não traz retorno. Você recebe relatórios de evolução e enxerga sua marca ganhando força e relevância de forma consistente." },
     ],
-    glow: "rgba(91,60,255,0.42)", accent: "#5b3cff",
+    glow: "rgba(11,122,76,0.42)", accent: "#0B7A4C",
     tags: ["Instagram", "Facebook", "Calendário editorial", "Community"],
     outcomes: ["Presença constante e profissional", "Conteúdo com estratégia, não aleatório", "Mais alcance e engajamento", "Comunidade ativa e relacionamento"],
     faq: [
@@ -239,7 +239,7 @@ export const siteServices: SiteService[] = [
       { h: "Conteúdo com propósito, não vídeo por vídeo", p: "Vídeo bonito que não comunica não vende. Pensamos cada Reel dentro da sua estratégia: bastidores que humanizam, dicas que geram autoridade, provas sociais que convencem e ofertas que convertem. Alinhamos roteiro, mensagem e chamada para ação para que o alcance vire seguidor, e o seguidor, cliente." },
       { h: "Da gravação ao post pronto para publicar", p: "Você grava (ou nos envia o material) e nós cuidamos do resto: seleção das melhores tomadas, edição, legendas, capa e formatação vertical ideal. Entregamos o vídeo pronto para subir, no padrão da sua marca. Sem complicação técnica, sem softwares — só conteúdo profissional rodando nas suas redes com constância." },
     ],
-    glow: "rgba(52,225,255,0.42)", accent: "#34e1ff",
+    glow: "rgba(111,191,154,0.42)", accent: "#6FBF9A",
     tags: ["Reels", "Vídeos curtos", "Edição", "Alcance orgânico"],
     outcomes: ["Vídeos que param o scroll", "Mais alcance orgânico", "Edição com legendas e ritmo", "Vídeos prontos para publicar"],
     faq: [
@@ -263,7 +263,7 @@ export const siteServices: SiteService[] = [
       { h: "Design e identidade visual aplicados ao formato", p: "Stories também comunicam profissionalismo. Aplicamos sua identidade visual em capas, fundos, tipografia e elementos gráficos, criando uma experiência coesa e bonita em tela cheia. Esse cuidado diferencia sua marca do conteúdo amador e reforça a percepção de qualidade a cada toque na tela." },
       { h: "Stories que vendem com chamadas para ação", p: "É no story que a venda acontece de forma natural. Inserimos provas sociais, demonstrações, ofertas e CTAs com link e direcionamento estratégico — do 'arrasta pra cima' à figurinha de link e ao convite para a DM. Transformamos visualizações em cliques, conversas e conversões, fechando o ciclo entre presença e resultado." },
     ],
-    glow: "rgba(91,60,255,0.42)", accent: "#5b3cff",
+    glow: "rgba(11,122,76,0.42)", accent: "#0B7A4C",
     tags: ["Stories", "Instagram", "Enquetes e caixinhas", "CTA"],
     outcomes: ["Presença diária no topo do feed", "Mais interação e respostas", "Identidade visual no formato vertical", "Vendas iniciadas na DM"],
     faq: [
@@ -287,7 +287,7 @@ export const siteServices: SiteService[] = [
       { h: "Experiência rápida e mobile-first", p: "Web Stories carregam quase instantaneamente e foram feitos para o celular, onde está a maior parte das buscas. Produzimos cada story com design premium, imagens otimizadas, animações leves e navegação por toque — uma experiência fluida que reduz a taxa de rejeição e aumenta o tempo de permanência, sinais que o Google valoriza para rankear ainda melhor." },
       { h: "Conteúdo que converte visitante em cliente", p: "Atrair tráfego é só metade do trabalho. Estruturamos os Web Stories com chamadas para ação estratégicas — link para produto, página de captura, contato ou conteúdo relacionado — para que o visitante orgânico avance na jornada. Assim, o que começa como uma descoberta na busca do Google termina como lead ou venda dentro do seu site." },
     ],
-    glow: "rgba(21,101,255,0.45)", accent: "#4d8bff",
+    glow: "rgba(15,169,104,0.45)", accent: "#2DD4A0",
     tags: ["Web Stories", "SEO", "Google Discover", "Tráfego orgânico"],
     outcomes: ["Presença no Google e no Discover", "Tráfego orgânico contínuo", "Conteúdo indexável e duradouro", "Visitantes que viram clientes"],
     faq: [
@@ -311,7 +311,7 @@ export const siteServices: SiteService[] = [
       { h: "Recuperação de carrinho abandonado", p: "A maioria das vendas online é abandonada no meio do caminho. Criamos réguas de recuperação de carrinho que reconquistam quem chegou perto de comprar e desistiu, com lembretes, provas sociais e incentivos no timing certo. É um dos fluxos com maior retorno do e-commerce: recupera receita que estava praticamente perdida, de forma totalmente automatizada." },
       { h: "Newsletter, segmentação e relatórios", p: "Mantemos sua marca presente com newsletters que entregam valor — novidades, conteúdo e ofertas — sem cair no spam. Segmentamos a base por interesse e comportamento para aumentar a relevância e as taxas de abertura e clique, e acompanhamos métricas de entregabilidade e conversão. Você enxerga exatamente quanta receita o e-mail está gerando, mês a mês." },
     ],
-    glow: "rgba(0,200,150,0.40)", accent: "#3ee6b5",
+    glow: "rgba(15,169,104,0.40)", accent: "#6FE3B4",
     tags: ["Automações", "Recuperação de carrinho", "Réguas", "Newsletter"],
     outcomes: ["Carrinhos recuperados no automático", "Clientes que voltam a comprar", "Receita previsível por e-mail", "Base segmentada e engajada"],
     faq: [
@@ -335,7 +335,7 @@ export const siteServices: SiteService[] = [
       { h: "Edição que segura o scroll", p: "Cortes no tempo certo, legendas dinâmicas, motion graphics, color grading e mixagem de áudio fazem a diferença entre um vídeo ignorado e um vídeo assistido até o fim. Nossa edição é pensada para reter atenção desde o primeiro frame, com cuidado técnico de cinema e leitura de performance — porque vídeo bonito que ninguém termina de ver não traz resultado." },
       { h: "Vídeo orientado a resultado", p: "Cada produção é planejada com uma métrica em mente: mais visualizações, mais retenção, mais cliques ou mais vendas. Entregamos arquivos otimizados para cada plataforma e, quando o vídeo é para anúncios, criamos variações de gancho para testar o que performa melhor. Resultado é vídeo profissional que trabalha pela sua marca todos os dias." },
     ],
-    glow: "rgba(52,225,255,0.42)", accent: "#34e1ff",
+    glow: "rgba(111,191,154,0.42)", accent: "#6FBF9A",
     tags: ["Reels", "Anúncios", "Institucional", "Edição"],
     outcomes: ["Vídeos que param o scroll", "Conteúdo pronto para social, anúncios e TV", "Edição profissional nível cinema", "Mais retenção e mais conversão"],
     faq: [
@@ -359,7 +359,7 @@ export const siteServices: SiteService[] = [
       { h: "Tratamento e entrega premium", p: "Depois da captação, fazemos seleção criteriosa e tratamento profissional: correção de cor, ajuste de luz, retoque de pele natural e padronização visual para que todas as fotos conversem entre si. Você recebe as imagens em alta resolução, prontas para site, redes sociais, LinkedIn, apresentações e impressão, organizadas e nomeadas para uso imediato." },
       { h: "Um banco de imagens só seu", p: "Ao final, você não fica com uma foto solta — fica com um acervo visual coerente e exclusivo da sua marca, sem depender de bancos de imagem genéricos que todo mundo usa. Esse padrão consistente fortalece o reconhecimento da marca em cada ponto de contato e dá liberdade para criar conteúdo o ano inteiro." },
     ],
-    glow: "rgba(21,101,255,0.40)", accent: "#4d8bff",
+    glow: "rgba(15,169,104,0.40)", accent: "#2DD4A0",
     tags: ["Retratos", "Equipe", "Ambiente", "Corporativo"],
     outcomes: ["Imagem profissional e confiável", "Acervo visual exclusivo da marca", "Fotos prontas para site e redes", "Padrão consistente em todo material"],
     faq: [
@@ -383,7 +383,7 @@ export const siteServices: SiteService[] = [
       { h: "Catálogo, detalhe e lifestyle", p: "Além do still em fundo branco, produzimos fotos de detalhe (acabamento, etiqueta, textura), imagens em escala para mostrar tamanho e fotos lifestyle, com o produto em uso em um contexto real. Esse conjunto conta a história completa do produto na página, responde as principais dúvidas antes que o cliente pergunte e aumenta o tempo de permanência no anúncio." },
       { h: "Volume com consistência", p: "Loja virtual e catálogo precisam de padrão: mesma luz, mesmo enquadramento, mesmo fundo em dezenas ou centenas de itens. Trabalhamos com fluxo de produção em escala para fotografar grandes volumes mantendo identidade visual idêntica entre todos os produtos. Resultado é uma vitrine profissional e coerente, que transmite a sensação de loja séria e confiável." },
     ],
-    glow: "rgba(62,230,181,0.42)", accent: "#3ee6b5",
+    glow: "rgba(111,227,180,0.42)", accent: "#6FE3B4",
     tags: ["Fundo branco", "Still", "Catálogo", "Lifestyle"],
     outcomes: ["Imagens no padrão dos marketplaces", "Mais conversão e menos devolução", "Catálogo visualmente consistente", "Produto valorizado em cada detalhe"],
     faq: [
@@ -431,7 +431,7 @@ export const siteServices: SiteService[] = [
       { h: "Logo que funciona no mundo real", p: "Um bom logotipo precisa funcionar em tudo: legível no ícone do app, nítido na nota fiscal, marcante na embalagem, bonito bordado em um uniforme. Por isso entregamos o logo em versões horizontal, vertical, reduzida, monocromática e em todos os formatos de arquivo (vetor e imagem), além de testar a aplicação em fundos claros e escuros. Versatilidade que evita retrabalho no futuro." },
       { h: "Manual de marca para escalar com consistência", p: "Você recebe um manual de marca (brandbook) com as regras de uso: como aplicar o logo, cores em todos os códigos (Pantone, CMYK, RGB, HEX), tipografia, espaçamentos e usos proibidos. Esse documento garante que qualquer pessoa — sua equipe, um fornecedor ou uma agência — aplique a marca corretamente, mantendo a consistência que constrói valor ao longo do tempo." },
     ],
-    glow: "rgba(91,60,255,0.42)", accent: "#5b3cff",
+    glow: "rgba(11,122,76,0.42)", accent: "#0B7A4C",
     tags: ["Logotipo", "Identidade visual", "Manual de marca", "Branding"],
     outcomes: ["Logotipo exclusivo e profissional", "Identidade visual completa", "Manual de marca para padronizar tudo", "Marca memorável e bem posicionada"],
     faq: [
@@ -454,7 +454,7 @@ export const siteServices: SiteService[] = [
       { h: "O que entregamos", p: "Agente de IA no WhatsApp que tira dúvidas, qualifica o lead, agenda reuniões e encaminha quem está pronto para comprar — com transbordo para humano quando necessário. Construímos fluxos no n8n que integram seus sistemas, disparam mensagens automáticas, registram leads no CRM e geram relatórios. Tudo configurado, testado e monitorado, com ajustes contínuos para o agente ficar cada vez mais afiado." },
       { h: "Para quem é", p: "Para negócios que recebem muitas mensagens e perdem vendas por demora na resposta, equipes pequenas que não dão conta do volume, e empresas que querem escalar o atendimento sem inchar a folha de pagamento. Ideal para e-commerces, clínicas, prestadores de serviço e infoprodutores que vivem de conversas no WhatsApp." },
     ],
-    glow: "rgba(21,101,255,0.45)", accent: "#1565FF",
+    glow: "rgba(15,169,104,0.45)", accent: "#0FA968",
     tags: ["Agente de IA", "WhatsApp", "n8n", "Automação 24/7"],
     outcomes: ["Atendimento 24/7 com IA", "Leads qualificados automaticamente", "Menos custo e menos erro", "Integração entre seus sistemas"],
     faq: [
