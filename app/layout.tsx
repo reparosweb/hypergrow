@@ -99,6 +99,10 @@ const orgSchema = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR" className={`${inter.variable} ${display.variable} ${archivo.variable} ${plexSans.variable} ${plexMono.variable}`}>
+      <head>
+        {/* substitui o apple-mobile-web-app-capable (deprecado) que o Next injeta via appleWebApp */}
+        <meta name="mobile-web-app-capable" content="yes" />
+      </head>
       <body>
         <Analytics />
         <script

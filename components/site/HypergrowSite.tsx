@@ -1,7 +1,7 @@
 // @ts-nocheck
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useId } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import Script from "next/script";
 import TrustMarquee from "./TrustMarquee";
 import { siteServices } from "@/lib/site-services";
@@ -11,9 +11,15 @@ const waUrl = WHATSAPP
   ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Quero falar com a HyperGrow.")}`
   : "#contato";
 
-/* ───────────────────────── Logo ───────────────────────── */
+/* ───────────────────────── Logo ─────────────────────────
+   IDs dos gradientes/filtros do SVG precisam ser ESTÁVEIS entre SSR e cliente.
+   `useId()` gerava prefixos diferentes no servidor (ex. "R1a6fsq") e no cliente
+   ("r0"), o que fazia o React acusar divergência de hidratação (#418/#423/#425)
+   e DESCARTAR o HTML do servidor, re-renderizando a página toda no cliente —
+   um custo de performance real. Uma chave derivada das props é determinística
+   e suficiente aqui (o Logo aparece em variantes distintas: 32/34, com/sem palavra). */
 function Logo({ height = 34, showWord = true }) {
-  const uid = useId().replace(/:/g, "");
+  const uid = `${height}${showWord ? "w" : "n"}`;
   const g1 = `hgA-${uid}`, g2 = `hgB-${uid}`, gl = `hgGlow-${uid}`, sh = `hgSheen-${uid}`;
   const markH = height, markW = height;
   return (
@@ -263,14 +269,40 @@ function Hero() {
 }
 
 /* ───────────────────────── Services ───────────────────────── */
+// 4 pilares: agrupam os 19 serviços para responder "o que a HyperGrow faz" em
+// 4 palavras, sem despejar uma lista de 19 itens de uma vez.
+const PILLARS = [
+  { key: "vender", label: "Vender online", icon: "shopping-cart", desc: "Site, loja e presença que convertem visita em cliente.", slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo"] },
+  { key: "atrair", label: "Atrair demanda", icon: "trending-up", desc: "Tráfego e réguas que trazem gente pronta pra comprar.", slugs: ["marketing-trafego", "email-marketing", "web-stories"] },
+  { key: "marca", label: "Marca & conteúdo", icon: "palette", desc: "Identidade, foto, vídeo e redes com o padrão da sua marca.", slugs: ["redes-sociais", "posts-redes-sociais", "posts-video", "stories-instagram", "producao-de-video", "producao-fotografica", "fotos-produtos", "design-identidade", "criacao-logo"] },
+  { key: "ia", label: "Operar com IA", icon: "bot", desc: "Agentes e automações que atendem e vendem sozinhos.", slugs: ["automacoes-ia"] },
+];
+
 function Services() {
   const spot = useSpotlight();
-  const data = siteServices;
+  const [pillar, setPillar] = useState("todos");
+  const active = PILLARS.find((p) => p.key === pillar);
+  const data = active ? siteServices.filter((s) => active.slugs.includes(s.slug)) : siteServices;
   return (
     <section id="servicos" className="sec">
       <div className="wrap">
-        <SectionHead center eyebrow="Serviços" title="A operação completa do seu" accent="e-commerce" dotColor="#2DD4A0" sub="Da loja virtual ao tráfego, design, automação, e-mail, IA e logística — tudo num só lugar." />
-        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal stagger" style={{ marginTop: 52, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, borderRadius: 24, padding: 2 }}>
+        <SectionHead center eyebrow="Serviços" title="Tudo que a" accent="HyperGrow faz" dotColor="#2DD4A0" sub="4 frentes, 19 serviços, uma operação só — da loja virtual à IA que atende por você." />
+        {/* Pilares: sempre visíveis, contam a história em 4 rótulos mesmo sem clicar. */}
+        <div className="reveal stagger" style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 230px), 1fr))", gap: 14 }}>
+          {PILLARS.map((p) => (
+            <button key={p.key} onClick={() => setPillar(pillar === p.key ? "todos" : p.key)} className="glowcard neon-card" {...cardGlow("rgba(15,169,104,0.35)")}
+              style={{ textAlign: "left", cursor: "pointer", borderRadius: 16, padding: 18, display: "flex", gap: 12, alignItems: "flex-start", border: pillar === p.key ? "1px solid rgba(15,169,104,0.55)" : undefined }}>
+              <span style={{ flexShrink: 0, width: 38, height: 38, borderRadius: 11, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#2DD4A0", background: "rgba(15,169,104,0.12)", border: "1px solid rgba(15,169,104,0.3)" }}>
+                <i data-lucide={p.icon} style={{ width: 18, height: 18 }}></i>
+              </span>
+              <div>
+                <div style={{ font: "700 14.5px var(--font-sans)", color: "#fff" }}>{p.label}</div>
+                <div style={{ font: "400 12.5px/1.4 var(--font-sans)", color: "rgba(255,255,255,0.55)", marginTop: 3 }}>{p.desc}</div>
+              </div>
+            </button>
+          ))}
+        </div>
+        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal stagger" style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, borderRadius: 24, padding: 2 }}>
           {data.map((s) => (
             <a key={s.slug} href={`/servicos/${s.slug}`} className="glowcard neon-card" {...cardGlow(s.glow)} style={{ borderRadius: 20, padding: 26, minHeight: 220, display: "block", color: "inherit" }}>
               <span style={{ width: 50, height: 50, borderRadius: 14, display: "inline-flex", alignItems: "center", justifyContent: "center", color: s.accent, background: "rgba(255,255,255,0.05)", border: `1px solid ${s.accent}44`, boxShadow: `inset 0 0 22px -10px ${s.accent}, 0 0 22px -12px ${s.accent}` }}>
@@ -289,6 +321,54 @@ function Services() {
         </div>
       </div>
       <style>{`@media (max-width: 900px){ #servicos .spotlight { grid-template-columns: 1fr !important; } }`}</style>
+    </section>
+  );
+}
+
+/* ───────────────────────── PainPoints ─────────────────────────
+   Seção signature: em vez de listar serviços, parte da DOR real do visitante
+   e mostra o diagnóstico + o serviço exato que resolve. É o elemento que a
+   página é lembrada — útil, não decorativo. */
+const PAINS = [
+  { icon: "monitor-x", pain: "Meu site não vende", diag: "Ou ninguém acha o seu site no Google, ou quem acha não entende o que você faz em 5 segundos e sai. Isso não se resolve deixando \"mais bonito\" — se resolve com estrutura, velocidade e uma oferta clara.", slug: "criacao-de-site", fix: "Criação de Site & Landing Pages" },
+  { icon: "phone-missed", pain: "Perco cliente fora do horário", diag: "Mensagem chega às 22h, no fim de semana, no feriado — e só é respondida no dia seguinte. Nesse intervalo o cliente já comprou com o concorrente que respondeu na hora.", slug: "automacoes-ia", fix: "Automações & IA", proofId: "agentop" },
+  { icon: "flame", pain: "Anúncio queima dinheiro sem resultado", diag: "Campanha ligada sem estratégia de público, criativo ou funil só transforma orçamento em cliques que não convertem. O problema raramente é a plataforma — é a falta de plano por trás dela.", slug: "marketing-trafego", fix: "Marketing Digital & Tráfego Pago" },
+  { icon: "instagram", pain: "Meu Instagram não traz cliente", diag: "Postar sem calendário, sem pilar de conteúdo e sem chamada para ação vira feed bonito que não gera venda. Rede social sem estratégia é vitrine vazia.", slug: "redes-sociais", fix: "Gestão de Redes Sociais" },
+];
+
+function PainPoints() {
+  const [active, setActive] = useState(0);
+  const p = PAINS[active];
+  return (
+    <section className="sec" id="dores">
+      <div className="wrap">
+        <SectionHead center eyebrow="Reconhece algum desses?" title="Provavelmente você chegou aqui por" accent="um desses motivos" dotColor="#C4763C" sub="Escolha a dor que mais pesa hoje — a gente mostra exatamente o que resolve ela." />
+        <div className="reveal" style={{ marginTop: 44, display: "grid", gridTemplateColumns: "minmax(0,0.85fr) minmax(0,1.15fr)", gap: 24, alignItems: "stretch" }} id="pain-grid">
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {PAINS.map((item, i) => (
+              <button key={item.pain} onClick={() => setActive(i)} className={active === i ? "neon-card" : "glowcard neon-card"}
+                style={{ textAlign: "left", cursor: "pointer", display: "flex", alignItems: "center", gap: 14, borderRadius: 16, padding: "16px 18px",
+                  background: active === i ? "linear-gradient(180deg, rgba(196,118,60,0.14), rgba(255,255,255,0.02))" : undefined,
+                  border: active === i ? "1px solid rgba(196,118,60,0.5)" : "1px solid rgba(255,255,255,0.08)" }}>
+                <span style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, display: "inline-flex", alignItems: "center", justifyContent: "center", color: active === i ? "#D99461" : "rgba(255,255,255,0.6)", background: active === i ? "rgba(196,118,60,0.16)" : "rgba(255,255,255,0.05)" }}>
+                  <i data-lucide={item.icon} style={{ width: 18, height: 18 }}></i>
+                </span>
+                <span style={{ font: "600 15px var(--font-sans)", color: "#fff" }}>{item.pain}</span>
+                <i data-lucide="chevron-right" style={{ width: 16, height: 16, marginLeft: "auto", color: "rgba(255,255,255,0.4)", transform: active === i ? "translateX(2px)" : "none", transition: "transform .3s" }}></i>
+              </button>
+            ))}
+          </div>
+          <div className="neon-card glass-top" style={{ borderRadius: 22, padding: 34, background: "linear-gradient(165deg, rgba(196,118,60,0.08), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)", display: "flex", flexDirection: "column" }}>
+            <div className="eyebrow" style={{ alignSelf: "flex-start" }}><span className="dot" style={{ background: "#D99461", boxShadow: "0 0 10px #D99461" }}></span>Diagnóstico</div>
+            <p style={{ font: "500 19px/1.55 var(--font-display)", color: "#fff", margin: "18px 0 0", textWrap: "pretty" }}>{p.diag}</p>
+            <div style={{ marginTop: "auto", paddingTop: 26, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 14 }}>
+              <span style={{ font: "400 13px var(--font-sans)", color: "rgba(255,255,255,0.55)" }}>O que resolve:</span>
+              <a href={`/servicos/${p.slug}`} className="pill" style={{ textDecoration: "none", color: "#fff", background: "rgba(196,118,60,0.14)", borderColor: "rgba(196,118,60,0.4)" }}>{p.fix} <i data-lucide="arrow-right" style={{ width: 13, height: 13 }}></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <style>{`@media (max-width:760px){ #pain-grid { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }
@@ -443,11 +523,15 @@ function Process() {
 }
 
 /* ───────────────────────── Testimonials + About ───────────────────────── */
+// Prova verificável em vez de depoimento inventado: fato concreto de um projeto
+// REAL, no ar, com link — qualquer visitante pode clicar e conferir. Substituiu
+// os 3 depoimentos placeholder (ninguém disse aquelas frases).
 function Testimonials() {
   const items = [
-    { q: "A HyperGrow entregou nosso sistema no prazo e com uma qualidade muito acima do que esperávamos. A automação de atendimento mudou nossa operação por completo.", n: "Diretor de operações", r: "Clínica multiprofissional", c: "#6FBF9A" },
-    { q: "Em três meses o agente de IA já respondia 80% dos atendimentos sozinho. Voltamos a ter tempo para crescer em vez de apagar incêndio.", n: "Founder", r: "Marketplace de serviços", c: "#D99461" },
-    { q: "Saímos de planilhas para um sistema sob medida que fala com tudo que usamos. Parece que a empresa virou outra — mais rápida e previsível.", n: "Sócia", r: "Operação logística", c: "#0B7A4C" },
+    { fact: "Analisa 24 meses de sorteios oficiais da Caixa, gera combinações por IA e cobra por PIX real com liberação automática via webhook.", project: "Sorteio Bilionário IA", url: "https://www.sorteiobilionario.com.br", c: "#D99461" },
+    { fact: "Agenda, CRM, financeiro e um agente de IA que atende no WhatsApp — rodando multi-tenant para dezenas de profissionais autônomos.", project: "Agentop", url: "https://agentop.com.br", c: "#6FBF9A" },
+    { fact: "Reúne múltiplas transportadoras num painel único, simplificando o envio de quem vende em e-commerce.", project: "Clicou Enviou", url: "https://www.clicouenviou.com.br", c: "#0B7A4C" },
+    { fact: "Estima macronutrientes a partir de uma foto do prato, com visão computacional em tempo real.", project: "NutriSnap", url: "https://calorias.app.br", c: "#2DD4A0" },
   ];
   const [i, setI] = useState(0);
   const go = (d) => setI((v) => (v + d + items.length) % items.length);
@@ -456,34 +540,31 @@ function Testimonials() {
   return (
     <section className="sec" id="depoimentos">
       <div className="wrap">
-        <SectionHead center eyebrow="Depoimentos" title="Quem trabalha com a gente," accent="cresce" dotColor="#D99461" />
+        <SectionHead center eyebrow="Prova, não promessa" title="Não é depoimento inventado." accent="É o produto no ar." dotColor="#D99461" sub="Cada fato abaixo é sobre um projeto real da HyperGrow, ainda funcionando hoje. Clique e confira você mesmo." />
         <div className="reveal" style={{ maxWidth: 800, margin: "44px auto 0" }}>
-          <div className="neon-card glass-top" style={{ position: "relative", borderRadius: 24, padding: "44px 44px 36px", background: "linear-gradient(165deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)", overflow: "hidden" }}>
+          <a href={t.url} target="_blank" rel="noopener noreferrer" className="neon-card glass-top" style={{ position: "relative", display: "block", borderRadius: 24, padding: "44px 44px 36px", background: "linear-gradient(165deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)", overflow: "hidden", color: "inherit" }}>
             <div aria-hidden="true" style={{ position: "absolute", top: -40, right: -20, width: 220, height: 220, background: `radial-gradient(circle, ${t.c}33, transparent 66%)`, transition: "all .6s", pointerEvents: "none" }}></div>
-            <i data-lucide="quote" style={{ width: 40, height: 40, color: t.c, opacity: 0.65, marginBottom: 18 }}></i>
-            <p style={{ font: "500 23px/1.5 var(--font-display)", letterSpacing: "-0.015em", color: "#fff", margin: 0, textWrap: "pretty", minHeight: 140 }}>&ldquo;{t.q}&rdquo;</p>
+            <i data-lucide="badge-check" style={{ width: 40, height: 40, color: t.c, opacity: 0.75, marginBottom: 18 }}></i>
+            <p style={{ font: "500 23px/1.5 var(--font-display)", letterSpacing: "-0.015em", color: "#fff", margin: 0, textWrap: "pretty", minHeight: 110 }}>{t.fact}</p>
             <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 28, flexWrap: "wrap", gap: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
-                <span style={{ width: 46, height: 46, borderRadius: 999, background: `linear-gradient(135deg, ${t.c}, #0FA968)`, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", font: "700 16px var(--font-display)", boxShadow: `0 0 22px -8px ${t.c}` }}>{t.n[0]}</span>
-                <div>
-                  <div style={{ font: "600 15px var(--font-sans)", color: "#fff" }}>{t.n}</div>
-                  <div style={{ font: "400 13px var(--font-sans)", color: "rgba(255,255,255,0.55)" }}>{t.r}</div>
-                </div>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ font: "600 15px var(--font-sans)", color: "#fff" }}>{t.project}</span>
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 5, font: "600 12.5px var(--font-sans)", color: t.c }}>Ver no ar <i data-lucide="external-link" style={{ width: 13, height: 13 }}></i></span>
               </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 16 }} onClick={(e) => e.preventDefault()}>
                 <div style={{ display: "flex", gap: 7 }}>
-                  {items.map((_, k) => (<button key={k} onClick={() => setI(k)} aria-label={`Depoimento ${k + 1}`} style={{ width: k === i ? 26 : 8, height: 8, borderRadius: 999, border: "none", cursor: "pointer", transition: "all .3s", background: k === i ? "linear-gradient(90deg,#0B7A4C,#C4763C)" : "rgba(255,255,255,0.2)" }}></button>))}
+                  {items.map((_, k) => (<button key={k} onClick={(e) => { e.preventDefault(); setI(k); }} aria-label={`Prova ${k + 1}`} style={{ width: k === i ? 26 : 8, height: 8, borderRadius: 999, border: "none", cursor: "pointer", transition: "all .3s", background: k === i ? "linear-gradient(90deg,#0B7A4C,#C4763C)" : "rgba(255,255,255,0.2)" }}></button>))}
                 </div>
                 <div style={{ display: "flex", gap: 8 }}>
                   {[["chevron-left", -1], ["chevron-right", 1]].map(([ic, d]) => (
-                    <button key={ic} onClick={() => go(d)} className="neon-card" style={{ width: 40, height: 40, borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
+                    <button key={ic} onClick={(e) => { e.preventDefault(); go(d); }} className="neon-card" style={{ width: 40, height: 40, borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
                       <i data-lucide={ic} style={{ width: 18, height: 18 }}></i>
                     </button>
                   ))}
                 </div>
               </div>
             </div>
-          </div>
+          </a>
         </div>
       </div>
     </section>
@@ -570,7 +651,7 @@ function FinalCTA() {
     <section className="sec">
       <div className="wrap">
         <div className="neon-card reveal reveal--scale glass-top" style={{ position: "relative", borderRadius: 28, padding: "64px 40px", textAlign: "center", overflow: "hidden", background: "radial-gradient(120% 120% at 50% -20%, rgba(11,122,76,0.35), rgba(23,27,32,0.6) 55%, rgba(13,16,19,0.7))", border: "1px solid rgba(11,122,76,0.35)", boxShadow: "0 0 80px -30px rgba(11,122,76,0.7)" }}>
-          <div aria-hidden="true" style={{ position: "absolute", bottom: -120, left: "50%", transform: "translateX(-50%)", width: 600, height: 300, background: "radial-gradient(ellipse, rgba(196,118,60,0.3), transparent 64%)", pointerEvents: "none" }}></div>
+          <div aria-hidden="true" style={{ position: "absolute", bottom: -120, left: "50%", transform: "translateX(-50%)", width: "min(600px, 100%)", height: 300, background: "radial-gradient(ellipse, rgba(196,118,60,0.3), transparent 64%)", pointerEvents: "none" }}></div>
           <div style={{ position: "relative" }}>
             <h2 style={{ font: "800 clamp(30px,4.4vw,52px)/1.05 var(--font-display)", letterSpacing: "-0.035em", color: "#fff", margin: 0, textWrap: "balance", maxWidth: 720, marginInline: "auto" }}>Pronto para acelerar o <span className="neon-tube blue" style={{ fontStyle: "italic" }}>crescimento</span> da sua empresa?</h2>
             <p style={{ font: "400 17px/1.6 var(--font-sans)", color: "rgba(255,255,255,0.7)", margin: "20px auto 0", maxWidth: 520 }}>Transforme sua operação com tecnologia, automação e inteligência artificial.</p>
@@ -639,18 +720,20 @@ function Contact() {
               </div>
             ) : (
               <form onSubmit={submit}>
+                {/* id/name + htmlFor em cada campo: o navegador conseguia identificar os campos
+                    (autofill) e o leitor de tela associar o rótulo — faltava antes. */}
                 <div className="contact-fields" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                  <div><label style={lbl}>Nome *</label><input required value={form.nome} onChange={set("nome")} onFocus={onFocus} onBlur={onBlur} placeholder="Seu nome" style={field} /></div>
-                  <div><label style={lbl}>E-mail *</label><input required type="email" value={form.email} onChange={set("email")} onFocus={onFocus} onBlur={onBlur} placeholder="voce@empresa.com" style={field} /></div>
-                  <div><label style={lbl}>WhatsApp / Telefone</label><input value={form.zap} onChange={set("zap")} onFocus={onFocus} onBlur={onBlur} placeholder="(00) 00000-0000" style={field} /></div>
-                  <div><label style={lbl}>Tenho interesse em</label>
-                    <select value={form.servico} onChange={set("servico")} onFocus={onFocus} onBlur={onBlur} style={{ ...field, appearance: "none", cursor: "pointer", color: form.servico ? "#fff" : "rgba(255,255,255,0.45)" }}>
+                  <div><label style={lbl} htmlFor="hg-nome">Nome *</label><input id="hg-nome" name="nome" autoComplete="name" required value={form.nome} onChange={set("nome")} onFocus={onFocus} onBlur={onBlur} placeholder="Seu nome" style={field} /></div>
+                  <div><label style={lbl} htmlFor="hg-email">E-mail *</label><input id="hg-email" name="email" autoComplete="email" required type="email" value={form.email} onChange={set("email")} onFocus={onFocus} onBlur={onBlur} placeholder="voce@empresa.com" style={field} /></div>
+                  <div><label style={lbl} htmlFor="hg-zap">WhatsApp / Telefone</label><input id="hg-zap" name="telefone" autoComplete="tel" value={form.zap} onChange={set("zap")} onFocus={onFocus} onBlur={onBlur} placeholder="(00) 00000-0000" style={field} /></div>
+                  <div><label style={lbl} htmlFor="hg-servico">Tenho interesse em</label>
+                    <select id="hg-servico" name="servico" value={form.servico} onChange={set("servico")} onFocus={onFocus} onBlur={onBlur} style={{ ...field, appearance: "none", cursor: "pointer", color: form.servico ? "#fff" : "rgba(255,255,255,0.45)" }}>
                       <option value="" style={{ color: "#12151A" }}>Selecione um serviço</option>
                       {["Website", "E-commerce", "Sistema sob medida", "Automação", "Inteligência Artificial", "Design & Branding"].map((o) => <option key={o} value={o} style={{ color: "#12151A" }}>{o}</option>)}
                     </select>
                   </div>
                 </div>
-                <div style={{ marginTop: 16 }}><label style={lbl}>Mensagem</label><textarea value={form.msg} onChange={set("msg")} onFocus={onFocus} onBlur={onBlur} rows={4} placeholder="Conte sobre o seu projeto e seus objetivos..." style={{ ...field, resize: "vertical", fontFamily: "var(--font-sans)" }}></textarea></div>
+                <div style={{ marginTop: 16 }}><label style={lbl} htmlFor="hg-msg">Mensagem</label><textarea id="hg-msg" name="mensagem" value={form.msg} onChange={set("msg")} onFocus={onFocus} onBlur={onBlur} rows={4} placeholder="Conte sobre o seu projeto e seus objetivos..." style={{ ...field, resize: "vertical", fontFamily: "var(--font-sans)" }}></textarea></div>
                 {err && <p style={{ marginTop: 12, font: "500 13px var(--font-sans)", color: "#E0736A" }}>{err}</p>}
                 <button type="submit" disabled={loading} className="btn btn-cta" style={{ width: "100%", justifyContent: "center", marginTop: 20, opacity: loading ? 0.7 : 1 }}>{loading ? "Enviando..." : "Enviar mensagem"} <i data-lucide="send" style={{ width: 17, height: 17 }}></i></button>
               </form>
@@ -738,6 +821,7 @@ export default function HypergrowSite() {
         <Hero />
         <TrustMarquee />
         <Services />
+        <PainPoints />
         <AIAgent />
         <Differentiators />
         <Portfolio />
