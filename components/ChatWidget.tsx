@@ -12,7 +12,7 @@ type Msg = { role: "user" | "assistant"; content: string };
 const GREETING: Msg = {
   role: "assistant",
   content:
-    "Olá! 👋 Sou o assistente da HyperGrow. Posso tirar dúvidas sobre sites, sistemas, automação e IA — e já marcar uma reunião com nosso time. Como posso ajudar?",
+    "Olá! Sou o assistente da HyperGrow. Posso tirar dúvidas sobre sites, sistemas, automação e IA — e já marcar uma reunião com nosso time. Como posso ajudar?",
 };
 
 function calUrl() {

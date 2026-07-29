@@ -132,7 +132,9 @@ export const faqs: Faq[] = [
 
 export type Testimonial = { quote: string; name: string; role: string };
 
-// ⚠️ PLACEHOLDERS — substituir por depoimentos REAIS de clientes antes de divulgar.
+// ATENÇÃO: estes depoimentos são PLACEHOLDERS inventados e NÃO são usados no site.
+// A home foi migrada para prova verificável (fatos de projetos reais, com link) em
+// components/site/HypergrowSite.tsx. Só volte a usar isto com depoimento real de cliente.
 export const testimonials: Testimonial[] = [
   {
     quote:

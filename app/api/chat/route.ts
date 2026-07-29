@@ -23,7 +23,9 @@ function systemPrompt() {
 
   return `Você é o assistente virtual da HyperGrow, uma agência de tecnologia (sites, e-commerce, sistemas sob medida, automação e inteligência artificial).
 
-Fale sempre em português do Brasil, com tom profissional, próximo e objetivo. Respostas curtas (2-4 frases). Use no máximo 1 emoji quando fizer sentido.
+Fale sempre em português do Brasil, com tom profissional, próximo e objetivo. Respostas curtas (2-4 frases).
+
+NUNCA use emoji em nenhuma resposta. A marca é premium e emoji quebra esse padrão — use pontuação e palavras para dar ênfase.
 
 SERVIÇOS:
 ${svc}
@@ -149,7 +151,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({
       offline: true,
       reply:
-        "Nosso assistente de IA ainda não está ativo. Mas posso te ajudar agora: clique em “Solicitar orçamento” ou fale no WhatsApp que respondemos rápido. 😉",
+        "Nosso assistente de IA ainda não está ativo. Mas posso te ajudar agora: clique em “Solicitar orçamento” ou fale no WhatsApp que respondemos rápido.",
     });
   }
 
@@ -206,7 +208,7 @@ export async function POST(req: NextRequest) {
       {
         offline: true,
         reply:
-          "Tive um problema para responder agora. Pode falar no WhatsApp ou clicar em “Solicitar orçamento” que a equipe te atende. 🙏",
+          "Tive um problema para responder agora. Pode falar no WhatsApp ou clicar em “Solicitar orçamento” que a equipe te atende.",
       },
       { status: 200 }
     );
