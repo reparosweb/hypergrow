@@ -5,10 +5,10 @@ import fs from "node:fs";
 
 const FILE = "lib/site-services.ts";
 const PILLARS = {
-  vender: { accent: "#0FA968", glow: "rgba(15,169,104,0.45)", slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo"] },
-  atrair: { accent: "#D9843F", glow: "rgba(217,132,63,0.45)", slugs: ["marketing-trafego", "email-marketing", "web-stories"] },
-  marca: { accent: "#D4A62A", glow: "rgba(212,166,42,0.45)", slugs: ["redes-sociais", "posts-redes-sociais", "posts-video", "stories-instagram", "producao-de-video", "producao-fotografica", "fotos-produtos", "design-identidade", "criacao-logo"] },
-  ia: { accent: "#3BA8A0", glow: "rgba(59,168,160,0.45)", slugs: ["automacoes-ia"] },
+  vender: { accent: "#2DD4A0", glow: "rgba(45,212,160,0.42)", slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo"] },
+  atrair: { accent: "#E09A63", glow: "rgba(224,154,99,0.42)", slugs: ["marketing-trafego", "email-marketing", "web-stories"] },
+  marca: { accent: "#D3B78E", glow: "rgba(211,183,142,0.42)", slugs: ["redes-sociais", "posts-redes-sociais", "posts-video", "stories-instagram", "producao-de-video", "producao-fotografica", "fotos-produtos", "design-identidade", "criacao-logo"] },
+  ia: { accent: "#5FD3C6", glow: "rgba(95,211,198,0.42)", slugs: ["automacoes-ia"] },
 };
 
 const slugToPillar = {};

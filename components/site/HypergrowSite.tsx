@@ -4,6 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Script from "next/script";
 import TrustMarquee from "./TrustMarquee";
+import ServiceGlyph from "./ServiceGlyphs";
 import { siteServices, PILLARS, pillarOf, FLAGSHIP_SLUGS } from "@/lib/site-services";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
@@ -309,21 +310,29 @@ function Services() {
             const pil = pillarOf(s.slug);
             const big = FLAGSHIP_SLUGS.includes(s.slug);
             return (
-            <a key={s.slug} href={`/servicos/${s.slug}`} className="glowcard neon-card svc-card" data-big={big ? "1" : undefined} {...cardGlow(s.glow)} style={{ position: "relative", overflow: "hidden", gridColumn: `span ${big ? 3 : 2}`, borderRadius: 20, padding: 26, minHeight: big ? 250 : 230, display: "flex", flexDirection: "column", color: "inherit" }}>
-              {/* Halo da cor do pilar: dá "temperatura" ao card antes de qualquer leitura */}
-              <span aria-hidden style={{ position: "absolute", top: -70, right: -70, width: 190, height: 190, borderRadius: "50%", background: `radial-gradient(circle, ${s.accent}2e, transparent 68%)`, pointerEvents: "none" }}></span>
+            <a key={s.slug} href={`/servicos/${s.slug}`} className="glowcard neon-card svc-card" data-big={big ? "1" : undefined} {...cardGlow(s.glow)} style={{ position: "relative", overflow: "hidden", gridColumn: `span ${big ? 3 : 2}`, borderRadius: 20, padding: 26, minHeight: big ? 268 : 248, display: "flex", flexDirection: "column", color: "inherit" }}>
+              {/* Trilho de 2px na cor do pilar: aresta dura no topo — o sinal
+                  pré-atento mais barato que existe (o olho pega antes de ler). */}
+              <span aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: pil.rail, opacity: 0.9, pointerEvents: "none" }}></span>
+              {/* Lavagem da cor do pilar: dá "temperatura" ao card sem leitura. */}
+              <span aria-hidden style={{ position: "absolute", top: -70, right: -70, width: 190, height: 190, borderRadius: "50%", background: `radial-gradient(circle, ${s.accent}24, transparent 68%)`, pointerEvents: "none" }}></span>
+
               <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-                {/* Ícone HERÓI: 2x maior que antes — é a pista visual principal */}
-                <span style={{ flexShrink: 0, width: big ? 76 : 64, height: big ? 76 : 64, borderRadius: 18, display: "inline-flex", alignItems: "center", justifyContent: "center", color: s.accent, background: `linear-gradient(160deg, ${s.accent}2b, ${s.accent}0d)`, border: `1px solid ${s.accent}59`, boxShadow: `inset 0 1px 0 ${s.accent}3d, 0 12px 30px -18px ${s.accent}` }}>
-                  <i data-lucide={s.icon} className="bob" style={{ width: big ? 34 : 29, height: big ? 34 : 29 }}></i>
+                {/* GRAFISMO: o desenho é o que diz O QUE É sem precisar ler.
+                    Herda a cor do pilar via currentColor. */}
+                <span style={{ color: s.accent, display: "block", flexShrink: 0 }}>
+                  <ServiceGlyph slug={s.slug} height={big ? 84 : 72} />
                 </span>
-                {/* Badge do pilar: nomeia a categoria sem depender só da cor (a11y) */}
+                {/* Badge: nomeia a categoria — o código de cor não fica dependendo
+                    só da cor (regra a11y "color-not-only") e é aprendido no 1º card. */}
                 <span style={{ flexShrink: 0, font: "600 10px var(--font-sans)", letterSpacing: "0.09em", textTransform: "uppercase", color: s.accent, padding: "5px 10px", borderRadius: 999, background: `${s.accent}14`, border: `1px solid ${s.accent}3d` }}>{pil.short}</span>
               </div>
               <h3 style={{ font: `700 ${big ? 21 : 18.5}px var(--font-display)`, letterSpacing: "-0.02em", color: "#fff", margin: "18px 0 8px" }}>{s.title}</h3>
               <p style={{ font: "400 14px/1.55 var(--font-sans)", color: "rgba(255,255,255,0.62)", margin: 0 }}>{s.desc}</p>
+              {/* 2 tags (eram 4): 76 pílulas idênticas viravam uma textura cinza
+                  uniforme em todo card — o 2º maior motivo de "tudo igual". */}
               <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
-                {s.tags.slice(0, big ? 4 : 3).map((t) => (<span key={t} style={{ font: "500 11.5px var(--font-sans)", color: "rgba(255,255,255,0.72)", padding: "5px 10px", borderRadius: 999, background: "rgba(255,255,255,0.045)", border: "1px solid rgba(255,255,255,0.09)" }}>{t}</span>))}
+                {s.tags.slice(0, 2).map((t) => (<span key={t} style={{ font: "500 11.5px var(--font-sans)", color: "rgba(255,255,255,0.72)", padding: "5px 10px", borderRadius: 999, background: "rgba(255,255,255,0.045)", border: "1px solid rgba(255,255,255,0.09)" }}>{t}</span>))}
               </div>
               <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: "auto", paddingTop: 16, font: "600 13px var(--font-sans)", color: s.accent }}>
                 Saiba mais <i data-lucide="arrow-right" style={{ width: 14, height: 14 }}></i>
