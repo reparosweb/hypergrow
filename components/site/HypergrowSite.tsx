@@ -4,7 +4,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import Script from "next/script";
 import TrustMarquee from "./TrustMarquee";
-import { siteServices } from "@/lib/site-services";
+import { siteServices, PILLARS, pillarOf, FLAGSHIP_SLUGS } from "@/lib/site-services";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
 const waUrl = WHATSAPP
@@ -268,16 +268,11 @@ function Hero() {
   );
 }
 
-/* ───────────────────────── Services ───────────────────────── */
-// 4 pilares: agrupam os 19 serviços para responder "o que a HyperGrow faz" em
-// 4 palavras, sem despejar uma lista de 19 itens de uma vez.
-const PILLARS = [
-  { key: "vender", label: "Vender online", icon: "shopping-cart", desc: "Site, loja e presença que convertem visita em cliente.", slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo"] },
-  { key: "atrair", label: "Atrair demanda", icon: "trending-up", desc: "Tráfego e réguas que trazem gente pronta pra comprar.", slugs: ["marketing-trafego", "email-marketing", "web-stories"] },
-  { key: "marca", label: "Marca & conteúdo", icon: "palette", desc: "Identidade, foto, vídeo e redes com o padrão da sua marca.", slugs: ["redes-sociais", "posts-redes-sociais", "posts-video", "stories-instagram", "producao-de-video", "producao-fotografica", "fotos-produtos", "design-identidade", "criacao-logo"] },
-  { key: "ia", label: "Operar com IA", icon: "bot", desc: "Agentes e automações que atendem e vendem sozinhos.", slugs: ["automacoes-ia"] },
-];
-
+/* ───────────────────────── Services ─────────────────────────
+   Identidade visual escaneável: o visitante precisava LER cada card para saber
+   o que era (19 cards de estrutura idêntica, ícone de 23px, todos jade).
+   Agora: cor por PILAR (4 matizes) + ícone grande como herói + badge do pilar
+   + bento grid (carro-chefe ocupa célula dupla). Aprende-se o código uma vez. */
 function Services() {
   const spot = useSpotlight();
   const [pillar, setPillar] = useState("todos");
@@ -287,40 +282,69 @@ function Services() {
     <section id="servicos" className="sec">
       <div className="wrap">
         <SectionHead center eyebrow="Serviços" title="Tudo que a" accent="HyperGrow faz" dotColor="#2DD4A0" sub="4 frentes, 19 serviços, uma operação só — da loja virtual à IA que atende por você." />
-        {/* Pilares: sempre visíveis, contam a história em 4 rótulos mesmo sem clicar. */}
+        {/* Pilares: legenda viva do código de cores. Contam a história em 4 rótulos
+            e filtram o grid ao clicar. */}
         <div className="reveal stagger" style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 230px), 1fr))", gap: 14 }}>
-          {PILLARS.map((p) => (
-            <button key={p.key} onClick={() => setPillar(pillar === p.key ? "todos" : p.key)} className="glowcard neon-card" {...cardGlow("rgba(15,169,104,0.35)")}
-              style={{ textAlign: "left", cursor: "pointer", borderRadius: 16, padding: 18, display: "flex", gap: 12, alignItems: "flex-start", border: pillar === p.key ? "1px solid rgba(15,169,104,0.55)" : undefined }}>
-              <span style={{ flexShrink: 0, width: 38, height: 38, borderRadius: 11, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#2DD4A0", background: "rgba(15,169,104,0.12)", border: "1px solid rgba(15,169,104,0.3)" }}>
-                <i data-lucide={p.icon} style={{ width: 18, height: 18 }}></i>
-              </span>
-              <div>
-                <div style={{ font: "700 14.5px var(--font-sans)", color: "#fff" }}>{p.label}</div>
-                <div style={{ font: "400 12.5px/1.4 var(--font-sans)", color: "rgba(255,255,255,0.55)", marginTop: 3 }}>{p.desc}</div>
-              </div>
-            </button>
-          ))}
+          {PILLARS.map((p) => {
+            const on = pillar === p.key;
+            return (
+              <button key={p.key} onClick={() => setPillar(on ? "todos" : p.key)} className="glowcard neon-card" {...cardGlow(p.glow)}
+                aria-pressed={on}
+                style={{ textAlign: "left", cursor: "pointer", borderRadius: 16, padding: 18, display: "flex", gap: 12, alignItems: "flex-start",
+                  background: on ? `linear-gradient(180deg, ${p.accent}1f, rgba(255,255,255,0.02))` : undefined,
+                  border: `1px solid ${on ? p.accent + "8c" : "rgba(255,255,255,0.08)"}` }}>
+                <span style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center", color: p.accent, background: `${p.accent}1f`, border: `1px solid ${p.accent}59` }}>
+                  <i data-lucide={p.icon} style={{ width: 19, height: 19 }}></i>
+                </span>
+                <div>
+                  <div style={{ font: "700 14.5px var(--font-sans)", color: "#fff" }}>{p.label}</div>
+                  <div style={{ font: "400 12.5px/1.4 var(--font-sans)", color: "rgba(255,255,255,0.55)", marginTop: 3 }}>{p.desc}</div>
+                </div>
+              </button>
+            );
+          })}
         </div>
-        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal stagger" style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 18, borderRadius: 24, padding: 2 }}>
-          {data.map((s) => (
-            <a key={s.slug} href={`/servicos/${s.slug}`} className="glowcard neon-card" {...cardGlow(s.glow)} style={{ borderRadius: 20, padding: 26, minHeight: 220, display: "block", color: "inherit" }}>
-              <span style={{ width: 50, height: 50, borderRadius: 14, display: "inline-flex", alignItems: "center", justifyContent: "center", color: s.accent, background: "rgba(255,255,255,0.05)", border: `1px solid ${s.accent}44`, boxShadow: `inset 0 0 22px -10px ${s.accent}, 0 0 22px -12px ${s.accent}` }}>
-                <i data-lucide={s.icon} className="bob" style={{ width: 23, height: 23 }}></i>
-              </span>
-              <h3 style={{ font: "700 19px var(--font-display)", letterSpacing: "-0.02em", color: "#fff", margin: "18px 0 8px" }}>{s.title}</h3>
-              <p style={{ font: "400 14px/1.55 var(--font-sans)", color: "rgba(255,255,255,0.6)", margin: 0 }}>{s.desc}</p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
-                {s.tags.map((t) => (<span key={t} style={{ font: "500 11.5px var(--font-sans)", color: "rgba(255,255,255,0.72)", padding: "5px 10px", borderRadius: 999, background: "rgba(255,255,255,0.045)", border: "1px solid rgba(255,255,255,0.09)" }}>{t}</span>))}
+        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal stagger svc-grid" style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 18, borderRadius: 24, padding: 2 }}>
+          {data.map((s) => {
+            const pil = pillarOf(s.slug);
+            const big = FLAGSHIP_SLUGS.includes(s.slug);
+            return (
+            <a key={s.slug} href={`/servicos/${s.slug}`} className="glowcard neon-card svc-card" data-big={big ? "1" : undefined} {...cardGlow(s.glow)} style={{ position: "relative", overflow: "hidden", gridColumn: `span ${big ? 3 : 2}`, borderRadius: 20, padding: 26, minHeight: big ? 250 : 230, display: "flex", flexDirection: "column", color: "inherit" }}>
+              {/* Halo da cor do pilar: dá "temperatura" ao card antes de qualquer leitura */}
+              <span aria-hidden style={{ position: "absolute", top: -70, right: -70, width: 190, height: 190, borderRadius: "50%", background: `radial-gradient(circle, ${s.accent}2e, transparent 68%)`, pointerEvents: "none" }}></span>
+              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+                {/* Ícone HERÓI: 2x maior que antes — é a pista visual principal */}
+                <span style={{ flexShrink: 0, width: big ? 76 : 64, height: big ? 76 : 64, borderRadius: 18, display: "inline-flex", alignItems: "center", justifyContent: "center", color: s.accent, background: `linear-gradient(160deg, ${s.accent}2b, ${s.accent}0d)`, border: `1px solid ${s.accent}59`, boxShadow: `inset 0 1px 0 ${s.accent}3d, 0 12px 30px -18px ${s.accent}` }}>
+                  <i data-lucide={s.icon} className="bob" style={{ width: big ? 34 : 29, height: big ? 34 : 29 }}></i>
+                </span>
+                {/* Badge do pilar: nomeia a categoria sem depender só da cor (a11y) */}
+                <span style={{ flexShrink: 0, font: "600 10px var(--font-sans)", letterSpacing: "0.09em", textTransform: "uppercase", color: s.accent, padding: "5px 10px", borderRadius: 999, background: `${s.accent}14`, border: `1px solid ${s.accent}3d` }}>{pil.short}</span>
               </div>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: 16, font: "600 13px var(--font-sans)", color: s.accent }}>
+              <h3 style={{ font: `700 ${big ? 21 : 18.5}px var(--font-display)`, letterSpacing: "-0.02em", color: "#fff", margin: "18px 0 8px" }}>{s.title}</h3>
+              <p style={{ font: "400 14px/1.55 var(--font-sans)", color: "rgba(255,255,255,0.62)", margin: 0 }}>{s.desc}</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
+                {s.tags.slice(0, big ? 4 : 3).map((t) => (<span key={t} style={{ font: "500 11.5px var(--font-sans)", color: "rgba(255,255,255,0.72)", padding: "5px 10px", borderRadius: 999, background: "rgba(255,255,255,0.045)", border: "1px solid rgba(255,255,255,0.09)" }}>{t}</span>))}
+              </div>
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: "auto", paddingTop: 16, font: "600 13px var(--font-sans)", color: s.accent }}>
                 Saiba mais <i data-lucide="arrow-right" style={{ width: 14, height: 14 }}></i>
               </span>
             </a>
-          ))}
+            );
+          })}
         </div>
       </div>
-      <style>{`@media (max-width: 900px){ #servicos .spotlight { grid-template-columns: 1fr !important; } }`}</style>
+      {/* Bento responsivo: 6 col (3 cards/linha, carro-chefe ocupa metade da linha)
+          → 4 col no tablet → 1 coluna no celular (todo card ocupa a linha inteira). */}
+      <style>{`
+        @media (max-width: 1100px){
+          .svc-grid { grid-template-columns: repeat(4, 1fr) !important; }
+          .svc-card { grid-column: span 2 !important; }
+        }
+        @media (max-width: 720px){
+          .svc-grid { grid-template-columns: 1fr !important; }
+          .svc-card { grid-column: span 1 !important; min-height: 0 !important; }
+        }
+      `}</style>
     </section>
   );
 }
