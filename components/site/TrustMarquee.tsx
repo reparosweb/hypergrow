@@ -57,7 +57,7 @@ export default function TrustMarquee() {
         </div>
       </div>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .mq-mask {
           position: relative; overflow: hidden; padding: 4px 0;
           -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent);
@@ -101,7 +101,7 @@ export default function TrustMarquee() {
         .stat-v { font: 800 40px/1 var(--font-display); letter-spacing: -0.03em; background: linear-gradient(120deg,#2DD4A0,#0B7A4C 50%,#C4763C); -webkit-background-clip: text; background-clip: text; color: transparent; }
         .stat-l { margin-top: 8px; font: 500 13px var(--font-sans); color: rgba(255,255,255,0.6); }
         @media (max-width: 760px) { .stat-strip { grid-template-columns: 1fr 1fr; } .stat-v { font-size: 32px; } }
-      `}</style>
+      ` }} />
     </section>
   );
 }

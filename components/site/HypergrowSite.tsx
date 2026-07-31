@@ -432,7 +432,7 @@ function Services({ services }) {
       </div>
       {/* Bento responsivo: 6 col (3 cards/linha, carro-chefe ocupa metade)
           → 4 col no tablet → LINHA HORIZONTAL no celular. */}
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @media (max-width: 1100px){
           .svc-grid { grid-template-columns: repeat(4, 1fr) !important; }
           .svc-card { grid-column: span 2 !important; }
@@ -459,7 +459,7 @@ function Services({ services }) {
           .svc-card .svc-tags { display: none !important; }
           .svc-card .svc-body > span:last-child { padding-top: 10px !important; font-size: 12.5px !important; }
         }
-      `}</style>
+      ` }} />
     </section>
   );
 }
@@ -1023,14 +1023,14 @@ export default function HypergrowSite({ services }: { services: ServiceCardData[
       <a href={wa.url} target={wa.ativo ? "_blank" : undefined} rel="noopener noreferrer" aria-label="WhatsApp" className="wa-float" style={{ position: "fixed", left: 22, bottom: 22, zIndex: 900, width: 58, height: 58, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", background: "linear-gradient(135deg,#25D366,#11875a)", boxShadow: "0 12px 34px -8px rgba(15,169,104,0.7), 0 0 0 1px rgba(255,255,255,0.1)", animation: "wa-pulse 2.6s ease-in-out infinite" }}>
         <i data-lucide="message-circle" style={{ width: 26, height: 26 }}></i>
       </a>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         #bg-field { position: fixed; inset: 0; z-index: -1; pointer-events: none;
           background: radial-gradient(80% 50% at 15% -5%, rgba(15,169,104,0.20), transparent 60%), radial-gradient(70% 45% at 92% 8%, rgba(196,118,60,0.16), transparent 60%), radial-gradient(90% 60% at 50% 108%, rgba(11,122,76,0.18), transparent 62%), #0D1013; }
         #bg-field::after { content: ''; position: absolute; inset: 0; opacity: 0.5; background-image: linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px); background-size: 96px 96px; -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%); mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%); }
         .h-sec .accent { filter: drop-shadow(0 0 22px rgba(11,122,76,0.55)) drop-shadow(0 0 38px rgba(196,118,60,0.35)); }
         .glowcard:hover { border-color: rgba(15,122,76,0.45) !important; }
         @keyframes wa-pulse { 0%,100% { box-shadow: 0 12px 34px -8px rgba(15,169,104,0.7), 0 0 0 0 rgba(15,169,104,0.5); } 50% { box-shadow: 0 12px 34px -8px rgba(15,169,104,0.7), 0 0 0 12px rgba(15,169,104,0); } }
-      `}</style>
+      ` }} />
     </>
   );
 }
