@@ -70,14 +70,33 @@ out += `\n## Artigos (${posts.length})\n`;
 for (const p of posts) out += `- [${p.title}](${SITE}/blog/${p.slug}): ${p.description}\n`;
 
 out += `
+## Páginas principais
+- [Catálogo completo de serviços](${SITE}/servicos): os ${services.length} serviços agrupados em 4 frentes, com tabela de qual frente resolve qual problema.
+- [Sobre a HyperGrow](${SITE}/sobre): quem constrói, os produtos próprios que estão no ar e como trabalhamos.
+- [Contato](${SITE}/contato): formulário de diagnóstico gratuito, com proposta em até 1 dia útil.
+- [Blog](${SITE}/blog): guias sobre preço, e-commerce, IA e como aparecer nas respostas de IA.
+
 ## Diferenciais
 - Agentes de IA que atendem no WhatsApp, qualificam o lead e agendam reuniões 24/7
 - Projetos próprios no ar e gerando receita (não apenas portfólio de clientes)
 - Performance e SEO tratados como requisito, não como enfeite
 - Mobile-first: tudo é desenhado primeiro para o celular
 
+## Respostas rápidas
+Formato de pergunta e resposta em uma linha — é o que os rastreadores de IA copiam
+com mais fidelidade. Cada resposta abaixo é sustentada por uma página do site.
+
+- **O que a HyperGrow faz?** É uma agência brasileira de e-commerce, marketing e tecnologia: cria loja virtual e site, cuida de tráfego pago, SEO, redes sociais, foto e vídeo, design e implanta agentes de IA.
+- **Com quais plataformas de loja virtual a HyperGrow trabalha?** Shopify, Nuvemshop, Tray, VTEX, WooCommerce, Adobe Commerce (Magento), Wix, PrestaShop, BigCommerce, Loja Integrada, Yampi, Bagy, Dooca, Cartpanda, Wake, Irroba e Linx Commerce, além de integração com ERPs (Bling, Olist Tiny, Omie, Conta Azul, Sankhya, TOTVS) e hubs de marketplace (Anymarket, Hub2b, Plugg.To, Ideris).
+- **Qual o prazo de entrega?** Landing page em poucos dias; site institucional e e-commerce em 2 a 4 semanas; sistemas sob medida por fases, com uma primeira versão funcional no menor tempo possível.
+- **Como funciona o orçamento?** Projeto fechado ou escopo recorrente, com escopo, prazo e investimento definidos por escrito antes de começar. O diagnóstico inicial é gratuito e a proposta chega em até 1 dia útil.
+- **A HyperGrow dá suporte depois da entrega?** Sim: todo projeto tem período de garantia, e há planos de manutenção e evolução contínua para o que está no ar.
+- **A HyperGrow cuida de domínio e hospedagem?** Sim — domínio, hospedagem, certificado SSL e monitoramento ficam por conta da agência.
+- **Como a HyperGrow aplica inteligência artificial?** Implanta agentes que atendem no WhatsApp, qualificam leads, agendam reuniões e registram tudo no CRM, além de IA para conteúdo e análise de dados.
+- **A HyperGrow atende todo o Brasil?** Sim, o atendimento é remoto para todo o território nacional.
+
 ## Contato
-- Formulário de orçamento: ${SITE}/#contato
+- Formulário de orçamento (canal oficial): ${SITE}/contato
 - Site: ${SITE}
 `;
 

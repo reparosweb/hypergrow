@@ -178,7 +178,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <Link href="/" style={{ font: "700 18px var(--font-display)", letterSpacing: "-0.04em", color: "#fff" }}>
             Hyper<span className="hgb-accent">Grow</span>
           </Link>
-          <Link href="/#contato" className="btn btn-cta" style={{ padding: "10px 18px", fontSize: 14, borderRadius: 12 }}>Solicitar orçamento</Link>
+          <Link href="/contato" className="btn btn-cta" style={{ padding: "10px 18px", fontSize: 14, borderRadius: 12 }}>Solicitar orçamento</Link>
         </div>
       </header>
 
@@ -260,8 +260,8 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
             <h2 style={{ font: "800 clamp(23px,3.3vw,35px)/1.12 var(--font-display)", letterSpacing: "-0.03em", color: "#fff", margin: 0, maxWidth: 560, marginInline: "auto", textWrap: "balance" }}>Quer isso feito por especialistas?</h2>
             <p style={{ font: "400 clamp(15px,1.2vw,16.5px)/1.62 var(--font-sans)", color: "rgba(232,226,217,0.7)", margin: "14px auto 0", maxWidth: "46ch", textWrap: "pretty" }}>A HyperGrow coloca no ar e opera. Receba uma proposta sob medida em até 1 dia útil.</p>
             <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 28 }}>
-              <Link href="/#contato" className="btn btn-cta">Solicitar orçamento</Link>
-              <Link href="/#servicos" className="btn btn-ghost">Ver todos os serviços</Link>
+              <Link href="/contato" className="btn btn-cta">Solicitar orçamento</Link>
+              <Link href="/servicos" className="btn btn-ghost">Ver todos os serviços</Link>
             </div>
           </div>
 

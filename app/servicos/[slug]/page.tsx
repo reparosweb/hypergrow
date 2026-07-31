@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { siteServices, getService, pillarOf } from "@/lib/site-services";
 import ServiceGlyph from "@/components/site/ServiceGlyphs";
 import PlatformShowcase from "@/components/site/PlatformShowcase";
+import SiteHeader from "@/components/site/SiteHeader";
 import { SITE_URL } from "@/lib/seo";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
@@ -83,7 +84,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
   const pil = pillarOf(s.slug);
   const wa = WHATSAPP
     ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá! Quero falar sobre ${s.title}.`)}`
-    : "/#contato";
+    : "/contato";
 
   // Cross-link com critério: primeiro os irmãos do MESMO pilar (o pilar "IA" tem
   // um serviço só, então essa lista pode vir vazia — o bloco some nesse caso).
@@ -101,12 +102,19 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
     "@context": "https://schema.org",
     "@graph": [
       {
+        // `provider` referencia a Organization pelo @id publicado no layout.tsx.
+        // Antes declarava uma Organization NOVA e sem @id: o Google via duas
+        // empresas homônimas na mesma página em vez de uma entidade só, e o
+        // grafo das 19 páginas ficava fragmentado.
         "@type": "Service",
+        "@id": `${SITE_URL}/servicos/${s.slug}#service`,
         name: s.title,
+        serviceType: s.title,
         description: s.long,
-        provider: { "@type": "Organization", name: "HyperGrow", url: SITE_URL },
-        areaServed: "BR",
+        provider: { "@id": `${SITE_URL}/#organization` },
+        areaServed: { "@type": "Country", name: "Brasil" },
         url: `${SITE_URL}/servicos/${s.slug}`,
+        isPartOf: { "@id": `${SITE_URL}/servicos` },
       },
       {
         "@type": "BreadcrumbList",
@@ -121,6 +129,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       },
       {
         "@type": "FAQPage",
+        "@id": `${SITE_URL}/servicos/${s.slug}#faq`,
         mainEntity: s.faq.map((f) => ({
           "@type": "Question",
           name: f.q,
@@ -131,7 +140,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
   };
 
   return (
-    <main className="svc-page" style={{ minHeight: "100vh", position: "relative", ...cssVars }}>
+    <main id="main" className="svc-page" style={{ minHeight: "100vh", position: "relative", ...cssVars }}>
       {/* Ambiente: só degradês (nenhum filter:blur em position:fixed — trava o scroll no mobile). */}
       <div
         aria-hidden
@@ -148,13 +157,8 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       {/* trilho do pilar: a primeira coisa que a página diz, antes de qualquer texto */}
       <div className="svc-rail" aria-hidden />
 
-      {/* top bar */}
-      <div className="wrap svc-top">
-        <Link href="/" className="svc-logo">
-          Hyper<span style={{ background: "linear-gradient(120deg,#2DD4A0,#0B7A4C 55%,#C4763C)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Grow</span>
-        </Link>
-        <Link href="/#contato" className="btn btn-cta svc-top-cta">Solicitar orçamento</Link>
-      </div>
+      {/* Header ÚNICO do site — antes esta rota tinha o próprio topo, sem menu. */}
+      <SiteHeader />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="sec svc-sec-hero">
@@ -163,7 +167,9 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           <span aria-hidden>/</span>
           <Link href="/servicos">Serviços</Link>
           <span aria-hidden>/</span>
-          <span className="svc-crumb-now">{pil.label}</span>
+          {/* Mostra o NOME do serviço, não o pilar: a trilha dizia "Início /
+              Serviços / Vender online" e o visitante nunca via onde estava. */}
+          <span className="svc-crumb-now">{s.title}</span>
         </nav>
 
         <div className="wrap svc-hero">
@@ -180,8 +186,8 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             <p className="svc-lede svc-in" style={{ animationDelay: "0.14s" }}>{s.long}</p>
 
             <div className="svc-actions svc-in" style={{ animationDelay: "0.2s" }}>
-              <Link href="/#contato" className="btn btn-cta">Solicitar orçamento</Link>
-              <a href={wa} target={WHATSAPP ? "_blank" : undefined} rel="noopener noreferrer" className="btn btn-ghost">Falar no WhatsApp</a>
+              <Link href="/contato" className="btn btn-cta">Solicitar orçamento</Link>
+              {WHATSAPP ? (<a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Falar no WhatsApp</a>) : (<Link href="/sobre" className="btn btn-ghost">Ver projetos no ar</Link>)}
             </div>
           </div>
 
@@ -279,8 +285,8 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             <h2 className="svc-cta-h">Pronto para {s.title.toLowerCase()}?</h2>
             <p className="svc-cta-p">Fale com a HyperGrow e receba uma proposta sob medida em até 1 dia útil.</p>
             <div className="svc-actions svc-actions-c">
-              <Link href="/#contato" className="btn btn-cta">Solicitar proposta</Link>
-              <a href={wa} target={WHATSAPP ? "_blank" : undefined} rel="noopener noreferrer" className="btn btn-ghost">Conversar no WhatsApp</a>
+              <Link href="/contato" className="btn btn-cta">Solicitar proposta</Link>
+              {WHATSAPP ? (<a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Conversar no WhatsApp</a>) : (<Link href="/servicos" className="btn btn-ghost">Ver todos os serviços</Link>)}
             </div>
           </div>
         </div>
@@ -324,9 +330,19 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       </section>
 
       <footer className="svc-footer">
+        {/* Antes o rodapé destas 19 páginas tinha UM link ("Voltar ao site").
+            Elas não levavam a /blog, /sobre, /contato, /privacidade nem /termos —
+            eram becos sem saída para o visitante e para o buscador. */}
         <div className="wrap svc-footer-in">
           <span>© 2026 HyperGrow</span>
-          <Link href="/">Voltar ao site →</Link>
+          <span style={{ display: "flex", flexWrap: "wrap", gap: 18 }}>
+            <Link href="/servicos">Serviços</Link>
+            <Link href="/sobre">Sobre</Link>
+            <Link href="/contato">Contato</Link>
+            <Link href="/blog">Blog</Link>
+            <Link href="/privacidade">Privacidade</Link>
+            <Link href="/termos">Termos</Link>
+          </span>
         </div>
       </footer>
 

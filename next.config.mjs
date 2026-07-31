@@ -24,6 +24,8 @@ const nextConfig = {
       { source: "/lucide.min.js", headers: [{ key: "Cache-Control", value: YEAR }] },
       { source: "/icon.svg", headers: [{ key: "Cache-Control", value: YEAR }] },
       { source: "/portfolio/:path*", headers: [{ key: "Cache-Control", value: MONTH }] },
+      // /fotos tinha ficado de fora: eram 232 KB revalidados a cada visita.
+      { source: "/fotos/:path*", headers: [{ key: "Cache-Control", value: MONTH }] },
     ];
   },
 };

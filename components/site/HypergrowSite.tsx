@@ -7,6 +7,7 @@ import TrustMarquee from "./TrustMarquee";
 import ServiceGlyph from "./ServiceGlyphs";
 import ContactForm from "./ContactForm";
 import { BrowserFrame } from "./DeviceMockup";
+import SiteHeader from "./SiteHeader";
 // Importa do módulo LEVE (não de site-services.ts): este é um client component,
 // e site-services.ts carrega o conteúdo completo das 19 páginas de serviço —
 // 62.992 bytes de texto (41% do JS da home) que o navegador não precisa.
@@ -344,6 +345,9 @@ function ServiceCard({ s }) {
   const big = FLAGSHIP_SLUGS.includes(s.slug);
   const inverted = s.slug === "automacoes-ia"; // único card claro da página: o sinal mais forte que existe
   const titleColor = inverted ? "#12151A" : "#fff";
+  // O card claro e o unico da pagina: pil.rail foi calibrado para fundo ESCURO e
+  // media 1,78:1 aqui. Esta variante escura do teal do pilar da ~6,3:1.
+  const invAccent = "#1F5F5A";
   const descColor = inverted ? "rgba(18,21,26,0.68)" : "rgba(255,255,255,0.62)";
   return (
     <a href={`/servicos/${s.slug}`} className={`glowcard neon-card svc-card${inverted ? " svc-inv" : ""}`} data-big={big ? "1" : undefined} {...cardGlow(s.glow)}
@@ -358,12 +362,12 @@ function ServiceCard({ s }) {
 
       <div className="svc-head" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         {/* GRAFISMO: o desenho é o que diz O QUE É. Herda a cor via currentColor. */}
-        <span className="svc-glyph" style={{ color: inverted ? pil.rail : s.accent, display: "block", flexShrink: 0 }}>
+        <span className="svc-glyph" style={{ color: inverted ? invAccent : s.accent, display: "block", flexShrink: 0 }}>
           <ServiceGlyph slug={s.slug} height={big ? 84 : 72} />
         </span>
         {/* Badge: nomeia a categoria — o código não depende SÓ da cor (a11y) e é
             aprendido já no primeiro card lido. */}
-        <span style={{ flexShrink: 0, font: "600 10px var(--font-sans)", letterSpacing: "0.09em", textTransform: "uppercase", color: inverted ? pil.rail : s.accent, padding: "5px 10px", borderRadius: 999, background: inverted ? "rgba(18,21,26,0.06)" : `${s.accent}14`, border: `1px solid ${inverted ? "rgba(18,21,26,0.14)" : s.accent + "3d"}` }}>{pil.short}</span>
+        <span style={{ flexShrink: 0, font: "600 10px var(--font-sans)", letterSpacing: "0.09em", textTransform: "uppercase", color: inverted ? invAccent : s.accent, padding: "5px 10px", borderRadius: 999, background: inverted ? "rgba(18,21,26,0.06)" : `${s.accent}14`, border: `1px solid ${inverted ? "rgba(18,21,26,0.14)" : s.accent + "3d"}` }}>{pil.short}</span>
       </div>
       <div className="svc-body">
         <h3 style={{ font: `700 ${big ? 21 : 18.5}px var(--font-display)`, letterSpacing: "-0.02em", color: titleColor, margin: "18px 0 8px" }}>{s.title}</h3>
@@ -373,7 +377,7 @@ function ServiceCard({ s }) {
         <div className="svc-tags" style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
           {s.tags.slice(0, 2).map((t) => (<span key={t} style={{ font: "500 11.5px var(--font-sans)", color: inverted ? "rgba(18,21,26,0.7)" : "rgba(255,255,255,0.72)", padding: "5px 10px", borderRadius: 999, background: inverted ? "rgba(18,21,26,0.05)" : "rgba(255,255,255,0.045)", border: `1px solid ${inverted ? "rgba(18,21,26,0.12)" : "rgba(255,255,255,0.09)"}` }}>{t}</span>))}
         </div>
-        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: "auto", paddingTop: 16, font: "600 13px var(--font-sans)", color: inverted ? pil.rail : s.accent }}>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: "auto", paddingTop: 16, font: "600 13px var(--font-sans)", color: inverted ? invAccent : s.accent }}>
           Saiba mais <i data-lucide="arrow-right" style={{ width: 14, height: 14 }}></i>
         </span>
       </div>
@@ -406,7 +410,7 @@ function Services({ services }) {
                 <div>
                   <div style={{ font: "700 14.5px var(--font-sans)", color: "#fff" }}>{p.label}</div>
                   <div style={{ font: "400 12.5px/1.4 var(--font-sans)", color: "rgba(255,255,255,0.55)", marginTop: 3 }}>{p.desc}</div>
-                  <div style={{ font: "600 11px var(--font-mono)", color: p.accent, marginTop: 8, letterSpacing: "0.04em" }}>{p.slugs.length} serviços</div>
+                  <div style={{ font: "600 11px var(--font-mono)", color: p.accent, marginTop: 8, letterSpacing: "0.04em" }}>{p.slugs.length} {p.slugs.length === 1 ? "serviço" : "serviços"}</div>
                 </div>
               </button>
             );
@@ -602,7 +606,7 @@ function Portfolio() {
         <SectionHead center eyebrow="Portfólio" title="Projetos reais," accent="no ar e gerando receita" dotColor="#0B7A4C" sub="Não vendemos mockups. Cada projeto abaixo é um produto que conhecemos e que está rodando hoje." />
         <div className="reveal" style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: 9, marginTop: 34 }}>
           {cats.map((c) => (
-            <button key={c} onClick={() => setActive(c)} style={{ font: "600 13px var(--font-sans)", padding: "9px 16px", borderRadius: 999, cursor: "pointer", transition: "all .25s var(--ease-out-premium)", color: active === c ? "#fff" : "rgba(255,255,255,0.66)", background: active === c ? "linear-gradient(135deg,#0B7A4C,#0FA968)" : "rgba(255,255,255,0.04)", border: active === c ? "1px solid rgba(11,122,76,0.6)" : "1px solid rgba(255,255,255,0.1)", boxShadow: active === c ? "0 0 22px -6px rgba(11,122,76,0.8)" : "none" }}>{c}</button>
+            <button key={c} onClick={() => setActive(c)} aria-pressed={active === c} style={{ minHeight: 44, font: "600 13px var(--font-sans)", padding: "9px 16px", borderRadius: 999, cursor: "pointer", transition: "all .25s var(--ease-out-premium)", color: active === c ? "#fff" : "rgba(255,255,255,0.66)", background: active === c ? "linear-gradient(135deg,#0B7A4C,#0FA968)" : "rgba(255,255,255,0.04)", border: active === c ? "1px solid rgba(11,122,76,0.6)" : "1px solid rgba(255,255,255,0.1)", boxShadow: active === c ? "0 0 22px -6px rgba(11,122,76,0.8)" : "none" }}>{c}</button>
           ))}
         </div>
         <div style={{ marginTop: 34, display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }} className="port-grid">
@@ -729,8 +733,8 @@ function Testimonials() {
                     {items.map((_, k) => (<button key={k} onClick={(e) => { e.preventDefault(); setI(k); }} aria-label={`Prova ${k + 1}`} style={{ width: k === i ? 26 : 8, height: 8, borderRadius: 999, border: "none", cursor: "pointer", transition: "all .3s", background: k === i ? "linear-gradient(90deg,#0B7A4C,#C4763C)" : "rgba(255,255,255,0.2)" }}></button>))}
                   </div>
                   <div style={{ display: "flex", gap: 8 }}>
-                    {[["chevron-left", -1], ["chevron-right", 1]].map(([ic, d]) => (
-                      <button key={ic} onClick={(e) => { e.preventDefault(); go(d); }} className="neon-card" style={{ width: 40, height: 40, borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
+                    {[["chevron-left", -1, "Prova anterior"], ["chevron-right", 1, "Próxima prova"]].map(([ic, d, rotulo]) => (
+                      <button key={ic} onClick={(e) => { e.preventDefault(); go(d); }} aria-label={rotulo} className="neon-card" style={{ width: 40, height: 40, borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
                         <i data-lucide={ic} style={{ width: 18, height: 18 }}></i>
                       </button>
                     ))}
@@ -800,14 +804,19 @@ function FAQ() {
           {qs.map(([q, a], i) => {
             const isOpen = open === i;
             return (
-              <div key={i} className="neon-card" onClick={() => setOpen(isOpen ? -1 : i)} style={{ borderRadius: 16, cursor: "pointer", overflow: "hidden", background: isOpen ? "linear-gradient(180deg, rgba(11,122,76,0.1), rgba(255,255,255,0.02))" : "rgba(255,255,255,0.03)", border: `1px solid ${isOpen ? "rgba(11,122,76,0.4)" : "rgba(255,255,255,0.08)"}`, boxShadow: isOpen ? "0 0 30px -10px rgba(11,122,76,0.5)" : "none", transition: "all .3s var(--ease-out-premium)" }}>
-                <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "19px 22px" }}>
+              /* Era uma <div onClick>: não era alcançável por Tab (as 7 perguntas
+                 ficavam inacessíveis por teclado) e não anunciava aberto/fechado.
+                 E o painel fechado usava só max-height:0, então o leitor de tela
+                 lia as 7 respostas mesmo com tudo fechado — `hidden` resolve. */
+              <div key={i} className="neon-card" style={{ borderRadius: 16, overflow: "hidden", background: isOpen ? "linear-gradient(180deg, rgba(11,122,76,0.1), rgba(255,255,255,0.02))" : "rgba(255,255,255,0.03)", border: `1px solid ${isOpen ? "rgba(11,122,76,0.4)" : "rgba(255,255,255,0.08)"}`, boxShadow: isOpen ? "0 0 30px -10px rgba(11,122,76,0.5)" : "none", transition: "all .3s var(--ease-out-premium)" }}>
+                <button type="button" onClick={() => setOpen(isOpen ? -1 : i)} aria-expanded={isOpen} aria-controls={`faq-resposta-${i}`}
+                  style={{ width: "100%", background: "none", border: "none", cursor: "pointer", textAlign: "left", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, padding: "19px 22px", minHeight: 44 }}>
                   <span style={{ font: "600 16px var(--font-sans)", color: "#fff" }}>{q}</span>
-                  <span style={{ flexShrink: 0, width: 30, height: 30, borderRadius: 9, display: "inline-flex", alignItems: "center", justifyContent: "center", color: isOpen ? "#fff" : "#6FE3B4", background: isOpen ? "linear-gradient(135deg,#0B7A4C,#0FA968)" : "rgba(255,255,255,0.05)", transition: "transform .3s", transform: isOpen ? "rotate(45deg)" : "none" }}>
+                  <span aria-hidden style={{ flexShrink: 0, width: 30, height: 30, borderRadius: 9, display: "inline-flex", alignItems: "center", justifyContent: "center", color: isOpen ? "#fff" : "#6FE3B4", background: isOpen ? "linear-gradient(135deg,#0B7A4C,#0FA968)" : "rgba(255,255,255,0.05)", transition: "transform .3s", transform: isOpen ? "rotate(45deg)" : "none" }}>
                     <i data-lucide="plus" style={{ width: 17, height: 17 }}></i>
                   </span>
-                </div>
-                <div style={{ maxHeight: isOpen ? 240 : 0, transition: "max-height .42s var(--ease-out-premium)", overflow: "hidden" }}>
+                </button>
+                <div id={`faq-resposta-${i}`} hidden={!isOpen}>
                   <p style={{ font: "400 14.5px/1.65 var(--font-sans)", color: "rgba(255,255,255,0.62)", margin: 0, padding: "0 22px 22px" }}>{a}</p>
                 </div>
               </div>
@@ -827,11 +836,17 @@ function FinalCTA() {
         <div className="neon-card reveal reveal--scale glass-top" style={{ position: "relative", borderRadius: 28, padding: "64px 40px", textAlign: "center", overflow: "hidden", background: "radial-gradient(120% 120% at 50% -20%, rgba(11,122,76,0.35), rgba(23,27,32,0.6) 55%, rgba(13,16,19,0.7))", border: "1px solid rgba(11,122,76,0.35)", boxShadow: "0 0 80px -30px rgba(11,122,76,0.7)" }}>
           <div aria-hidden="true" style={{ position: "absolute", bottom: -120, left: "50%", transform: "translateX(-50%)", width: "min(600px, 100%)", height: 300, background: "radial-gradient(ellipse, rgba(196,118,60,0.3), transparent 64%)", pointerEvents: "none" }}></div>
           <div style={{ position: "relative" }}>
-            <h2 style={{ font: "800 clamp(30px,4.4vw,52px)/1.05 var(--font-display)", letterSpacing: "-0.035em", color: "#fff", margin: 0, textWrap: "balance", maxWidth: 720, marginInline: "auto" }}>Pronto para acelerar o <span className="neon-tube blue" style={{ fontStyle: "italic" }}>crescimento</span> da sua empresa?</h2>
+            <h2 style={{ font: "800 clamp(30px,4.4vw,52px)/1.05 var(--font-display)", letterSpacing: "-0.035em", color: "#fff", margin: 0, textWrap: "balance", maxWidth: 720, marginInline: "auto" }}>Pronto para acelerar o <span style={{ color: "#2DD4A0" }}>crescimento</span> da sua empresa?</h2>
             <p style={{ font: "400 17px/1.6 var(--font-sans)", color: "rgba(255,255,255,0.7)", margin: "20px auto 0", maxWidth: 520 }}>Transforme sua operação com tecnologia, automação e inteligência artificial.</p>
             <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginTop: 34 }}>
               <a href="#contato" className="btn btn-cta">Solicitar proposta <i data-lucide="arrow-right" style={{ width: 18, height: 18 }}></i></a>
-              <a href={wa.url} target={wa.ativo ? "_blank" : undefined} rel="noopener noreferrer" className="btn btn-ghost"><i data-lucide="message-circle" style={{ width: 18, height: 18 }}></i> Conversar no WhatsApp</a>
+              {/* Sem WhatsApp configurado, o botão secundário leva para prova
+                  real em vez de fingir um canal que não existe. */}
+              {wa.ativo ? (
+                <a href={wa.url} target="_blank" rel="noopener noreferrer" className="btn btn-ghost"><i data-lucide="message-circle" style={{ width: 18, height: 18 }}></i> Conversar no WhatsApp</a>
+              ) : (
+                <a href="/sobre" className="btn btn-ghost"><i data-lucide="badge-check" style={{ width: 18, height: 18 }}></i> Ver projetos no ar</a>
+              )}
             </div>
           </div>
         </div>
@@ -1003,14 +1018,20 @@ export default function HypergrowSite({ services }: { services: ServiceCardData[
       {mounted && <Script src="/lucide.min.js" strategy="afterInteractive" onLoad={() => { try { window.lucide?.createIcons?.(); } catch {} }} />}
       <div id="bg-field" aria-hidden="true"></div>
       <div className="grain" aria-hidden="true"></div>
-      <Nav />
-      <main>
+      <SiteHeader variant="home" />
+      <main id="main">
         <Hero />
         <TrustMarquee />
         <Services services={services} />
         <PainPoints />
         <AIAgent />
-        <Differentiators />
+        {/* "Diferenciais" REMOVIDA. Eram 8 cartões idênticos — "Entrega rápida",
+            "Tecnologia de ponta", "Escalabilidade"... — que qualquer concorrente
+            assina sem mudar uma vírgula. Dois auditores independentes apontaram
+            a mesma coisa: seção que não diferencia, num bloco chamado
+            "Diferenciais", CONFIRMA a suspeita de site automático em vez de
+            afastá-la. O trabalho dela já é feito, e melhor, por "Prova, não
+            promessa" e pelo Portfólio, que mostram produto real no ar. */}
         <Portfolio />
         <Process />
         <Testimonials />
@@ -1020,14 +1041,23 @@ export default function HypergrowSite({ services }: { services: ServiceCardData[
         <Contact />
       </main>
       <Footer />
-      <a href={wa.url} target={wa.ativo ? "_blank" : undefined} rel="noopener noreferrer" aria-label="WhatsApp" className="wa-float" style={{ position: "fixed", left: 22, bottom: 22, zIndex: 900, width: 58, height: 58, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", background: "linear-gradient(135deg,#25D366,#11875a)", boxShadow: "0 12px 34px -8px rgba(15,169,104,0.7), 0 0 0 1px rgba(255,255,255,0.1)", animation: "wa-pulse 2.6s ease-in-out infinite" }}>
-        <i data-lucide="message-circle" style={{ width: 26, height: 26 }}></i>
-      </a>
+      {/* O botão flutuante de WhatsApp só existe se o WhatsApp existir.
+          Ele era o elemento mais visível do site — fixo, verde, pulsando, em
+          100% das telas — e levava para o formulário, porque NEXT_PUBLIC_WHATSAPP
+          está vazia. Prometer WhatsApp e entregar outra coisa gasta a intenção
+          mais alta que o visitante tinha; é o mesmo problema de honestidade dos
+          depoimentos inventados que já foram removidos daqui.
+          Assim que a variável for definida na Vercel, ele volta sozinho. */}
+      {wa.ativo && (
+        <a href={wa.url} target="_blank" rel="noopener noreferrer" aria-label="Falar no WhatsApp" className="wa-float" style={{ position: "fixed", left: 22, bottom: 22, zIndex: 900, width: 58, height: 58, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", background: "linear-gradient(135deg,#25D366,#11875a)", boxShadow: "0 12px 34px -8px rgba(15,169,104,0.7), 0 0 0 1px rgba(255,255,255,0.1)", animation: "wa-pulse 2.6s ease-in-out infinite" }}>
+          <i data-lucide="message-circle" style={{ width: 26, height: 26 }}></i>
+        </a>
+      )}
       <style dangerouslySetInnerHTML={{ __html: `
         #bg-field { position: fixed; inset: 0; z-index: -1; pointer-events: none;
           background: radial-gradient(80% 50% at 15% -5%, rgba(15,169,104,0.20), transparent 60%), radial-gradient(70% 45% at 92% 8%, rgba(196,118,60,0.16), transparent 60%), radial-gradient(90% 60% at 50% 108%, rgba(11,122,76,0.18), transparent 62%), #0D1013; }
         #bg-field::after { content: ''; position: absolute; inset: 0; opacity: 0.5; background-image: linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px); background-size: 96px 96px; -webkit-mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%); mask-image: radial-gradient(120% 90% at 50% 0%, #000 30%, transparent 78%); }
-        .h-sec .accent { filter: drop-shadow(0 0 22px rgba(11,122,76,0.55)) drop-shadow(0 0 38px rgba(196,118,60,0.35)); }
+        /* glow removido: era um dos sinais de "site gerado por IA" que sobraram */
         .glowcard:hover { border-color: rgba(15,122,76,0.45) !important; }
         @keyframes wa-pulse { 0%,100% { box-shadow: 0 12px 34px -8px rgba(15,169,104,0.7), 0 0 0 0 rgba(15,169,104,0.5); } 50% { box-shadow: 0 12px 34px -8px rgba(15,169,104,0.7), 0 0 0 12px rgba(15,169,104,0); } }
       ` }} />

@@ -51,7 +51,7 @@ export default function ContactForm() {
   return (
     <div className="neon-card glass-top" style={{ borderRadius: 22, padding: 30, background: "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)" }}>
       {sent ? (
-        <div style={{ textAlign: "center", padding: "40px 10px" }}>
+        <div role="status" aria-live="polite" style={{ textAlign: "center", padding: "40px 10px" }}>
           <span style={{ width: 66, height: 66, borderRadius: 20, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", background: "linear-gradient(135deg,#2DD4A0,#0C8956)", boxShadow: "0 0 40px -10px rgba(15,169,104,0.8)" }}>
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M20 6 9 17l-5-5" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" /></svg>
           </span>
@@ -76,7 +76,7 @@ export default function ContactForm() {
             <label style={lbl} htmlFor="hg-msg">Mensagem</label>
             <textarea id="hg-msg" name="mensagem" value={form.msg} onChange={set("msg")} onFocus={onFocus} onBlur={onBlur} rows={4} placeholder="Conte sobre o seu projeto e seus objetivos..." style={{ ...field, resize: "vertical", fontFamily: "var(--font-sans)" }}></textarea>
           </div>
-          {err && <p style={{ marginTop: 12, font: "500 13px var(--font-sans)", color: "#E0736A" }}>{err}</p>}
+          {err && <p role="alert" style={{ marginTop: 12, font: "500 13px var(--font-sans)", color: "#E0736A" }}>{err}</p>}
           <button type="submit" disabled={loading} className="btn btn-cta" style={{ width: "100%", justifyContent: "center", marginTop: 20, opacity: loading ? 0.7 : 1 }}>
             {loading ? "Enviando..." : "Enviar mensagem"}
             <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden><path d="M22 2 11 13M22 2l-7 20-4-9-9-4 20-7Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>

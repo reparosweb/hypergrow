@@ -20,8 +20,12 @@ const archivo = Archivo({
   subsets: ["latin"],
   variable: "--font-archivo",
   display: "swap",
+  // Auditoria de performance mediu 133 KB de fonte pré-carregada em TODA página —
+  // mais peso que o CSS. O itálico do Archivo dobrava o número de arquivos e
+  // NENHUM componente usava: a única classe que o pedia (.t-serif-italic) é
+  // código morto, e o último uso real (a palavra "crescimento" em néon no CTA)
+  // saiu junto com o efeito de néon. Verificado por grep antes de remover.
   weight: ["600", "700", "800", "900"],
-  style: ["normal", "italic"],
 });
 const plexSans = IBM_Plex_Sans({
   subsets: ["latin"],
@@ -148,6 +152,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="mobile-web-app-capable" content="yes" />
       </head>
       <body>
+        {/* WCAG 2.4.1: primeiro elemento focável da página, invisível até receber
+            foco pelo teclado. Sem ele, quem navega por teclado atravessa os 9
+            links do cabeçalho em toda página antes de chegar ao conteúdo. */}
+        <a href="#main" className="skip-link">Pular para o conteúdo</a>
         <Analytics />
         <script
           type="application/ld+json"

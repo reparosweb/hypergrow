@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode, CSSProperties } from "react";
+import SiteHeader from "./SiteHeader";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    SHELL DAS PÁGINAS INSTITUCIONAIS (/servicos, /sobre, /contato)
@@ -50,7 +51,7 @@ export default function PageShell({
 }) {
   const cssVars = { "--acc": accent, "--rail": rail, "--glow": glow } as unknown as CSSProperties;
   return (
-    <main className="pg" style={{ minHeight: "100vh", position: "relative", ...cssVars }}>
+    <main id="main" className="pg" style={{ minHeight: "100vh", position: "relative", ...cssVars }}>
       <div
         aria-hidden
         style={{
@@ -63,12 +64,9 @@ export default function PageShell({
       />
       <div className="pg-rail" aria-hidden />
 
-      <div className="wrap pg-top">
-        <Link href="/" className="pg-logo">
-          Hyper<span style={{ background: "linear-gradient(120deg,#2DD4A0,#0B7A4C 55%,#C4763C)", WebkitBackgroundClip: "text", backgroundClip: "text", color: "transparent" }}>Grow</span>
-        </Link>
-        <Link href="/#contato" className="btn btn-cta pg-top-cta">Solicitar orçamento</Link>
-      </div>
+      {/* Header ÚNICO do site (antes cada rota tinha o seu, e três delas ficavam
+          sem menu nenhum no celular — só o logo). */}
+      <SiteHeader />
 
       <nav className="wrap pg-crumbs" aria-label="Você está aqui">
         {crumbs.map((c, i) => (
@@ -104,7 +102,7 @@ export default function PageShell({
         .pg-top-cta { padding: 11px 18px !important; font-size: 13.5px !important; border-radius: 12px !important; }
 
         .pg-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; padding-top: 26px;
-          font: 500 12.5px var(--font-mono); letter-spacing: 0.02em; color: rgba(232,226,217,0.42); }
+          font: 500 12.5px var(--font-mono); letter-spacing: 0.02em; color: rgba(232,226,217,0.62); }
         .pg-crumbs a { color: rgba(232,226,217,0.62); text-decoration: none; transition: color .2s; }
         .pg-crumbs a:hover { color: var(--acc); }
         .pg-crumb-now { color: var(--acc); }
@@ -150,7 +148,7 @@ export default function PageShell({
 
         .pg-footer { border-top: 1px solid rgba(232,226,217,0.08); margin-top: 40px; }
         .pg-footer-in { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-          padding: 22px 0 34px; font: 400 13px var(--font-sans); color: rgba(232,226,217,0.42); }
+          padding: 22px 0 34px; font: 400 13px var(--font-sans); color: rgba(232,226,217,0.62); }
         .pg-footer-links { display: flex; flex-wrap: wrap; gap: 18px; }
         .pg-footer-links a { color: inherit; text-decoration: none; transition: color .2s; }
         .pg-footer-links a:hover { color: var(--acc); }

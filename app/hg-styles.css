@@ -258,8 +258,12 @@ body {
 .btn:hover::after { left: 140%; }
 .btn > * { position: relative; z-index: 3; }
 .btn:active { transform: scale(0.975); }
+/* Texto ESCURO de proposito. Auditoria de acessibilidade mediu branco sobre
+   este degrade em 2,12:1 no ponto claro (#E8A374) -- a WCAG AA exige 4,5:1, e
+   este e o botao de conversao de TODAS as paginas. Com #12151A a razao vai para
+   8,64:1 sem tocar no degrade da marca. */
 .btn-cta {
-  color: #fff; background: linear-gradient(140deg, #E8A374 0%, #C4763C 55%, #A35F2D 100%);
+  color: #12151A; background: linear-gradient(140deg, #E8A374 0%, #C4763C 55%, #A35F2D 100%);
   box-shadow:
     0 0 0 1px rgba(196,118,60,0.45),
     0 1px 0 rgba(255,255,255,0.3) inset,
@@ -276,8 +280,9 @@ body {
 }
 .btn-ghost::before { opacity: 0.4; }
 .btn-ghost:hover { transform: translateY(-2px); border-color: rgba(111,227,180,0.65); box-shadow: 0 1px 0 rgba(232,226,217,0.12) inset, 0 0 28px -6px rgba(11,122,76,0.55), 0 16px 40px -18px rgba(0,0,0,0.6); }
+/* Mesmo motivo do .btn-cta: branco sobre #4FCB9B media 2,03:1. Com #12151A: 9,01:1. */
 .btn-blue {
-  color: #fff; background: linear-gradient(140deg, #4FCB9B 0%, #0FA968 55%, #0A7048 100%);
+  color: #12151A; background: linear-gradient(140deg, #4FCB9B 0%, #0FA968 55%, #0A7048 100%);
   box-shadow:
     0 0 0 1px rgba(15,169,104,0.45),
     0 1px 0 rgba(255,255,255,0.3) inset,
@@ -426,3 +431,10 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 @media (prefers-reduced-motion: reduce) {
   .stagger > * { opacity: 1; transform: none; transition: none; }
 }
+
+/* Pular para o conteudo (WCAG 2.4.1 Bypass Blocks). A home tem 88 elementos
+   focaveis e 9 links de cabecalho antes do <main>, repetidos a cada navegacao.
+   Fica invisivel ate receber foco pelo teclado. */
+.skip-link { position: absolute; left: -9999px; top: 0; z-index: 2000; padding: 12px 18px; border-radius: 0 0 12px 0;
+  background: #12151A; color: #E8E2D9; font: 600 14px var(--font-sans); text-decoration: none; border: 1px solid rgba(232,226,217,0.25); }
+.skip-link:focus { left: 0; }

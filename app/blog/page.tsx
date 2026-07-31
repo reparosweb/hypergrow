@@ -12,7 +12,11 @@ export const metadata: Metadata = {
   description:
     "Guias práticos sobre criação de site, e-commerce, tráfego, SEO, IA e automação para fazer o seu negócio crescer. Conteúdo da HyperGrow.",
   alternates: { canonical: "/blog" },
-  openGraph: { title: "Blog — HyperGrow", description: "Guias práticos sobre tecnologia, e-commerce, marketing e IA.", url: `${SITE_URL}/blog`, type: "website" },
+  // `images` é obrigatório aqui: no App Router o objeto `openGraph` do filho
+  // SUBSTITUI o do pai inteiro (não faz merge campo a campo), então sem esta
+  // linha /blog era a única página do site sem og:image — link compartilhado
+  // saía sem imagem nenhuma.
+  openGraph: { title: "Blog — HyperGrow", description: "Guias práticos sobre tecnologia, e-commerce, marketing e IA.", url: `${SITE_URL}/blog`, type: "website", images: ["/media/launch-poster.png"] },
 };
 
 function fmtDate(iso: string) {
@@ -81,7 +85,7 @@ export default function BlogPage() {
           <Link href="/" style={{ font: "700 18px var(--font-display)", letterSpacing: "-0.04em", color: "#fff" }}>
             Hyper<span className="hgb-accent">Grow</span>
           </Link>
-          <Link href="/#contato" className="btn btn-cta" style={{ padding: "10px 18px", fontSize: 14, borderRadius: 12 }}>Solicitar orçamento</Link>
+          <Link href="/contato" className="btn btn-cta" style={{ padding: "10px 18px", fontSize: 14, borderRadius: 12 }}>Solicitar orçamento</Link>
         </div>
       </header>
 
