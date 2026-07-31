@@ -654,11 +654,37 @@ function Testimonials() {
     { id: "nutri", fact: "Estima macronutrientes a partir de uma foto do prato, com visão computacional em tempo real.", project: "NutriSnap", url: "https://calorias.app.br", host: "calorias.app.br", c: "#2DD4A0" },
   ];
   const [i, setI] = useState(0);
+  const secRef = useRef(null);
   const go = (d) => setI((v) => (v + d + items.length) % items.length);
-  useEffect(() => { const t = setInterval(() => setI((v) => (v + 1) % items.length), 7000); return () => clearInterval(t); }, []);
+  /* ⚠️ ISTO CAUSAVA A FALHA DE HIDRATAÇÃO DA HOME (React #425 x4, #418, #423).
+     O relógio antigo (`setInterval` no mount) começava a girar enquanto o React
+     AINDA estava hidratando — a home tem ~1.500 nós e a hidratação leva segundos
+     no celular. Quando o índice mudava no meio disso, o texto do cartão deixava
+     de bater com o HTML do servidor: 4 textos divergentes (frase, nome do
+     projeto, link e domínio) = exatamente os 4 erros #425 medidos em produção.
+     O React então DESCARTAVA o HTML do servidor e re-renderizava a página
+     inteira no cliente — comprovado por MutationObserver: HEADER, MAIN e FOOTER
+     removidos de uma vez.
+
+     Agora só gira enquanto a seção está VISÍVEL. Como ela fica muito abaixo da
+     dobra, nada muda durante a hidratação. De brinde, o timer para de rodar fora
+     da tela (economia de bateria/INP, item que a auditoria de performance pedia). */
+  useEffect(() => {
+    const el = secRef.current;
+    if (!el || typeof IntersectionObserver === "undefined") return;
+    let t = null;
+    const parar = () => { if (t) { clearInterval(t); t = null; } };
+    const io = new IntersectionObserver((entries) => {
+      const visivel = entries.some((e) => e.isIntersecting);
+      if (visivel && !t) t = setInterval(() => setI((v) => (v + 1) % items.length), 7000);
+      else if (!visivel) parar();
+    }, { threshold: 0.25 });
+    io.observe(el);
+    return () => { parar(); io.disconnect(); };
+  }, []);
   const t = items[i];
   return (
-    <section className="sec" id="depoimentos">
+    <section className="sec" id="depoimentos" ref={secRef}>
       <div className="wrap">
         <SectionHead center eyebrow="Prova, não promessa" title="Não é depoimento inventado." accent="É o produto no ar." dotColor="#D99461" sub="Cada fato abaixo é sobre um projeto real da HyperGrow, ainda funcionando hoje. Clique e confira você mesmo." />
         <div className="reveal" style={{ maxWidth: 1080, margin: "44px auto 0" }}>
