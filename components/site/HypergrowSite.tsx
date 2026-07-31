@@ -5,7 +5,12 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Script from "next/script";
 import TrustMarquee from "./TrustMarquee";
 import ServiceGlyph from "./ServiceGlyphs";
-import { siteServices, PILLARS, pillarOf, FLAGSHIP_SLUGS } from "@/lib/site-services";
+// Importa do módulo LEVE (não de site-services.ts): este é um client component,
+// e site-services.ts carrega o conteúdo completo das 19 páginas de serviço —
+// 62.992 bytes de texto (41% do JS da home) que o navegador não precisa.
+// A lista enxuta de serviços chega por prop, vinda do server component.
+import { PILLARS, pillarOf, FLAGSHIP_SLUGS } from "@/lib/pillars";
+import type { ServiceCardData } from "@/lib/pillars";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
 const waUrl = WHATSAPP
@@ -270,21 +275,67 @@ function Hero() {
 }
 
 /* ───────────────────────── Services ─────────────────────────
-   Identidade visual escaneável: o visitante precisava LER cada card para saber
-   o que era (19 cards de estrutura idêntica, ícone de 23px, todos jade).
-   Agora: cor por PILAR (4 matizes) + ícone grande como herói + badge do pilar
-   + bento grid (carro-chefe ocupa célula dupla). Aprende-se o código uma vez. */
-function Services() {
+   Identidade visual escaneável. O visitante precisava LER cada card para saber
+   o que era (19 cards idênticos, ícone de 23px = 0,45% da área do card).
+   Sistema atual, em 4 camadas:
+     1. GRAFISMO desenhado por serviço  → diz O QUE É sem leitura
+     2. cor + trilho do pilar           → diz DE QUE FAMÍLIA é
+     3. badge de texto                  → torna o código à prova de erro (a11y)
+     4. blocos por pilar + bento        → mata a "parede de 19 cards"
+   No celular o card vira LINHA horizontal: a seção cai de ~7,8 telas p/ ~3,
+   e o grafismo continua sendo a pista (ele carrega a identidade, não o texto). */
+function ServiceCard({ s }) {
+  const pil = pillarOf(s.slug);
+  const big = FLAGSHIP_SLUGS.includes(s.slug);
+  const inverted = s.slug === "automacoes-ia"; // único card claro da página: o sinal mais forte que existe
+  const titleColor = inverted ? "#12151A" : "#fff";
+  const descColor = inverted ? "rgba(18,21,26,0.68)" : "rgba(255,255,255,0.62)";
+  return (
+    <a href={`/servicos/${s.slug}`} className={`glowcard neon-card svc-card${inverted ? " svc-inv" : ""}`} data-big={big ? "1" : undefined} {...cardGlow(s.glow)}
+      style={{ position: "relative", overflow: "hidden", gridColumn: `span ${big ? 3 : 2}`, borderRadius: 20, padding: 26, minHeight: big ? 268 : 248, display: "flex", flexDirection: "column", color: "inherit",
+        ...(inverted ? { background: "linear-gradient(165deg,#EFEAE1,#DED6C8)", border: "1px solid rgba(18,21,26,0.14)" } : null) }}>
+      {/* Trilho na cor do pilar: aresta dura no topo — sinal pré-atento (o olho
+          pega antes de ler). */}
+      <span aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: pil.rail, opacity: 0.9, pointerEvents: "none" }}></span>
+      {!inverted && (
+        <span aria-hidden style={{ position: "absolute", top: -70, right: -70, width: "min(190px, 60%)", height: 190, borderRadius: "50%", background: `radial-gradient(circle, ${s.accent}24, transparent 68%)`, pointerEvents: "none" }}></span>
+      )}
+
+      <div className="svc-head" style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
+        {/* GRAFISMO: o desenho é o que diz O QUE É. Herda a cor via currentColor. */}
+        <span className="svc-glyph" style={{ color: inverted ? pil.rail : s.accent, display: "block", flexShrink: 0 }}>
+          <ServiceGlyph slug={s.slug} height={big ? 84 : 72} />
+        </span>
+        {/* Badge: nomeia a categoria — o código não depende SÓ da cor (a11y) e é
+            aprendido já no primeiro card lido. */}
+        <span style={{ flexShrink: 0, font: "600 10px var(--font-sans)", letterSpacing: "0.09em", textTransform: "uppercase", color: inverted ? pil.rail : s.accent, padding: "5px 10px", borderRadius: 999, background: inverted ? "rgba(18,21,26,0.06)" : `${s.accent}14`, border: `1px solid ${inverted ? "rgba(18,21,26,0.14)" : s.accent + "3d"}` }}>{pil.short}</span>
+      </div>
+      <div className="svc-body">
+        <h3 style={{ font: `700 ${big ? 21 : 18.5}px var(--font-display)`, letterSpacing: "-0.02em", color: titleColor, margin: "18px 0 8px" }}>{s.title}</h3>
+        <p style={{ font: "400 14px/1.55 var(--font-sans)", color: descColor, margin: 0 }}>{s.desc}</p>
+        {/* 2 tags (eram 4): 76 pílulas idênticas viravam uma textura cinza
+            uniforme em todo card — 2º maior motivo de "tudo igual". */}
+        <div className="svc-tags" style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
+          {s.tags.slice(0, 2).map((t) => (<span key={t} style={{ font: "500 11.5px var(--font-sans)", color: inverted ? "rgba(18,21,26,0.7)" : "rgba(255,255,255,0.72)", padding: "5px 10px", borderRadius: 999, background: inverted ? "rgba(18,21,26,0.05)" : "rgba(255,255,255,0.045)", border: `1px solid ${inverted ? "rgba(18,21,26,0.12)" : "rgba(255,255,255,0.09)"}` }}>{t}</span>))}
+        </div>
+        <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: "auto", paddingTop: 16, font: "600 13px var(--font-sans)", color: inverted ? pil.rail : s.accent }}>
+          Saiba mais <i data-lucide="arrow-right" style={{ width: 14, height: 14 }}></i>
+        </span>
+      </div>
+    </a>
+  );
+}
+
+function Services({ services }) {
   const spot = useSpotlight();
   const [pillar, setPillar] = useState("todos");
-  const active = PILLARS.find((p) => p.key === pillar);
-  const data = active ? siteServices.filter((s) => active.slugs.includes(s.slug)) : siteServices;
+  const shown = pillar === "todos" ? PILLARS : PILLARS.filter((p) => p.key === pillar);
   return (
     <section id="servicos" className="sec">
       <div className="wrap">
         <SectionHead center eyebrow="Serviços" title="Tudo que a" accent="HyperGrow faz" dotColor="#2DD4A0" sub="4 frentes, 19 serviços, uma operação só — da loja virtual à IA que atende por você." />
-        {/* Pilares: legenda viva do código de cores. Contam a história em 4 rótulos
-            e filtram o grid ao clicar. */}
+        {/* Pilares: legenda viva do código de cores — cada um na SUA cor, então
+            a taxonomia ensina o sistema. Clicar filtra. */}
         <div className="reveal stagger" style={{ marginTop: 40, display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 230px), 1fr))", gap: 14 }}>
           {PILLARS.map((p) => {
             const on = pillar === p.key;
@@ -300,58 +351,58 @@ function Services() {
                 <div>
                   <div style={{ font: "700 14.5px var(--font-sans)", color: "#fff" }}>{p.label}</div>
                   <div style={{ font: "400 12.5px/1.4 var(--font-sans)", color: "rgba(255,255,255,0.55)", marginTop: 3 }}>{p.desc}</div>
+                  <div style={{ font: "600 11px var(--font-mono)", color: p.accent, marginTop: 8, letterSpacing: "0.04em" }}>{p.slugs.length} serviços</div>
                 </div>
               </button>
             );
           })}
         </div>
-        <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal stagger svc-grid" style={{ marginTop: 24, display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 18, borderRadius: 24, padding: 2 }}>
-          {data.map((s) => {
-            const pil = pillarOf(s.slug);
-            const big = FLAGSHIP_SLUGS.includes(s.slug);
-            return (
-            <a key={s.slug} href={`/servicos/${s.slug}`} className="glowcard neon-card svc-card" data-big={big ? "1" : undefined} {...cardGlow(s.glow)} style={{ position: "relative", overflow: "hidden", gridColumn: `span ${big ? 3 : 2}`, borderRadius: 20, padding: 26, minHeight: big ? 268 : 248, display: "flex", flexDirection: "column", color: "inherit" }}>
-              {/* Trilho de 2px na cor do pilar: aresta dura no topo — o sinal
-                  pré-atento mais barato que existe (o olho pega antes de ler). */}
-              <span aria-hidden style={{ position: "absolute", top: 0, left: 0, right: 0, height: 2, background: pil.rail, opacity: 0.9, pointerEvents: "none" }}></span>
-              {/* Lavagem da cor do pilar: dá "temperatura" ao card sem leitura. */}
-              <span aria-hidden style={{ position: "absolute", top: -70, right: -70, width: 190, height: 190, borderRadius: "50%", background: `radial-gradient(circle, ${s.accent}24, transparent 68%)`, pointerEvents: "none" }}></span>
 
-              <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
-                {/* GRAFISMO: o desenho é o que diz O QUE É sem precisar ler.
-                    Herda a cor do pilar via currentColor. */}
-                <span style={{ color: s.accent, display: "block", flexShrink: 0 }}>
-                  <ServiceGlyph slug={s.slug} height={big ? 84 : 72} />
-                </span>
-                {/* Badge: nomeia a categoria — o código de cor não fica dependendo
-                    só da cor (regra a11y "color-not-only") e é aprendido no 1º card. */}
-                <span style={{ flexShrink: 0, font: "600 10px var(--font-sans)", letterSpacing: "0.09em", textTransform: "uppercase", color: s.accent, padding: "5px 10px", borderRadius: 999, background: `${s.accent}14`, border: `1px solid ${s.accent}3d` }}>{pil.short}</span>
+        {/* Um BLOCO por pilar, com cabeçalho próprio — em vez de uma parede de
+            19 cards soltos, o visitante lê 4 grupos com significado. */}
+        {shown.map((p) => (
+          <div key={p.key} style={{ marginTop: 44 }}>
+            <div className="reveal" style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 18 }}>
+              <span aria-hidden style={{ width: 3, height: 30, borderRadius: 2, background: p.rail, flexShrink: 0 }}></span>
+              <div style={{ display: "flex", alignItems: "baseline", gap: 12, flexWrap: "wrap" }}>
+                <h3 style={{ font: "700 clamp(19px,2.2vw,24px) var(--font-display)", letterSpacing: "-0.025em", color: "#fff", margin: 0 }}>{p.label}</h3>
+                <span style={{ font: "400 13.5px var(--font-sans)", color: "rgba(255,255,255,0.5)" }}>{p.desc}</span>
               </div>
-              <h3 style={{ font: `700 ${big ? 21 : 18.5}px var(--font-display)`, letterSpacing: "-0.02em", color: "#fff", margin: "18px 0 8px" }}>{s.title}</h3>
-              <p style={{ font: "400 14px/1.55 var(--font-sans)", color: "rgba(255,255,255,0.62)", margin: 0 }}>{s.desc}</p>
-              {/* 2 tags (eram 4): 76 pílulas idênticas viravam uma textura cinza
-                  uniforme em todo card — o 2º maior motivo de "tudo igual". */}
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 7, marginTop: 16 }}>
-                {s.tags.slice(0, 2).map((t) => (<span key={t} style={{ font: "500 11.5px var(--font-sans)", color: "rgba(255,255,255,0.72)", padding: "5px 10px", borderRadius: 999, background: "rgba(255,255,255,0.045)", border: "1px solid rgba(255,255,255,0.09)" }}>{t}</span>))}
-              </div>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 6, marginTop: "auto", paddingTop: 16, font: "600 13px var(--font-sans)", color: s.accent }}>
-                Saiba mais <i data-lucide="arrow-right" style={{ width: 14, height: 14 }}></i>
-              </span>
-            </a>
-            );
-          })}
-        </div>
+            </div>
+            <div ref={spot.ref} onMouseMove={spot.onMouseMove} className="spotlight reveal stagger svc-grid" style={{ display: "grid", gridTemplateColumns: "repeat(6, 1fr)", gap: 18, borderRadius: 24, padding: 2 }}>
+              {services.filter((s) => p.slugs.includes(s.slug)).map((s) => <ServiceCard key={s.slug} s={s} />)}
+            </div>
+          </div>
+        ))}
       </div>
-      {/* Bento responsivo: 6 col (3 cards/linha, carro-chefe ocupa metade da linha)
-          → 4 col no tablet → 1 coluna no celular (todo card ocupa a linha inteira). */}
+      {/* Bento responsivo: 6 col (3 cards/linha, carro-chefe ocupa metade)
+          → 4 col no tablet → LINHA HORIZONTAL no celular. */}
       <style>{`
         @media (max-width: 1100px){
           .svc-grid { grid-template-columns: repeat(4, 1fr) !important; }
           .svc-card { grid-column: span 2 !important; }
         }
+        /* Celular: o card deita. Grafismo à esquerda (continua sendo a pista
+           visual), texto à direita. Altura cai de ~320px para ~132px — a seção
+           inteira sai de ~7,8 telas de rolagem para ~3, sem perder identidade. */
         @media (max-width: 720px){
-          .svc-grid { grid-template-columns: 1fr !important; }
-          .svc-card { grid-column: span 1 !important; min-height: 0 !important; }
+          .svc-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+          .svc-card {
+            grid-column: span 1 !important;
+            min-height: 0 !important;
+            flex-direction: row !important;
+            align-items: center;
+            gap: 16px;
+            padding: 16px !important;
+          }
+          .svc-card .svc-head { flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
+          .svc-card .svc-glyph svg { height: 56px !important; width: 84px !important; }
+          .svc-card .svc-body { flex: 1; min-width: 0; }
+          .svc-card .svc-body h3 { margin: 0 0 4px !important; font-size: 16px !important; }
+          .svc-card .svc-body p { font-size: 13px !important; line-height: 1.45 !important; }
+          /* No formato deitado as tags viram ruído: o grafismo + título bastam. */
+          .svc-card .svc-tags { display: none !important; }
+          .svc-card .svc-body > span:last-child { padding-top: 10px !important; font-size: 12.5px !important; }
         }
       `}</style>
     </section>
@@ -832,7 +883,9 @@ function Footer() {
 }
 
 /* ───────────────────────── Root ───────────────────────── */
-export default function HypergrowSite() {
+/** `services` chega do server component (app/page.tsx) já enxuto: só os 7 campos
+ *  que a home usa. Assim o conteúdo das páginas de serviço nunca entra no bundle. */
+export default function HypergrowSite({ services }: { services: ServiceCardData[] }) {
   // scroll reveal
   useEffect(() => {
     const io = new IntersectionObserver((entries) => {
@@ -853,7 +906,7 @@ export default function HypergrowSite() {
       <main>
         <Hero />
         <TrustMarquee />
-        <Services />
+        <Services services={services} />
         <PainPoints />
         <AIAgent />
         <Differentiators />

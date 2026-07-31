@@ -17,62 +17,12 @@ export type SiteService = {
   metaDescription: string; // <=160 chars
 };
 
-/* ─────────────────────────────────────────────────────────────────────────────
-   SISTEMA DE PILARES — identidade visual escaneável.
-
-   Problema que isto resolve: com 19 serviços em cards de estrutura idêntica e
-   uma paleta só (jade), o visitante precisava LER cada card para saber o que
-   era. Agora cada serviço pertence a um pilar, e o pilar tem cor + rótulo
-   próprios: o usuário aprende o código uma vez e passa a navegar pelo visual.
-
-   4 sinais distinguíveis usando só as 2 famílias da marca (jade + cobre) — sem
-   virar arco-íris nem reintroduzir azul/violeta (a assinatura de "site de IA").
-   O truque: matiz resolve 2 pilares, SATURAÇÃO resolve o 3º, e o 4º usa um
-   teal claro. Marca (sat .33) e Atrair (sat .56) estão a ~10° de matiz, mas a
-   diferença de saturação os separa — e o badge de texto elimina qualquer dúvida.
-
-   `accent` = traço/ícone/grafismo (precisa de contraste alto sobre o card).
-   `rail`   = trilho de 2px no topo do card (pode ser mais saturado, é só cor).
-   Contraste medido contra o fundo real do card (#191D23) — piso 7:1 em todos,
-   contra os 3,14:1 que alguns cards tinham antes.
-   ──────────────────────────────────────────────────────────────────────────── */
-export type PillarKey = "vender" | "atrair" | "marca" | "ia";
-
-export const PILLARS: {
-  key: PillarKey; label: string; short: string; icon: string; desc: string; accent: string; rail: string; glow: string; slugs: string[];
-}[] = [
-  {
-    key: "vender", label: "Vender online", short: "Vender", icon: "shopping-cart",
-    desc: "Site, loja e presença que convertem visita em cliente.",
-    accent: "#2DD4A0", rail: "#0FA968", glow: "rgba(45,212,160,0.42)", // 8,89:1
-    slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo"],
-  },
-  {
-    key: "atrair", label: "Atrair demanda", short: "Atrair", icon: "trending-up",
-    desc: "Tráfego e réguas que trazem gente pronta pra comprar.",
-    accent: "#E09A63", rail: "#C4763C", glow: "rgba(224,154,99,0.42)", // 7,23:1
-    slugs: ["marketing-trafego", "email-marketing", "web-stories"],
-  },
-  {
-    key: "marca", label: "Marca & conteúdo", short: "Marca", icon: "palette",
-    desc: "Identidade, foto, vídeo e redes com o padrão da sua marca.",
-    accent: "#D3B78E", rail: "#D3B78E", glow: "rgba(211,183,142,0.42)", // 8,81:1 — champanhe dessaturado
-    slugs: ["redes-sociais", "posts-redes-sociais", "posts-video", "stories-instagram", "producao-de-video", "producao-fotografica", "fotos-produtos", "design-identidade", "criacao-logo"],
-  },
-  {
-    key: "ia", label: "Operar com IA", short: "IA", icon: "bot",
-    desc: "Agentes e automações que atendem e vendem sozinhos.",
-    accent: "#5FD3C6", rail: "#3BA8A0", glow: "rgba(95,211,198,0.42)", // 9,4:1
-    slugs: ["automacoes-ia"],
-  },
-];
-
-export function pillarOf(slug: string) {
-  return PILLARS.find((p) => p.slugs.includes(slug)) || PILLARS[0];
-}
-
-/** Serviços "carro-chefe" — ganham célula maior no bento grid da home. */
-export const FLAGSHIP_SLUGS = ["criacao-de-site", "loja-virtual", "marketing-trafego", "automacoes-ia"];
+/* Os pilares vivem em lib/pillars.ts (módulo LEVE, sem o conteúdo das páginas).
+   Reexportados aqui para quem já importava deste arquivo continuar funcionando —
+   mas o client component da home importa direto de @/lib/pillars para não
+   arrastar os 63 KB de texto dos serviços para o navegador. */
+export { PILLARS, pillarOf, FLAGSHIP_SLUGS } from "./pillars";
+export type { PillarKey, Pillar, ServiceCardData } from "./pillars";
 
 export const siteServices: SiteService[] = [
   {

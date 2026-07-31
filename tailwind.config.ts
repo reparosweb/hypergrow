@@ -27,9 +27,14 @@ const config: Config = {
           pink: "#ec4899",
         },
       },
+      // Aponta para o sistema tipográfico atual do site (Archivo + IBM Plex Sans).
+      // Antes referenciava --font-inter/--font-display (Inter + Space Grotesk), que
+      // eram baixadas em TODA página (70 KB) e nunca casavam com texto nenhum na
+      // home — o navegador reportava status "unloaded". Agora as páginas Tailwind
+      // (admin, privacidade, termos) usam a mesma tipografia do resto do site.
       fontFamily: {
-        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
-        display: ["var(--font-display)", "system-ui", "sans-serif"],
+        sans: ["var(--font-plex-sans)", "system-ui", "sans-serif"],
+        display: ["var(--font-archivo)", "system-ui", "sans-serif"],
       },
       backgroundImage: {
         "mesh":

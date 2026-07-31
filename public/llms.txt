@@ -1,29 +1,50 @@
 # HyperGrow
 
-> Agência de tecnologia e crescimento para e-commerce: criação de loja virtual, marketing e tráfego pago, automações e inteligência artificial, gestão de redes sociais, design, produção de vídeo e foto, e-mail marketing, logística e consultoria.
+> Agência de tecnologia e crescimento para e-commerce: criação de site e loja virtual, SEO, tráfego pago, gestão de redes sociais, produção de foto e vídeo, design e identidade, e-mail marketing e agentes de inteligência artificial.
 
-HyperGrow cria, lança e opera soluções digitais de ponta a ponta para empresas que querem crescer — com foco em performance, automação e resultado real.
+A HyperGrow cria, coloca no ar e opera soluções digitais de ponta a ponta para empresas que querem crescer — com foco em performance, automação e resultado mensurável. Atende todo o Brasil, remotamente.
 
-## Serviços
-- Criação de Site & Landing Pages: /servicos/criacao-de-site
-- Criação de Loja Virtual (E-commerce): /servicos/loja-virtual
-- Consultoria E-commerce & Marketplaces: /servicos/consultoria-ecommerce
-- Marketing Digital & Tráfego Pago: /servicos/marketing-trafego
-- Gestão de Redes Sociais: /servicos/redes-sociais
-- Design & Identidade Visual: /servicos/design-identidade
-- Produção de Vídeo: /servicos/producao-de-video
-- Produção Fotográfica: /servicos/producao-fotografica
-- Podcast & YouTube: /servicos/podcast-youtube
-- E-mail Marketing: /servicos/email-marketing
-- Automações & Inteligência Artificial: /servicos/automacoes-ia
-- Gestão de Transportes (logística e-commerce): /servicos/gestao-de-transportes
+## Serviços (19)
+
+### Vender online
+- [Criação de Site & Landing Pages](https://hypergrow-lovat.vercel.app/servicos/criacao-de-site): Sites e páginas de alta conversão, rápidos e impecáveis.
+- [Criação de Loja Virtual](https://hypergrow-lovat.vercel.app/servicos/loja-virtual): E-commerce completo, pronto para vender e escalar.
+- [Consultoria E-commerce & Marketplaces](https://hypergrow-lovat.vercel.app/servicos/consultoria-ecommerce): Estratégia de vendas online e marketplaces que faz a operação crescer.
+- [SEO: Site no Topo dos Buscadores](https://hypergrow-lovat.vercel.app/servicos/seo): Otimização que coloca seu site na primeira página do Google.
+- [Hospedagem de Sites](https://hypergrow-lovat.vercel.app/servicos/hospedagem): Hospedagem gerenciada, rápida e sempre no ar.
+- [Cartão de Visita Interativo](https://hypergrow-lovat.vercel.app/servicos/cartao-interativo): Seu contato, redes e links em um só toque ou QR Code.
+
+### Atrair demanda
+- [Marketing Digital & Tráfego Pago](https://hypergrow-lovat.vercel.app/servicos/marketing-trafego): Campanhas de tráfego pago que vendem todos os dias com ROI previsível.
+- [E-mail Marketing](https://hypergrow-lovat.vercel.app/servicos/email-marketing): Réguas, automações e recuperação de carrinho que geram receita no automático.
+- [Web Stories](https://hypergrow-lovat.vercel.app/servicos/web-stories): Stories indexáveis no Google que geram tráfego orgânico para o seu site.
+
+### Marca & conteúdo
+- [Gestão de Redes Sociais](https://hypergrow-lovat.vercel.app/servicos/redes-sociais): Planejamento, calendário e community que constroem marca e vendem.
+- [Criação de Posts para Redes Sociais](https://hypergrow-lovat.vercel.app/servicos/posts-redes-sociais): Artes para feed do Instagram e Facebook com identidade visual de marca.
+- [Posts em Vídeo para Redes](https://hypergrow-lovat.vercel.app/servicos/posts-video): Reels e vídeos curtos que param o scroll e multiplicam o alcance.
+- [Stories para Instagram](https://hypergrow-lovat.vercel.app/servicos/stories-instagram): Sequências de stories diárias que engajam, aproximam e vendem.
+- [Produção e Edição de Vídeos](https://hypergrow-lovat.vercel.app/servicos/producao-de-video): Roteiro, gravação e edição de vídeos que prendem a atenção e convertem.
+- [Fotos Profissionais](https://hypergrow-lovat.vercel.app/servicos/producao-fotografica): Ensaio profissional de marca, equipe e ambiente que eleva a percepção de valor.
+- [Fotos de Produtos para E-commerce](https://hypergrow-lovat.vercel.app/servicos/fotos-produtos): Still, fundo branco, catálogo e lifestyle que vendem na loja e nos marketplaces.
+- [Design & Publicidade](https://hypergrow-lovat.vercel.app/servicos/design-identidade): Peças, banners e criação publicitária de altíssimo nível para vender mais.
+- [Criação de Logo & Identidade de Marca](https://hypergrow-lovat.vercel.app/servicos/criacao-logo): Logotipo + identidade visual completa e manual de marca que tornam você inesquecível.
+
+### Operar com IA
+- [Automações & IA](https://hypergrow-lovat.vercel.app/servicos/automacoes-ia): Agentes de IA que atendem, qualificam e vendem 24/7.
+
+## Artigos (4)
+- [Quanto custa criar um site profissional em 2026?](https://hypergrow-lovat.vercel.app/blog/quanto-custa-criar-um-site): Quanto custa criar um site em 2026? Veja faixas reais de preço no Brasil para landing page, site institucional e e-commerce, e o que muda no valor.
+- [O que é um agente de IA e como ele atende seus clientes 24 horas por dia](https://hypergrow-lovat.vercel.app/blog/agente-de-ia-atendimento-24h): Agente de IA para atendimento: o que é, como funciona no WhatsApp, como qualifica e agenda clientes 24h e a diferença para o chatbot antigo.
+- [Quanto custa criar uma loja virtual no Brasil?](https://hypergrow-lovat.vercel.app/blog/quanto-custa-loja-virtual): Quanto custa loja virtual? De R$0 a R$80 mil. Veja faixas reais de preço, custos recorrentes (plataforma, gateway, frete) e quando vale cada caminho.
+- [Como aparecer no ChatGPT e ser citado pela IA (guia de GEO/AEO)](https://hypergrow-lovat.vercel.app/blog/como-aparecer-no-chatgpt): Como aparecer no ChatGPT? Estruture conteúdo em formato de resposta, use dados, schema e autoridade. Guia prático de GEO/AEO para sua empresa ser citada.
 
 ## Diferenciais
-- Agentes de IA que atendem, qualificam e agendam reuniões 24/7
-- Performance extrema: páginas que carregam num piscar de olhos
-- Responsivo e mobile-first em todos os dispositivos
-- Projetos reais no ar, gerando receita
+- Agentes de IA que atendem no WhatsApp, qualificam o lead e agendam reuniões 24/7
+- Projetos próprios no ar e gerando receita (não apenas portfólio de clientes)
+- Performance e SEO tratados como requisito, não como enfeite
+- Mobile-first: tudo é desenhado primeiro para o celular
 
 ## Contato
-- E-mail: contato@hypergrow.com.br
+- Formulário de orçamento: https://hypergrow-lovat.vercel.app/#contato
 - Site: https://hypergrow-lovat.vercel.app
