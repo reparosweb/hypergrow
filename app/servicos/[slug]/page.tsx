@@ -225,6 +225,9 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
         </div>
       </section>
 
+      {/* Faixa fotográfica — só nos 6 slugs em que a foto diz alguma coisa. */}
+      <PhotoBand slug={s.slug} />
+
       {/* ── PLATAFORMAS (só onde faz sentido) ────────────────────────────────
           Pedido direto do dono: a página de loja virtual precisa mostrar que
           trabalhamos com as plataformas de verdade do mercado — não é detalhe

@@ -46,7 +46,9 @@ body {
 
 .gradient-text {
   @apply bg-clip-text text-transparent;
-  background-image: linear-gradient(120deg, #c7d2fe 0%, #818cf8 35%, #22d3ee 100%);
+  /* Era índigo → ciano (kit de site gerado por IA). Agora jade → cobre, igual à
+     assinatura usada no logotipo e nos títulos do site. */
+  background-image: linear-gradient(120deg, #6FE3B4 0%, #2DD4A0 35%, #C4763C 100%);
 }
 
 /* Glow border that lights up on hover */

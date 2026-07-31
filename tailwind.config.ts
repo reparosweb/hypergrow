@@ -7,24 +7,35 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      /* ⚠️ CORREÇÃO: esta paleta ainda era a do Nexlab (índigo #6366f1 + violeta
+         #a855f7 + ciano + rosa) — exatamente o "kit de site gerado por IA" que já
+         foi removido do resto do site. Havia a anotação de que o Tailwind "não
+         afeta o site ativo"; está ERRADO: o `ChatWidget` é renderizado na HOME e
+         o botão flutuante saía com `linear-gradient(#6366f1, #a855f7)`, roxo,
+         por cima de tudo, em toda visita. Verificado no ar com getComputedStyle.
+
+         Os NOMES continuam iguais (brand-500, accent-violet…) de propósito: assim
+         nenhum componente precisa mudar e a correção pega de uma vez o
+         ChatWidget, /admin, /privacidade e /termos. Só o VALOR mudou, para a
+         paleta real da marca (jade + cobre sobre grafite). */
       colors: {
         ink: {
-          950: "#05060c",
-          900: "#0a0c16",
-          800: "#11131f",
-          700: "#1a1d2e",
+          950: "#0D1013", // ink-deep
+          900: "#12151A", // canvas
+          800: "#171B20", // superfície de card
+          700: "#1D2229",
         },
         brand: {
-          50: "#eef2ff",
-          300: "#a5b4fc",
-          400: "#818cf8",
-          500: "#6366f1",
-          600: "#4f46e5",
+          50: "#E4F7EE",
+          300: "#6FE3B4",
+          400: "#2DD4A0",
+          500: "#0FA968", // jade primário
+          600: "#0B7A4C",
         },
         accent: {
-          cyan: "#22d3ee",
-          violet: "#a855f7",
-          pink: "#ec4899",
+          cyan: "#3BA8A0", // teal do pilar IA (era #22d3ee)
+          violet: "#C4763C", // cobre — o nome é legado, o valor NÃO é violeta
+          pink: "#D99461", // cobre claro
         },
       },
       // Aponta para o sistema tipográfico atual do site (Archivo + IBM Plex Sans).
@@ -37,8 +48,10 @@ const config: Config = {
         display: ["var(--font-archivo)", "system-ui", "sans-serif"],
       },
       backgroundImage: {
+        // Mesmo motivo do bloco de cores acima: os 3 raios eram índigo, ciano e
+        // violeta. Agora jade, teal e cobre.
         "mesh":
-          "radial-gradient(60% 60% at 20% 10%, rgba(99,102,241,0.25) 0%, transparent 60%), radial-gradient(50% 50% at 85% 20%, rgba(34,211,238,0.18) 0%, transparent 55%), radial-gradient(60% 60% at 50% 100%, rgba(168,85,247,0.20) 0%, transparent 60%)",
+          "radial-gradient(60% 60% at 20% 10%, rgba(15,169,104,0.25) 0%, transparent 60%), radial-gradient(50% 50% at 85% 20%, rgba(59,168,160,0.18) 0%, transparent 55%), radial-gradient(60% 60% at 50% 100%, rgba(196,118,60,0.20) 0%, transparent 60%)",
       },
       keyframes: {
         "fade-up": {
