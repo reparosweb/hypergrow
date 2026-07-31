@@ -924,12 +924,27 @@ export default function HypergrowSite({ services }: { services: ServiceCardData[
     document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
+  /* ⚠️ CORRIDA COM A HIDRATAÇÃO (erro React #418/#423/#425 medido em PRODUÇÃO).
+     O `createIcons()` do lucide TROCA cada <i data-lucide> por um <svg> direto no
+     DOM. Com `strategy="afterInteractive"`, esse script de 348 KB podia executar
+     no MEIO da hidratação — o React então encontrava <svg> onde tinha escrito
+     <i>, acusava divergência e DESCARTAVA o HTML do servidor, re-renderizando a
+     página inteira no cliente. É o mesmo estrago que o bug do `useId()` já tinha
+     causado aqui, por outro caminho.
+
+     Correção: `mounted` é false no servidor E na primeira renderização do
+     cliente (a de hidratação), então a tag <Script> só entra na árvore DEPOIS
+     que a hidratação terminou — a corrida deixa de existir. Efeito colateral
+     bom: tira 348 KB do caminho crítico. Custo: os ícones aparecem um instante
+     depois. */
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => { setMounted(true); }, []);
   // lucide icons — refresh after every render (covers dynamic icon swaps)
   useEffect(() => { try { window.lucide?.createIcons?.(); } catch {} });
 
   return (
     <>
-      <Script src="/lucide.min.js" strategy="afterInteractive" onLoad={() => { try { window.lucide?.createIcons?.(); } catch {} }} />
+      {mounted && <Script src="/lucide.min.js" strategy="afterInteractive" onLoad={() => { try { window.lucide?.createIcons?.(); } catch {} }} />}
       <div id="bg-field" aria-hidden="true"></div>
       <div className="grain" aria-hidden="true"></div>
       <Nav />
