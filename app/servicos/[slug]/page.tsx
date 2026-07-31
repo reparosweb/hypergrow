@@ -330,7 +330,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
         </div>
       </footer>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ═══ Página de serviço — sistema visual por pilar ═══════════════════
            Regras de sobrevivência aplicadas aqui:
            · nenhuma largura fixa em px sem min(Xpx, 100%)
@@ -614,7 +614,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           .svc-rise { animation: none; opacity: 1; transform: none; }
           .svc-arrow, .svc-faq summary::after { transition: none; }
         }
-      `}</style>
+      ` }} />
     </main>
   );
 }

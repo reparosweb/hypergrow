@@ -269,7 +269,7 @@ export function StackedShowcase({
 
 export function DeviceMockupStyles(): ReactNode {
   return (
-    <style>{`
+    <style dangerouslySetInnerHTML={{ __html: `
 /* ===== base compartilhada ================================================= */
 .dv-browser, .dv-phone { margin: 0; }
 
@@ -458,7 +458,7 @@ export function DeviceMockupStyles(): ReactNode {
 @media (prefers-reduced-motion: reduce){
   .dv-browser, .dv-phone{ animation: none !important; }
 }
-`}</style>
+` }} />
   );
 }
 

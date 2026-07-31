@@ -217,7 +217,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         </div>
       </div>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* ═══ Plataformas — grid de wordmarks + tabela comparativa ═════════
            Paleta: grafite + jade + cobre + champanhe. Zero azul, zero violeta.
            ═══════════════════════════════════════════════════════════════ */
@@ -477,7 +477,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
           .plat-tile, .plat-rule, .plat-table tbody tr { transition: none; }
           .plat-tile:hover { transform: none; }
         }
-      `}</style>
+      ` }} />
     </section>
   );
 }
