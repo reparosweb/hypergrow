@@ -85,8 +85,11 @@ export default function SobrePage() {
           <StackedShowcase
             browserSrc="/portfolio/agentop.webp"
             browserAlt="Painel do Agentop: agenda, CRM e financeiro num sistema só"
-            phoneSrc="/portfolio/nutri.webp"
-            phoneAlt="NutriSnap estimando calorias a partir da foto do prato"
+            /* Print REAL, não o card de marca: nutri.webp é um card desenhado
+               (o app renderiza em branco para capturador) e dentro da moldura de
+               celular virava uma tela verde chapada — parecia defeito. */
+            phoneSrc="/portfolio/sorteio.webp"
+            phoneAlt="Sorteio Bilionário IA aberto no celular"
             title="agentop.com.br"
             priority
           />
