@@ -5,8 +5,19 @@ import HypergrowSite from "@/components/site/HypergrowSite";
 import ChatWidget from "@/components/ChatWidgetLazy";
 import { siteServices } from "@/lib/site-services";
 import type { ServiceCardData } from "@/lib/pillars";
+import { HOME_FAQ, faqPageSchema } from "@/lib/home-faq";
+import { SITE_URL } from "@/lib/seo";
 
 export const metadata: Metadata = { alternates: { canonical: "/" } };
+
+/* As 7 perguntas da home já eram VISÍVEIS, mas não existiam como dado
+   estruturado — o Google e as IAs não tinham como reconhecê-las. Marcadas a
+   partir do mesmo array que a tela renderiza (lib/home-faq.ts), então schema e
+   conteúdo não podem divergir. */
+const homeSchema = {
+  "@context": "https://schema.org",
+  "@graph": [faqPageSchema(HOME_FAQ, `${SITE_URL}/#faq`)],
+};
 
 /* PERFORMANCE: este é um SERVER component, então `siteServices` (com o conteúdo
    completo das 19 páginas de serviço) fica no servidor. Só estes 7 campos por
@@ -28,6 +39,10 @@ const servicesForCards: ServiceCardData[] = siteServices.map((s) => ({
 export default function Home() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema) }}
+      />
       <HypergrowSite services={servicesForCards} />
       <ChatWidget />
     </>

@@ -7,6 +7,11 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const now = new Date();
   const main: MetadataRoute.Sitemap = [
     { url: `${SITE_URL}/`, lastModified: now, changeFrequency: "weekly", priority: 1 },
+    // Hub dos 19 serviços: é a página-pai real de /servicos/[slug] (antes o
+    // breadcrumb apontava para a âncora /#servicos, que o Google lê como a home).
+    { url: `${SITE_URL}/servicos`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
+    { url: `${SITE_URL}/sobre`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${SITE_URL}/contato`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
     { url: `${SITE_URL}/privacidade`, lastModified: now, priority: 0.2 },
     { url: `${SITE_URL}/termos`, lastModified: now, priority: 0.2 },

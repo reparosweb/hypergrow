@@ -376,7 +376,7 @@ export const siteServices: SiteService[] = [
       { q: "Posso usar as fotos em qualquer lugar?", a: "Sim. As imagens são exclusivas da sua marca e você pode usá-las livremente em site, redes sociais, anúncios, impressos e apresentações." },
     ],
     keyword: "fotos profissionais",
-    metaDescription: "Fotos profissionais para sua marca: ensaio de equipe, retratos corporativos e ambiente com tratamento premium. Imagens que transmitem autoridade e confiança.",
+    metaDescription: "Fotos profissionais para sua marca: ensaio de equipe, retrato corporativo e ambiente com tratamento premium. Imagens que passam autoridade.",
   },
   {
     slug: "fotos-produtos",
@@ -400,7 +400,7 @@ export const siteServices: SiteService[] = [
       { q: "Preciso enviar os produtos para vocês?", a: "Na maioria dos casos sim, para fotografarmos com controle total de luz e padrão. Combinamos a logística de envio e devolução com antecedência." },
     ],
     keyword: "fotos de produtos para e-commerce",
-    metaDescription: "Fotos de produtos para e-commerce: still em fundo branco no padrão dos marketplaces, catálogo, detalhe e lifestyle. Imagens que aumentam a conversão da sua loja.",
+    metaDescription: "Fotos de produtos para e-commerce: still em fundo branco no padrão dos marketplaces, catálogo e lifestyle. Imagens que aumentam a conversão.",
   },
   {
     slug: "design-identidade",
@@ -424,7 +424,7 @@ export const siteServices: SiteService[] = [
       { q: "Vocês seguem a identidade visual da minha marca?", a: "Seguimos. Trabalhamos a partir do seu manual de marca ou, se não houver, ajudamos a definir o padrão antes de produzir as peças." },
     ],
     keyword: "design e publicidade",
-    metaDescription: "Design e publicidade de alto nível: peças, banners, anúncios e criação publicitária com estratégia de venda. Comunicação visual que chama atenção e converte.",
+    metaDescription: "Design e publicidade de alto nível: peças, banners e anúncios com estratégia de venda. Comunicação visual que chama atenção e converte.",
   },
   {
     slug: "criacao-logo",
@@ -448,7 +448,7 @@ export const siteServices: SiteService[] = [
       { q: "O logo é exclusivo e registrável?", a: "Sim. Criamos um logotipo original e exclusivo da sua marca. Entregamos os arquivos que você precisa para dar entrada no registro junto ao INPI, se desejar." },
     ],
     keyword: "criação de logo",
-    metaDescription: "Criação de logo e identidade visual completa: logotipo exclusivo, paleta, tipografia e manual de marca. Uma identidade profissional que torna sua marca inesquecível.",
+    metaDescription: "Criação de logo e identidade visual: logotipo exclusivo, paleta, tipografia e manual de marca. Uma identidade profissional e inesquecível.",
   },
   {
     slug: "automacoes-ia",

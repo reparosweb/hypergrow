@@ -45,7 +45,10 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "agente-de-ia-atendimento-24h",
-    title: "O que é um agente de IA e como ele atende seus clientes 24 horas por dia",
+    // Encurtado de 71 para 46 chars: o <title> da página é `${title} — HyperGrow`,
+    // então 71 + 12 estourava os ~60 que o Google mostra e o resto era cortado.
+    // O `slug` NÃO muda, então nenhuma URL quebra.
+    title: "Agente de IA: como atender clientes 24h por dia",
     description: "Agente de IA para atendimento: o que é, como funciona no WhatsApp, como qualifica e agenda clientes 24h e a diferença para o chatbot antigo.",
     date: "2026-06-28",
     category: "Inteligência Artificial",
@@ -99,7 +102,9 @@ export const blogPosts: BlogPost[] = [
   },
   {
     slug: "como-aparecer-no-chatgpt",
-    title: "Como aparecer no ChatGPT e ser citado pela IA (guia de GEO/AEO)",
+    // Encurtado de 62 para 44 chars (ver nota acima). "GEO/AEO" continua no corpo
+    // e na description — no <title> só ocupava espaço e era cortado.
+    title: "Como aparecer no ChatGPT e ser citado pela IA",
     description: "Como aparecer no ChatGPT? Estruture conteúdo em formato de resposta, use dados, schema e autoridade. Guia prático de GEO/AEO para sua empresa ser citada.",
     date: "2026-06-28",
     category: "SEO & IA",

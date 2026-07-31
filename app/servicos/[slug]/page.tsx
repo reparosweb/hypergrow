@@ -81,7 +81,10 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
         "@type": "BreadcrumbList",
         itemListElement: [
           { "@type": "ListItem", position: 1, name: "Início", item: SITE_URL },
-          { "@type": "ListItem", position: 2, name: "Serviços", item: `${SITE_URL}/#servicos` },
+          // Página-pai REAL (/servicos existe agora). Antes apontava para a
+          // âncora /#servicos, que o Google resolve como sendo a própria home —
+          // as 19 páginas ficavam sem nível intermediário na hierarquia.
+          { "@type": "ListItem", position: 2, name: "Serviços", item: `${SITE_URL}/servicos` },
           { "@type": "ListItem", position: 3, name: s.title, item: `${SITE_URL}/servicos/${s.slug}` },
         ],
       },
@@ -127,7 +130,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
         <nav className="wrap svc-crumbs" aria-label="Você está aqui">
           <Link href="/">Início</Link>
           <span aria-hidden>/</span>
-          <Link href="/#servicos">Serviços</Link>
+          <Link href="/servicos">Serviços</Link>
           <span aria-hidden>/</span>
           <span className="svc-crumb-now">{pil.label}</span>
         </nav>
@@ -267,7 +270,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           <div className="svc-all">
             <div className="svc-all-head">
               <h3 className="svc-all-h">Todos os serviços</h3>
-              <Link href="/#servicos" className="svc-all-link">Ver o catálogo completo <Arrow /></Link>
+              <Link href="/servicos" className="svc-all-link">Ver o catálogo completo <Arrow /></Link>
             </div>
             <div className="svc-all-pills">
               {others.map((o) => (

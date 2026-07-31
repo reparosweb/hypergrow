@@ -5,12 +5,16 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import Script from "next/script";
 import TrustMarquee from "./TrustMarquee";
 import ServiceGlyph from "./ServiceGlyphs";
+import ContactForm from "./ContactForm";
+import { BrowserFrame } from "./DeviceMockup";
 // Importa do módulo LEVE (não de site-services.ts): este é um client component,
 // e site-services.ts carrega o conteúdo completo das 19 páginas de serviço —
 // 62.992 bytes de texto (41% do JS da home) que o navegador não precisa.
 // A lista enxuta de serviços chega por prop, vinda do server component.
 import { PILLARS, pillarOf, FLAGSHIP_SLUGS } from "@/lib/pillars";
 import type { ServiceCardData } from "@/lib/pillars";
+import { HOME_FAQ } from "@/lib/home-faq";
+import { PROJECTS, PROJECT_CATS } from "@/lib/projects";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
 const waUrl = WHATSAPP
@@ -103,16 +107,41 @@ function cardGlow(color) {
   };
 }
 
-function ImageSlot({ placeholder, src }) {
+/* PERFORMANCE (P2): as 10 capas do portfólio (800×500, ~201 KB somadas) ficam
+   muito abaixo da dobra, mas `loading="lazy"` NÃO segura — o Chrome dispara o
+   lazy de tudo que está no documento assim que o layout resolve, e a auditoria
+   mediu as 10 baixando ANTES do FCP, disputando banda com o que está na tela.
+
+   Aqui o `src` só é escrito no DOM quando o card chega a 500 px da viewport.
+   Antes disso não existe requisição nenhuma. `loading="lazy"` continua como
+   segunda camada de segurança.
+
+   `width`/`height` são os valores REAIS do arquivo (medidos, não chutados): dão
+   ao navegador a proporção antes do download e evitam salto de layout. */
+function ImageSlot({ placeholder, src, w = 800, h = 500 }) {
   const [ok, setOk] = useState(true);
+  const [near, setNear] = useState(false);
+  const boxRef = useRef(null);
   // Reseta o estado de erro quando o src muda — sem isso, uma imagem que falhou
   // uma vez ficava presa no fallback mesmo trocando para outro src válido.
   useEffect(() => { setOk(true); }, [src]);
+  useEffect(() => {
+    const el = boxRef.current;
+    if (!el) return;
+    // Sem IntersectionObserver (navegador antigo): carrega direto, sem quebrar.
+    if (typeof IntersectionObserver === "undefined") { setNear(true); return; }
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) { setNear(true); io.disconnect(); }
+    }, { rootMargin: "500px 0px" });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  const show = src && ok && near;
   return (
-    <>
-      {src && ok && (
+    <div ref={boxRef} style={{ position: "absolute", inset: 0 }}>
+      {show && (
         /* eslint-disable-next-line @next/next/no-img-element */
-        <img src={src} alt={placeholder} loading="lazy" referrerPolicy="no-referrer" onError={() => setOk(false)}
+        <img src={src} alt={placeholder} width={w} height={h} loading="lazy" decoding="async" referrerPolicy="no-referrer" onError={() => setOk(false)}
           style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover" }} />
       )}
       {(!src || !ok) && (
@@ -120,7 +149,7 @@ function ImageSlot({ placeholder, src }) {
           {placeholder}
         </div>
       )}
-    </>
+    </div>
   );
 }
 
@@ -222,7 +251,7 @@ function Hero() {
           </video>
         ) : (
           /* eslint-disable-next-line @next/next/no-img-element */
-          <img className="hero-video" src="/media/launch-poster.webp" alt="Foguete em lançamento — HyperGrow, tecnologia e IA para crescimento de e-commerce" fetchPriority="high" />
+          <img className="hero-video" src="/media/launch-poster.webp" width={720} height={405} alt="Foguete em lançamento — HyperGrow, tecnologia e IA para crescimento de e-commerce" fetchPriority="high" />
         )}
       </div>
 
@@ -522,21 +551,10 @@ function Differentiators() {
 
 /* ───────────────────────── Portfolio + Process ───────────────────────── */
 function Portfolio() {
-  const cats = ["Todos", "E-commerce", "Websites", "Sistemas", "Aplicativos", "IA", "Automações"];
+  // Lista em lib/projects.ts — a página /sobre usa a MESMA fonte.
+  const cats = PROJECT_CATS;
   const [active, setActive] = useState("Todos");
-  const projects = [
-    { id: "clicouenviou", name: "Clicou Enviou", url: "https://www.clicouenviou.com.br", cat: ["E-commerce", "Sistemas", "Automações"], tags: ["Logística", "Plataforma"], grad: "linear-gradient(150deg,#0FA968,#0B7A4C)", desc: "Plataforma que reúne múltiplas transportadoras num único painel para simplificar os envios do e-commerce." },
-    { id: "ebcorretora", name: "EB Corretora", url: "https://www.ebcorretora.com.br", cat: ["Websites", "Sistemas"], tags: ["Site", "Institucional"], grad: "linear-gradient(150deg,#0A7048,#6FBF9A)", desc: "Presença digital e site institucional para corretora de seguros, com captação de leads." },
-    { id: "odontomed", name: "OdontoMed Saúde", url: "https://www.odontomedsaude.com.br", cat: ["Websites", "Sistemas"], tags: ["Site", "Saúde"], grad: "linear-gradient(150deg,#0C8956,#2DD4A0)", desc: "Site e presença digital para clínica de odontologia e saúde, com agendamento." },
-    { id: "pneusmaninho", name: "Pneus Maninho", url: "https://www.pneusmaninho.com.br", cat: ["E-commerce", "Websites"], tags: ["E-commerce", "Loja"], grad: "linear-gradient(150deg,#C4763C,#7A4720)", desc: "Loja virtual de pneus com catálogo, presença digital e captação de clientes." },
-    { id: "agentop", name: "Agentop", url: "https://agentop.com.br", cat: ["Sistemas", "IA"], tags: ["Sistema", "IA"], grad: "linear-gradient(150deg,#0A7048,#0B7A4C)", desc: "Agenda, CRM, financeiro e conteúdo com IA num sistema só para profissionais que vivem de atender." },
-    { id: "marido", name: "Marido de Aluguel", cat: ["Websites", "Sistemas"], tags: ["Site", "Sistema"], grad: "linear-gradient(150deg,#0FA968,#6FBF9A)", desc: "Site e sistema de orçamentos para prestadores de reparos, com captação de leads automática." },
-    { id: "sorteio", name: "Sorteio Bilionário IA", url: "https://www.sorteiobilionario.com.br", cat: ["Aplicativos", "IA"], tags: ["App", "IA"], grad: "linear-gradient(150deg,#0B7A4C,#C4763C)", desc: "Plataforma de sorteios com geração de números, pagamentos e validação automatizada por IA." },
-    { id: "nutri", name: "NutriSnap", url: "https://calorias.app.br", cat: ["Aplicativos", "IA"], tags: ["App", "IA"], grad: "linear-gradient(150deg,#0C8956,#2DD4A0)", desc: "Conte calorias tirando uma foto. Visão computacional estimando macros em tempo real." },
-    { id: "unixx", name: "Unixx", cat: ["Sistemas", "Automações"], tags: ["CRM", "Automação"], grad: "linear-gradient(150deg,#0A7048,#0FA968)", desc: "CRM e site integrados com disparos automáticos e funil de vendas para a equipe comercial." },
-    { id: "packslog", name: "Packslog", cat: ["Sistemas", "Automações"], tags: ["Sistema", "Logística"], grad: "linear-gradient(150deg,#C4763C,#7A4720)", desc: "Sistema de operações logísticas com rastreio, etiquetas e painel de operação em tempo real." },
-  ];
-  const shown = projects.filter((p) => active === "Todos" || p.cat.includes(active));
+  const shown = PROJECTS.filter((p) => active === "Todos" || p.cat.includes(active));
   return (
     <section id="portfolio" className="sec">
       <div className="wrap">
@@ -611,11 +629,14 @@ function Process() {
 // REAL, no ar, com link — qualquer visitante pode clicar e conferir. Substituiu
 // os 3 depoimentos placeholder (ninguém disse aquelas frases).
 function Testimonials() {
+  /* `id` aponta para a capa REAL em /portfolio/<id>.webp — a mesma tela que está
+     no ar. A prova deixou de ser só uma frase: agora o visitante VÊ o produto
+     dentro de uma moldura de navegador com o domínio verdadeiro na barra. */
   const items = [
-    { fact: "Analisa 24 meses de sorteios oficiais da Caixa, gera combinações por IA e cobra por PIX real com liberação automática via webhook.", project: "Sorteio Bilionário IA", url: "https://www.sorteiobilionario.com.br", c: "#D99461" },
-    { fact: "Agenda, CRM, financeiro e um agente de IA que atende no WhatsApp — rodando multi-tenant para dezenas de profissionais autônomos.", project: "Agentop", url: "https://agentop.com.br", c: "#6FBF9A" },
-    { fact: "Reúne múltiplas transportadoras num painel único, simplificando o envio de quem vende em e-commerce.", project: "Clicou Enviou", url: "https://www.clicouenviou.com.br", c: "#0B7A4C" },
-    { fact: "Estima macronutrientes a partir de uma foto do prato, com visão computacional em tempo real.", project: "NutriSnap", url: "https://calorias.app.br", c: "#2DD4A0" },
+    { id: "sorteio", fact: "Analisa 24 meses de sorteios oficiais da Caixa, gera combinações por IA e cobra por PIX real com liberação automática via webhook.", project: "Sorteio Bilionário IA", url: "https://www.sorteiobilionario.com.br", host: "sorteiobilionario.com.br", c: "#D99461" },
+    { id: "agentop", fact: "Agenda, CRM, financeiro e um agente de IA que atende no WhatsApp — rodando multi-tenant para dezenas de profissionais autônomos.", project: "Agentop", url: "https://agentop.com.br", host: "agentop.com.br", c: "#6FBF9A" },
+    { id: "clicouenviou", fact: "Reúne múltiplas transportadoras num painel único, simplificando o envio de quem vende em e-commerce.", project: "Clicou Enviou", url: "https://www.clicouenviou.com.br", host: "clicouenviou.com.br", c: "#0B7A4C" },
+    { id: "nutri", fact: "Estima macronutrientes a partir de uma foto do prato, com visão computacional em tempo real.", project: "NutriSnap", url: "https://calorias.app.br", host: "calorias.app.br", c: "#2DD4A0" },
   ];
   const [i, setI] = useState(0);
   const go = (d) => setI((v) => (v + d + items.length) % items.length);
@@ -625,32 +646,38 @@ function Testimonials() {
     <section className="sec" id="depoimentos">
       <div className="wrap">
         <SectionHead center eyebrow="Prova, não promessa" title="Não é depoimento inventado." accent="É o produto no ar." dotColor="#D99461" sub="Cada fato abaixo é sobre um projeto real da HyperGrow, ainda funcionando hoje. Clique e confira você mesmo." />
-        <div className="reveal" style={{ maxWidth: 800, margin: "44px auto 0" }}>
-          <a href={t.url} target="_blank" rel="noopener noreferrer" className="neon-card glass-top" style={{ position: "relative", display: "block", borderRadius: 24, padding: "44px 44px 36px", background: "linear-gradient(165deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)", overflow: "hidden", color: "inherit" }}>
-            <div aria-hidden="true" style={{ position: "absolute", top: -40, right: -20, width: 220, height: 220, background: `radial-gradient(circle, ${t.c}33, transparent 66%)`, transition: "all .6s", pointerEvents: "none" }}></div>
-            <i data-lucide="badge-check" style={{ width: 40, height: 40, color: t.c, opacity: 0.75, marginBottom: 18 }}></i>
-            <p style={{ font: "500 23px/1.5 var(--font-display)", letterSpacing: "-0.015em", color: "#fff", margin: 0, textWrap: "pretty", minHeight: 110 }}>{t.fact}</p>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 28, flexWrap: "wrap", gap: 16 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <span style={{ font: "600 15px var(--font-sans)", color: "#fff" }}>{t.project}</span>
-                <span style={{ display: "inline-flex", alignItems: "center", gap: 5, font: "600 12.5px var(--font-sans)", color: t.c }}>Ver no ar <i data-lucide="external-link" style={{ width: 13, height: 13 }}></i></span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", gap: 16 }} onClick={(e) => e.preventDefault()}>
-                <div style={{ display: "flex", gap: 7 }}>
-                  {items.map((_, k) => (<button key={k} onClick={(e) => { e.preventDefault(); setI(k); }} aria-label={`Prova ${k + 1}`} style={{ width: k === i ? 26 : 8, height: 8, borderRadius: 999, border: "none", cursor: "pointer", transition: "all .3s", background: k === i ? "linear-gradient(90deg,#0B7A4C,#C4763C)" : "rgba(255,255,255,0.2)" }}></button>))}
+        <div className="reveal" style={{ maxWidth: 1080, margin: "44px auto 0" }}>
+          <a href={t.url} target="_blank" rel="noopener noreferrer" className="neon-card glass-top" style={{ position: "relative", display: "block", borderRadius: 24, padding: "clamp(24px, 3vw, 38px)", background: "linear-gradient(165deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)", overflow: "hidden", color: "inherit" }}>
+            <div aria-hidden="true" style={{ position: "absolute", top: -40, right: -20, width: "min(220px, 60%)", height: 220, background: `radial-gradient(circle, ${t.c}33, transparent 66%)`, transition: "all .6s", pointerEvents: "none" }}></div>
+            <div className="prova-grid" style={{ position: "relative", display: "grid", gridTemplateColumns: "minmax(0, 1fr) minmax(0, 1.06fr)", gap: "clamp(22px, 3vw, 38px)", alignItems: "center" }}>
+              <div>
+                <i data-lucide="badge-check" style={{ width: 36, height: 36, color: t.c, opacity: 0.75, marginBottom: 16 }}></i>
+                <p style={{ font: "500 clamp(18px, 1.9vw, 22px)/1.5 var(--font-display)", letterSpacing: "-0.015em", color: "#fff", margin: 0, textWrap: "pretty" }}>{t.fact}</p>
+                <div style={{ display: "flex", alignItems: "center", gap: 12, marginTop: 22, flexWrap: "wrap" }}>
+                  <span style={{ font: "600 15px var(--font-sans)", color: "#fff" }}>{t.project}</span>
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 5, font: "600 12.5px var(--font-sans)", color: t.c }}>Ver no ar <i data-lucide="external-link" style={{ width: 13, height: 13 }}></i></span>
                 </div>
-                <div style={{ display: "flex", gap: 8 }}>
-                  {[["chevron-left", -1], ["chevron-right", 1]].map(([ic, d]) => (
-                    <button key={ic} onClick={(e) => { e.preventDefault(); go(d); }} className="neon-card" style={{ width: 40, height: 40, borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
-                      <i data-lucide={ic} style={{ width: 18, height: 18 }}></i>
-                    </button>
-                  ))}
+                <div style={{ display: "flex", alignItems: "center", gap: 16, marginTop: 22 }} onClick={(e) => e.preventDefault()}>
+                  <div style={{ display: "flex", gap: 7 }}>
+                    {items.map((_, k) => (<button key={k} onClick={(e) => { e.preventDefault(); setI(k); }} aria-label={`Prova ${k + 1}`} style={{ width: k === i ? 26 : 8, height: 8, borderRadius: 999, border: "none", cursor: "pointer", transition: "all .3s", background: k === i ? "linear-gradient(90deg,#0B7A4C,#C4763C)" : "rgba(255,255,255,0.2)" }}></button>))}
+                  </div>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    {[["chevron-left", -1], ["chevron-right", 1]].map(([ic, d]) => (
+                      <button key={ic} onClick={(e) => { e.preventDefault(); go(d); }} className="neon-card" style={{ width: 40, height: 40, borderRadius: 12, display: "inline-flex", alignItems: "center", justifyContent: "center", cursor: "pointer", color: "#fff", background: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.14)" }}>
+                        <i data-lucide={ic} style={{ width: 18, height: 18 }}></i>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </div>
+              {/* A tela REAL do produto, na moldura do navegador com o domínio de
+                  verdade na barra. É a diferença entre afirmar e mostrar. */}
+              <BrowserFrame key={t.id} src={`/portfolio/${t.id}.webp`} alt={`${t.project} — tela real do produto no ar`} title={t.host} maxWidth={540} />
             </div>
           </a>
         </div>
       </div>
+      <style>{`@media (max-width: 860px){ .prova-grid { grid-template-columns: 1fr !important; } }`}</style>
     </section>
   );
 }
@@ -693,15 +720,10 @@ function About() {
 
 /* ───────────────────────── FAQ + FinalCTA + Contact ───────────────────────── */
 function FAQ() {
-  const qs = [
-    ["Qual o prazo médio de entrega?", "Depende do escopo: uma landing page sai em poucos dias; sites institucionais e e-commerces em 2 a 4 semanas; sistemas e plataformas sob medida por fases, com uma primeira versão funcional no menor tempo possível."],
-    ["Como funcionam os valores?", "Trabalhamos com projeto fechado ou por escopo recorrente. Você recebe uma proposta clara, sem surpresa: o que entra, prazo e investimento — antes de começar."],
-    ["Vocês dão suporte depois da entrega?", "Sim. Todo projeto tem período de garantia e oferecemos planos de manutenção e evolução contínua para o que está no ar."],
-    ["Vocês cuidam da hospedagem?", "Cuidamos de tudo: domínio, hospedagem, certificados e monitoramento. Você não precisa se preocupar com infraestrutura."],
-    ["Como a Inteligência Artificial é aplicada?", "Implantamos agentes que atendem no WhatsApp, qualificam leads, agendam, criam reuniões no Meet e registram tudo no CRM — além de IA para conteúdo e análise de dados."],
-    ["O que dá para automatizar?", "Atendimento, follow-up, geração de propostas, emissão de documentos, integrações entre sistemas, relatórios e qualquer fluxo repetitivo que hoje consome o tempo da equipe."],
-    ["Vocês criam sistemas sob medida?", "Sim — CRM, ERP, agendamento, marketplaces, apps e plataformas inteiras. Construímos exatamente o que a sua operação precisa."],
-  ];
+  // As perguntas vêm de lib/home-faq.ts — o MESMO array que app/page.tsx usa para
+  // emitir o schema FAQPage. Fonte única: o que está na tela e o que o Google lê
+  // não podem divergir.
+  const qs = HOME_FAQ.map((f) => [f.q, f.a]);
   const [open, setOpen] = useState(0);
   return (
     <section id="faq" className="sec">
@@ -750,30 +772,9 @@ function FinalCTA() {
   );
 }
 
+/* O formulário em si mora em components/site/ContactForm.tsx — a página /contato
+   usa exatamente o mesmo componente (mesma rota /api/lead, mesmo payload). */
 function Contact() {
-  const [form, setForm] = useState({ nome: "", email: "", zap: "", servico: "", msg: "" });
-  const [sent, setSent] = useState(false);
-  const [err, setErr] = useState("");
-  const [loading, setLoading] = useState(false);
-  const set = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
-  const submit = async (e) => {
-    e.preventDefault();
-    setLoading(true); setErr("");
-    try {
-      const res = await fetch("/api/lead", {
-        method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: form.nome, email: form.email, phone: form.zap, product: form.servico, message: form.msg }),
-      });
-      const j = await res.json();
-      if (res.ok && j.ok) setSent(true);
-      else setErr(j.error || "Não foi possível enviar. Tente novamente.");
-    } catch { setErr("Sem conexão. Tente novamente ou fale no WhatsApp."); }
-    finally { setLoading(false); }
-  };
-  const field = { width: "100%", boxSizing: "border-box", padding: "13px 15px", borderRadius: 12, font: "400 14.5px var(--font-sans)", color: "#fff", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.12)", outline: "none", transition: "border-color .2s, box-shadow .2s" };
-  const onFocus = (e) => { e.currentTarget.style.borderColor = "rgba(11,122,76,0.7)"; e.currentTarget.style.boxShadow = "0 0 0 3px rgba(11,122,76,0.18)"; };
-  const onBlur = (e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.12)"; e.currentTarget.style.boxShadow = "none"; };
-  const lbl = { font: "600 12px var(--font-sans)", color: "rgba(255,255,255,0.7)", marginBottom: 7, display: "block", letterSpacing: "0.02em" };
   return (
     <section id="contato" className="sec">
       <div className="wrap">
@@ -791,38 +792,18 @@ function Contact() {
               ))}
             </div>
             <div style={{ display: "flex", flexDirection: "column", gap: 10, font: "500 14px var(--font-sans)", color: "rgba(255,255,255,0.7)" }}>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i data-lucide="mail" style={{ width: 16, height: 16, color: "#6FE3B4" }}></i> contato@hypergrow.com.br</span>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i data-lucide="message-circle" style={{ width: 16, height: 16, color: "#6FE3B4" }}></i> Atendimento via WhatsApp</span>
+              {/* Ver nota no rodapé: o e-mail contato@hypergrow.com.br não existe
+                  enquanto o domínio não for registrado — anunciá-lo faz o visitante
+                  escrever para um endereço que devolve erro. */}
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i data-lucide="send" style={{ width: 16, height: 16, color: "#6FE3B4" }}></i> Preencha o formulário ao lado</span>
+              {WHATSAPP ? (
+                <a href={waUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 10, color: "inherit" }}><i data-lucide="message-circle" style={{ width: 16, height: 16, color: "#6FE3B4" }}></i> Atendimento via WhatsApp</a>
+              ) : (
+                <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i data-lucide="clock" style={{ width: 16, height: 16, color: "#6FE3B4" }}></i> Resposta em até 1 dia útil</span>
+              )}
             </div>
           </div>
-          <div className="neon-card glass-top" style={{ borderRadius: 22, padding: 30, background: "linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.12)", boxShadow: "0 40px 90px -40px rgba(0,0,0,0.7)" }}>
-            {sent ? (
-              <div style={{ textAlign: "center", padding: "40px 10px" }}>
-                <span style={{ width: 66, height: 66, borderRadius: 20, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", background: "linear-gradient(135deg,#2DD4A0,#0C8956)", boxShadow: "0 0 40px -10px rgba(15,169,104,0.8)" }}><i data-lucide="check" style={{ width: 32, height: 32 }}></i></span>
-                <h3 style={{ font: "700 22px var(--font-display)", color: "#fff", margin: "20px 0 8px" }}>Mensagem enviada!</h3>
-                <p style={{ font: "400 15px var(--font-sans)", color: "rgba(255,255,255,0.62)", margin: 0 }}>Em breve a HyperGrow entra em contato com sua proposta.</p>
-              </div>
-            ) : (
-              <form onSubmit={submit}>
-                {/* id/name + htmlFor em cada campo: o navegador conseguia identificar os campos
-                    (autofill) e o leitor de tela associar o rótulo — faltava antes. */}
-                <div className="contact-fields" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-                  <div><label style={lbl} htmlFor="hg-nome">Nome *</label><input id="hg-nome" name="nome" autoComplete="name" required value={form.nome} onChange={set("nome")} onFocus={onFocus} onBlur={onBlur} placeholder="Seu nome" style={field} /></div>
-                  <div><label style={lbl} htmlFor="hg-email">E-mail *</label><input id="hg-email" name="email" autoComplete="email" required type="email" value={form.email} onChange={set("email")} onFocus={onFocus} onBlur={onBlur} placeholder="voce@empresa.com" style={field} /></div>
-                  <div><label style={lbl} htmlFor="hg-zap">WhatsApp / Telefone</label><input id="hg-zap" name="telefone" autoComplete="tel" value={form.zap} onChange={set("zap")} onFocus={onFocus} onBlur={onBlur} placeholder="(00) 00000-0000" style={field} /></div>
-                  <div><label style={lbl} htmlFor="hg-servico">Tenho interesse em</label>
-                    <select id="hg-servico" name="servico" value={form.servico} onChange={set("servico")} onFocus={onFocus} onBlur={onBlur} style={{ ...field, appearance: "none", cursor: "pointer", color: form.servico ? "#fff" : "rgba(255,255,255,0.45)" }}>
-                      <option value="" style={{ color: "#12151A" }}>Selecione um serviço</option>
-                      {["Website", "E-commerce", "Sistema sob medida", "Automação", "Inteligência Artificial", "Design & Branding"].map((o) => <option key={o} value={o} style={{ color: "#12151A" }}>{o}</option>)}
-                    </select>
-                  </div>
-                </div>
-                <div style={{ marginTop: 16 }}><label style={lbl} htmlFor="hg-msg">Mensagem</label><textarea id="hg-msg" name="mensagem" value={form.msg} onChange={set("msg")} onFocus={onFocus} onBlur={onBlur} rows={4} placeholder="Conte sobre o seu projeto e seus objetivos..." style={{ ...field, resize: "vertical", fontFamily: "var(--font-sans)" }}></textarea></div>
-                {err && <p style={{ marginTop: 12, font: "500 13px var(--font-sans)", color: "#E0736A" }}>{err}</p>}
-                <button type="submit" disabled={loading} className="btn btn-cta" style={{ width: "100%", justifyContent: "center", marginTop: 20, opacity: loading ? 0.7 : 1 }}>{loading ? "Enviando..." : "Enviar mensagem"} <i data-lucide="send" style={{ width: 17, height: 17 }}></i></button>
-              </form>
-            )}
-          </div>
+          <ContactForm />
         </div>
       </div>
       <style>{`@media (max-width:900px){ .contact-grid { grid-template-columns: 1fr !important; } .contact-fields { grid-template-columns: 1fr !important; } }`}</style>
@@ -831,15 +812,33 @@ function Contact() {
 }
 
 function Footer() {
-  const cols = [
-    ["Serviços", ["Desenvolvimento de Websites", "E-commerce", "Criação de Sistemas", "Automação de Processos", "Inteligência Artificial", "Design & Branding"]],
-    ["Empresa", ["Portfólio", "Sobre", "Processo", "Contato"]],
+  /* Links REAIS. Antes os 13 apontavam para "#contato": o rodapé é onde o Google
+     entende a hierarquia do site, e um rodapé que só volta para a mesma âncora
+     não distribui autoridade nenhuma para as 19 páginas de serviço. Também era
+     ruim para o visitante — nenhum link levava ao que prometia. */
+  const cols: [string, [string, string][]][] = [
+    ["Serviços", [
+      ["Criação de Site", "/servicos/criacao-de-site"],
+      ["Loja Virtual", "/servicos/loja-virtual"],
+      ["Tráfego Pago", "/servicos/marketing-trafego"],
+      ["SEO", "/servicos/seo"],
+      ["Redes Sociais", "/servicos/redes-sociais"],
+      ["Automações & IA", "/servicos/automacoes-ia"],
+      ["Ver todos os 19 →", "/servicos"],
+    ]],
+    ["Empresa", [
+      ["Sobre a HyperGrow", "/sobre"],
+      ["Portfólio", "#portfolio"],
+      ["Processo", "#processo"],
+      ["Blog", "/blog"],
+      ["Contato", "/contato"],
+    ]],
   ];
-  const socials = [
-    ["Instagram", "M12 2.2c3.2 0 3.6 0 4.9.07 1.2.05 1.8.25 2.2.42.6.22 1 .48 1.4.9.43.43.7.83.92 1.42.17.42.37 1.05.42 2.23.06 1.27.07 1.65.07 4.86s0 3.6-.07 4.86c-.05 1.18-.25 1.8-.42 2.23-.22.59-.49 1-.92 1.42-.42.42-.83.68-1.42.9-.42.17-1.05.37-2.23.42-1.27.06-1.65.07-4.86.07s-3.6 0-4.86-.07c-1.18-.05-1.8-.25-2.23-.42a3.8 3.8 0 0 1-1.42-.9 3.8 3.8 0 0 1-.9-1.42c-.17-.42-.37-1.05-.42-2.23C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.86c.05-1.18.25-1.8.42-2.23.22-.59.48-1 .9-1.42.43-.42.83-.68 1.42-.9.42-.17 1.05-.37 2.23-.42C8.4 2.2 8.8 2.2 12 2.2Zm0 1.8c-3.15 0-3.5 0-4.74.07-.9.04-1.38.19-1.7.31-.43.17-.74.37-1.06.69-.32.32-.52.63-.69 1.06-.12.32-.27.8-.31 1.7C3.94 8.5 3.94 8.85 3.94 12s0 3.5.07 4.74c.04.9.19 1.38.31 1.7.17.43.37.74.69 1.06.32.32.63.52 1.06.69.32.12.8.27 1.7.31 1.24.06 1.59.07 4.74.07s3.5 0 4.74-.07c.9-.04 1.38-.19 1.7-.31.43-.17.74-.37 1.06-.69.32-.32.52-.63.69-1.06.12-.32.27-.8.31-1.7.06-1.24.07-1.59.07-4.74s0-3.5-.07-4.74c-.04-.9-.19-1.38-.31-1.7a2.9 2.9 0 0 0-.69-1.06 2.9 2.9 0 0 0-1.06-.69c-.32-.12-.8-.27-1.7-.31C15.5 4 15.15 4 12 4Zm0 3.06A4.94 4.94 0 1 1 12 16.94 4.94 4.94 0 0 1 12 7.06Zm0 1.8a3.14 3.14 0 1 0 0 6.28 3.14 3.14 0 0 0 0-6.28Zm5.14-.7a1.15 1.15 0 1 1 0 2.3 1.15 1.15 0 0 1 0-2.3Z"],
-    ["LinkedIn", "M6.94 5a1.94 1.94 0 1 1-3.88 0 1.94 1.94 0 0 1 3.88 0ZM3.4 8.4h3.1V21H3.4V8.4Zm5.2 0h2.97v1.72h.04c.41-.78 1.42-1.6 2.93-1.6 3.13 0 3.71 2.06 3.71 4.74V21h-3.1v-5.66c0-1.35-.02-3.08-1.88-3.08-1.88 0-2.17 1.47-2.17 2.99V21H8.6V8.4Z"],
-    ["Facebook", "M22 12a10 10 0 1 0-11.56 9.88v-6.99H7.9V12h2.54V9.8c0-2.5 1.49-3.89 3.78-3.89 1.09 0 2.24.2 2.24.2v2.46h-1.26c-1.24 0-1.63.77-1.63 1.56V12h2.78l-.44 2.89h-2.34v6.99A10 10 0 0 0 22 12Z"],
-  ];
+  /* Perfis sociais: os 3 ícones que existiam aqui (Instagram/LinkedIn/Facebook)
+     apontavam para "#contato" — link falso, com aria-label mentindo para o leitor
+     de tela. Removidos até haver perfil real. Para religar: preencher `url` aqui
+     e declarar os mesmos endereços em `sameAs` no schema (app/layout.tsx). */
+  const socials: { label: string; url: string; d: string }[] = [];
   return (
     <footer style={{ position: "relative", borderTop: "1px solid rgba(255,255,255,0.08)", background: "linear-gradient(180deg, transparent, rgba(13,16,19,0.6))" }}>
       <hr className="beam-divider" />
@@ -847,35 +846,51 @@ function Footer() {
         <div>
           <Logo height={34} />
           <p style={{ font: "400 14px/1.6 var(--font-sans)", color: "rgba(255,255,255,0.55)", margin: "18px 0 0", maxWidth: 280 }}>Desenvolvimento de software, inteligência artificial e automação para acelerar o crescimento da sua empresa.</p>
-          <div style={{ display: "flex", gap: 10, marginTop: 22 }}>
-            {socials.map(([label, d]) => (
-              <a key={label} href="#contato" aria-label={label} className="neon-card" style={{ width: 40, height: 40, borderRadius: 11, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.7)", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", transition: "color .2s" }}
-                onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")} onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}>
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d={d}></path></svg>
-              </a>
-            ))}
-          </div>
+          {socials.length > 0 && (
+            <div style={{ display: "flex", gap: 10, marginTop: 22 }}>
+              {socials.map((s) => (
+                <a key={s.label} href={s.url} target="_blank" rel="noopener noreferrer" aria-label={s.label} className="neon-card" style={{ width: 40, height: 40, borderRadius: 11, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "rgba(255,255,255,0.7)", background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.1)", transition: "color .2s" }}
+                  onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")} onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.7)")}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d={s.d}></path></svg>
+                </a>
+              ))}
+            </div>
+          )}
         </div>
         {cols.map(([h, links]) => (
           <div key={h}>
             <div style={{ font: "600 12px var(--font-sans)", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: 16 }}>{h}</div>
             <div style={{ display: "flex", flexDirection: "column", gap: 11 }}>
-              {links.map((l) => <a key={l} href="#contato" style={{ font: "400 14px var(--font-sans)", color: "rgba(255,255,255,0.66)", transition: "color .2s" }} onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")} onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.66)")}>{l}</a>)}
+              {links.map(([l, h]) => <a key={l} href={h} style={{ font: "400 14px var(--font-sans)", color: "rgba(255,255,255,0.66)", transition: "color .2s" }} onMouseEnter={(e) => (e.currentTarget.style.color = "#fff")} onMouseLeave={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.66)")}>{l}</a>)}
             </div>
           </div>
         ))}
         <div>
           <div style={{ font: "600 12px var(--font-sans)", letterSpacing: "0.12em", textTransform: "uppercase", color: "rgba(255,255,255,0.5)", marginBottom: 16 }}>Contato</div>
+          {/* Só canal que FUNCIONA. O e-mail contato@hypergrow.com.br estava
+              publicado aqui, mas o domínio ainda não existe (DNS NXDOMAIN): toda
+              mensagem enviada para lá volta com erro. Publicar endereço morto é
+              pior que não publicar. Volta assim que o domínio for registrado. */}
           <div style={{ display: "flex", flexDirection: "column", gap: 11, font: "400 14px var(--font-sans)", color: "rgba(255,255,255,0.66)" }}>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}><i data-lucide="mail" style={{ width: 15, height: 15, color: "#6FE3B4" }}></i> contato@hypergrow.com.br</span>
-            <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}><i data-lucide="message-circle" style={{ width: 15, height: 15, color: "#6FE3B4" }}></i> WhatsApp comercial</span>
+            <a href="#contato" style={{ display: "inline-flex", alignItems: "center", gap: 9, color: "inherit" }}><i data-lucide="send" style={{ width: 15, height: 15, color: "#6FE3B4" }}></i> Formulário de contato</a>
+            {WHATSAPP ? (
+              <a href={waUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 9, color: "inherit" }}><i data-lucide="message-circle" style={{ width: 15, height: 15, color: "#6FE3B4" }}></i> WhatsApp comercial</a>
+            ) : (
+              <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}><i data-lucide="clock" style={{ width: 15, height: 15, color: "#6FE3B4" }}></i> Resposta em até 1 dia útil</span>
+            )}
             <a href="#contato" className="btn btn-blue" style={{ marginTop: 8, fontSize: 13, padding: "11px 18px", justifyContent: "center" }}>Solicitar orçamento</a>
           </div>
         </div>
       </div>
       <div className="wrap foot-legal" style={{ padding: "20px 32px", borderTop: "1px solid rgba(255,255,255,0.07)", display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, font: "400 13px var(--font-sans)", color: "rgba(255,255,255,0.45)" }}>
         <span>© 2026 HyperGrow · Todos os direitos reservados</span>
-        <span>Feito com tecnologia, IA e automação</span>
+        {/* /privacidade e /termos existiam mas NENHUMA página linkava para elas —
+            eram páginas órfãs (o Google chega nelas só pelo sitemap) e a LGPD
+            espera o aviso de privacidade acessível de qualquer página. */}
+        <span style={{ display: "inline-flex", gap: 16, flexWrap: "wrap" }}>
+          <a href="/privacidade" style={{ color: "inherit" }}>Privacidade</a>
+          <a href="/termos" style={{ color: "inherit" }}>Termos de uso</a>
+        </span>
       </div>
       <style>{`@media (max-width:900px){ .foot-grid { grid-template-columns: 1fr 1fr !important; } } @media (max-width:760px){ .foot-legal { padding-bottom: 96px !important; flex-direction: column; gap: 6px; text-align: center; justify-content: center; } }`}</style>
     </footer>
