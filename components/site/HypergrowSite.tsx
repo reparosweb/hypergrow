@@ -17,9 +17,35 @@ import { HOME_FAQ } from "@/lib/home-faq";
 import { PROJECTS, PROJECT_CATS } from "@/lib/projects";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
-const waUrl = WHATSAPP
+const WA_URL = WHATSAPP
   ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent("Olá! Quero falar com a HyperGrow.")}`
   : "#contato";
+
+/* ⚠️ CAUSA REAL DA FALHA DE HIDRATAÇÃO DA HOME (React #425 x4, #418, #423) —
+   medida em produção, não deduzida:
+
+     HTML do servidor .... renderiza "Resposta em até 1 dia útil", sem wa.me
+     bundle do cliente ... contém "WhatsApp comercial" e wa.me, e NÃO contém o
+                           texto neutro (o minificador apagou o ramo morto)
+
+   Ou seja: `process.env.NEXT_PUBLIC_WHATSAPP` NÃO vale a mesma coisa na
+   renderização do servidor e no bundle do cliente. Como o texto renderizado
+   dependia dessa variável, o cliente montava um texto diferente do que veio do
+   servidor → o React acusava divergência e DESCARTAVA o HTML do servidor,
+   re-renderizando a página inteira (comprovado por MutationObserver: HEADER,
+   MAIN e FOOTER removidos de uma vez). É o pior tipo de bug de performance:
+   invisível na tela, caríssimo no carregamento.
+
+   Regra que fica: NADA que dependa de env var pode mudar o que é RENDERIZADO na
+   primeira passada. Este hook devolve sempre o estado neutro no servidor e na
+   primeira renderização do cliente; só depois da hidratação ele "liga" o
+   WhatsApp. Assim servidor e cliente são idênticos por construção. */
+function useWhatsApp() {
+  const [pronto, setPronto] = useState(false);
+  useEffect(() => { setPronto(true); }, []);
+  const ativo = pronto && !!WHATSAPP;
+  return { ativo, url: ativo ? WA_URL : "#contato" };
+}
 
 /* ───────────────────────── Logo ─────────────────────────
    IDs dos gradientes/filtros do SVG precisam ser ESTÁVEIS entre SSR e cliente.
@@ -794,6 +820,7 @@ function FAQ() {
 }
 
 function FinalCTA() {
+  const wa = useWhatsApp();
   return (
     <section className="sec">
       <div className="wrap">
@@ -804,7 +831,7 @@ function FinalCTA() {
             <p style={{ font: "400 17px/1.6 var(--font-sans)", color: "rgba(255,255,255,0.7)", margin: "20px auto 0", maxWidth: 520 }}>Transforme sua operação com tecnologia, automação e inteligência artificial.</p>
             <div style={{ display: "flex", gap: 14, justifyContent: "center", flexWrap: "wrap", marginTop: 34 }}>
               <a href="#contato" className="btn btn-cta">Solicitar proposta <i data-lucide="arrow-right" style={{ width: 18, height: 18 }}></i></a>
-              <a href={waUrl} target={WHATSAPP ? "_blank" : undefined} rel="noopener noreferrer" className="btn btn-ghost"><i data-lucide="message-circle" style={{ width: 18, height: 18 }}></i> Conversar no WhatsApp</a>
+              <a href={wa.url} target={wa.ativo ? "_blank" : undefined} rel="noopener noreferrer" className="btn btn-ghost"><i data-lucide="message-circle" style={{ width: 18, height: 18 }}></i> Conversar no WhatsApp</a>
             </div>
           </div>
         </div>
@@ -816,6 +843,7 @@ function FinalCTA() {
 /* O formulário em si mora em components/site/ContactForm.tsx — a página /contato
    usa exatamente o mesmo componente (mesma rota /api/lead, mesmo payload). */
 function Contact() {
+  const wa = useWhatsApp();
   return (
     <section id="contato" className="sec">
       <div className="wrap">
@@ -837,8 +865,8 @@ function Contact() {
                   enquanto o domínio não for registrado — anunciá-lo faz o visitante
                   escrever para um endereço que devolve erro. */}
               <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i data-lucide="send" style={{ width: 16, height: 16, color: "#6FE3B4" }}></i> Preencha o formulário ao lado</span>
-              {WHATSAPP ? (
-                <a href={waUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 10, color: "inherit" }}><i data-lucide="message-circle" style={{ width: 16, height: 16, color: "#6FE3B4" }}></i> Atendimento via WhatsApp</a>
+              {wa.ativo ? (
+                <a href={wa.url} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 10, color: "inherit" }}><i data-lucide="message-circle" style={{ width: 16, height: 16, color: "#6FE3B4" }}></i> Atendimento via WhatsApp</a>
               ) : (
                 <span style={{ display: "inline-flex", alignItems: "center", gap: 10 }}><i data-lucide="clock" style={{ width: 16, height: 16, color: "#6FE3B4" }}></i> Resposta em até 1 dia útil</span>
               )}
@@ -853,6 +881,7 @@ function Contact() {
 }
 
 function Footer() {
+  const wa = useWhatsApp();
   /* Links REAIS. Antes os 13 apontavam para "#contato": o rodapé é onde o Google
      entende a hierarquia do site, e um rodapé que só volta para a mesma âncora
      não distribui autoridade nenhuma para as 19 páginas de serviço. Também era
@@ -914,8 +943,8 @@ function Footer() {
               pior que não publicar. Volta assim que o domínio for registrado. */}
           <div style={{ display: "flex", flexDirection: "column", gap: 11, font: "400 14px var(--font-sans)", color: "rgba(255,255,255,0.66)" }}>
             <a href="#contato" style={{ display: "inline-flex", alignItems: "center", gap: 9, color: "inherit" }}><i data-lucide="send" style={{ width: 15, height: 15, color: "#6FE3B4" }}></i> Formulário de contato</a>
-            {WHATSAPP ? (
-              <a href={waUrl} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 9, color: "inherit" }}><i data-lucide="message-circle" style={{ width: 15, height: 15, color: "#6FE3B4" }}></i> WhatsApp comercial</a>
+            {wa.ativo ? (
+              <a href={wa.url} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 9, color: "inherit" }}><i data-lucide="message-circle" style={{ width: 15, height: 15, color: "#6FE3B4" }}></i> WhatsApp comercial</a>
             ) : (
               <span style={{ display: "inline-flex", alignItems: "center", gap: 9 }}><i data-lucide="clock" style={{ width: 15, height: 15, color: "#6FE3B4" }}></i> Resposta em até 1 dia útil</span>
             )}
@@ -942,6 +971,7 @@ function Footer() {
 /** `services` chega do server component (app/page.tsx) já enxuto: só os 7 campos
  *  que a home usa. Assim o conteúdo das páginas de serviço nunca entra no bundle. */
 export default function HypergrowSite({ services }: { services: ServiceCardData[] }) {
+  const wa = useWhatsApp();
   // scroll reveal
   useEffect(() => {
     const io = new IntersectionObserver((entries) => {
@@ -990,7 +1020,7 @@ export default function HypergrowSite({ services }: { services: ServiceCardData[
         <Contact />
       </main>
       <Footer />
-      <a href={waUrl} target={WHATSAPP ? "_blank" : undefined} rel="noopener noreferrer" aria-label="WhatsApp" className="wa-float" style={{ position: "fixed", left: 22, bottom: 22, zIndex: 900, width: 58, height: 58, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", background: "linear-gradient(135deg,#25D366,#11875a)", boxShadow: "0 12px 34px -8px rgba(15,169,104,0.7), 0 0 0 1px rgba(255,255,255,0.1)", animation: "wa-pulse 2.6s ease-in-out infinite" }}>
+      <a href={wa.url} target={wa.ativo ? "_blank" : undefined} rel="noopener noreferrer" aria-label="WhatsApp" className="wa-float" style={{ position: "fixed", left: 22, bottom: 22, zIndex: 900, width: 58, height: 58, borderRadius: 999, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "#fff", background: "linear-gradient(135deg,#25D366,#11875a)", boxShadow: "0 12px 34px -8px rgba(15,169,104,0.7), 0 0 0 1px rgba(255,255,255,0.1)", animation: "wa-pulse 2.6s ease-in-out infinite" }}>
         <i data-lucide="message-circle" style={{ width: 26, height: 26 }}></i>
       </a>
       <style>{`
