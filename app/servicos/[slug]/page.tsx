@@ -6,6 +6,7 @@ import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import { siteServices, getService, pillarOf } from "@/lib/site-services";
 import ServiceGlyph from "@/components/site/ServiceGlyphs";
+import PlatformShowcase from "@/components/site/PlatformShowcase";
 import { SITE_URL } from "@/lib/seo";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
@@ -37,6 +38,36 @@ function Check() {
     </svg>
   );
 }
+/* Fotografia real (StockSnap, CC0 1.0 — uso comercial liberado; créditos e link
+   da licença em public/fotos/CREDITOS.json). Só nas páginas em que a foto DIZ
+   alguma coisa: foto genérica em todas as 19 vira ruído e volta a parecer
+   template. Mostra o contexto do cliente, nunca "a nossa equipe". */
+const SERVICE_PHOTO: Record<string, { src: string; alt: string; w: number; h: number }> = {
+  "loja-virtual": { src: "/fotos/checkout-loja-virtual.webp", alt: "Cliente com o cartão na mão diante de uma loja virtual aberta no notebook", w: 960, h: 640 },
+  "consultoria-ecommerce": { src: "/fotos/embalando-pedido.webp", alt: "Pedido sendo embalado sobre a bancada de uma operação de e-commerce", w: 960, h: 641 },
+  "marketing-trafego": { src: "/fotos/painel-resultados.webp", alt: "Painel de métricas e gráficos de campanha aberto no notebook", w: 960, h: 640 },
+  seo: { src: "/fotos/painel-resultados.webp", alt: "Relatório de tráfego e gráficos de desempenho na tela do notebook", w: 960, h: 640 },
+  "automacoes-ia": { src: "/fotos/operacao-diaria.webp", alt: "Profissional atendendo pelo notebook em uma mesa de trabalho", w: 960, h: 640 },
+  "criacao-de-site": { src: "/fotos/escritorio-equipe.webp", alt: "Profissional trabalhando em notebook em um escritório real", w: 960, h: 641 },
+};
+
+function PhotoBand({ slug }: { slug: string }) {
+  const p = SERVICE_PHOTO[slug];
+  if (!p) return null;
+  return (
+    <section className="sec svc-sec" style={{ paddingTop: 0 }}>
+      <div className="wrap">
+        <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", aspectRatio: "16/6", background: "#171B20", border: "1px solid rgba(232,226,217,0.09)" }}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img src={p.src} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async"
+            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 45%" }} />
+          <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(13,16,19,0.22), rgba(13,16,19,0.66))" }}></span>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Arrow() {
   return (
     <svg className="svc-arrow" width="15" height="15" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0 }}>
@@ -193,6 +224,14 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           ))}
         </div>
       </section>
+
+      {/* ── PLATAFORMAS (só onde faz sentido) ────────────────────────────────
+          Pedido direto do dono: a página de loja virtual precisa mostrar que
+          trabalhamos com as plataformas de verdade do mercado — não é detalhe
+          técnico, é o que tira a dúvida "vocês mexem com a MINHA plataforma?".
+          Também entra em consultoria-ecommerce, onde ERP, hub e marketplace são
+          exatamente o assunto. Fonte dos dados: lib/ecommerce-platforms.ts. */}
+      {(s.slug === "loja-virtual" || s.slug === "consultoria-ecommerce") && <PlatformShowcase />}
 
       {/* ── INCLUÍDO + GANHA ─────────────────────────────────────────────── */}
       <section className="sec svc-sec">
