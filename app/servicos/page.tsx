@@ -94,6 +94,23 @@ export default function ServicosHub() {
         </div>
       </section>
 
+      {/* Faixa fotográfica: fotografia real (StockSnap, CC0 1.0 — uso comercial
+          liberado, créditos em public/fotos/CREDITOS.json). Contexto do cliente,
+          não "nosso escritório" — o que seria falso. */}
+      <section className="sec" style={{ paddingTop: "clamp(30px, 4vw, 46px)", paddingBottom: 0 }}>
+        <div className="wrap">
+          <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", aspectRatio: "16/6", background: "#171B20", border: "1px solid rgba(232,226,217,0.09)" }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/fotos/embalando-pedido.webp" alt="Pedido sendo embalado sobre a bancada de uma operação de e-commerce" width={960} height={641} loading="lazy" decoding="async"
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 45%" }} />
+            <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(100deg, rgba(13,16,19,0.92) 0%, rgba(13,16,19,0.62) 46%, rgba(13,16,19,0.18) 100%)" }}></span>
+            <p style={{ position: "absolute", left: "clamp(20px, 4vw, 44px)", bottom: "clamp(18px, 3vw, 34px)", right: "clamp(20px, 4vw, 44px)", margin: 0, maxWidth: "min(46ch, 100%)", font: "500 clamp(15px, 1.7vw, 20px)/1.45 var(--font-display)", letterSpacing: "-0.015em", color: "#fff", textWrap: "pretty" }}>
+              Todo serviço aqui termina no mesmo lugar: mais pedido saindo pela porta.
+            </p>
+          </div>
+        </div>
+      </section>
+
       {/* ── TABELA: qual frente resolve o quê ─────────────────────────────── */}
       <section className="sec" style={{ paddingBottom: "clamp(40px, 5vw, 60px)" }}>
         <div className="wrap">

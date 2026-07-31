@@ -442,11 +442,16 @@ function Services({ services }) {
    Seção signature: em vez de listar serviços, parte da DOR real do visitante
    e mostra o diagnóstico + o serviço exato que resolve. É o elemento que a
    página é lembrada — útil, não decorativo. */
+/* As fotos são fotografia real (StockSnap, CC0 1.0 — uso comercial liberado,
+   créditos em public/fotos/CREDITOS.json). Entram como CONTEXTO da dor do
+   visitante, nunca como "a equipe da HyperGrow": apresentar gente de banco de
+   imagem como sendo o nosso time seria mentira, e mentira no site é o que a
+   auditoria já teve de remover uma vez (os depoimentos inventados). */
 const PAINS = [
-  { icon: "monitor-x", pain: "Meu site não vende", diag: "Ou ninguém acha o seu site no Google, ou quem acha não entende o que você faz em 5 segundos e sai. Isso não se resolve deixando \"mais bonito\" — se resolve com estrutura, velocidade e uma oferta clara.", slug: "criacao-de-site", fix: "Criação de Site & Landing Pages" },
-  { icon: "phone-missed", pain: "Perco cliente fora do horário", diag: "Mensagem chega às 22h, no fim de semana, no feriado — e só é respondida no dia seguinte. Nesse intervalo o cliente já comprou com o concorrente que respondeu na hora.", slug: "automacoes-ia", fix: "Automações & IA", proofId: "agentop" },
-  { icon: "flame", pain: "Anúncio queima dinheiro sem resultado", diag: "Campanha ligada sem estratégia de público, criativo ou funil só transforma orçamento em cliques que não convertem. O problema raramente é a plataforma — é a falta de plano por trás dela.", slug: "marketing-trafego", fix: "Marketing Digital & Tráfego Pago" },
-  { icon: "instagram", pain: "Meu Instagram não traz cliente", diag: "Postar sem calendário, sem pilar de conteúdo e sem chamada para ação vira feed bonito que não gera venda. Rede social sem estratégia é vitrine vazia.", slug: "redes-sociais", fix: "Gestão de Redes Sociais" },
+  { icon: "monitor-x", pain: "Meu site não vende", diag: "Ou ninguém acha o seu site no Google, ou quem acha não entende o que você faz em 5 segundos e sai. Isso não se resolve deixando \"mais bonito\" — se resolve com estrutura, velocidade e uma oferta clara.", slug: "criacao-de-site", fix: "Criação de Site & Landing Pages", photo: "/fotos/checkout-loja-virtual.webp", photoAlt: "Cliente com o cartão na mão diante de uma loja virtual aberta no notebook" },
+  { icon: "phone-missed", pain: "Perco cliente fora do horário", diag: "Mensagem chega às 22h, no fim de semana, no feriado — e só é respondida no dia seguinte. Nesse intervalo o cliente já comprou com o concorrente que respondeu na hora.", slug: "automacoes-ia", fix: "Automações & IA", proofId: "agentop", photo: "/fotos/operacao-diaria.webp", photoAlt: "Profissional atendendo pelo notebook em uma mesa de trabalho" },
+  { icon: "flame", pain: "Anúncio queima dinheiro sem resultado", diag: "Campanha ligada sem estratégia de público, criativo ou funil só transforma orçamento em cliques que não convertem. O problema raramente é a plataforma — é a falta de plano por trás dela.", slug: "marketing-trafego", fix: "Marketing Digital & Tráfego Pago", photo: "/fotos/painel-resultados.webp", photoAlt: "Painel de métricas e gráficos de campanha aberto no notebook" },
+  { icon: "instagram", pain: "Meu Instagram não traz cliente", diag: "Postar sem calendário, sem pilar de conteúdo e sem chamada para ação vira feed bonito que não gera venda. Rede social sem estratégia é vitrine vazia.", slug: "redes-sociais", fix: "Gestão de Redes Sociais", photo: "/fotos/reuniao-projeto.webp", photoAlt: "Duas pessoas planejando um calendário de conteúdo sobre a mesa" },
 ];
 
 function PainPoints() {
@@ -471,12 +476,22 @@ function PainPoints() {
               </button>
             ))}
           </div>
-          <div className="neon-card glass-top" style={{ borderRadius: 22, padding: 34, background: "linear-gradient(165deg, rgba(196,118,60,0.08), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)", display: "flex", flexDirection: "column" }}>
+          <div className="neon-card glass-top" style={{ borderRadius: 22, padding: 0, background: "linear-gradient(165deg, rgba(196,118,60,0.08), rgba(255,255,255,0.02))", border: "1px solid rgba(255,255,255,0.1)", display: "flex", flexDirection: "column", overflow: "hidden" }}>
+            {/* Foto do contexto da dor: a seção signature deixa de ser um bloco de
+                texto e passa a mostrar a situação de que o visitante já reconhece. */}
+            <div style={{ position: "relative", width: "100%", aspectRatio: "16/7", background: "#171B20", flexShrink: 0 }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img key={p.photo} src={p.photo} alt={p.photoAlt} width={960} height={640} loading="lazy" decoding="async"
+                style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 42%" }} />
+              <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(13,16,19,0.15) 0%, rgba(13,16,19,0.55) 62%, rgba(13,16,19,0.94) 100%)" }}></span>
+            </div>
+            <div style={{ padding: "22px 34px 34px", display: "flex", flexDirection: "column", flex: 1, marginTop: -6 }}>
             <div className="eyebrow" style={{ alignSelf: "flex-start" }}><span className="dot" style={{ background: "#D99461", boxShadow: "0 0 10px #D99461" }}></span>Diagnóstico</div>
             <p style={{ font: "500 19px/1.55 var(--font-display)", color: "#fff", margin: "18px 0 0", textWrap: "pretty" }}>{p.diag}</p>
             <div style={{ marginTop: "auto", paddingTop: 26, display: "flex", flexWrap: "wrap", alignItems: "center", gap: 14 }}>
               <span style={{ font: "400 13px var(--font-sans)", color: "rgba(255,255,255,0.55)" }}>O que resolve:</span>
               <a href={`/servicos/${p.slug}`} className="pill" style={{ textDecoration: "none", color: "#fff", background: "rgba(196,118,60,0.14)", borderColor: "rgba(196,118,60,0.4)" }}>{p.fix} <i data-lucide="arrow-right" style={{ width: 13, height: 13 }}></i></a>
+            </div>
             </div>
           </div>
         </div>

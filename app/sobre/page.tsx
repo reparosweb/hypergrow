@@ -173,6 +173,16 @@ export default function SobrePage() {
       {/* ── COMO TRABALHAMOS ──────────────────────────────────────────────── */}
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="wrap">
+          {/* Fotografia real (StockSnap, CC0 1.0 — créditos em public/fotos/CREDITOS.json).
+              Ilustra o método, NÃO é uma foto do time da HyperGrow: apresentar gente de
+              banco de imagem como sendo o nosso time seria mentir para o visitante. */}
+          <div style={{ position: "relative", borderRadius: 18, overflow: "hidden", aspectRatio: "16/6", background: "#171B20", border: "1px solid rgba(232,226,217,0.09)", marginBottom: 34 }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/fotos/reuniao-projeto.webp" alt="Planejamento de projeto sobre a mesa, com anotações e notebooks abertos" width={960} height={640} loading="lazy" decoding="async"
+              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
+            <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(13,16,19,0.30), rgba(13,16,19,0.72))" }}></span>
+          </div>
+
           <h2 className="pg-h2">Como trabalhamos</h2>
           <ol className="pg-list" style={{ marginTop: 18, counterReset: "step" }}>
             {PROCESSO.map(([t, d], i) => (
