@@ -158,6 +158,9 @@ export function ClaroPortfolio() {
         .cl-pf{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:42px}
         .cl-pf-c{display:block;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-1);transition:transform .35s var(--ease),box-shadow .35s var(--ease);text-decoration:none;color:inherit}
         .cl-pf-c:hover{transform:translateY(-5px);box-shadow:var(--sh-3)}
+        #portfolio .dv-screen__img{transition:transform .8s var(--ease)}
+        #portfolio .cl-pf-c:hover .dv-screen__img{transform:scale(1.045)}
+        @media(prefers-reduced-motion:reduce){#portfolio .cl-pf-c:hover .dv-screen__img{transform:none}}
         .cl-pf-b{padding:18px}
         .cl-pf-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:9px}
         .cl-pf-tags span{font:600 10.5px var(--text);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);background:var(--paper-2);border:1px solid var(--line);border-radius:99px;padding:4px 9px}
@@ -176,11 +179,58 @@ export function ClaroPortfolio() {
    por outro número inventado, só portados com o aviso explícito de que
    precisam de dado real antes de esta rota virar produção. */
 const STATS_PLACEHOLDER = [
-  ["20+", "anos de estrada"],
-  ["480+", "projetos entregues"],
-  ["7,4x", "ROAS médio"],
-  ["98%", "clientes que renovam"],
+  { v: 20, suf: "+", l: "anos de estrada" },
+  { v: 480, suf: "+", l: "projetos entregues" },
+  { v: 7.4, suf: "x", l: "ROAS médio" },
+  { v: 98, suf: "%", l: "clientes que renovam" },
 ] as const;
+
+/* Contagem animada ao entrar na tela — mesma mecânica do mockup original
+   (useCount): sobe em easing cúbico até o valor PLACEHOLDER real quando o
+   card cruza 50% da viewport, e respeita prefers-reduced-motion escrevendo o
+   valor final direto. Sem mismatch de hidratação: o HTML inicial (servidor e
+   1ª pintura do cliente) sempre mostra "0" + sufixo — a troca acontece só
+   depois, via ref + IntersectionObserver, escrevendo textContent direto (não
+   é state React, não força re-render), exatamente como no original. */
+function useClaroCount(target: number, suf: string) {
+  const ref = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const dec = String(target).includes(".") ? 1 : 0;
+    const fmt = (n: number) => n.toLocaleString("pt-BR", { minimumFractionDigits: dec, maximumFractionDigits: dec }) + suf;
+    let done = false;
+    const io = new IntersectionObserver((entries) => {
+      if (!entries[0].isIntersecting || done) return;
+      done = true;
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+        el.textContent = fmt(target);
+        return;
+      }
+      const t0 = performance.now();
+      const tick = (n: number) => {
+        const p = Math.min(1, (n - t0) / 1500);
+        el.textContent = fmt(target * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+      io.disconnect();
+    }, { threshold: 0.5 });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [target, suf]);
+  return ref;
+}
+
+function ClaroStat({ v, suf, l }: { v: number; suf: string; l: string }) {
+  const ref = useClaroCount(v, suf);
+  return (
+    <div className="card lit" style={{ padding: "26px 22px", textAlign: "center" }}>
+      <div ref={ref} style={{ font: "700 40px/1 var(--disp)", letterSpacing: "-.04em", color: "var(--brand)" }}>0{suf}</div>
+      <div className="small" style={{ marginTop: 9 }}>{l}</div>
+    </div>
+  );
+}
 
 export function ClaroClientes() {
   const nomes = PROJECTS.map((p) => p.name);
@@ -202,11 +252,8 @@ export function ClaroClientes() {
         {/* ⚠️ PLACEHOLDER — ver comentário de STATS_PLACEHOLDER acima. Não promover
             esta rota sem substituir por número real ou remover a faixa. */}
         <div className="g g-220 rv" style={{ marginTop: 40 }}>
-          {STATS_PLACEHOLDER.map(([v, l]) => (
-            <div className="card lit" key={l} style={{ padding: "26px 22px", textAlign: "center" }}>
-              <div style={{ font: "700 40px/1 var(--disp)", letterSpacing: "-.04em", color: "var(--brand)" }}>{v}</div>
-              <div className="small" style={{ marginTop: 9 }}>{l}</div>
-            </div>
+          {STATS_PLACEHOLDER.map((s) => (
+            <ClaroStat key={s.l} v={s.v} suf={s.suf} l={s.l} />
           ))}
         </div>
       </div>

@@ -121,13 +121,17 @@ export function ClaroFaq() {
                   {on ? <Minus size={18} style={{ color: "var(--brand)", flexShrink: 0 }} /> : <Plus size={18} style={{ color: "var(--brand)", flexShrink: 0 }} />}
                 </button>
                 <div id={`cl-faq-${i}`} hidden={!on}>
-                  <p className="body" style={{ padding: "0 22px 22px" }}>{item.a}</p>
+                  <p className="body cl-faq-a" style={{ padding: "0 22px 22px" }}>{item.a}</p>
                 </div>
               </div>
             );
           })}
         </div>
       </div>
+      <style dangerouslySetInnerHTML={{ __html: `
+        .cl-faq-a{animation:cl-faqin .3s var(--ease)}
+        @keyframes cl-faqin{from{opacity:0;transform:translateY(-4px)}}
+      `}} />
     </section>
   );
 }

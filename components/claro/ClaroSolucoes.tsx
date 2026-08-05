@@ -105,7 +105,9 @@ export default function ClaroSolucoes({ services }: { services: ServiceCardData[
         #solucoes .sol-tab.on{font-weight:600;box-shadow:var(--sh-2)}
         #solucoes .sol-tab-n{font:600 11px var(--code);background:var(--paper-2);color:var(--ink-3);border-radius:99px;padding:2px 7px}
         #solucoes .sol-body{display:grid;grid-template-columns:.72fr 1.28fr;gap:34px;margin-top:28px;align-items:start}
-        #solucoes .sol-fig{margin:0;position:relative;border-radius:20px;overflow:hidden;box-shadow:var(--sh-3);min-height:min(520px,60vh);background:var(--paper-2)}
+        #solucoes .sol-fig{margin:0;position:relative;border-radius:20px;overflow:hidden;box-shadow:var(--sh-3);min-height:min(520px,60vh);background:var(--paper-2);animation:sol-figin .5s var(--ease)}
+        @keyframes sol-figin{from{opacity:0;transform:translateY(10px)}}
+        @media(prefers-reduced-motion:reduce){#solucoes .sol-fig{animation:none}}
         #solucoes .sol-fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:contrast(1.04) saturate(.95)}
         #solucoes .sol-fig figcaption{position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.94);backdrop-filter:blur(6px);border-radius:14px;padding:13px 15px;box-shadow:var(--sh-2)}
         #solucoes .sol-cap-dot{width:8px;height:8px;border-radius:99px;flex-shrink:0}

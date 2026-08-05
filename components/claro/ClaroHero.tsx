@@ -1,96 +1,83 @@
-"use client";
-
-import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Play } from "lucide-react";
 import { platformsOf } from "@/lib/ecommerce-platforms";
 import { ClaroHead } from "./ClaroUI";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   HERO da rota /claro — vídeo fullscreen + faixa clara de compatibilidade.
+   HERO da rota /claro — fundo 100% CSS (sem foto/vídeo) + faixa clara de
+   compatibilidade.
 
-   Vídeo: reaproveita `/media/launch.mp4` + `/media/launch-poster.webp` (poster
-   em webp, não .png — o .png é 28× mais pesado, já trocado no site escuro por
-   esse motivo) e o MESMO gate de performance do Hero de `HypergrowSite.tsx`:
-   só baixa o vídeo (9 MB) em tela grande, sem `prefers-reduced-motion` e sem
-   `navigator.connection.saveData`. Abaixo de 760px, ou com qualquer uma dessas
-   duas preferências ligadas, mostra só o poster estático.
+   HISTÓRICO: esta seção usava `/media/launch.mp4` (lançamento real do foguete
+   Starship da SpaceX) como vídeo de fundo. Removido em 2026-08-05 por dois
+   motivos, não só um: (1) o dono descreveu o resultado como "efeito de fumaça
+   branca" e rejeitou o visual; (2) é filmagem real de outra empresa, sem
+   licença de uso comercial para este site (mesmo problema já documentado em
+   HANDOFF.md linha 101 para o vídeo equivalente do site escuro). A troca é
+   por um fundo inteiramente CSS — sem imagem nova, sem risco de direito de
+   imagem de novo: 3 "orbs" de luz (radial-gradient, sem `filter: blur()`,
+   só transparência suave — mais barato que blur e sem o risco de travar
+   scroll no mobile do item 5 da skill hg-regras-de-bug) que se movem devagar
+   via @keyframes, reforçando a metáfora da copy ("Sua operação em outra
+   órbita"). Junto delas, uma textura de scanline sutil e um grão de filme
+   (`.cl-hero-grain`) — a MESMA técnica (SVG feTurbulence, não fabricada por
+   mim) do `.grain` em hypergrow-original/styles.css ("Film grain: the single
+   biggest 'this was made by a human' tell"), aqui escopada só a este hero
+   (`position:absolute` dentro da seção, não `position:fixed` na página
+   inteira como no arquivo original — este componente não é dono do layout
+   global).
 
-   Marquees: dados REAIS de `lib/ecommerce-platforms.ts` (PLATFORMS já
-   conferido nesta sessão) — nada da lista antiga do mockup (Shopware, TikTok
-   Ads, RD Station... nunca verificados como algo que a HyperGrow opera).
-   Nenhuma métrica de empresa ("5+ anos", "200+ lojas", "7,4x ROAS") entra
-   aqui — são números que não foram verificados, e essa seção não é o lugar
-   responsável por prova social (isso é de outro arquivo, com placeholder
-   explícito).
+   Sem vídeo, o gate de performance antigo (`vidOn`/`matchMedia`/`saveData`,
+   que só existia pra decidir se baixava 9 MB) saiu inteiro — não há mais
+   nada condicional para decidir, e o componente virou Server Component (sem
+   "use client", sem hook nenhum).
+
+   Riqueza restaurada comparando com hypergrow-original/lit-hero.jsx (`LHeroVideo`):
+   - Gradiente de legibilidade agora em duas camadas (vertical + diagonal pela
+     esquerda), igual ao `.hv-grade` original — o texto é alinhado à esquerda.
+   - Botão secundário virou vidro fosco (`.cl-hero-ghost`, mesmo tratamento do
+     `.hv-ghost` original) em vez do `.btn-s` branco sólido genérico do resto
+     do site, que destoava do fundo escuro.
+   - Ponto do eyebrow ganhou cor de destaque (`var(--cta)`, rosa da própria
+     paleta aprovada) em vez do azul padrão — igual ao dot rosa do original.
+   - Indicador de rolagem virou link real (`<a href="#compat">`) em vez de
+     `<div aria-hidden>` decorativo — igual ao `<a href="#hero">` do original,
+     restaura o afordance clicável/focável que a versão anterior tinha perdido.
+   - No mobile, o hero volta a ser altura automática com padding (como o
+     original em max-width:760px) em vez de ocupar 100svh — sem foto de fundo,
+     um bloco cheio de viewport ficaria vazio demais numa tela pequena.
+
+   Cores: só a paleta azul/violeta/rosa já nos tokens (`--brand`, #5B3CFF,
+   `--cta`) — nada de jade/cobre aqui (essa paleta é só da logomarca, ver
+   comentário em app/claro-tokens.css).
+
+   Esteiras (marquees): dados REAIS de `lib/ecommerce-platforms.ts` (PLATFORMS
+   já conferido nesta sessão) — nada da lista antiga do mockup (Shopware,
+   TikTok Ads, RD Station... nunca verificados como algo que a HyperGrow
+   opera). Nenhuma métrica de empresa ("5+ anos", "200+ lojas", "7,4x ROAS")
+   entra aqui — números não verificados não entram (skill hg-regras-de-bug,
+   item 8); prova social mora em outro arquivo, com placeholder explícito.
    ──────────────────────────────────────────────────────────────────────────── */
 
 const LOJA_NOMES = platformsOf("loja").map((p) => p.name);
 const ERP_NOMES = platformsOf("erp").map((p) => p.name);
 
 export default function ClaroHero() {
-  const vidRef = useRef<HTMLVideoElement>(null);
-  const [vidOn, setVidOn] = useState(false);
-
-  // Performance: vídeo só em telas grandes, sem economia de dados, sem reduced-motion.
-  useEffect(() => {
-    const small = window.matchMedia("(max-width: 760px)").matches;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    const save = (navigator as unknown as { connection?: { saveData?: boolean } }).connection?.saveData;
-    if (!small && !reduce && !save) setVidOn(true);
-  }, []);
-
-  // Loop nativo (atributo `loop`) — sem seek manual, que já causou stall/flicker no site escuro.
-  useEffect(() => {
-    if (!vidOn) return;
-    const v = vidRef.current;
-    if (!v) return;
-    const play = () => { v.play().catch(() => {}); };
-    v.addEventListener("loadedmetadata", play);
-    v.addEventListener("canplay", play);
-    if (v.readyState >= 2) play();
-    return () => {
-      v.removeEventListener("loadedmetadata", play);
-      v.removeEventListener("canplay", play);
-    };
-  }, [vidOn]);
-
   return (
     <>
       <section id="top" className="cl-hero">
-        <div className="cl-hero-media" aria-hidden="true">
-          {vidOn ? (
-            <video
-              ref={vidRef}
-              className="cl-hero-vid"
-              poster="/media/launch-poster.webp"
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-            >
-              <source src="/media/launch.mp4" type="video/mp4" />
-            </video>
-          ) : (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              className="cl-hero-vid"
-              src="/media/launch-poster.webp"
-              width={720}
-              height={405}
-              alt="Foguete em lançamento — HyperGrow, tecnologia e IA para crescimento de e-commerce"
-              fetchPriority="high"
-            />
-          )}
+        <div className="cl-hero-bg" aria-hidden="true">
+          <span className="cl-hero-orb cl-hero-orb-a" />
+          <span className="cl-hero-orb cl-hero-orb-b" />
+          <span className="cl-hero-orb cl-hero-orb-c" />
+          <span className="cl-hero-scan" />
+          <span className="cl-hero-grain" />
         </div>
 
         <div className="cl-hero-read" aria-hidden="true" />
-        <div className="cl-hero-brand" aria-hidden="true" />
         <div className="cl-hero-foot" aria-hidden="true" />
 
         <div className="wrap cl-hero-in">
           <div className="cl-hero-copy">
-            <div className="eyebrow" style={{ marginBottom: 24, color: "rgba(255,255,255,.78)" }}>
+            <div className="eyebrow cl-hero-eyebrow" style={{ marginBottom: 24, color: "rgba(255,255,255,.78)" }}>
               <i /> E-commerce · Marketing · IA · Automação
             </div>
             <h1 className="cl-hero-h1">Sua operação em <span className="cl-hero-accent">outra órbita</span></h1>
@@ -101,19 +88,19 @@ export default function ClaroHero() {
               <a href="#contato" className="btn btn-p" style={{ padding: "16px 28px", fontSize: 16 }}>
                 Falar com especialista <ArrowRight size={18} aria-hidden />
               </a>
-              <a href="#diagnostico" className="btn btn-s" style={{ padding: "16px 26px", fontSize: 16 }}>
+              <a href="#diagnostico" className="btn cl-hero-ghost" style={{ padding: "16px 26px", fontSize: 16 }}>
                 <Play size={16} aria-hidden /> Fazer diagnóstico
               </a>
             </div>
           </div>
         </div>
 
-        <div className="cl-hero-scroll" aria-hidden="true">
+        <a href="#compat" className="cl-hero-scroll" aria-label="Rolar para a próxima seção">
           <span className="cl-hero-scroll-track"><span className="cl-hero-scroll-dot" /></span>
-        </div>
+        </a>
       </section>
 
-      <section className="sec cl-hero-plat">
+      <section id="compat" className="sec cl-hero-plat">
         <div className="wrap">
           <ClaroHead
             center
@@ -143,18 +130,39 @@ export default function ClaroHero() {
 
 const CSS = `
   .cl-hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; background: #04060f; }
-  .cl-hero-media { position: absolute; inset: 0; overflow: hidden; }
-  .cl-hero-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; opacity: .85; }
-  .cl-hero-read { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(5,11,26,.62) 0%, rgba(5,11,26,.30) 38%, rgba(5,11,26,.55) 72%, rgba(5,11,26,.96) 100%); }
-  .cl-hero-brand { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; background: radial-gradient(900px 620px at 6% 28%, rgba(21,80,232,.34), transparent 60%), radial-gradient(880px 600px at 96% 78%, rgba(224,22,95,.26), transparent 62%); }
+
+  /* fundo 100% CSS: base + 3 orbs de luz (sem filter:blur, só transparência) */
+  .cl-hero-bg { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(120% 90% at 50% 0%, #0B1230 0%, #04060f 58%); }
+  .cl-hero-orb { position: absolute; border-radius: 50%; mix-blend-mode: screen; will-change: transform; }
+  .cl-hero-orb-a { width: min(58vw,720px); height: min(58vw,720px); left: -12%; top: -16%; background: radial-gradient(circle at 42% 42%, rgba(91,60,255,.55), rgba(91,60,255,0) 70%); animation: cl-orb-a 22s ease-in-out infinite alternate; }
+  .cl-hero-orb-b { width: min(46vw,560px); height: min(46vw,560px); right: -10%; top: 4%; background: radial-gradient(circle at 55% 45%, rgba(21,80,232,.5), rgba(21,80,232,0) 70%); animation: cl-orb-b 26s ease-in-out infinite alternate; }
+  .cl-hero-orb-c { width: min(50vw,620px); height: min(50vw,620px); left: 16%; bottom: -26%; background: radial-gradient(circle at 50% 50%, rgba(224,22,95,.4), rgba(224,22,95,0) 72%); animation: cl-orb-c 30s ease-in-out infinite alternate; }
+  @keyframes cl-orb-a { from { transform: translate(0,0) scale(1); } to { transform: translate(6%,4%) scale(1.08); } }
+  @keyframes cl-orb-b { from { transform: translate(0,0) scale(1); } to { transform: translate(-5%,6%) scale(1.05); } }
+  @keyframes cl-orb-c { from { transform: translate(0,0) scale(1); } to { transform: translate(4%,-5%) scale(1.1); } }
+
+  /* scanline + grão de filme — textura cinematográfica, mesma técnica do .grain original, escopada ao hero */
+  .cl-hero-scan { position: absolute; inset: 0; opacity: .22; mix-blend-mode: overlay; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 2px 4px); }
+  .cl-hero-grain { position: absolute; inset: -20%; opacity: .05; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation: cl-grain 7s steps(6) infinite; }
+  @keyframes cl-grain { 0% { transform: translate(0,0); } 20% { transform: translate(-6%,4%); } 40% { transform: translate(4%,-6%); } 60% { transform: translate(-4%,6%); } 80% { transform: translate(6%,-4%); } 100% { transform: translate(0,0); } }
+
+  /* legibilidade: vinheta vertical + escurecimento diagonal pela esquerda (texto é alinhado à esquerda) */
+  .cl-hero-read { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(4,6,15,.66) 0%, rgba(4,6,15,.28) 38%, rgba(4,6,15,.58) 72%, rgba(4,6,15,.97) 100%), linear-gradient(100deg, rgba(4,6,15,.7) 0%, transparent 56%); }
   .cl-hero-foot { position: absolute; left: 0; right: 0; bottom: 0; height: 170px; pointer-events: none; background: linear-gradient(180deg, transparent, var(--paper)); }
   .cl-hero-in { position: relative; z-index: 6; height: 100%; display: flex; flex-direction: column; justify-content: center; }
   .cl-hero-copy { max-width: min(760px, 100%); }
+  .cl-hero-eyebrow i { background: var(--cta); box-shadow: 0 0 0 4px rgba(224,22,95,.18); }
   .cl-hero-h1 { margin: 0; font: 800 clamp(40px,7.4vw,84px)/1.03 var(--font-display); letter-spacing: -.045em; color: #fff; text-wrap: balance; text-shadow: 0 6px 44px rgba(0,0,0,.6); }
   .cl-hero-accent { background: linear-gradient(104deg, #5B3CFF 0%, #1550E8 46%, #E0165F 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .cl-hero-lead { font: 400 clamp(16px,1.5vw,20px)/1.6 var(--font-sans); color: rgba(255,255,255,.86); max-width: min(600px, 100%); margin: 22px 0 0; text-wrap: pretty; text-shadow: 0 2px 16px rgba(0,0,0,.6); }
   .cl-hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
-  .cl-hero-scroll { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 6; }
+
+  /* botão secundário: vidro fosco sobre o fundo escuro (em vez do .btn-s branco sólido do resto do site) */
+  .cl-hero-ghost { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.32); backdrop-filter: blur(10px); }
+  .cl-hero-ghost:hover { background: rgba(255,255,255,.2); color: #fff; transform: translateY(-2px); }
+
+  .cl-hero-scroll { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 6; display: inline-flex; }
+  .cl-hero-scroll:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 999px; }
   .cl-hero-scroll-track { width: 22px; height: 36px; border: 1.5px solid rgba(255,255,255,.30); border-radius: 999px; display: flex; justify-content: center; padding-top: 6px; }
   .cl-hero-scroll-dot { width: 4px; height: 8px; border-radius: 999px; background: #6E8FFF; box-shadow: 0 0 8px #6E8FFF; animation: cl-hero-bob 1.6s ease-in-out infinite; }
   @keyframes cl-hero-bob { 0%,100% { transform: translateY(0); opacity: 1; } 60% { transform: translateY(12px); opacity: .2; } }
@@ -163,10 +171,13 @@ const CSS = `
   .cl-hero-mqs { margin-top: 46px; display: flex; flex-direction: column; gap: 22px; }
 
   @media (max-width: 760px) {
-    .cl-hero-vid { object-position: 50% 40%; }
-    .cl-hero-read { background: linear-gradient(180deg, rgba(5,11,26,.5) 0%, rgba(5,11,26,.42) 45%, rgba(5,11,26,.97) 100%); }
+    .cl-hero { height: auto; min-height: 0; padding: 136px 0 64px; }
+    .cl-hero-in { height: auto; }
+    .cl-hero-scroll { display: none; }
+    .cl-hero-read { background: linear-gradient(180deg, rgba(4,6,15,.55) 0%, rgba(4,6,15,.42) 45%, rgba(4,6,15,.97) 100%); }
   }
   @media (prefers-reduced-motion: reduce) {
+    .cl-hero-orb-a, .cl-hero-orb-b, .cl-hero-orb-c, .cl-hero-grain { animation: none; }
     .cl-hero-scroll-dot { animation: none; }
     .cl-hero-mqs .mq-t { animation: none !important; }
   }

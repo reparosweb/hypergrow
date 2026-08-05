@@ -148,18 +148,21 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
                   <div className="rail">
                     {PILLARS.map((p, i) => {
                       const Icon = PILLAR_ICON[p.key];
+                      const accent = CLARO_PILLAR_ACCENT[p.key];
+                      const on = i === activePillar;
                       return (
                         <button
                           key={p.key}
                           type="button"
-                          className={"dep" + (i === activePillar ? " on" : "")}
+                          className={"dep" + (on ? " on" : "")}
                           onMouseEnter={() => setActivePillar(i)}
                           onFocus={() => setActivePillar(i)}
                           onClick={() => setActivePillar(i)}
+                          style={on ? { background: accent + "14", borderColor: accent + "30" } : undefined}
                         >
-                          <Icon size={17} style={{ color: CLARO_PILLAR_ACCENT[p.key], flexShrink: 0 }} aria-hidden />
+                          <Icon size={17} style={{ color: accent, flexShrink: 0 }} aria-hidden />
                           <span className="dep-t">{p.label}</span>
-                          <span className="dep-n">{p.slugs.length}</span>
+                          <span className="dep-n" style={on ? { color: accent } : undefined}>{p.slugs.length}</span>
                         </button>
                       );
                     })}

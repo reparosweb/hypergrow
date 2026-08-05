@@ -181,6 +181,15 @@
 /* progresso de rolagem */
 .cl .prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:990;background:linear-gradient(90deg,var(--brand),#5B3CFF,var(--cta))}
 
+/* moldura de navegador do Portfólio (components/site/DeviceMockup.tsx,
+   compartilhada com o site escuro — lá os 3 pontinhos são jade/champanhe/
+   cobre de propósito e continuam assim). Sobrescrita só dentro de `.cl`,
+   sem tocar no componente: aqui viram azul/violeta/rosa pra fechar a
+   fidelidade de cor com o resto da rota. */
+.cl .dv-dot--a{ background:var(--brand); }
+.cl .dv-dot--b{ background:#5B3CFF; }
+.cl .dv-dot--c{ background:var(--cta); }
+
 /* whatsapp flutuante */
 .cl .wa-f{position:fixed;right:22px;bottom:22px;z-index:960;display:inline-flex;align-items:center;gap:10px;background:var(--wa);color:#fff;border-radius:99px;padding:14px 20px;font:600 15px var(--text);box-shadow:0 16px 36px -14px rgba(15,157,88,.7)}
 .cl .wa-f:hover{background:#0B8146;color:#fff;transform:translateY(-2px)}
