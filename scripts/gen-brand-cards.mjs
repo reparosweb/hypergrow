@@ -33,11 +33,17 @@ function card({ initials, name, tagline, c1, c2 }) {
 </svg>`;
 }
 
+// marido, nutri e packslog SAÍRAM desta lista: os três têm URL pública real e
+// confirmada (verificada por <title>, não só por status HTTP) e ganharam
+// screenshot de verdade em public/portfolio/*.webp. Rodar este script de novo
+// SOBRESCREVERIA a capa real pelo card de marca — não rode sem tirar o id da
+// lista abaixo primeiro.
+//
+// Só falta unixx: o endereço candidato (spotlog-nine.vercel.app) abre um site
+// cujo <title> é "Spotlog", não "Unixx" — publicar aquilo faria o site anunciar
+// um nome e abrir outro. Fica de card de marca até o dono confirmar a URL certa.
 const cards = [
-  { id: "marido", initials: "MA", name: "Marido de Aluguel", tagline: "Site + sistema de orçamentos para reparos", c1: "#0FA968", c2: "#6FBF9A" },
-  { id: "nutri", initials: "NS", name: "NutriSnap", tagline: "App de nutrição com visão computacional", c1: "#0C8956", c2: "#2DD4A0" },
   { id: "unixx", initials: "UX", name: "Unixx", tagline: "CRM e automação para equipe comercial", c1: "#0A7048", c2: "#0FA968" },
-  { id: "packslog", initials: "PL", name: "Packslog", tagline: "Operação logística com rastreio em tempo real", c1: "#C4763C", c2: "#7A4720" },
 ];
 
 for (const c of cards) {

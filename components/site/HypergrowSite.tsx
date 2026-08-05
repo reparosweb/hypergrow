@@ -613,7 +613,9 @@ function Portfolio() {
           {shown.map((p) => (
             <article key={p.id} className="glowcard neon-card reveal in" {...cardGlow("rgba(11,122,76,0.4)")} style={{ borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
               <div style={{ position: "relative", aspectRatio: "16/10", background: p.grad }}>
-                {/* Todos os 10 projetos têm capa real em /portfolio/ — print do site (6) ou card de marca desenhado (4, sem URL pública). */}
+                {/* Capa real em /portfolio/ para os que têm URL pública verificada
+                    (print do site) e card de marca desenhado só para o que não tem
+                    (unixx). Ver lib/projects.ts para o critério de cada um. */}
                 <ImageSlot placeholder={`Print do ${p.name}`} src={`/portfolio/${p.id}.webp`} />
                 <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(5,11,26,0.55))", pointerEvents: "none" }}></div>
                 <div style={{ position: "absolute", left: 14, top: 14, display: "flex", gap: 6, pointerEvents: "none" }}>
@@ -623,11 +625,21 @@ function Portfolio() {
               <div style={{ padding: 22, display: "flex", flexDirection: "column", flex: 1 }}>
                 <h3 style={{ font: "700 18px var(--font-display)", color: "#fff", margin: "0 0 8px" }}>{p.name}</h3>
                 <p style={{ font: "400 13.5px/1.55 var(--font-sans)", color: "rgba(255,255,255,0.58)", margin: 0, flex: 1 }}>{p.desc}</p>
-                <a href={p.url || "#contato"} target={p.url ? "_blank" : undefined} rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, font: "600 13px var(--font-sans)", color: "#6FE3B4", transition: "gap .2s" }}
-                  onMouseEnter={(e) => { e.currentTarget.style.gap = "11px"; e.currentTarget.style.color = "#fff"; }}
-                  onMouseLeave={(e) => { e.currentTarget.style.gap = "7px"; e.currentTarget.style.color = "#6FE3B4"; }}>
-                  {p.url ? "Ver site" : "Ver projeto"} <i data-lucide={p.url ? "external-link" : "arrow-right"} style={{ width: 15, height: 15 }}></i>
-                </a>
+                {/* Sem URL, o link "Ver projeto → #contato" MENTIA: o visitante
+                    clicava esperando ver o trabalho e caía no formulário. Auditoria
+                    de UX apontou isso nominalmente. Sem link público, é só um selo —
+                    nada clicável prometendo o que não existe. */}
+                {p.url ? (
+                  <a href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, font: "600 13px var(--font-sans)", color: "#6FE3B4", transition: "gap .2s" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.gap = "11px"; e.currentTarget.style.color = "#fff"; }}
+                    onMouseLeave={(e) => { e.currentTarget.style.gap = "7px"; e.currentTarget.style.color = "#6FE3B4"; }}>
+                    Ver site <i data-lucide="external-link" style={{ width: 15, height: 15 }}></i>
+                  </a>
+                ) : (
+                  <span style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, font: "600 13px var(--font-sans)", color: "rgba(255,255,255,0.4)" }}>
+                    <i data-lucide="lock" style={{ width: 14, height: 14 }}></i> Projeto interno
+                  </span>
+                )}
               </div>
             </article>
           ))}
