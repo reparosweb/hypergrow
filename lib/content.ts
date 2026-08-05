@@ -72,6 +72,36 @@ export const services: Service[] = [
     gradient: "from-amber-400 via-orange-500 to-rose-500",
     accent: "#f97316",
   },
+  {
+    slug: "auditoria-comercial",
+    icon: "Target",
+    title: "Auditoria Comercial",
+    description:
+      "Diagnóstico do funil de vendas feito por uma pessoa da HyperGrow: identificamos o gargalo comercial, criamos script de abordagem e follow-up, e treinamos a equipe para aplicar. Não é software nem automação.",
+    items: ["Diagnóstico do funil", "Gargalo comercial", "Script de vendas", "Follow-up", "Treinamento de equipe"],
+    gradient: "from-green-400 via-emerald-500 to-teal-500",
+    accent: "#22c55e",
+  },
+  {
+    slug: "crm-com-ia",
+    icon: "LayoutDashboard",
+    title: "CRM com IA",
+    description:
+      "CRM com dashboard de funil de vendas, leads e clientes organizados por etapa, e IA lendo os dados para apontar onde o funil trava. O mesmo tipo de sistema que a HyperGrow opera no próprio admin e no Agentop.",
+    items: ["Dashboard de funil", "Organização de leads", "Insights com IA", "Treinamento da equipe"],
+    gradient: "from-teal-400 via-emerald-500 to-cyan-500",
+    accent: "#5FD3C6",
+  },
+  {
+    slug: "sdr-com-ia",
+    icon: "Filter",
+    title: "SDR com IA",
+    description:
+      "Agente de IA que qualifica leads no WhatsApp (ou outro canal), separa quem está pronto para comprar de quem só está pesquisando, e entrega ao time comercial só as oportunidades boas.",
+    items: ["Qualificação automática", "WhatsApp", "Cadência de follow-up", "Handoff para vendas"],
+    gradient: "from-cyan-400 via-teal-500 to-emerald-500",
+    accent: "#5FD3C6",
+  },
 ];
 
 export type Differential = { icon: string; title: string };

@@ -39,7 +39,7 @@ export const PILLARS: Pillar[] = [
     key: "vender", label: "Vender online", short: "Vender", icon: "shopping-cart",
     desc: "Site, loja e presença que convertem visita em cliente.",
     accent: "#2DD4A0", rail: "#0FA968", glow: "rgba(45,212,160,0.42)", // 8,89:1
-    slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo"],
+    slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo", "auditoria-comercial"],
   },
   {
     key: "atrair", label: "Atrair demanda", short: "Atrair", icon: "trending-up",
@@ -57,7 +57,7 @@ export const PILLARS: Pillar[] = [
     key: "ia", label: "Operar com IA", short: "IA", icon: "bot",
     desc: "Agentes e automações que atendem e vendem sozinhos.",
     accent: "#5FD3C6", rail: "#3BA8A0", glow: "rgba(95,211,198,0.42)", // 9,4:1
-    slugs: ["automacoes-ia"],
+    slugs: ["automacoes-ia", "crm-com-ia", "sdr-com-ia"],
   },
 ];
 

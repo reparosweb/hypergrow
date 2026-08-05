@@ -113,6 +113,16 @@ const GLYPHS = {
     </>
   ),
 
+  // Funil de vendas com o gargalo apontado pela lupa da auditoria.
+  "auditoria-comercial": (
+    <>
+      <path d="M14 14h58M14 14L46 44M72 14L46 44M46 44v18" {...S} opacity={O2} />
+      <circle cx="60" cy="42" r="17" {...S} />
+      <path d="M72 54l16 16" {...S} />
+      <path d="M18 62h20M18 68h14" {...S} opacity={O3} />
+    </>
+  ),
+
   /* ── Atrair demanda ──────────────────────────────────────────────────── */
 
   // Megafone → ondas → alvo: anúncio que chega em quem importa.
@@ -300,6 +310,31 @@ const GLYPHS = {
       <circle cx="102" cy="62" r="9" {...S} opacity={O2} />
       <path d="M98 62l3 3 5-6" {...S} />
       <path d="M14 56h16" {...S} opacity={O2} />
+    </>
+  ),
+
+  // Funil de vendas afunilando até o negócio fechado + IA gerando insight (sparkle) e tendência.
+  "crm-com-ia": (
+    <>
+      <path d="M12 14h72l-9 15H21z" {...S} />
+      <path d="M24 33h48l-8 14H32z" {...S} opacity={O2} />
+      <path d="M35 51h26l-6 15H41z" {...S} opacity={O2} />
+      <circle cx="48" cy="70" r="2.6" fill="currentColor" />
+      <path d="M100 14l2.8 8.6 8.6 2.8-8.6 2.8-2.8 8.6-2.8-8.6-8.6-2.8 8.6-2.8z" fill="currentColor" />
+      <path d="M78 60l8-6 7 4 9-9" {...S} opacity={O2} />
+    </>
+  ),
+
+  // Conversa que entra e é triada pela IA: bifurca em pronto (check) ou pesquisando (relógio).
+  "sdr-com-ia": (
+    <>
+      <path d="M10 20h40a6 6 0 0 1 6 6v18a6 6 0 0 1-6 6H26l-9 8v-8h-1a6 6 0 0 1-6-6V26a6 6 0 0 1 6-6z" {...S} />
+      <path d="M20 32h26M20 40h18" {...S} opacity={O2} />
+      <path d="M60 39h14M74 39l14-16M74 39l14 16" {...S} opacity={O2} />
+      <circle cx="98" cy="20" r="11" {...S} />
+      <path d="M93 20l4 4 8-8" {...S} />
+      <circle cx="98" cy="60" r="11" {...S} opacity={O3} />
+      <path d="M98 53v7l5 4" {...S} opacity={O3} />
     </>
   ),
 };

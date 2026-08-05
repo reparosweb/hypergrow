@@ -36,10 +36,10 @@ const services = extract("lib/site-services.ts", ["title", "desc", "keyword"]);
 const posts = extract("lib/blog-posts.ts", ["title", "description", "keyword"]);
 
 const PILLARS = [
-  { label: "Vender online", slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo"] },
+  { label: "Vender online", slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo", "auditoria-comercial"] },
   { label: "Atrair demanda", slugs: ["marketing-trafego", "email-marketing", "web-stories"] },
   { label: "Marca & conteúdo", slugs: ["redes-sociais", "posts-redes-sociais", "posts-video", "stories-instagram", "producao-de-video", "producao-fotografica", "fotos-produtos", "design-identidade", "criacao-logo"] },
-  { label: "Operar com IA", slugs: ["automacoes-ia"] },
+  { label: "Operar com IA", slugs: ["automacoes-ia", "crm-com-ia", "sdr-com-ia"] },
 ];
 
 let out = `# HyperGrow

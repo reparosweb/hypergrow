@@ -4,7 +4,7 @@
 
 A HyperGrow cria, coloca no ar e opera soluções digitais de ponta a ponta para empresas que querem crescer — com foco em performance, automação e resultado mensurável. Atende todo o Brasil, remotamente.
 
-## Serviços (19)
+## Serviços (22)
 
 ### Vender online
 - [Criação de Site & Landing Pages](https://hypergrow-lovat.vercel.app/servicos/criacao-de-site): Sites e páginas de alta conversão, rápidos e impecáveis.
@@ -13,6 +13,7 @@ A HyperGrow cria, coloca no ar e opera soluções digitais de ponta a ponta para
 - [SEO: Site no Topo dos Buscadores](https://hypergrow-lovat.vercel.app/servicos/seo): Otimização que coloca seu site na primeira página do Google.
 - [Hospedagem de Sites](https://hypergrow-lovat.vercel.app/servicos/hospedagem): Hospedagem gerenciada, rápida e sempre no ar.
 - [Cartão de Visita Interativo](https://hypergrow-lovat.vercel.app/servicos/cartao-interativo): Seu contato, redes e links em um só toque ou QR Code.
+- [Auditoria Comercial](https://hypergrow-lovat.vercel.app/servicos/auditoria-comercial): Diagnóstico do funil de vendas, script de abordagem e treinamento da equipe comercial.
 
 ### Atrair demanda
 - [Marketing Digital & Tráfego Pago](https://hypergrow-lovat.vercel.app/servicos/marketing-trafego): Campanhas de tráfego pago que vendem todos os dias com ROI previsível.
@@ -32,6 +33,8 @@ A HyperGrow cria, coloca no ar e opera soluções digitais de ponta a ponta para
 
 ### Operar com IA
 - [Automações & IA](https://hypergrow-lovat.vercel.app/servicos/automacoes-ia): Agentes de IA que atendem, qualificam e vendem 24/7.
+- [CRM com IA](https://hypergrow-lovat.vercel.app/servicos/crm-com-ia): CRM com dashboard de funil de vendas, leads organizados e IA lendo o que os números escondem.
+- [SDR com IA](https://hypergrow-lovat.vercel.app/servicos/sdr-com-ia): Agente de IA que qualifica leads e entrega ao seu time só quem está pronto para comprar.
 
 ## Artigos (4)
 - [Quanto custa criar um site profissional em 2026?](https://hypergrow-lovat.vercel.app/blog/quanto-custa-criar-um-site): Quanto custa criar um site em 2026? Veja faixas reais de preço no Brasil para landing page, site institucional e e-commerce, e o que muda no valor.
@@ -40,7 +43,7 @@ A HyperGrow cria, coloca no ar e opera soluções digitais de ponta a ponta para
 - [Como aparecer no ChatGPT e ser citado pela IA](https://hypergrow-lovat.vercel.app/blog/como-aparecer-no-chatgpt): Como aparecer no ChatGPT? Estruture conteúdo em formato de resposta, use dados, schema e autoridade. Guia prático de GEO/AEO para sua empresa ser citada.
 
 ## Páginas principais
-- [Catálogo completo de serviços](https://hypergrow-lovat.vercel.app/servicos): os 19 serviços agrupados em 4 frentes, com tabela de qual frente resolve qual problema.
+- [Catálogo completo de serviços](https://hypergrow-lovat.vercel.app/servicos): os 22 serviços agrupados em 4 frentes, com tabela de qual frente resolve qual problema.
 - [Sobre a HyperGrow](https://hypergrow-lovat.vercel.app/sobre): quem constrói, os produtos próprios que estão no ar e como trabalhamos.
 - [Contato](https://hypergrow-lovat.vercel.app/contato): formulário de diagnóstico gratuito, com proposta em até 1 dia útil.
 - [Blog](https://hypergrow-lovat.vercel.app/blog): guias sobre preço, e-commerce, IA e como aparecer nas respostas de IA.
