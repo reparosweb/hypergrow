@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { blogPosts, type BlogPost } from "@/lib/blog-posts";
 import { pillarOf } from "@/lib/site-services";
 import { SITE_URL } from "@/lib/seo";
+import SiteHeader from "@/components/site/SiteHeader";
 
 export const metadata: Metadata = {
   title: "Blog — HyperGrow",
@@ -80,14 +81,8 @@ export default function BlogPage() {
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none", background: "radial-gradient(70% 50% at 12% -8%, rgba(15,169,104,0.16), transparent 62%), radial-gradient(64% 44% at 94% 6%, rgba(196,118,60,0.11), transparent 62%), #0D1013" }} />
 
-      <header className="hgb-topbar">
-        <div className="wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, height: 68 }}>
-          <Link href="/" style={{ font: "700 18px var(--font-display)", letterSpacing: "-0.04em", color: "#fff" }}>
-            Hyper<span className="hgb-accent">Grow</span>
-          </Link>
-          <Link href="/contato" className="btn btn-cta" style={{ padding: "10px 18px", fontSize: 14, borderRadius: 12 }}>Solicitar orçamento</Link>
-        </div>
-      </header>
+      {/* Header ÚNICO do site — ver nota em app/blog/[slug]/page.tsx. */}
+      <SiteHeader />
 
       <section className="sec" style={{ paddingTop: 46, paddingBottom: 0 }}>
         <div className="wrap">

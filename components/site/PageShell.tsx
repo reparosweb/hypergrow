@@ -63,6 +63,7 @@ export default function PageShell({
         }}
       />
       <div className="pg-rail" aria-hidden />
+      <div className="pg-progress" aria-hidden />
 
       {/* Header ÚNICO do site (antes cada rota tinha o seu, e três delas ficavam
           sem menu nenhum no celular — só o logo). */}
@@ -141,10 +142,30 @@ export default function PageShell({
         /* ── cards ── */
         .pg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 16px; }
         .pg-card { display: block; border-radius: 18px; padding: 22px; text-decoration: none; color: inherit;
-          background: linear-gradient(168deg, rgba(232,226,217,0.045), rgba(232,226,217,0.015)); border: 1px solid rgba(232,226,217,0.09); }
-        .pg-card-go { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; font: 600 13px var(--font-sans); color: var(--acc); }
-        a.pg-card:hover { border-color: rgba(232,226,217,0.2); }
-        a.pg-card:hover .pg-card-go { gap: 11px; }
+          background: linear-gradient(168deg, rgba(232,226,217,0.045), rgba(232,226,217,0.015)); border: 1px solid rgba(232,226,217,0.09);
+          transition: transform .28s var(--ease-silk, cubic-bezier(.16,1,.3,1)), border-color .28s ease, box-shadow .28s ease; }
+        .pg-card-go { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; font: 600 13px var(--font-sans); color: var(--acc); transition: gap .2s ease; }
+        /* Profundidade real no hover (sombra em camadas), não glow — o mesmo
+           princípio que já rege os cards da home (.glowcard). */
+        a.pg-card:hover, a.pg-card:focus-visible { border-color: rgba(232,226,217,0.22); transform: translateY(-3px);
+          box-shadow: 0 1px 0 rgba(232,226,217,0.06) inset, 0 18px 34px -20px rgba(0,0,0,0.55), 0 4px 10px -6px rgba(0,0,0,0.4); }
+        a.pg-card:hover .pg-card-go, a.pg-card:focus-visible .pg-card-go { gap: 11px; }
+        @media (prefers-reduced-motion: reduce) { .pg-card { transition: border-color .2s ease; } a.pg-card:hover { transform: none; } }
+
+        /* ── revelação por rolagem, nativa (zero JS) ─────────────────────────
+           Mesmo mecanismo já comprovado em .svc-rise/.plat-rise: usa
+           animation-timeline: view(), então roda só em navegador com suporte
+           (@supports), e o estado FORA do @supports é opacidade 1 — visível.
+           Diferente de .reveal (home), aqui nunca existe risco de ficar
+           opacity:0 para sempre, porque não depende de nenhum observer JS.
+           Aplicado direto em .pg-card e .pg-tablewrap (não numa classe extra):
+           assim TODA página que já usa esses componentes ganha o movimento sem
+           precisar editar o JSX de cada rota. */
+        @supports (animation-timeline: view()) {
+          .pg-card, .pg-tablewrap { animation: hg-reveal-in linear both; animation-timeline: view(); animation-range: entry 2% entry 55%; }
+        }
+        @keyframes hg-reveal-in { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+        @media (prefers-reduced-motion: reduce) { .pg-card, .pg-tablewrap { animation: none; } }
 
         .pg-footer { border-top: 1px solid rgba(232,226,217,0.08); margin-top: 40px; }
         .pg-footer-in { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
@@ -157,6 +178,20 @@ export default function PageShell({
           .pg-top-cta { display: none !important; }
           .pg-footer-in { flex-direction: column; align-items: flex-start; }
         }
+
+        /* ── barra de progresso de leitura — CSS puro, zero JS ───────────────
+           animation-timeline: scroll(root) liga o comprimento da barra à
+           posição de rolagem da PÁGINA (não de um elemento local), então não
+           precisa de wrapper novo — só a barra fixa no topo. Página curta =
+           barra some rápido (prefers-reduced-motion desliga o preenchimento
+           mas a barra fica só decorativa e inofensiva). */
+        @supports (animation-timeline: scroll()) {
+          .pg-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 1001; transform-origin: 0 50%;
+            background: linear-gradient(90deg, var(--rail), var(--acc)); transform: scaleX(0);
+            animation: pg-progress-fill linear both; animation-timeline: scroll(root); }
+        }
+        @keyframes pg-progress-fill { to { transform: scaleX(1); } }
+        @media (prefers-reduced-motion: reduce) { .pg-progress { animation: none; opacity: 0; } }
       `}</style>
     </main>
   );

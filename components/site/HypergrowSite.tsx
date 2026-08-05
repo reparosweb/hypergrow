@@ -610,42 +610,57 @@ function Portfolio() {
           ))}
         </div>
         <div style={{ marginTop: 34, display: "grid", gridTemplateColumns: "repeat(3,1fr)", gap: 18 }} className="port-grid">
-          {shown.map((p) => (
-            <article key={p.id} className="glowcard neon-card reveal in" {...cardGlow("rgba(11,122,76,0.4)")} style={{ borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-              <div style={{ position: "relative", aspectRatio: "16/10", background: p.grad }}>
-                {/* Capa real em /portfolio/ para os que têm URL pública verificada
-                    (print do site) e card de marca desenhado só para o que não tem
-                    (unixx). Ver lib/projects.ts para o critério de cada um. */}
-                <ImageSlot placeholder={`Print do ${p.name}`} src={`/portfolio/${p.id}.webp`} />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(5,11,26,0.55))", pointerEvents: "none" }}></div>
-                <div style={{ position: "absolute", left: 14, top: 14, display: "flex", gap: 6, pointerEvents: "none" }}>
-                  {p.tags.map((t) => <span key={t} style={{ font: "600 10px var(--font-sans)", letterSpacing: "0.04em", textTransform: "uppercase", color: "#fff", padding: "4px 9px", borderRadius: 999, background: "rgba(5,11,26,0.55)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}>{t}</span>)}
+          {shown.map((p) => {
+            /* Card inteiro clicável quando há URL — antes só o texto "Ver site"
+               de 17px era clicável (achado de auditoria de UX). Sem URL, o card
+               continua um <article> (nada clicável prometendo o que não existe —
+               ver decisão registrada abaixo, no selo "Projeto interno"). */
+            const Tag = p.url ? "a" : "article";
+            const linkProps = p.url ? { href: p.url, target: "_blank", rel: "noopener noreferrer" } : {};
+            return (
+              <Tag key={p.id} className="glowcard neon-card reveal in port-card" {...linkProps} {...cardGlow("rgba(11,122,76,0.4)")} style={{ borderRadius: 20, overflow: "hidden", display: "flex", flexDirection: "column", textDecoration: "none", color: "inherit" }}>
+                <div style={{ position: "relative", aspectRatio: "16/10", background: p.grad, overflow: "hidden" }}>
+                  {/* Capa real em /portfolio/ para os que têm URL pública verificada
+                      (print do site) e card de marca desenhado só para o que não tem
+                      (unixx). Ver lib/projects.ts para o critério de cada um. */}
+                  <span className="port-card-img"><ImageSlot placeholder={`Print do ${p.name}`} src={`/portfolio/${p.id}.webp`} /></span>
+                  <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(5,11,26,0.55))", pointerEvents: "none" }}></div>
+                  <div style={{ position: "absolute", left: 14, top: 14, display: "flex", gap: 6, pointerEvents: "none" }}>
+                    {p.tags.map((t) => <span key={t} style={{ font: "600 10px var(--font-sans)", letterSpacing: "0.04em", textTransform: "uppercase", color: "#fff", padding: "4px 9px", borderRadius: 999, background: "rgba(5,11,26,0.55)", backdropFilter: "blur(8px)", border: "1px solid rgba(255,255,255,0.2)" }}>{t}</span>)}
+                  </div>
                 </div>
-              </div>
-              <div style={{ padding: 22, display: "flex", flexDirection: "column", flex: 1 }}>
-                <h3 style={{ font: "700 18px var(--font-display)", color: "#fff", margin: "0 0 8px" }}>{p.name}</h3>
-                <p style={{ font: "400 13.5px/1.55 var(--font-sans)", color: "rgba(255,255,255,0.58)", margin: 0, flex: 1 }}>{p.desc}</p>
-                {/* Sem URL, o link "Ver projeto → #contato" MENTIA: o visitante
-                    clicava esperando ver o trabalho e caía no formulário. Auditoria
-                    de UX apontou isso nominalmente. Sem link público, é só um selo —
-                    nada clicável prometendo o que não existe. */}
-                {p.url ? (
-                  <a href={p.url} target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, font: "600 13px var(--font-sans)", color: "#6FE3B4", transition: "gap .2s" }}
-                    onMouseEnter={(e) => { e.currentTarget.style.gap = "11px"; e.currentTarget.style.color = "#fff"; }}
-                    onMouseLeave={(e) => { e.currentTarget.style.gap = "7px"; e.currentTarget.style.color = "#6FE3B4"; }}>
-                    Ver site <i data-lucide="external-link" style={{ width: 15, height: 15 }}></i>
-                  </a>
-                ) : (
-                  <span style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, font: "600 13px var(--font-sans)", color: "rgba(255,255,255,0.4)" }}>
-                    <i data-lucide="lock" style={{ width: 14, height: 14 }}></i> Projeto interno
-                  </span>
-                )}
-              </div>
-            </article>
-          ))}
+                <div style={{ padding: 22, display: "flex", flexDirection: "column", flex: 1 }}>
+                  <h3 style={{ font: "700 18px var(--font-display)", color: "#fff", margin: "0 0 8px" }}>{p.name}</h3>
+                  <p style={{ font: "400 13.5px/1.55 var(--font-sans)", color: "rgba(255,255,255,0.58)", margin: 0, flex: 1 }}>{p.desc}</p>
+                  {/* Sem URL, sem promessa: nenhum elemento aqui é clicável —
+                      "Projeto interno" é só um selo, não um link para #contato. */}
+                  {p.url ? (
+                    <span className="port-card-cta" style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, font: "600 13px var(--font-sans)", color: "#6FE3B4" }}>
+                      Ver site <i data-lucide="external-link" style={{ width: 15, height: 15 }}></i>
+                    </span>
+                  ) : (
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 16, font: "600 13px var(--font-sans)", color: "rgba(255,255,255,0.4)" }}>
+                      <i data-lucide="lock" style={{ width: 14, height: 14 }}></i> Projeto interno
+                    </span>
+                  )}
+                </div>
+              </Tag>
+            );
+          })}
         </div>
       </div>
-      <style>{`@media (max-width:900px){ .port-grid { grid-template-columns: 1fr !important; } }`}</style>
+      <style>{`
+        @media (max-width:900px){ .port-grid { grid-template-columns: 1fr !important; } }
+        /* Profundidade real no hover/foco do card inteiro, mais a imagem
+           ganhando um leve zoom (sensação de produto, não de botão). */
+        a.port-card:hover, a.port-card:focus-visible { transform: translateY(-4px); box-shadow: 0 24px 46px -24px rgba(0,0,0,0.6), 0 1px 0 rgba(255,255,255,0.06) inset; }
+        a.port-card:hover .port-card-img img, a.port-card:focus-visible .port-card-img img { transform: scale(1.045); }
+        a.port-card:hover .port-card-cta, a.port-card:focus-visible .port-card-cta { gap: 11px; color: #fff; }
+        .port-card { transition: transform .32s var(--ease-silk, cubic-bezier(.16,1,.3,1)), box-shadow .32s ease; }
+        .port-card-img img { transition: transform .5s var(--ease-silk, cubic-bezier(.16,1,.3,1)); display: block; }
+        .port-card-cta { transition: gap .2s ease, color .2s ease; }
+        @media (prefers-reduced-motion: reduce) { .port-card, .port-card-img img, .port-card-cta { transition: none !important; } a.port-card:hover { transform: none; } }
+      `}</style>
     </section>
   );
 }

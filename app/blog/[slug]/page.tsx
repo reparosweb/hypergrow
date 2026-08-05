@@ -7,6 +7,7 @@ import { notFound } from "next/navigation";
 import { blogPosts, getPost, type BlogPost } from "@/lib/blog-posts";
 import { getService, pillarOf } from "@/lib/site-services";
 import { SITE_URL } from "@/lib/seo";
+import SiteHeader from "@/components/site/SiteHeader";
 
 export function generateStaticParams() {
   return blogPosts.map((p) => ({ slug: p.slug }));
@@ -66,6 +67,15 @@ function tone(p: BlogPost) {
 
 const CSS = `
 .hgb-topbar { position: sticky; top: 0; z-index: 30; background: rgba(13,16,19,0.94); border-bottom: 1px solid rgba(232,226,217,0.07); }
+/* Barra de progresso de leitura — CSS puro, zero JS, mesmo padrão de PageShell.tsx.
+   Fora do @supports a div fica sem estilo nenhum (0x0, invisível) — degrada em silêncio. */
+@supports (animation-timeline: scroll()) {
+  .hgb-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 1001; transform-origin: 0 50%;
+    background: linear-gradient(90deg, var(--acc), #C4763C); transform: scaleX(0);
+    animation: hgb-progress-fill linear both; animation-timeline: scroll(root); }
+}
+@keyframes hgb-progress-fill { to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .hgb-progress { animation: none; opacity: 0; } }
 .hgb-accent { background: linear-gradient(108deg,#4FCB9B 0%,#0B7A4C 42%,#D99461 100%); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 38px rgba(11,122,76,0.18); }
 .hgb-meta { font: 400 11.5px var(--font-mono); letter-spacing: 0.07em; color: rgba(232,226,217,0.45); text-transform: uppercase; }
 .hgb-tag { display: inline-flex; align-items: center; gap: 7px; font: 600 10.5px var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; }
@@ -173,14 +183,12 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none", background: `radial-gradient(68% 46% at 14% -8%, ${t.accent}1f, transparent 62%), radial-gradient(62% 42% at 94% 4%, rgba(196,118,60,0.1), transparent 62%), #0D1013` }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
-      <header className="hgb-topbar">
-        <div className="wrap" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 16, height: 68 }}>
-          <Link href="/" style={{ font: "700 18px var(--font-display)", letterSpacing: "-0.04em", color: "#fff" }}>
-            Hyper<span className="hgb-accent">Grow</span>
-          </Link>
-          <Link href="/contato" className="btn btn-cta" style={{ padding: "10px 18px", fontSize: 14, borderRadius: 12 }}>Solicitar orçamento</Link>
-        </div>
-      </header>
+      <div className="hgb-progress" aria-hidden />
+
+      {/* Header ÚNICO do site. O blog tinha ficado de fora da unificação de
+          navegação: só logo + CTA, sem menu — mesmo problema que já foi
+          corrigido em home/servicos/sobre/contato. */}
+      <SiteHeader />
 
       <article>
         {/* ── abertura ─────────────────────────────────────────────────────── */}

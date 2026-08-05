@@ -41,7 +41,10 @@ export default function TrustMarquee() {
         </div>
       </div>
 
-      <div className="mq-mask reveal">
+      {/* tabIndex torna o bloco alcançável por teclado — sem isso, :focus-within
+          nunca dispara e quem navega sem mouse não tem como pausar a animação
+          (WCAG 2.2.2, apontado em auditoria — o hover sozinho não bastava). */}
+      <div className="mq-mask reveal" tabIndex={0} role="group" aria-label="Marcas — role o mouse ou use Tab para pausar a animação">
         <Row />
         <Row reverse />
       </div>
@@ -67,7 +70,8 @@ export default function TrustMarquee() {
         .mq-row { display: flex; overflow: hidden; }
         .mq-track { display: flex; gap: 14px; padding-right: 14px; width: max-content; animation: mq 38s linear infinite; }
         .mq-track.rev { animation-direction: reverse; animation-duration: 46s; }
-        .mq-mask:hover .mq-track { animation-play-state: paused; }
+        .mq-mask:hover .mq-track, .mq-mask:focus-within .mq-track { animation-play-state: paused; }
+        .mq-mask:focus-visible { outline: 2px solid rgba(111,227,180,0.6); outline-offset: 4px; }
         @keyframes mq { to { transform: translateX(-50%); } }
         .mq-pill {
           display: inline-flex; align-items: center; gap: 10px; white-space: nowrap;

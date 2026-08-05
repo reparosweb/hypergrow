@@ -19,6 +19,17 @@
      verde  #00C896/#3ee6b5/#11d8a2/#00a87f/#00876a          → jade   (consolidado na mesma família)
    ============================================================================ */
 
+/* Transição nativa entre navegações (View Transitions API). Zero JS, zero
+   dependência — degrada em silêncio no navegador que não suporta (o Next
+   simplesmente navega sem cross-fade, como sempre fez). É o que mais entrega
+   sensação de "aplicativo" pelo menor custo: o site tinha 4 topos diferentes
+   e a navegação parecia "recarregar outro site" a cada clique — o cross-fade
+   suaviza essa costura mesmo depois da unificação do header. */
+@view-transition { navigation: auto; }
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*), ::view-transition-old(*), ::view-transition-new(*) { animation: none !important; }
+}
+
 :root {
   /* ============================================================
      COLOR — CANONICAL SCALE
