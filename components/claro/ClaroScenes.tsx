@@ -15,7 +15,8 @@ import { Check } from "lucide-react";
    monta/desmonta via `key` é o componente-pai (ClaroShow), que já é client.
 
    Cor: cada cena recebe `c` (hex do pilar) via prop e usa só `var(--c)` — sem
-   nenhuma cor hardcoded, então nunca pode reintroduzir azul/violeta aqui.
+   nenhuma cor hardcoded aqui, então quem decide a cor é sempre quem chama
+   (ClaroShow.tsx, hoje via components/claro/claroPillarAccent.ts).
    ──────────────────────────────────────────────────────────────────────────── */
 
 type SceneProps = { c: string };
@@ -146,7 +147,7 @@ export const SCENE_CSS = `
   .scn-chat-in .scn-chat-dot:nth-child(2) { animation-delay: .15s; }
   .scn-chat-in .scn-chat-dot:nth-child(3) { animation-delay: .3s; }
   @keyframes scn-typing { 0%,60%,100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
-  .scn-chat-out { align-self: flex-end; background: var(--c); color: #12151A; border-bottom-right-radius: 5px; animation-delay: 1.3s; }
+  .scn-chat-out { align-self: flex-end; background: var(--c); color: #fff; border-bottom-right-radius: 5px; animation-delay: 1.3s; }
   @keyframes scn-pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
   @media (prefers-reduced-motion: reduce) {

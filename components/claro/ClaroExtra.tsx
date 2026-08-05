@@ -45,9 +45,9 @@ export function ClaroBanner() {
       </video>
       <div className="cl-bn-grade" aria-hidden />
       <div className="wrap cl-bn-in">
-        <div className="eyebrow" style={{ color: "rgba(255,255,255,.72)" }}><i style={{ background: "#D99461" }} />Operação em ignição</div>
+        <div className="eyebrow" style={{ color: "rgba(255,255,255,.72)" }}><i style={{ background: "#E0165F" }} />Operação em ignição</div>
         <h2 className="h2" style={{ color: "#fff", marginTop: 16, maxWidth: 720 }}>
-          Empresa boa não precisa de sorte.<br />Precisa de <span style={{ color: "#6FE3B4" }}>estrutura para escalar</span>.
+          Empresa boa não precisa de sorte.<br />Precisa de <span style={{ color: "#7C93FF" }}>estrutura para escalar</span>.
         </h2>
         <p className="lead" style={{ color: "rgba(255,255,255,.82)", marginTop: 16, maxWidth: 560 }}>
           Loja, anúncio, atendimento e time comercial funcionando como um sistema — não como seis fornecedores diferentes.
@@ -71,11 +71,11 @@ export function ClaroBanner() {
 /* ── Fluxo do processo — MESMA copy já aprovada no site escuro (Process(),
    HypergrowSite.tsx), não uma nova redação para esta rota. ─────────────────── */
 const FLUXO = [
-  { Ic: Search, t: "Diagnóstico", d: "Entendemos sua operação, metas e gargalos antes de propor qualquer solução.", hex: "#0FA968" },
-  { Ic: Ruler, t: "Planejamento", d: "Desenhamos a estratégia, o escopo e o roadmap de tecnologia ideal.", hex: "#3BA8A0" },
-  { Ic: Wrench, t: "Desenvolvimento", d: "Construímos com tecnologia de ponta, IA e automação — direto ao ponto.", hex: "#C4763C" },
-  { Ic: Gauge, t: "Implantação", d: "Colocamos no ar, integramos e treinamos sua equipe para usar.", hex: "#0B7A4C" },
-  { Ic: TrendingUp, t: "Crescimento", d: "Monitoramos, otimizamos e escalamos os resultados de forma contínua.", hex: "#D99461" },
+  { Ic: Search, t: "Diagnóstico", d: "Entendemos sua operação, metas e gargalos antes de propor qualquer solução.", hex: "#0A6C9E" },
+  { Ic: Ruler, t: "Planejamento", d: "Desenhamos a estratégia, o escopo e o roadmap de tecnologia ideal.", hex: "#1B3B8B" },
+  { Ic: Wrench, t: "Desenvolvimento", d: "Construímos com tecnologia de ponta, IA e automação — direto ao ponto.", hex: "#3B2FCC" },
+  { Ic: Gauge, t: "Implantação", d: "Colocamos no ar, integramos e treinamos sua equipe para usar.", hex: "#5B3CFF" },
+  { Ic: TrendingUp, t: "Crescimento", d: "Monitoramos, otimizamos e escalamos os resultados de forma contínua.", hex: "#E0165F" },
 ];
 
 export function ClaroFluxo() {
@@ -239,7 +239,7 @@ export function ClaroSobre() {
                 ["Responsabilidade de dono", "Tratamos a sua operação como se o faturamento fosse nosso."],
               ].map(([t, d]) => (
                 <div className="card lit" key={t} style={{ display: "flex", gap: 13, padding: 17 }}>
-                  <span className="glow" style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--brand)", background: "rgba(15,169,104,.09)" }}>
+                  <span className="glow" style={{ flexShrink: 0, width: 40, height: 40, borderRadius: 11, display: "inline-flex", alignItems: "center", justifyContent: "center", color: "var(--brand)", background: "rgba(21,80,232,.09)" }}>
                     <MessageCircle size={19} />
                   </span>
                   <div>

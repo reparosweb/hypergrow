@@ -6,6 +6,7 @@ import { ArrowRight } from "lucide-react";
 import { PILLARS, type ServiceCardData } from "@/lib/pillars";
 import { ClaroHead } from "./ClaroUI";
 import { ClaroServiceIcon } from "./ClaroServiceIcon";
+import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    SOLUÇÕES — abas por pilar (4, não os 6 "departamentos" fictícios do mockup
@@ -33,6 +34,7 @@ const FOTO_POR_PILAR: Record<string, { src: string; alt: string }> = {
 export default function ClaroSolucoes({ services }: { services: ServiceCardData[] }) {
   const [d, setD] = useState(0);
   const pil = PILLARS[d];
+  const cor = CLARO_PILLAR_ACCENT[pil.key];
   const foto = FOTO_POR_PILAR[pil.key];
   const items = services.filter((s) => pil.slugs.includes(s.slug));
 
@@ -51,10 +53,10 @@ export default function ClaroSolucoes({ services }: { services: ServiceCardData[
             const on = i === d;
             return (
               <button key={p.key} onClick={() => setD(i)} className={"sol-tab" + (on ? " on" : "")}
-                style={on ? { background: p.rail, borderColor: p.rail, color: "#12151A" } : {}}>
+                style={on ? { background: CLARO_PILLAR_ACCENT[p.key], borderColor: CLARO_PILLAR_ACCENT[p.key], color: "#fff" } : {}}>
                 <ClaroServiceIcon name={pillarIcon(p.icon)} size={16} />
                 {p.label}
-                <span className="sol-tab-n" style={on ? { background: "rgba(18,21,26,.16)", color: "#12151A" } : {}}>{p.slugs.length}</span>
+                <span className="sol-tab-n" style={on ? { background: "rgba(255,255,255,.24)", color: "#fff" } : {}}>{p.slugs.length}</span>
               </button>
             );
           })}
@@ -65,21 +67,21 @@ export default function ClaroSolucoes({ services }: { services: ServiceCardData[
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src={foto.src} alt={foto.alt} width={960} height={640} loading="lazy" decoding="async" />
             <figcaption>
-              <span className="sol-cap-dot" style={{ background: pil.rail }} />
+              <span className="sol-cap-dot" style={{ background: cor }} />
               <span><b>{pil.label}</b><em>{pil.desc}</em></span>
             </figcaption>
           </figure>
 
           <div className="rv">
             <div className="sol-head">
-              <span className="mono" style={{ color: pil.rail }}>{String(d + 1).padStart(2, "0")} · Frente</span>
+              <span className="mono" style={{ color: cor }}>{String(d + 1).padStart(2, "0")} · Frente</span>
               <h3 className="h3" style={{ marginTop: 8 }}>{pil.label}</h3>
               <p className="body" style={{ marginTop: 6 }}>{pil.desc}</p>
             </div>
             <div className="sol-grid">
               {items.map((s) => (
                 <Link href={`/servicos/${s.slug}`} className="card sol-card" key={s.slug}>
-                  <span className="sol-ic" style={{ color: pil.rail, background: pil.rail + "10", borderColor: pil.rail + "26" }}>
+                  <span className="sol-ic" style={{ color: cor, background: cor + "10", borderColor: cor + "26" }}>
                     <ClaroServiceIcon name={s.icon} size={18} />
                   </span>
                   <div>

@@ -34,8 +34,8 @@ function useClaroWhatsApp() {
    pessoa nunca disse. ────────────────────────────────────────────────────── */
 const RESULTADOS_PLACEHOLDER = [
   { t: "Mês 0 · Diagnóstico", d: "Loja com tráfego caro, ficha de produto incompleta e nenhum acompanhamento de pedido. Faturamento oscilando entre R$ 48 mil e R$ 90 mil.", k: "Ponto de partida", hex: "#B0155F" },
-  { t: "Mês 3 · Estrutura", d: "Produtos recadastrados, ERP integrado, checkout otimizado e campanhas reorganizadas por margem — não por volume.", k: "Base arrumada", hex: "#C4763C" },
-  { t: "Mês 12 · Escala", d: "Faturamento médio de R$ 210 mil/mês, ROAS 7,4 e um time que sabe o que fazer sem esperar reunião.", k: "Crescimento sustentável", hex: "#0B7A4C" },
+  { t: "Mês 3 · Estrutura", d: "Produtos recadastrados, ERP integrado, checkout otimizado e campanhas reorganizadas por margem — não por volume.", k: "Base arrumada", hex: "#A8560B" },
+  { t: "Mês 12 · Escala", d: "Faturamento médio de R$ 210 mil/mês, ROAS 7,4 e um time que sabe o que fazer sem esperar reunião.", k: "Crescimento sustentável", hex: "#1550E8" },
 ] as const;
 
 export function ClaroResultados() {
@@ -188,7 +188,7 @@ export function ClaroContato() {
                   (confirmado por DNS nesta sessão) — anunciar e-mail que devolve
                   erro é pior que não anunciar. */}
               <div className="card cl-ct-row" style={{ cursor: "default" }}>
-                <span className="cl-ct-ic" style={{ background: "rgba(15,169,104,.1)", color: "var(--brand)" }}><Mail size={19} /></span>
+                <span className="cl-ct-ic" style={{ background: "rgba(21,80,232,.1)", color: "var(--brand)" }}><Mail size={19} /></span>
                 <span><b>Formulário oficial</b><em>cai direto no nosso painel</em></span>
               </div>
             </div>
@@ -236,7 +236,7 @@ export function ClaroContato() {
         .cl-f-g{display:grid;grid-template-columns:1fr 1fr;gap:14px}
         #contato form label{display:block;font:600 13.5px var(--text);color:var(--ink-2)}
         #contato form input,#contato form select,#contato form textarea{display:block;width:100%;box-sizing:border-box;margin-top:7px;padding:13px 14px;border:1px solid var(--line);border-radius:11px;background:#fff;font:400 15.5px var(--text);color:var(--ink);transition:border-color .2s,box-shadow .2s}
-        #contato form input:focus,#contato form select:focus,#contato form textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(15,169,104,.14)}
+        #contato form input:focus,#contato form select:focus,#contato form textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(21,80,232,.14)}
         #contato form textarea{resize:vertical}
         @media(max-width:560px){.cl-f-g{grid-template-columns:1fr}}
       `}} />

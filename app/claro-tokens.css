@@ -1,48 +1,55 @@
 /* ============================================================================
    HYPERGROW CLARO — tokens de cor e tipografia.
 
-   ORIGEM: este arquivo é a versão RECOLORIDA de um mockup importado do
-   claude.ai/design (projeto "Hypergrow", arquivo "Hypergrow Claro.html"). O
-   mockup original usava azul (#1550E8) + violeta (#3B2FCC/#5B3CFF) + rosa
-   (#E0165F) — exatamente o padrão de cor que este projeto já baniu duas vezes
-   ("PROIBIDO azul e violeta" em hg-tokens.css, decisão do dono após rejeitar
-   esse mesmo visual antes). Aqui a estrutura/layout do mockup foi mantida, mas
-   TODA cor de marca foi trocada pela paleta jade+cobre já aprovada.
+   ORIGEM: paleta ORIGINAL do mockup importado do claude.ai/design (projeto
+   "Hypergrow", arquivo "Hypergrow Claro.html" / light.css) — azul (#1550E8) +
+   violeta (#3B2FCC/#5B3CFF) + rosa (#E0165F).
+
+   HISTÓRICO: esta rota tinha sido recolorida pra jade+cobre em 2026-08-05
+   (o mesmo padrão azul/violeta já havia sido banido duas vezes neste projeto,
+   ver "PROIBIDO azul e violeta" em hg-tokens.css). Nesta mesma data, ao ver o
+   resultado, o dono pediu explicitamente para reverter e usar as cores do
+   arquivo original — decisão tomada CIENTE do conflito com o banimento (a
+   pergunta foi feita antes de mexer no código). ESCOPO DA REVERSÃO: só esta
+   rota (/claro). `lib/pillars.ts` (compartilhado com o site escuro em
+   produção) e a logomarca (ClaroLogo em ClaroUI.tsx, mesmo mark oficial da
+   marca) NÃO foram tocados — o banimento de azul/violeta continua valendo
+   para o site escuro e para a identidade visual da marca.
 
    Tipografia: reaproveita as MESMAS variáveis (--font-display/--font-sans/
    --font-mono) já carregadas por next/font em app/layout.tsx — o mockup original
    trazia Sora+Instrument Sans+JetBrains Mono, uma 3ª família só para esta rota,
-   o que fragmentaria a marca do mesmo jeito que a paleta errada fragmentaria.
-   Não redeclara fonte nenhuma aqui de propósito.
-
-   Fundo CLARO é uma variação legítima de tema (light mode), não uma marca nova:
-   os tons de tinta usam os MESMOS neutros de hg-tokens.css (--ink #12151A),
-   sem nenhum matiz azulado (o original usava #0B1220, ligeiramente azul).
+   o que fragmentaria a marca. Não redeclara fonte nenhuma aqui de propósito.
    ============================================================================ */
 :root{
   --disp:var(--font-display);
   --text:var(--font-sans);
   --code:var(--font-mono);
 
-  /* superfícies claras — neutras, sem matiz azul */
-  --paper:#FBFBF9; --paper-2:#F3F2EE; --card:#FFFFFF;
-  --ink:#12151A; --ink-2:#3E4640; --ink-3:#6B726A; --line:#E4E3DD; --line-2:#EFEEE8;
+  /* superfícies claras — valores exatos do light.css original */
+  --paper:#FBFBFD; --paper-2:#F2F4F8; --card:#FFFFFF;
+  --ink:#0B1220; --ink-2:#3E4A61; --ink-3:#6B7688; --line:#E3E7EF; --line-2:#EEF1F6;
 
-  /* marca — jade primário (era azul), cobre para CTA (era rosa) */
-  --brand:#0FA968; --brand-d:#0B7A4C;
-  --cta:#C4763C; --cta-d:#A35F2D;
-  --wa:#0F9D58; /* verde do WhatsApp: mantido — não é azul/violeta, é a cor esperada do canal */
+  /* marca — azul + rosa do mockup original */
+  --brand:#1550E8; --brand-d:#0F3CB5;
+  --cta:#E0165F; --cta-d:#B90E4C;
+  --wa:#0F9D58; /* verde do WhatsApp: cor esperada do canal, não faz parte da paleta de marca */
+
+  /* 4 cores de pilar, herdadas dos 6 "departamentos" do mockup original —
+     usadas só pelo mapa em components/claro/claroPillarAccent.ts, nunca em
+     lib/pillars.ts (compartilhado com produção). */
+  --d-ecom:#3B2FCC; --d-aqui:#A8560B; --d-cont:#B0155F; --d-auto:#0A6C9E;
 
   --ease:cubic-bezier(.2,.6,.2,1);
-  --sh-1:0 1px 2px rgba(13,16,19,.05);
-  --sh-2:0 10px 30px -12px rgba(13,16,19,.14),0 2px 6px rgba(13,16,19,.05);
-  --sh-3:0 28px 60px -24px rgba(13,16,19,.22),0 4px 12px rgba(13,16,19,.06);
+  --sh-1:0 1px 2px rgba(11,18,32,.05);
+  --sh-2:0 10px 30px -12px rgba(11,18,32,.14),0 2px 6px rgba(11,18,32,.05);
+  --sh-3:0 28px 60px -24px rgba(11,18,32,.22),0 4px 12px rgba(11,18,32,.06);
   --maxw:1180px;
 }
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 .cl html{scroll-behavior:smooth}
 .cl{background:var(--paper);color:var(--ink);font:400 17px/1.65 var(--text);-webkit-font-smoothing:antialiased}
-.cl ::selection{background:#0FA96824}
+.cl ::selection{background:#1550E824}
 .cl img{max-width:100%;display:block}
 .cl a{color:var(--brand);text-decoration:none}
 .cl a:hover{color:var(--brand-d)}
@@ -64,19 +71,18 @@
 .cl .body{font:400 16.5px/1.7 var(--text);color:var(--ink-2);text-wrap:pretty}
 .cl .small{font:400 14.5px/1.6 var(--text);color:var(--ink-3)}
 .cl .mono{font-family:var(--code);font-size:12px;letter-spacing:.1em;text-transform:uppercase}
-/* Mesmo degradê já usado no hero do site escuro (hero-accent) — reaproveitado
-   de propósito em vez de inventar um novo, para os dois temas soarem a mesma marca. */
-.cl .grad{background:linear-gradient(104deg,#6FE3B4 0%,#0B7A4C 46%,#D99461 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+/* Degradê exato do .grad no light.css original: azul → violeta → rosa. */
+.cl .grad{background:linear-gradient(96deg,var(--brand),#5B3CFF 55%,var(--cta));-webkit-background-clip:text;background-clip:text;color:transparent}
 
 /* buttons */
 .cl .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid transparent;border-radius:12px;font:600 15.5px var(--text);padding:15px 24px;transition:transform .2s var(--ease),box-shadow .25s var(--ease),background .25s,color .25s}
 .cl .btn:active{transform:scale(.985)}
-/* Texto ESCURO no CTA de cobre — mesma correção de contraste feita hoje no site
-   escuro (auditoria mediu branco sobre este degradê em 2,12:1; #12151A dá 8,64:1). */
-.cl .btn-p{background:linear-gradient(140deg,#E8A374 0%,var(--cta) 55%,var(--cta-d) 100%);color:#12151A;box-shadow:0 12px 28px -14px rgba(196,118,60,.55)}
-.cl .btn-p:hover{color:#12151A;transform:translateY(-2px);box-shadow:0 18px 38px -14px rgba(196,118,60,.6)}
+/* Botão primário: mesmo tratamento do light.css original (fundo sólido rosa,
+   texto branco — #E0165F é escuro o bastante pra branco passar contraste). */
+.cl .btn-p{background:var(--cta);color:#fff;box-shadow:0 12px 28px -14px rgba(224,22,95,.7)}
+.cl .btn-p:hover{background:var(--cta-d);color:#fff;transform:translateY(-2px);box-shadow:0 18px 38px -14px rgba(224,22,95,.75)}
 .cl .btn-s{background:#fff;color:var(--ink);border-color:var(--line);box-shadow:var(--sh-1)}
-.cl .btn-s:hover{border-color:#C9CFC5;color:var(--ink);transform:translateY(-2px);box-shadow:var(--sh-2)}
+.cl .btn-s:hover{border-color:#C7CFDE;color:var(--ink);transform:translateY(-2px);box-shadow:var(--sh-2)}
 .cl .btn-d{background:var(--ink);color:#fff}
 .cl .btn-d:hover{background:#1A2436;color:#fff;transform:translateY(-2px)}
 .cl .btn-wa{background:var(--wa);color:#fff}
@@ -84,7 +90,7 @@
 
 /* cards */
 .cl .card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-1);transition:box-shadow .3s var(--ease),transform .3s var(--ease),border-color .3s}
-.cl .card:hover{box-shadow:var(--sh-2);transform:translateY(-3px);border-color:#D2D8CC}
+.cl .card:hover{box-shadow:var(--sh-2);transform:translateY(-3px);border-color:#D6DDEA}
 
 /* borda viajante no hover — mesmo mecanismo do mockup, cor de marca por --beam */
 @property --cl-ba{syntax:'<angle>';initial-value:0deg;inherits:false}
@@ -116,7 +122,7 @@
 .cl .mq.rev .mq-t{animation-direction:reverse;animation-duration:52s}
 .cl .mq:hover .mq-t,.cl .mq:focus-within .mq-t{animation-play-state:paused}
 @keyframes cl-mq{to{transform:translateX(-100%)}}
-.cl .mq-i{white-space:nowrap;font:700 19px var(--disp);letter-spacing:-.02em;color:#7A8177;transition:color .3s}
+.cl .mq-i{white-space:nowrap;font:700 19px var(--disp);letter-spacing:-.02em;color:#5A6579;transition:color .3s}
 .cl .mq-i:hover{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){.cl .mq-t{animation:none}}
 
@@ -173,7 +179,7 @@
 .cl .burger{display:none;width:46px;height:46px;border-radius:11px;border:1px solid var(--line);background:#fff;align-items:center;justify-content:center;color:var(--ink)}
 
 /* progresso de rolagem */
-.cl .prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:990;background:linear-gradient(90deg,var(--brand),#6FE3B4,var(--cta))}
+.cl .prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:990;background:linear-gradient(90deg,var(--brand),#5B3CFF,var(--cta))}
 
 /* whatsapp flutuante */
 .cl .wa-f{position:fixed;right:22px;bottom:22px;z-index:960;display:inline-flex;align-items:center;gap:10px;background:var(--wa);color:#fff;border-radius:99px;padding:14px 20px;font:600 15px var(--text);box-shadow:0 16px 36px -14px rgba(15,157,88,.7)}

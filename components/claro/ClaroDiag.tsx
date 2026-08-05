@@ -32,10 +32,10 @@ const RESULTADOS = [
   { max: 2, stage: "Estágio 1 · Improviso", hex: "#B0155F", verdict: "Sua empresa cresce por esforço, não por sistema.",
     body: "Você já provou que o produto funciona. O que falta é parar de depender de sorte — antes de colocar mais dinheiro em anúncio, fechamos o balde furado.",
     next: ["Diagnóstico de maturidade", "Site ou loja que converte", "Automação de WhatsApp"] },
-  { max: 5, stage: "Estágio 2 · Tração", hex: "#C4763C", verdict: "Você tem demanda. Ainda não tem previsibilidade.",
+  { max: 5, stage: "Estágio 2 · Tração", hex: "#A8560B", verdict: "Você tem demanda. Ainda não tem previsibilidade.",
     body: "Entra pedido, sai venda, mas ninguém consegue prometer o mês que vem. O gargalo quase sempre está na passagem do marketing para o comercial.",
     next: ["Estruturação comercial", "Tráfego pago com meta de CAC", "CRM implantado de verdade"] },
-  { max: 8, stage: "Estágio 3 · Escala", hex: "#0B7A4C", verdict: "A base está de pé. Agora é multiplicar.",
+  { max: 8, stage: "Estágio 3 · Escala", hex: "#1550E8", verdict: "A base está de pé. Agora é multiplicar.",
     body: "Você mede, tem processo e time. Daqui para frente o ganho vem de eficiência: baixar o custo de aquisição e abrir canais novos sem quebrar o que já funciona.",
     next: ["SEO avançado e GEO/AEO", "Agentes de IA no atendimento", "Indicadores e BI"] },
 ];
@@ -119,8 +119,8 @@ export default function ClaroDiag() {
         @keyframes cl-dgin{from{opacity:0;transform:translateY(8px)}}
         .cl-dg-opts{display:flex;flex-direction:column;gap:9px;margin-top:22px}
         .cl-dg-opt{display:flex;align-items:center;gap:13px;width:100%;text-align:left;padding:15px 16px;border-radius:13px;border:1px solid var(--line);background:#fff;font:500 15.5px var(--text);color:var(--ink);transition:all .24s var(--ease)}
-        .cl-dg-opt:hover{border-color:var(--brand);background:rgba(15,169,104,.06);transform:translateX(4px)}
-        .cl-dg-opt-ic{flex-shrink:0;width:34px;height:34px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;color:var(--brand);background:rgba(15,169,104,.09);border:1px solid rgba(15,169,104,.2)}
+        .cl-dg-opt:hover{border-color:var(--brand);background:rgba(21,80,232,.06);transform:translateX(4px)}
+        .cl-dg-opt-ic{flex-shrink:0;width:34px;height:34px;border-radius:10px;display:inline-flex;align-items:center;justify-content:center;color:var(--brand);background:rgba(21,80,232,.09);border:1px solid rgba(21,80,232,.2)}
         .cl-dg-back{margin-top:16px;display:inline-flex;align-items:center;gap:7px;background:none;border:none;font:500 14px var(--text);color:var(--ink-3);padding:6px 2px;cursor:pointer}
         .cl-dg-back:hover{color:var(--ink)}
         .cl-dg-meter{display:flex;gap:7px;margin-top:16px}

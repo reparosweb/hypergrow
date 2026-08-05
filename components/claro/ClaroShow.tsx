@@ -5,6 +5,7 @@ import { Bot, Palette, ShoppingCart, TrendingUp, type LucideIcon } from "lucide-
 import { PILLARS, type PillarKey } from "@/lib/pillars";
 import { ClaroHead } from "./ClaroUI";
 import { SCENE_CSS, SceneChat, SceneEcom, SceneFunil, SceneSocial } from "./ClaroScenes";
+import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    "Soluções em ação" — carrossel de 4 itens (um por pilar real, reduzido dos
@@ -70,6 +71,7 @@ export default function ClaroShow() {
           <div className="shw-rail" role="tablist" aria-label="Soluções por frente">
             {ITEMS.map((it, i) => {
               const Icon = PILLAR_ICON[it.pillar.key];
+              const cor = CLARO_PILLAR_ACCENT[it.pillar.key];
               const on = i === active;
               return (
                 <button
@@ -78,12 +80,12 @@ export default function ClaroShow() {
                   role="tab"
                   aria-selected={on}
                   className={"shw-btn" + (on ? " on" : "")}
-                  style={on ? { borderColor: it.pillar.rail, background: it.pillar.rail + "0F" } : {}}
+                  style={on ? { borderColor: cor, background: cor + "0F" } : {}}
                   onClick={() => setActive(i)}
                 >
                   <span
                     className="shw-ic"
-                    style={{ color: it.pillar.rail, background: it.pillar.rail + "14", borderColor: it.pillar.rail + "30" }}
+                    style={{ color: cor, background: cor + "14", borderColor: cor + "30" }}
                   >
                     <Icon size={18} aria-hidden />
                   </span>
@@ -97,7 +99,7 @@ export default function ClaroShow() {
           </div>
 
           <div className="shw-stage">
-            <Scene c={cur.pillar.rail} key={cur.pillar.key} />
+            <Scene c={CLARO_PILLAR_ACCENT[cur.pillar.key]} key={cur.pillar.key} />
           </div>
         </div>
       </div>

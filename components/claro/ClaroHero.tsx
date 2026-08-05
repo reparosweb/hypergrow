@@ -146,17 +146,17 @@ const CSS = `
   .cl-hero-media { position: absolute; inset: 0; overflow: hidden; }
   .cl-hero-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; opacity: .85; }
   .cl-hero-read { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(5,11,26,.62) 0%, rgba(5,11,26,.30) 38%, rgba(5,11,26,.55) 72%, rgba(5,11,26,.96) 100%); }
-  .cl-hero-brand { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; background: radial-gradient(900px 620px at 6% 28%, rgba(15,169,104,.34), transparent 60%), radial-gradient(880px 600px at 96% 78%, rgba(196,118,60,.26), transparent 62%); }
+  .cl-hero-brand { position: absolute; inset: 0; pointer-events: none; mix-blend-mode: screen; background: radial-gradient(900px 620px at 6% 28%, rgba(21,80,232,.34), transparent 60%), radial-gradient(880px 600px at 96% 78%, rgba(224,22,95,.26), transparent 62%); }
   .cl-hero-foot { position: absolute; left: 0; right: 0; bottom: 0; height: 170px; pointer-events: none; background: linear-gradient(180deg, transparent, var(--paper)); }
   .cl-hero-in { position: relative; z-index: 6; height: 100%; display: flex; flex-direction: column; justify-content: center; }
   .cl-hero-copy { max-width: min(760px, 100%); }
   .cl-hero-h1 { margin: 0; font: 800 clamp(40px,7.4vw,84px)/1.03 var(--font-display); letter-spacing: -.045em; color: #fff; text-wrap: balance; text-shadow: 0 6px 44px rgba(0,0,0,.6); }
-  .cl-hero-accent { background: linear-gradient(104deg, #6FE3B4 0%, #0B7A4C 46%, #D99461 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .cl-hero-accent { background: linear-gradient(104deg, #5B3CFF 0%, #1550E8 46%, #E0165F 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
   .cl-hero-lead { font: 400 clamp(16px,1.5vw,20px)/1.6 var(--font-sans); color: rgba(255,255,255,.86); max-width: min(600px, 100%); margin: 22px 0 0; text-wrap: pretty; text-shadow: 0 2px 16px rgba(0,0,0,.6); }
   .cl-hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
   .cl-hero-scroll { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 6; }
   .cl-hero-scroll-track { width: 22px; height: 36px; border: 1.5px solid rgba(255,255,255,.30); border-radius: 999px; display: flex; justify-content: center; padding-top: 6px; }
-  .cl-hero-scroll-dot { width: 4px; height: 8px; border-radius: 999px; background: #6FBF9A; box-shadow: 0 0 8px #6FBF9A; animation: cl-hero-bob 1.6s ease-in-out infinite; }
+  .cl-hero-scroll-dot { width: 4px; height: 8px; border-radius: 999px; background: #6E8FFF; box-shadow: 0 0 8px #6E8FFF; animation: cl-hero-bob 1.6s ease-in-out infinite; }
   @keyframes cl-hero-bob { 0%,100% { transform: translateY(0); opacity: 1; } 60% { transform: translateY(12px); opacity: .2; } }
 
   .cl-hero-plat { padding-top: 78px; }

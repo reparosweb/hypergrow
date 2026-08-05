@@ -6,6 +6,7 @@ import { Bot, ChevronDown, Menu, Palette, ShoppingCart, TrendingUp, X, type Luci
 import { PILLARS, type PillarKey, type ServiceCardData } from "@/lib/pillars";
 import { ClaroLogo } from "./ClaroUI";
 import { ClaroServiceIcon } from "./ClaroServiceIcon";
+import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    NAV da rota /claro — header fixo com progresso de leitura, mega-menu em
@@ -156,7 +157,7 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
                           onFocus={() => setActivePillar(i)}
                           onClick={() => setActivePillar(i)}
                         >
-                          <Icon size={17} style={{ color: p.rail, flexShrink: 0 }} aria-hidden />
+                          <Icon size={17} style={{ color: CLARO_PILLAR_ACCENT[p.key], flexShrink: 0 }} aria-hidden />
                           <span className="dep-t">{p.label}</span>
                           <span className="dep-n">{p.slugs.length}</span>
                         </button>
@@ -166,7 +167,7 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
 
                   <div className="pan" key={pillar.key}>
                     <div className="pan-h">
-                      <b style={{ color: pillar.rail }}>{pillar.label}</b>
+                      <b style={{ color: CLARO_PILLAR_ACCENT[pillar.key] }}>{pillar.label}</b>
                       <span>{pillar.desc}</span>
                     </div>
                     <div className="pan-g">
@@ -179,7 +180,7 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
                         >
                           <span
                             className="pl-ic"
-                            style={{ color: pillar.rail, background: pillar.rail + "14", borderColor: pillar.rail + "30" }}
+                            style={{ color: CLARO_PILLAR_ACCENT[pillar.key], background: CLARO_PILLAR_ACCENT[pillar.key] + "14", borderColor: CLARO_PILLAR_ACCENT[pillar.key] + "30" }}
                           >
                             <ClaroServiceIcon name={s.icon} size={17} />
                           </span>
@@ -243,7 +244,7 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
               <div className="acc" key={p.key}>
                 <button type="button" className="acc-h" aria-expanded={on} onClick={() => setOpenAcc(on ? null : p.key)}>
                   <span style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <Icon size={17} style={{ color: p.rail, flexShrink: 0 }} aria-hidden />
+                    <Icon size={17} style={{ color: CLARO_PILLAR_ACCENT[p.key], flexShrink: 0 }} aria-hidden />
                     {p.label}
                     <span style={{ font: "600 11px var(--font-mono)", color: "var(--ink-3)" }}>{p.slugs.length}</span>
                   </span>
