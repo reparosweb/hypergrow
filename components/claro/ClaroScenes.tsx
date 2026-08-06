@@ -24,6 +24,14 @@ import { Check, Eye, Heart, MessageCircle } from "lucide-react";
    Cor: cada cena recebe `c` (hex do pilar) via prop e usa só `var(--c)` — sem
    nenhuma cor hardcoded aqui, então quem decide a cor é sempre quem chama
    (ClaroShow.tsx, hoje via components/claro/claroPillarAccent.ts).
+
+   REVISÃO 2026-08-06: (a) duas animações mexiam em `top`/`left`, que
+   recalculam layout a cada frame — viraram `translateY`/`translateX` com o
+   MESMO percurso; (b) o quadro ganhou resposta ao mouse (levanta 3px e o
+   brilho da cor do pilar cresce), já que o palco inteiro é hover-sensível;
+   (c) abaixo de 560px o conteúdo do quadro estava sendo cortado em silêncio
+   pelo `overflow:hidden` — corrigido com altura relativa maior e passo
+   menor. Tudo desligado em `prefers-reduced-motion`.
    ──────────────────────────────────────────────────────────────────────────── */
 
 type SceneProps = { c: string };
@@ -143,9 +151,11 @@ export function SceneChat({ c }: SceneProps) {
    var(--c) X%, white)` é sempre relativo à cor recebida por prop — nunca há
    azul/violeta hardcoded em nenhuma regra abaixo. */
 export const SCENE_CSS = `
-  .scn { position: relative; border-radius: 22px; border: 1px solid var(--line); background: #fff; box-shadow: 0 30px 70px -34px color-mix(in srgb, var(--c) 45%, transparent), var(--sh-3); overflow: hidden; height: min(420px, 68vw); }
+  .scn { position: relative; border-radius: 22px; border: 1px solid var(--line); background: #fff; box-shadow: 0 30px 70px -34px color-mix(in srgb, var(--c) 45%, transparent), var(--sh-3); overflow: hidden; height: min(420px, 68vw); transition: transform .4s var(--ease), box-shadow .4s var(--ease); }
+  .scn:hover { transform: translateY(-3px); box-shadow: 0 38px 80px -34px color-mix(in srgb, var(--c) 52%, transparent), var(--sh-3); }
   .scn-hd { display: flex; align-items: center; gap: 7px; padding: 14px 16px; border-bottom: 1px solid var(--line-2); }
-  .scn-hd span { width: 9px; height: 9px; border-radius: 99px; background: var(--line); }
+  .scn-hd span { width: 9px; height: 9px; border-radius: 99px; background: var(--line); transition: background .3s var(--ease); }
+  .scn:hover .scn-hd span:first-child { background: color-mix(in srgb, var(--c) 55%, white); }
   .scn-hd b { margin-left: 8px; font: 600 12.5px var(--text); color: var(--ink-3); }
   .scn-bd { position: relative; height: calc(100% - 47px); padding: 22px; }
 
@@ -158,8 +168,11 @@ export const SCENE_CSS = `
   .scn-ecom-sync { margin-top: 14px; display: flex; align-items: center; justify-content: center; gap: 10px; }
   .scn-ecom-pill { font: 600 12px var(--text); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 5px 12px; box-shadow: var(--sh-1); }
   .scn-ecom-wire { position: relative; width: 76px; height: 2px; background: var(--line); border-radius: 99px; overflow: hidden; }
+  /* translateX (não \`left\`): \`left\` recalcula layout a cada frame — regra de
+     performance da casa é animar só transform/opacity. O elemento tem 30% da
+     largura do fio, então 466% dele = os mesmos 140% de percurso de antes. */
   .scn-ecom-wire i { position: absolute; top: 0; left: -30%; width: 30%; height: 100%; background: var(--c); animation: scn-wire 1.5s linear infinite; }
-  @keyframes scn-wire { to { left: 110%; } }
+  @keyframes scn-wire { from { transform: translateX(0); } to { transform: translateX(466%); } }
   .scn-ecom-erp { margin-top: 10px; display: flex; align-items: center; gap: 10px; padding: 10px 13px; border-radius: 12px; background: var(--paper-2); border: 1px solid var(--line-2); }
   .scn-ecom-dot { width: 8px; height: 8px; border-radius: 99px; background: var(--c); flex-shrink: 0; animation: scn-pulse 1.8s ease-in-out infinite; }
   @keyframes scn-pulse { 0%,100% { opacity: 1; } 50% { opacity: .5; } }
@@ -172,8 +185,10 @@ export const SCENE_CSS = `
   .scn-funil-shape { position: relative; width: min(260px, 80%); display: flex; flex-direction: column; align-items: center; gap: 6px; }
   .scn-funil-stage { width: 100%; height: 34px; border-radius: 8px; background: linear-gradient(90deg, color-mix(in srgb, var(--c) 22%, white), color-mix(in srgb, var(--c) 8%, white)); border: 1px solid color-mix(in srgb, var(--c) 30%, white); opacity: 0; transform: translateY(-8px) scaleX(.94); animation: scn-flin .6s cubic-bezier(.2,.6,.2,1) forwards; }
   @keyframes scn-flin { to { opacity: 1; transform: none; } }
+  /* idem: era \`top: -4px → 154px\` (layout por frame); agora o mesmo percurso
+     de 158px em translateY, que o compositor resolve sozinho. */
   .scn-funil-ball { position: absolute; top: -4px; left: 50%; width: 14px; height: 14px; margin-left: -7px; border-radius: 99px; background: var(--c); box-shadow: 0 0 0 5px color-mix(in srgb, var(--c) 22%, transparent); animation: scn-fall 2.8s ease-in-out infinite; z-index: 2; }
-  @keyframes scn-fall { 0% { top: -4px; opacity: 0; } 10% { opacity: 1; } 88% { top: 154px; opacity: 1; } 100% { top: 154px; opacity: 0; } }
+  @keyframes scn-fall { 0% { transform: translateY(0); opacity: 0; } 10% { opacity: 1; } 88% { transform: translateY(158px); opacity: 1; } 100% { transform: translateY(158px); opacity: 0; } }
   .scn-funil-out { margin-top: 22px; display: flex; align-items: center; gap: 9px; padding: 10px 16px; border-radius: 99px; background: color-mix(in srgb, var(--c) 12%, white); border: 1px solid color-mix(in srgb, var(--c) 30%, white); color: var(--ink); font: 500 13.5px var(--text); }
   .scn-funil-out svg { color: var(--c); flex-shrink: 0; }
 
@@ -197,7 +212,24 @@ export const SCENE_CSS = `
   @keyframes scn-typing { 0%,60%,100% { opacity: .3; transform: translateY(0); } 30% { opacity: 1; transform: translateY(-3px); } }
   @keyframes scn-pop { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
 
+  /* No celular o quadro encolhe (68vw ≈ 265px a 390px de largura) mas o
+     conteúdo não encolhia junto: a última mensagem do chat e a 3ª linha da
+     grade de conteúdo caíam fora do \`overflow:hidden\` e sumiam sem aviso.
+     Aqui o quadro ganha altura relativa maior e o conteúdo aperta o passo. */
+  @media (max-width: 560px) {
+    .scn { height: min(420px, 86vw); }
+    .scn-bd { padding: 16px; }
+    .scn-ecom-grid { gap: 8px; }
+    .scn-ecom-card-img { height: 30px; }
+    .scn-chat-bd { gap: 9px; }
+    .scn-chat-msg { font-size: 12.5px; padding: 9px 12px; max-width: 88%; }
+    .scn-social-grid { grid-template-columns: repeat(3, 52px); gap: 7px; }
+    .scn-social-metrics { margin-top: 12px; gap: 6px; }
+    .scn-social-met { padding: 6px 10px; font-size: 12px; }
+    .scn-funil-out { margin-top: 16px; padding: 9px 14px; }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .scn * { animation: none !important; opacity: 1 !important; transform: none !important; }
+    .scn, .scn * { animation: none !important; opacity: 1 !important; transform: none !important; }
   }
 `;

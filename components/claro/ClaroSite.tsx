@@ -7,8 +7,11 @@ import ClaroHero from "./ClaroHero";
 import ClaroShow from "./ClaroShow";
 import ClaroSolucoes from "./ClaroSolucoes";
 import ClaroDiag from "./ClaroDiag";
+/* `ClaroBanner` existe em ClaroExtra.tsx mas NÃO é montado aqui — ver nota
+   sobre o banner na ordem das seções, logo abaixo. O componente ficou no
+   arquivo (não apaguei código) caso o dono queira trazer de volta. */
 import {
-  ClaroBanner, ClaroFluxo, ClaroPortfolio, ClaroClientes, ClaroSobre, ClaroBlog,
+  ClaroFluxo, ClaroPortfolio, ClaroClientes, ClaroSobre, ClaroBlog,
 } from "./ClaroExtra";
 import {
   ClaroResultados, ClaroDepoimentos, ClaroFaq, ClaroContato, ClaroFooter, ClaroWa,
@@ -27,10 +30,20 @@ import {
    sempre). Parâmetros exatos herdados do mockup original (threshold .1,
    rootMargin -6%), ajustados para a altura real destas seções.
 
+   BANNER REMOVIDO DA COMPOSIÇÃO (2026-08-06) — dois motivos objetivos:
+   (1) a página composta do projeto Claude Design (`Hypergrow Claro.html`, lida
+   ao vivo) NÃO monta o banner: a ordem lá é hero → show → soluções → fluxo →
+   portfólio → resultados → diagnóstico → clientes → depoimentos → sobre →
+   blog → faq → contato. O componente `LBanner` existe no arquivo-fonte mas
+   ficou fora da montagem — era código sobrando. (2) desde que o vídeo voltou
+   ao topo, o banner exibia O MESMO vídeo do foguete uma segunda vez na mesma
+   página. Alternância de fundo continua correta sem ele: compat(plain) →
+   Show(alt).
+
    ORDEM DAS SEÇÕES — cada uma alterna --paper/--paper-2 com a vizinha; se
    mudar a ordem, confira o className "sec"/"sec alt" de cada arquivo (comentado
    em cada um onde depende da vizinha):
-   Hero(vídeo) → Hero/compat(plain) → Banner(vídeo) → Show(alt) →
+   Hero(vídeo) → Hero/compat(plain) → Show(alt) →
    Solucoes(plain) → Fluxo(alt) → Portfolio(plain) → Resultados(alt) →
    Diag(plain) → Clientes(alt) → Depoimentos(plain) → Sobre(alt) →
    Blog(plain) → Faq(alt) → Contato(plain) → Footer. */
@@ -56,7 +69,6 @@ export default function ClaroSite({ services }: { services: ServiceCardData[] })
       <ClaroNav services={services} />
       <main>
         <ClaroHero />
-        <ClaroBanner />
         <ClaroShow />
         <ClaroSolucoes services={services} />
         <ClaroFluxo />

@@ -55,6 +55,20 @@
 .cl a:hover{color:var(--brand-d)}
 .cl button{font-family:inherit;cursor:pointer}
 
+/* FOCO VISÍVEL — base para teclado em toda a rota. `:focus-visible` (e não
+   `:focus`) para o anel não aparecer em clique de mouse. Faltava: quem navega
+   por Tab não enxergava onde estava. Componentes que ficam sobre fundo escuro
+   (hero) sobrescrevem com anel branco no próprio arquivo.
+
+   SEM `border-radius` aqui de propósito: forçar um raio nesta regra ENCOLHE o
+   canto real do elemento focado (11px nos itens do mega-menu, 10px nos links
+   de nav, 9px no acordeão) e o canto "pula" no momento do Tab. O `outline`
+   já acompanha sozinho o raio de quem recebe o foco. */
+.cl a:focus-visible,.cl button:focus-visible,.cl input:focus-visible,
+.cl select:focus-visible,.cl textarea:focus-visible,.cl [tabindex]:focus-visible{
+  outline:2px solid var(--brand);outline-offset:3px
+}
+
 .cl .wrap{max-width:var(--maxw);margin:0 auto;padding:0 34px}
 .cl .sec{padding:104px 0;position:relative}
 .cl .sec.alt{background:var(--paper-2)}
@@ -90,24 +104,53 @@
 
 /* cards */
 .cl .card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-1);transition:box-shadow .3s var(--ease),transform .3s var(--ease),border-color .3s}
-.cl .card:hover{box-shadow:var(--sh-2);transform:translateY(-3px);border-color:#D6DDEA}
+/* borda no hover: se o card declara `--beam` (cor do pilar/etapa), a borda
+   assume um tom dessa cor em vez do cinza fixo — o cartão inteiro passa a
+   responder na cor da própria frente. Sem `--beam`, cai no cinza de antes. */
+.cl .card:hover{box-shadow:var(--sh-2);transform:translateY(-3px);border-color:color-mix(in srgb,var(--beam,#D6DDEA) 30%,var(--line))}
 
 /* borda viajante no hover — mesmo mecanismo do mockup, cor de marca por --beam */
 @property --cl-ba{syntax:'<angle>';initial-value:0deg;inherits:false}
 .cl .lit{position:relative;isolation:isolate}
-.cl .lit::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.6px;pointer-events:none;z-index:4;opacity:0;transition:opacity .35s ease;background:conic-gradient(from var(--cl-ba),transparent 0deg,var(--beam,var(--brand)) 46deg,#fff 74deg,var(--beam,var(--brand)) 104deg,transparent 168deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
+/* A máscara recorta o miolo e deixa só a moldura de 1.6px acesa. O arquivo
+   original só declarava a variante `-webkit-`; sem a propriedade padrão
+   `mask`/`mask-composite`, em Firefox o ::after não é recortado e o cartão
+   inteiro fica coberto pelo degradê. As duas ficam declaradas agora. */
+.cl .lit::after{content:'';position:absolute;inset:0;border-radius:inherit;padding:1.6px;pointer-events:none;z-index:4;opacity:0;transition:opacity .35s ease;background:conic-gradient(from var(--cl-ba),transparent 0deg,var(--beam,var(--brand)) 46deg,#fff 74deg,var(--beam,var(--brand)) 104deg,transparent 168deg,transparent 360deg);-webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude}
 .cl .lit:hover::after{opacity:1;animation:cl-ba 2.4s linear infinite}
 @keyframes cl-ba{to{--cl-ba:360deg}}
 .cl .glow{transition:background .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease)}
-.cl .lit:hover .glow{background:var(--beam,var(--brand))!important;color:#fff!important;box-shadow:0 10px 26px -10px var(--beam,var(--brand))}
-.cl .lit:hover .glow-t{color:var(--beam,var(--brand))}
-@media(prefers-reduced-motion:reduce){.cl .lit:hover::after{animation:none}}
+.cl .lit:hover .glow,.cl .lit:focus-visible .glow,.cl .lit:focus-within .glow{background:var(--beam,var(--brand))!important;color:#fff!important;box-shadow:0 10px 26px -10px var(--beam,var(--brand))}
+/* `!important` aqui NÃO é preguiça: sem ele, qualquer `style={{color}}` inline
+   num elemento `.glow-t` desliga o mecanismo em silêncio — foi exatamente o
+   que acontecia no título do carrossel "Soluções em ação", e é uma das causas
+   reais do "não tem efeito ao passar o mouse trocar de cor". `.glow` já tinha
+   o !important; `.glow-t` tinha ficado sem, por descuido meu. */
+.cl .lit:hover .glow-t,.cl .lit:focus-visible .glow-t,.cl .lit:focus-within .glow-t{color:var(--beam,var(--brand))!important}
+/* paridade de teclado: a borda de luz também acende no foco, não só no hover */
+.cl .lit:focus-visible::after,.cl .lit:focus-within::after{opacity:1;animation:cl-ba 2.4s linear infinite}
+@media(prefers-reduced-motion:reduce){.cl .lit:hover::after,.cl .lit:focus-visible::after,.cl .lit:focus-within::after{animation:none}}
 .cl .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;font:500 13px var(--text);color:var(--ink-2)}
 
 /* reveal — mesmo princípio do .reveal do site escuro, escopado à rota /claro */
 .cl .rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
 .cl .rv.in{opacity:1;transform:none}
 @media(prefers-reduced-motion:reduce){.cl .rv{opacity:1;transform:none}}
+
+/* ⚠️ CAUSA-RAIZ do "não tem efeito ao passar o mouse" (achado em 2026-08-06).
+   `.cl .rv.in{transform:none}` tem a MESMA especificidade (0,3,0) que
+   `.cl .card:hover{transform:translateY(-3px)}` e vinha DEPOIS na folha —
+   então, em todo card que também é `.rv` (ou seja, quase todos: são revelados
+   na rolagem), o levantar no hover era simplesmente anulado. Pior: o card
+   herdava a transição de .7s do reveal, então o pouco que sobrava (sombra,
+   borda) reagia devagar demais para ser percebido como resposta.
+
+   Aqui a especificidade sobe para 0,4,0 e a transição volta a ser curta
+   depois que o elemento já foi revelado. Não mexo na ordem das regras nem no
+   observer — os dois estão certos; o conflito era de cascata. */
+.cl .card.rv.in{transition:box-shadow .3s var(--ease),transform .3s var(--ease),border-color .3s var(--ease)}
+.cl .card.rv.in:hover{transform:translateY(-3px);box-shadow:var(--sh-2)}
+@media(prefers-reduced-motion:reduce){.cl .card.rv.in:hover{transform:none}}
 
 /* grids */
 .cl .g{display:grid;gap:20px}
@@ -143,8 +186,11 @@
 .cl .ni:hover .pop{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .cl .pop::before{content:'';position:absolute;top:-12px;left:0;right:0;height:12px}
 
-/* cascata (menu por pilar) */
-.cl .casc{width:760px;display:grid;grid-template-columns:246px 1fr;gap:14px}
+/* cascata (menu por pilar) — 880px/272px são as medidas EXATAS do `.casc` no
+   light.css do projeto Claude Design (lido ao vivo em 2026-08-06). Estava em
+   760px/246px, o que apertava os dois textos de cada item e fazia o menu
+   parecer amassado — parte da reclamação "o menu está horrível". */
+.cl .casc{width:880px;display:grid;grid-template-columns:272px 1fr;gap:14px}
 .cl .rail{display:flex;flex-direction:column;gap:2px;padding-right:14px;border-right:1px solid var(--line-2)}
 .cl .dep{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:12px;border-radius:11px;border:1px solid transparent;background:none;transition:all .2s var(--ease)}
 .cl .dep:hover{background:var(--paper-2)}
@@ -156,7 +202,11 @@
 .cl .pan-h{padding:6px 8px 14px}
 .cl .pan-h b{display:block;font:600 11.5px var(--text);letter-spacing:.15em;text-transform:uppercase}
 .cl .pan-h span{display:block;font:400 14px var(--text);color:var(--ink-3);margin-top:5px}
-.cl .pan-g{display:grid;grid-template-columns:1fr 1fr;gap:2px;max-height:340px;overflow-y:auto}
+/* Sem `max-height`/`overflow-y:auto` de propósito: isso criava uma BARRA DE
+   ROLAGEM dentro do mega-menu (não existe no design, e foi apontado como
+   "menu horrível"). O pilar maior tem 9 serviços = 5 linhas em 2 colunas,
+   o que cabe na tela sem estourar. */
+.cl .pan-g{display:grid;grid-template-columns:1fr 1fr;gap:2px}
 .cl .pl{display:flex;gap:11px;padding:10px;border-radius:11px;transition:background .2s,transform .2s}
 .cl .pl:hover{background:var(--paper-2);transform:translateX(3px)}
 .cl .pl-ic{flex-shrink:0;width:34px;height:34px;border-radius:10px;border:1px solid;display:inline-flex;align-items:center;justify-content:center}

@@ -1,61 +1,57 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Play } from "lucide-react";
+import { ArrowRight, ChevronDown } from "lucide-react";
 import { platformsOf } from "@/lib/ecommerce-platforms";
 import { ClaroHead } from "./ClaroUI";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   HERO da rota /claro — vídeo de fundo (voltou em 2026-08-05, ver histórico
-   abaixo) + faixa clara de compatibilidade.
+   HERO — vídeo de fundo + faixa de compatibilidade.
 
-   HISTÓRICO DO VÍDEO: `/media/launch.mp4` é filmagem real de um lançamento do
-   foguete Starship da SpaceX. Foi removido mais cedo hoje porque o dono
-   descreveu o resultado como "efeito de fumaça branca" e rejeitou — mas
-   depois, ao ver a home sem vídeo nenhum no topo, ele pediu explicitamente
-   pra colocar de volta ("o vídeo precisa estar no header"), mesmo depois de eu
-   reexplicar o risco de direito de imagem (filmagem de outra empresa, sem
-   licença comercial documentada — mesmo problema já registrado em
-   HANDOFF.md linha 101 para o vídeo equivalente do site escuro). Decisão dele,
-   registrada aqui pra quem vier depois não achar que foi descuido.
-   Mitigação que ainda estava ao meu alcance: a vinheta escura (`.cl-hero-read`)
-   já escurece boa parte do quadro, e a faixa clara que ficava embaixo do vídeo
-   (a que desenhava aquela mancha branca separada) NÃO voltou — só o vídeo em
-   si, sem o elemento que empilhava mais branco em cima da fumaça.
+   POR QUE O VÍDEO APARECIA "EMBAÇADO E DISTORCIDO" (reclamação de 2026-08-06):
+   eram três defeitos somados, todos meus, todos medidos antes de corrigir.
 
-   Fallback sem vídeo (tela pequena, `prefers-reduced-motion`, `saveData`):
-   os 3 "orbs" de luz em CSS (radial-gradient, sem `filter: blur()`) que
-   substituíam o vídeo mais cedo hoje continuam servindo esse papel — mais
-   barato que baixar 9 MB em conexão ruim ou forçar movimento em quem pediu
-   pra reduzir. Volta o gate de performance (`vidOn`/`matchMedia`/`saveData`)
-   que decide qual dos dois fundos carregar — por isso o componente voltou a
-   ser client component.
+   1. O poster era `launch-poster.webp`: 720×405 em 11 KB. Isso é ~0,03 byte por
+      pixel — compressão tão agressiva que a imagem já sai borrada; esticada
+      para 1920 px de largura vira 2,7× de ampliação em cima de artefato. Era o
+      que aparecia enquanto o vídeo não tocava (e o vídeo demorava, ver item 3).
+      → Agora: `launch-hero-poster.webp`, 1080×1080 em 93 KB, extraído do FRAME
+        t=0 do próprio vídeo com ffmpeg. Mesma proporção do vídeo, então não há
+        salto de enquadramento quando ele entra, e sem upscale de origem.
 
-   Riqueza restaurada comparando com hypergrow-original/lit-hero.jsx (`LHeroVideo`):
-   - Gradiente de legibilidade agora em duas camadas (vertical + diagonal pela
-     esquerda), igual ao `.hv-grade` original — o texto é alinhado à esquerda.
-   - Botão secundário virou vidro fosco (`.cl-hero-ghost`, mesmo tratamento do
-     `.hv-ghost` original) em vez do `.btn-s` branco sólido genérico do resto
-     do site, que destoava do fundo escuro.
-   - Ponto do eyebrow ganhou cor de destaque (`var(--cta)`, rosa da própria
-     paleta aprovada) em vez do azul padrão — igual ao dot rosa do original.
-   - Indicador de rolagem virou link real (`<a href="#compat">`) em vez de
-     `<div aria-hidden>` decorativo — igual ao `<a href="#hero">` do original,
-     restaura o afordance clicável/focável que a versão anterior tinha perdido.
-   - No mobile, o hero volta a ser altura automática com padding (como o
-     original em max-width:760px) em vez de ocupar 100svh — sem foto de fundo,
-     um bloco cheio de viewport ficaria vazio demais numa tela pequena.
+   2. O vídeo tinha `opacity:.82` mais uma camada de grão animado (`feTurbulence`)
+      por cima. As duas coisas juntas lavam e sujam a imagem — parece foco ruim.
+      → Agora: vídeo em opacidade cheia; o grão saiu (ele existe no tema ESCURO
+        do material original, `styles.css`, não no claro — eu tinha trazido por
+        engano). Ficou só a vinheta de legibilidade e o scanline sutil, que são
+        do design original.
 
-   Cores: só a paleta azul/violeta/rosa já nos tokens (`--brand`, #5B3CFF,
-   `--cta`) — nada de jade/cobre aqui (essa paleta é só da logomarca, ver
-   comentário em app/claro-tokens.css).
+   3. `launch.mp4` tem 11 MB, é 1080×1080 e o átomo `moov` fica NO FIM do arquivo
+      (sem faststart) — o navegador precisa baixar quase tudo antes do primeiro
+      quadro. O próprio autor do design registrou isso no projeto: "o arquivo
+      launch.mp4 não está sendo servido em streaming nesse ambiente".
+      → Agora: `launch-hero.mp4`, reencodado com `-movflags +faststart`, 3,9 MB.
+        Começa a tocar quase imediatamente.
 
-   Esteiras (marquees): dados REAIS de `lib/ecommerce-platforms.ts` (PLATFORMS
-   já conferido nesta sessão) — nada da lista antiga do mockup (Shopware,
-   TikTok Ads, RD Station... nunca verificados como algo que a HyperGrow
-   opera). Nenhuma métrica de empresa ("5+ anos", "200+ lojas", "7,4x ROAS")
-   entra aqui — números não verificados não entram (skill hg-regras-de-bug,
-   item 8); prova social mora em outro arquivo, com placeholder explícito.
+   Arquivo NOVO em vez de sobrescrever: `next.config.mjs` serve `/media` com
+   `max-age=31536000, immutable` e o próprio comentário de lá manda TROCAR O NOME
+   quando o conteúdo mudar — sobrescrever deixaria quem já visitou com o arquivo
+   velho em cache por um ano.
+
+   LIMITE QUE PERMANECE, e é honesto declarar: o vídeo de origem é QUADRADO
+   (1080×1080). Num hero widescreen o `object-fit:cover` amplia ~1,8× e corta
+   ~44% da altura. Não dá para inventar pixel que não existe no arquivo — para
+   ficar perfeitamente nítido em tela cheia seria preciso um vídeo de origem
+   16:9 em 1440p ou mais.
+
+   Fallback sem vídeo (tela pequena / prefers-reduced-motion / saveData): os 3
+   orbs de luz em CSS. O poster também fica como camada de fundo com zoom lento
+   (igual ao `.hv-poster` do design) para o topo nunca ficar parado esperando o
+   arquivo.
+
+   CONTRASTE: o degradê do título usa tons CLAROS (#7DA8FF/#B9A8FF/#FF7AAA),
+   como no design original — o azul #1550E8 da paleta é escuro demais para ler
+   sobre vídeo escuro. Mesma razão do ponto do eyebrow em #FF5C93.
    ──────────────────────────────────────────────────────────────────────────── */
 
 const LOJA_NOMES = platformsOf("loja").map((p) => p.name);
@@ -64,9 +60,8 @@ const ERP_NOMES = platformsOf("erp").map((p) => p.name);
 export default function ClaroHero() {
   const vidRef = useRef<HTMLVideoElement>(null);
   const [vidOn, setVidOn] = useState(false);
+  const [live, setLive] = useState(false);
 
-  // Mesmo gate do resto do site: vídeo só em tela grande, sem economia de
-  // dados, sem prefers-reduced-motion — nos outros casos, os orbs em CSS.
   useEffect(() => {
     const small = window.matchMedia("(max-width: 760px)").matches;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -74,17 +69,22 @@ export default function ClaroHero() {
     if (!small && !reduce && !save) setVidOn(true);
   }, []);
 
+  /* O vídeo só ganha opacidade quando o evento `playing` dispara de verdade —
+     assim nunca se vê um quadro congelado/meio carregado por cima do poster. */
   useEffect(() => {
     if (!vidOn) return;
     const v = vidRef.current;
     if (!v) return;
-    const play = () => { v.play().catch(() => {}); };
-    v.addEventListener("loadedmetadata", play);
-    v.addEventListener("canplay", play);
-    if (v.readyState >= 2) play();
+    const kick = () => { v.play().catch(() => {}); };
+    const onPlaying = () => setLive(true);
+    v.addEventListener("loadeddata", kick);
+    v.addEventListener("canplay", kick);
+    v.addEventListener("playing", onPlaying);
+    if (v.readyState >= 2) kick();
     return () => {
-      v.removeEventListener("loadedmetadata", play);
-      v.removeEventListener("canplay", play);
+      v.removeEventListener("loadeddata", kick);
+      v.removeEventListener("canplay", kick);
+      v.removeEventListener("playing", onPlaying);
     };
   }, [vidOn]);
 
@@ -92,9 +92,21 @@ export default function ClaroHero() {
     <>
       <section id="top" className="cl-hero">
         <div className="cl-hero-bg" aria-hidden="true">
+          <span className="cl-hero-poster" />
           {vidOn ? (
-            <video ref={vidRef} className="cl-hero-vid" poster="/media/launch-poster.webp" autoPlay muted loop playsInline preload="metadata">
-              <source src="/media/launch.mp4" type="video/mp4" />
+            <video
+              ref={vidRef}
+              className="cl-hero-vid"
+              style={{ opacity: live ? 1 : 0 }}
+              autoPlay
+              muted
+              loop
+              playsInline
+              disablePictureInPicture
+              preload="auto"
+              onLoadedMetadata={(e) => { e.currentTarget.muted = true; e.currentTarget.volume = 0; }}
+            >
+              <source src="/media/launch-hero.mp4" type="video/mp4" />
             </video>
           ) : (
             <>
@@ -104,7 +116,6 @@ export default function ClaroHero() {
             </>
           )}
           <span className="cl-hero-scan" />
-          <span className="cl-hero-grain" />
         </div>
 
         <div className="cl-hero-read" aria-hidden="true" />
@@ -119,18 +130,19 @@ export default function ClaroHero() {
               Loja, anúncio, atendimento e time comercial funcionando como um sistema — não como seis fornecedores diferentes.
             </p>
             <div className="cl-hero-actions">
-              <a href="#contato" className="btn btn-p" style={{ padding: "16px 28px", fontSize: 16 }}>
+              <a href="#contato" className="btn btn-p cl-hero-cta">
                 Falar com especialista <ArrowRight size={18} aria-hidden />
               </a>
-              <a href="#diagnostico" className="btn cl-hero-ghost" style={{ padding: "16px 26px", fontSize: 16 }}>
-                <Play size={16} aria-hidden /> Fazer diagnóstico
+              <a href="#diagnostico" className="btn cl-hero-ghost">
+                Fazer o diagnóstico gratuito
               </a>
             </div>
           </div>
         </div>
 
-        <a href="#compat" className="cl-hero-scroll" aria-label="Rolar para a próxima seção">
-          <span className="cl-hero-scroll-track"><span className="cl-hero-scroll-dot" /></span>
+        <a href="#compat" className="cl-hero-cue" aria-label="Rolar para a próxima seção">
+          <span className="cl-hero-cue-line" aria-hidden />
+          <ChevronDown size={18} aria-hidden />
         </a>
       </section>
 
@@ -145,13 +157,19 @@ export default function ClaroHero() {
           </ClaroHead>
 
           <div className="cl-hero-mqs">
-            <div className="mq" aria-hidden="true">
-              <div className="mq-t">{LOJA_NOMES.map((n) => <span className="mq-i" key={n}>{n}</span>)}</div>
-              <div className="mq-t">{LOJA_NOMES.map((n) => <span className="mq-i" key={n + "-b"}>{n}</span>)}</div>
+            <div>
+              <div className="mono cl-mq-label">Plataformas de e-commerce em que somos especialistas</div>
+              <div className="mq" aria-hidden="true">
+                <div className="mq-t">{LOJA_NOMES.map((n) => <span className="mq-i" key={n}>{n}</span>)}</div>
+                <div className="mq-t">{LOJA_NOMES.map((n) => <span className="mq-i" key={n + "-b"}>{n}</span>)}</div>
+              </div>
             </div>
-            <div className="mq rev" aria-hidden="true">
-              <div className="mq-t">{ERP_NOMES.map((n) => <span className="mq-i" key={n}>{n}</span>)}</div>
-              <div className="mq-t">{ERP_NOMES.map((n) => <span className="mq-i" key={n + "-b"}>{n}</span>)}</div>
+            <div>
+              <div className="mono cl-mq-label">Canais, ERPs e ferramentas que operamos</div>
+              <div className="mq rev" aria-hidden="true">
+                <div className="mq-t">{ERP_NOMES.map((n) => <span className="mq-i" key={n}>{n}</span>)}</div>
+                <div className="mq-t">{ERP_NOMES.map((n) => <span className="mq-i" key={n + "-b"}>{n}</span>)}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -163,12 +181,18 @@ export default function ClaroHero() {
 }
 
 const CSS = `
-  .cl-hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; background: #04060f; }
+  .cl-hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; background: #050B18; display: flex; align-items: center; }
+  .cl-hero-bg { position: absolute; inset: 0; overflow: hidden; }
 
-  /* fundo: vídeo (telas grandes, sem reduced-motion/saveData) ou 3 orbs de
-     luz em CSS como fallback (sem filter:blur, só transparência) */
-  .cl-hero-bg { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(120% 90% at 50% 0%, #0B1230 0%, #04060f 58%); }
-  .cl-hero-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; opacity: .82; }
+  /* poster como camada de fundo com zoom lento: o topo nunca fica estático
+     esperando o vídeo baixar (mesmo mecanismo do .hv-poster do design) */
+  .cl-hero-poster { position: absolute; inset: 0; background: url('/media/launch-hero-poster.webp') center 45% / cover no-repeat; animation: cl-hero-zoom 26s var(--ease) infinite alternate; }
+  @keyframes cl-hero-zoom { from { transform: scale(1.02); } to { transform: scale(1.12); } }
+
+  /* opacidade CHEIA — o .82 de antes lavava a imagem e lia como desfoque */
+  .cl-hero-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; transition: opacity 1s ease; }
+
+  /* fallback CSS quando o vídeo não carrega (mobile / reduced-motion / saveData) */
   .cl-hero-orb { position: absolute; border-radius: 50%; mix-blend-mode: screen; will-change: transform; }
   .cl-hero-orb-a { width: min(58vw,720px); height: min(58vw,720px); left: -12%; top: -16%; background: radial-gradient(circle at 42% 42%, rgba(91,60,255,.55), rgba(91,60,255,0) 70%); animation: cl-orb-a 22s ease-in-out infinite alternate; }
   .cl-hero-orb-b { width: min(46vw,560px); height: min(46vw,560px); right: -10%; top: 4%; background: radial-gradient(circle at 55% 45%, rgba(21,80,232,.5), rgba(21,80,232,0) 70%); animation: cl-orb-b 26s ease-in-out infinite alternate; }
@@ -177,51 +201,40 @@ const CSS = `
   @keyframes cl-orb-b { from { transform: translate(0,0) scale(1); } to { transform: translate(-5%,6%) scale(1.05); } }
   @keyframes cl-orb-c { from { transform: translate(0,0) scale(1); } to { transform: translate(4%,-5%) scale(1.1); } }
 
-  /* scanline + grão de filme — textura cinematográfica, mesma técnica do .grain original, escopada ao hero */
-  .cl-hero-scan { position: absolute; inset: 0; opacity: .22; mix-blend-mode: overlay; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 2px 4px); }
-  .cl-hero-grain { position: absolute; inset: -20%; opacity: .05; mix-blend-mode: overlay; pointer-events: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E"); animation: cl-grain 7s steps(6) infinite; }
-  @keyframes cl-grain { 0% { transform: translate(0,0); } 20% { transform: translate(-6%,4%); } 40% { transform: translate(4%,-6%); } 60% { transform: translate(-4%,6%); } 80% { transform: translate(6%,-4%); } 100% { transform: translate(0,0); } }
+  /* scanline do design (.hv-scan). O grão animado NÃO voltou: ele pertence ao
+     tema escuro do material original e, somado ao vídeo, lia como sujeira. */
+  .cl-hero-scan { position: absolute; inset: 0; opacity: .2; mix-blend-mode: overlay; pointer-events: none; background: repeating-linear-gradient(0deg, rgba(255,255,255,.05) 0 1px, transparent 2px 4px); }
 
-  /* legibilidade: vinheta vertical + escurecimento diagonal pela esquerda (texto é alinhado à esquerda) */
-  /* Sem faixa clara no rodapé do hero de propósito: uma versão anterior tinha
-     um gradiente escuro→var(--paper) de 170px aqui pra suavizar a transição
-     pra próxima seção — contra o fundo #04060f isso desenhava uma mancha
-     branca nublada bem no meio da tela, que o dono apontou e pediu pra tirar
-     em 2026-08-05 (mesma queixa do vídeo do foguete: "efeito de fumaça").
-     A vinheta escura de baixo já escurece o rodapé o bastante (rgba(4,6,15,.97)
-     no último stop) pra a transição pra --paper funcionar sem precisar clarear
-     antes — corte limpo, sem nuvem. */
-  .cl-hero-read { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(4,6,15,.66) 0%, rgba(4,6,15,.28) 38%, rgba(4,6,15,.58) 72%, rgba(4,6,15,.97) 100%), linear-gradient(100deg, rgba(4,6,15,.7) 0%, transparent 56%); }
-  .cl-hero-in { position: relative; z-index: 6; height: 100%; display: flex; flex-direction: column; justify-content: center; }
+  .cl-hero-read { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(5,11,24,.86) 0%, rgba(5,11,24,.34) 26%, rgba(5,11,24,.2) 52%, rgba(5,11,24,.9) 100%), linear-gradient(96deg, rgba(5,11,24,.8), transparent 62%); }
+  .cl-hero-in { position: relative; z-index: 6; width: 100%; }
   .cl-hero-copy { max-width: min(760px, 100%); }
-  .cl-hero-eyebrow i { background: var(--cta); box-shadow: 0 0 0 4px rgba(224,22,95,.18); }
-  .cl-hero-h1 { margin: 0; font: 800 clamp(40px,7.4vw,84px)/1.03 var(--font-display); letter-spacing: -.045em; color: #fff; text-wrap: balance; text-shadow: 0 6px 44px rgba(0,0,0,.6); }
-  .cl-hero-accent { background: linear-gradient(104deg, #5B3CFF 0%, #1550E8 46%, #E0165F 100%); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
-  .cl-hero-lead { font: 400 clamp(16px,1.5vw,20px)/1.6 var(--font-sans); color: rgba(255,255,255,.86); max-width: min(600px, 100%); margin: 22px 0 0; text-wrap: pretty; text-shadow: 0 2px 16px rgba(0,0,0,.6); }
+  .cl-hero-eyebrow i { background: #FF5C93; box-shadow: 0 0 0 4px rgba(255,92,147,.18); }
+  .cl-hero-h1 { margin: 0; font: 800 clamp(40px,7.4vw,84px)/1.03 var(--font-display); letter-spacing: -.045em; color: #fff; text-wrap: balance; text-shadow: 0 6px 44px rgba(0,0,0,.55); }
+  /* tons CLAROS: o azul/rosa saturado da paleta some sobre vídeo escuro */
+  .cl-hero-accent { background: linear-gradient(96deg, #7DA8FF, #B9A8FF 45%, #FF7AAA); -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; }
+  .cl-hero-lead { font: 400 clamp(16px,1.5vw,20px)/1.6 var(--font-sans); color: rgba(255,255,255,.86); max-width: min(560px, 100%); margin: 20px 0 0; text-wrap: pretty; text-shadow: 0 2px 20px rgba(0,0,0,.5); }
   .cl-hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
-
-  /* botão secundário: vidro fosco sobre o fundo escuro (em vez do .btn-s branco sólido do resto do site) */
-  .cl-hero-ghost { background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.32); backdrop-filter: blur(10px); }
+  .cl-hero-cta { padding: 16px 28px; font-size: 16px; }
+  .cl-hero-ghost { padding: 16px 26px; font-size: 16px; background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.32); backdrop-filter: blur(10px); }
   .cl-hero-ghost:hover { background: rgba(255,255,255,.2); color: #fff; transform: translateY(-2px); }
+  .cl-hero-ghost:focus-visible, .cl-hero-cta:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
-  .cl-hero-scroll { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 6; display: inline-flex; }
-  .cl-hero-scroll:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 999px; }
-  .cl-hero-scroll-track { width: 22px; height: 36px; border: 1.5px solid rgba(255,255,255,.30); border-radius: 999px; display: flex; justify-content: center; padding-top: 6px; }
-  .cl-hero-scroll-dot { width: 4px; height: 8px; border-radius: 999px; background: #6E8FFF; box-shadow: 0 0 8px #6E8FFF; animation: cl-hero-bob 1.6s ease-in-out infinite; }
-  @keyframes cl-hero-bob { 0%,100% { transform: translateY(0); opacity: 1; } 60% { transform: translateY(12px); opacity: .2; } }
+  .cl-hero-cue { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,.7); transition: color .25s var(--ease); }
+  .cl-hero-cue:hover { color: #fff; }
+  .cl-hero-cue:focus-visible { outline: 2px solid #fff; outline-offset: 4px; border-radius: 8px; }
+  .cl-hero-cue-line { width: 1px; height: 34px; background: linear-gradient(180deg, transparent, rgba(255,255,255,.6)); }
 
   .cl-hero-plat { padding-top: 78px; }
-  .cl-hero-mqs { margin-top: 46px; display: flex; flex-direction: column; gap: 22px; }
+  .cl-hero-mqs { margin-top: 46px; display: flex; flex-direction: column; gap: 26px; }
+  .cl-mq-label { color: var(--ink-3); text-align: center; margin-bottom: 16px; }
 
   @media (max-width: 760px) {
-    .cl-hero { height: auto; min-height: 0; padding: 136px 0 64px; }
-    .cl-hero-in { height: auto; }
-    .cl-hero-scroll { display: none; }
-    .cl-hero-read { background: linear-gradient(180deg, rgba(4,6,15,.55) 0%, rgba(4,6,15,.42) 45%, rgba(4,6,15,.97) 100%); }
+    .cl-hero { height: auto; min-height: 0; padding: 132px 0 72px; }
+    .cl-hero-cue { display: none; }
+    .cl-hero-read { background: linear-gradient(180deg, rgba(5,11,24,.6) 0%, rgba(5,11,24,.45) 45%, rgba(5,11,24,.95) 100%); }
   }
   @media (prefers-reduced-motion: reduce) {
-    .cl-hero-orb-a, .cl-hero-orb-b, .cl-hero-orb-c, .cl-hero-grain { animation: none; }
-    .cl-hero-scroll-dot { animation: none; }
+    .cl-hero-poster, .cl-hero-orb-a, .cl-hero-orb-b, .cl-hero-orb-c { animation: none; }
     .cl-hero-mqs .mq-t { animation: none !important; }
   }
 `;
