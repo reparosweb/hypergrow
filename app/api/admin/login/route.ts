@@ -21,7 +21,9 @@ export async function POST(req: NextRequest) {
   const res = NextResponse.json({ ok: true });
   res.cookies.set(ADMIN_COOKIE, signSession(), {
     httpOnly: true,
-    secure: true,
+    // "secure" exige HTTPS; em producao (Vercel) NODE_ENV=production e continua true.
+    // Sem isso o cookie nunca gruda em localhost e o login local nunca funciona.
+    secure: process.env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 12,

@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { getServerSupabase } from "@/lib/supabase";
 import { isAuthed, type Ctx } from "@/lib/modules/_shared";
 import { modCrm } from "@/lib/modules/mod-crm";
+import { modFinanceiro } from "@/lib/modules/mod-financeiro";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -25,6 +26,7 @@ export const dynamic = "force-dynamic";
 
 const MODULOS: Record<string, (action: string, ctx: Ctx) => Promise<Record<string, unknown>>> = {
   crm: modCrm,
+  financeiro: modFinanceiro,
 };
 
 export async function POST(req: Request) {

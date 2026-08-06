@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  LogOut, RefreshCw, Mail, Phone, Tag, AlertTriangle, CreditCard, Plus, Search, X, Trash2,
+  LogOut, RefreshCw, Mail, Phone, Tag, AlertTriangle, CreditCard, Plus, Search, X, Trash2, Wallet,
 } from "lucide-react";
 import KanbanBoard, { type KanbanStage } from "./KanbanBoard";
 
@@ -129,6 +129,9 @@ export default function CrmView({ initialLeads, dbError }: { initialLeads: Lead[
           />
         </div>
 
+        <a href="/admin/financeiro" className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 px-4 text-sm text-slate-200 hover:bg-white/5">
+          <Wallet size={15} /> Financeiro
+        </a>
         <button onClick={() => setNovo(true)} className="inline-flex h-10 items-center gap-2 rounded-xl bg-brand-500 px-4 text-sm font-semibold text-white hover:bg-brand-400">
           <Plus size={16} /> Novo lead
         </button>
