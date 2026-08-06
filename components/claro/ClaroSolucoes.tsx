@@ -15,17 +15,21 @@ import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
    lugar nenhum (`href="#solucoes"`); aqui cada um leva ao conteúdo completo
    já publicado — estrito upgrade, zero custo extra.
 
-   Foto por pilar: as 4 fotos abaixo já existem em public/fotos (StockSnap,
-   CC0 1.0, uso comercial liberado — mesmas já usadas na home/hub de serviços).
-   O mockup original tinha uma legenda tipo "Loja de decoração · Sul / +38% de
-   faturamento em 90 dias" atribuída a um cliente FICTÍCIO — isso não foi
-   portado: a legenda aqui usa a descrição real do pilar, sem inventar nome de
-   cliente nem número. */
+   Foto por pilar: as MESMAS fotos do Pexels que o arquivo original usava
+   (`hypergrow-original/lit-sol.jsx`, helper `PX(id)`) — Pexels License, uso
+   comercial livre, sem precisar baixar/hospedar nada. Mapeadas dos 6
+   "departamentos" fictícios do mockup pros 4 pilares reais, no mesmo
+   esquema já usado pra cor em claroPillarAccent.ts (vender=ecom,
+   atrair=aqui, marca=cont, ia=auto). O mockup original tinha uma legenda
+   tipo "Loja de decoração · Sul / +38% de faturamento em 90 dias" atribuída
+   a um cliente FICTÍCIO — isso não foi portado: a legenda aqui usa a
+   descrição real do pilar, sem inventar nome de cliente nem número. */
+const PX = (id: number) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1400`;
 const FOTO_POR_PILAR: Record<string, { src: string; alt: string }> = {
-  vender: { src: "/fotos/checkout-loja-virtual.webp", alt: "Cliente com o cartão na mão diante de uma loja virtual aberta no notebook" },
-  atrair: { src: "/fotos/painel-resultados.webp", alt: "Painel de métricas e gráficos de campanha aberto no notebook" },
-  marca: { src: "/fotos/reuniao-projeto.webp", alt: "Duas pessoas planejando um calendário de conteúdo sobre a mesa" },
-  ia: { src: "/fotos/operacao-diaria.webp", alt: "Profissional atendendo pelo notebook em uma mesa de trabalho" },
+  vender: { src: PX(4473496), alt: "Gestora sorrindo ao acompanhar os pedidos da loja no balcão" },
+  atrair: { src: PX(8475204), alt: "Dois sócios sorrindo dentro da própria loja" },
+  marca: { src: PX(6720592), alt: "Profissional sorrindo enquanto atende uma cliente no ateliê" },
+  ia: { src: PX(3932728), alt: "Empreendedora atendendo um pedido pelo celular, sorrindo" },
 };
 
 /* `services` chega do server (app/claro/page.tsx), já enxuto — mesma razão

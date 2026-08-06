@@ -272,8 +272,11 @@ export function ClaroSobre() {
       <div className="wrap">
         <div className="split">
           <figure className="rv" style={{ margin: 0, borderRadius: 22, overflow: "hidden", boxShadow: "var(--sh-3)", aspectRatio: "5/4" }}>
+            {/* Foto do Pexels (PX 8475203) igual ao arquivo original — mesma
+                licença livre pra uso comercial, "figure" já trava aspect-ratio
+                5/4 então não precisa de width/height fixo aqui. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/fotos/escritorio-equipe.webp" alt="Profissional organizando a operação de um cliente" loading="lazy" width={960} height={641} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+            <img src="https://images.pexels.com/photos/8475203/pexels-photo-8475203.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Equipe organizando a operação de um cliente" loading="lazy" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
           </figure>
           <div>
             <ClaroHead eyebrow="Nossa agência" sub="Não entregamos apresentação bonita que morre na gaveta. Implantamos, operamos e respondemos pelo número.">

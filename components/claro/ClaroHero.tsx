@@ -1,34 +1,35 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Play } from "lucide-react";
 import { platformsOf } from "@/lib/ecommerce-platforms";
 import { ClaroHead } from "./ClaroUI";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   HERO da rota /claro — fundo 100% CSS (sem foto/vídeo) + faixa clara de
-   compatibilidade.
+   HERO da rota /claro — vídeo de fundo (voltou em 2026-08-05, ver histórico
+   abaixo) + faixa clara de compatibilidade.
 
-   HISTÓRICO: esta seção usava `/media/launch.mp4` (lançamento real do foguete
-   Starship da SpaceX) como vídeo de fundo. Removido em 2026-08-05 por dois
-   motivos, não só um: (1) o dono descreveu o resultado como "efeito de fumaça
-   branca" e rejeitou o visual; (2) é filmagem real de outra empresa, sem
-   licença de uso comercial para este site (mesmo problema já documentado em
-   HANDOFF.md linha 101 para o vídeo equivalente do site escuro). A troca é
-   por um fundo inteiramente CSS — sem imagem nova, sem risco de direito de
-   imagem de novo: 3 "orbs" de luz (radial-gradient, sem `filter: blur()`,
-   só transparência suave — mais barato que blur e sem o risco de travar
-   scroll no mobile do item 5 da skill hg-regras-de-bug) que se movem devagar
-   via @keyframes, reforçando a metáfora da copy ("Sua operação em outra
-   órbita"). Junto delas, uma textura de scanline sutil e um grão de filme
-   (`.cl-hero-grain`) — a MESMA técnica (SVG feTurbulence, não fabricada por
-   mim) do `.grain` em hypergrow-original/styles.css ("Film grain: the single
-   biggest 'this was made by a human' tell"), aqui escopada só a este hero
-   (`position:absolute` dentro da seção, não `position:fixed` na página
-   inteira como no arquivo original — este componente não é dono do layout
-   global).
+   HISTÓRICO DO VÍDEO: `/media/launch.mp4` é filmagem real de um lançamento do
+   foguete Starship da SpaceX. Foi removido mais cedo hoje porque o dono
+   descreveu o resultado como "efeito de fumaça branca" e rejeitou — mas
+   depois, ao ver a home sem vídeo nenhum no topo, ele pediu explicitamente
+   pra colocar de volta ("o vídeo precisa estar no header"), mesmo depois de eu
+   reexplicar o risco de direito de imagem (filmagem de outra empresa, sem
+   licença comercial documentada — mesmo problema já registrado em
+   HANDOFF.md linha 101 para o vídeo equivalente do site escuro). Decisão dele,
+   registrada aqui pra quem vier depois não achar que foi descuido.
+   Mitigação que ainda estava ao meu alcance: a vinheta escura (`.cl-hero-read`)
+   já escurece boa parte do quadro, e a faixa clara que ficava embaixo do vídeo
+   (a que desenhava aquela mancha branca separada) NÃO voltou — só o vídeo em
+   si, sem o elemento que empilhava mais branco em cima da fumaça.
 
-   Sem vídeo, o gate de performance antigo (`vidOn`/`matchMedia`/`saveData`,
-   que só existia pra decidir se baixava 9 MB) saiu inteiro — não há mais
-   nada condicional para decidir, e o componente virou Server Component (sem
-   "use client", sem hook nenhum).
+   Fallback sem vídeo (tela pequena, `prefers-reduced-motion`, `saveData`):
+   os 3 "orbs" de luz em CSS (radial-gradient, sem `filter: blur()`) que
+   substituíam o vídeo mais cedo hoje continuam servindo esse papel — mais
+   barato que baixar 9 MB em conexão ruim ou forçar movimento em quem pediu
+   pra reduzir. Volta o gate de performance (`vidOn`/`matchMedia`/`saveData`)
+   que decide qual dos dois fundos carregar — por isso o componente voltou a
+   ser client component.
 
    Riqueza restaurada comparando com hypergrow-original/lit-hero.jsx (`LHeroVideo`):
    - Gradiente de legibilidade agora em duas camadas (vertical + diagonal pela
@@ -61,13 +62,47 @@ const LOJA_NOMES = platformsOf("loja").map((p) => p.name);
 const ERP_NOMES = platformsOf("erp").map((p) => p.name);
 
 export default function ClaroHero() {
+  const vidRef = useRef<HTMLVideoElement>(null);
+  const [vidOn, setVidOn] = useState(false);
+
+  // Mesmo gate do resto do site: vídeo só em tela grande, sem economia de
+  // dados, sem prefers-reduced-motion — nos outros casos, os orbs em CSS.
+  useEffect(() => {
+    const small = window.matchMedia("(max-width: 760px)").matches;
+    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const save = (navigator as unknown as { connection?: { saveData?: boolean } }).connection?.saveData;
+    if (!small && !reduce && !save) setVidOn(true);
+  }, []);
+
+  useEffect(() => {
+    if (!vidOn) return;
+    const v = vidRef.current;
+    if (!v) return;
+    const play = () => { v.play().catch(() => {}); };
+    v.addEventListener("loadedmetadata", play);
+    v.addEventListener("canplay", play);
+    if (v.readyState >= 2) play();
+    return () => {
+      v.removeEventListener("loadedmetadata", play);
+      v.removeEventListener("canplay", play);
+    };
+  }, [vidOn]);
+
   return (
     <>
       <section id="top" className="cl-hero">
         <div className="cl-hero-bg" aria-hidden="true">
-          <span className="cl-hero-orb cl-hero-orb-a" />
-          <span className="cl-hero-orb cl-hero-orb-b" />
-          <span className="cl-hero-orb cl-hero-orb-c" />
+          {vidOn ? (
+            <video ref={vidRef} className="cl-hero-vid" poster="/media/launch-poster.webp" autoPlay muted loop playsInline preload="metadata">
+              <source src="/media/launch.mp4" type="video/mp4" />
+            </video>
+          ) : (
+            <>
+              <span className="cl-hero-orb cl-hero-orb-a" />
+              <span className="cl-hero-orb cl-hero-orb-b" />
+              <span className="cl-hero-orb cl-hero-orb-c" />
+            </>
+          )}
           <span className="cl-hero-scan" />
           <span className="cl-hero-grain" />
         </div>
@@ -130,8 +165,10 @@ export default function ClaroHero() {
 const CSS = `
   .cl-hero { position: relative; height: 100svh; min-height: 620px; overflow: hidden; background: #04060f; }
 
-  /* fundo 100% CSS: base + 3 orbs de luz (sem filter:blur, só transparência) */
+  /* fundo: vídeo (telas grandes, sem reduced-motion/saveData) ou 3 orbs de
+     luz em CSS como fallback (sem filter:blur, só transparência) */
   .cl-hero-bg { position: absolute; inset: 0; overflow: hidden; background: radial-gradient(120% 90% at 50% 0%, #0B1230 0%, #04060f 58%); }
+  .cl-hero-vid { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; opacity: .82; }
   .cl-hero-orb { position: absolute; border-radius: 50%; mix-blend-mode: screen; will-change: transform; }
   .cl-hero-orb-a { width: min(58vw,720px); height: min(58vw,720px); left: -12%; top: -16%; background: radial-gradient(circle at 42% 42%, rgba(91,60,255,.55), rgba(91,60,255,0) 70%); animation: cl-orb-a 22s ease-in-out infinite alternate; }
   .cl-hero-orb-b { width: min(46vw,560px); height: min(46vw,560px); right: -10%; top: 4%; background: radial-gradient(circle at 55% 45%, rgba(21,80,232,.5), rgba(21,80,232,0) 70%); animation: cl-orb-b 26s ease-in-out infinite alternate; }
