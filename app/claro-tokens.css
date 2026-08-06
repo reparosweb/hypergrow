@@ -22,6 +22,21 @@
    o que fragmentaria a marca. Não redeclara fonte nenhuma aqui de propósito.
    ============================================================================ */
 :root{
+  /* ⚠️ NÃO REMOVER estas 3 linhas.
+     `--font-display/--font-sans/--font-mono` eram definidas SÓ em
+     `app/hg-tokens.css:181-184`, e a home deixou de importar aquela folha
+     quando o tema claro virou oficial (commit 96d37f0). Resultado medido em
+     produção: as três ficavam VAZIAS, e como um `var()` indefinido dentro de
+     um shorthand `font:` invalida a declaração inteira (IACVT), TODA a
+     tipografia da rota caía para o herdado — hero H1 e títulos de seção
+     renderizando 16px/400. Eram 73 declarações mortas de uma vez.
+     (Só `.cl .mono` escapava, por usar longhands separados.)
+     Definidas aqui a partir das variáveis que o next/font injeta no <html>
+     (app/layout.tsx), sem depender da folha do tema escuro. */
+  --font-sans:var(--font-plex-sans),ui-sans-serif,system-ui,-apple-system,sans-serif;
+  --font-mono:var(--font-plex-mono),ui-monospace,SFMono-Regular,Menlo,monospace;
+  --font-display:var(--font-archivo),var(--font-sans);
+
   --disp:var(--font-display);
   --text:var(--font-sans);
   --code:var(--font-mono);

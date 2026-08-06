@@ -18,6 +18,55 @@ body {
   background-attachment: fixed;
 }
 
+/* ─── ROTAS DE TEMA CLARO ────────────────────────────────────────────────────
+   Esta folha é carregada por TODAS as rotas, e o padrão dela é escuro (é o que
+   o /admin e as páginas internas antigas ainda usam). A home clara renderiza um
+   wrapper `.cl`, então dá pra virar o tema pelo `:has()` sem tocar no resto.
+
+   Dois defeitos reais que isto corrige, medidos na produção:
+   1. `color-scheme: dark` deixava a barra de rolagem, os `<select>` e o
+      preenchimento automático do formulário de contato ESCUROS dentro de um
+      site branco — o detalhe que mais denunciava "tema trocado por cima".
+   2. O `body` continuava #0D1013 com dois raios índigo/ciano fixos. Como `.cl`
+      é só uma <div>, esse fundo escuro aparecia no rubber-band do iOS e atrás
+      de qualquer área não pintada. */
+html:has(.cl) {
+  color-scheme: light;
+  /* impede que o rubber-band revele o que estiver atrás do documento */
+  overscroll-behavior-y: none;
+  background: #FBFBFD;
+}
+html:has(.cl) body {
+  background-color: #FBFBFD;
+  background-image: none;
+  color: #0B1220;
+  overscroll-behavior-y: none;
+}
+
+/* ─── SKIP LINK ──────────────────────────────────────────────────────────────
+   `app/layout.tsx` renderiza <a class="skip-link"> em TODA rota, mas a regra
+   que o esconde vivia só em `app/hg-styles.css` — folha que a home clara não
+   importa mais. Resultado: o texto "Pular para o conteúdo" ficava impresso no
+   topo da home. A regra passa a morar aqui, junto do elemento que a exige. */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+}
+.skip-link:focus {
+  left: 12px;
+  top: 12px;
+  padding: 10px 16px;
+  border-radius: 10px;
+  background: #fff;
+  color: #0B1220;
+  font: 600 15px/1 system-ui, sans-serif;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.28);
+  outline: 2px solid #1550E8;
+  outline-offset: 2px;
+}
+
 /* Subtle grid texture so it never looks flat / "AI generated" */
 .bg-grid {
   background-image:

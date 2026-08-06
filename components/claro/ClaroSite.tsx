@@ -75,7 +75,9 @@ export default function ClaroSite({ services }: { services: ServiceCardData[] })
   return (
     <div className="cl">
       <ClaroNav services={services} />
-      <main>
+      {/* id="main" é o alvo do skip link renderizado em app/layout.tsx — sem
+          ele o atalho de teclado apontava para um âncora inexistente. */}
+      <main id="main">
         <ClaroHero />
         <ClaroShow />
         <ClaroSolucoes services={services} />
