@@ -73,7 +73,6 @@ export default function ClaroHero() {
         </div>
 
         <div className="cl-hero-read" aria-hidden="true" />
-        <div className="cl-hero-foot" aria-hidden="true" />
 
         <div className="wrap cl-hero-in">
           <div className="cl-hero-copy">
@@ -147,8 +146,15 @@ const CSS = `
   @keyframes cl-grain { 0% { transform: translate(0,0); } 20% { transform: translate(-6%,4%); } 40% { transform: translate(4%,-6%); } 60% { transform: translate(-4%,6%); } 80% { transform: translate(6%,-4%); } 100% { transform: translate(0,0); } }
 
   /* legibilidade: vinheta vertical + escurecimento diagonal pela esquerda (texto é alinhado à esquerda) */
+  /* Sem faixa clara no rodapé do hero de propósito: uma versão anterior tinha
+     um gradiente escuro→var(--paper) de 170px aqui pra suavizar a transição
+     pra próxima seção — contra o fundo #04060f isso desenhava uma mancha
+     branca nublada bem no meio da tela, que o dono apontou e pediu pra tirar
+     em 2026-08-05 (mesma queixa do vídeo do foguete: "efeito de fumaça").
+     A vinheta escura de baixo já escurece o rodapé o bastante (rgba(4,6,15,.97)
+     no último stop) pra a transição pra --paper funcionar sem precisar clarear
+     antes — corte limpo, sem nuvem. */
   .cl-hero-read { position: absolute; inset: 0; pointer-events: none; background: linear-gradient(180deg, rgba(4,6,15,.66) 0%, rgba(4,6,15,.28) 38%, rgba(4,6,15,.58) 72%, rgba(4,6,15,.97) 100%), linear-gradient(100deg, rgba(4,6,15,.7) 0%, transparent 56%); }
-  .cl-hero-foot { position: absolute; left: 0; right: 0; bottom: 0; height: 170px; pointer-events: none; background: linear-gradient(180deg, transparent, var(--paper)); }
   .cl-hero-in { position: relative; z-index: 6; height: 100%; display: flex; flex-direction: column; justify-content: center; }
   .cl-hero-copy { max-width: min(760px, 100%); }
   .cl-hero-eyebrow i { background: var(--cta); box-shadow: 0 0 0 4px rgba(224,22,95,.18); }
