@@ -1,13 +1,26 @@
-import "./hg-tokens.css";
-import "./hg-styles.css";
+import "./claro-tokens.css";
 import type { Metadata } from "next";
-import HypergrowSite from "@/components/site/HypergrowSite";
+import ClaroSite from "@/components/claro/ClaroSite";
 import ChatWidget from "@/components/ChatWidgetLazy";
 import { siteServices } from "@/lib/site-services";
 import type { ServiceCardData } from "@/lib/pillars";
 import { HOME_FAQ, faqPageSchema } from "@/lib/home-faq";
 import { SITE_URL } from "@/lib/seo";
 
+/* HOME OFICIAL — trocada em 2026-08-05 do tema escuro (HypergrowSite.tsx)
+   pra versão clara (ClaroSite.tsx), por pedido explícito do dono: "subir o
+   arquivo na íntegra" na URL raiz, não numa rota separada. O tema escuro
+   NÃO foi apagado — components/site/HypergrowSite.tsx, app/hg-tokens.css e
+   app/hg-styles.css continuam no repositório, só não são mais importados
+   aqui. Reverter é trocar de volta este arquivo pro que estava antes deste
+   commit (git log/git revert).
+
+   ⚠️ RISCO HERDADO, não resolvido por esta troca: as seções "Resultados" e
+   "Depoimentos" (ver components/claro/ClaroClose.tsx) têm case e falas de
+   cliente que são PLACEHOLDER do mockup original, não dado real — antes
+   ficavam numa rota com noindex; agora estão na home pública e indexável.
+   Continua sendo decisão do dono trocar por dado real ou remover; não
+   decidi por conta própria, só sinalizando que o risco mudou de tamanho. */
 export const metadata: Metadata = { alternates: { canonical: "/" } };
 
 /* As 7 perguntas da home já eram VISÍVEIS, mas não existiam como dado
@@ -43,7 +56,7 @@ export default function Home() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(homeSchema) }}
       />
-      <HypergrowSite services={servicesForCards} />
+      <ClaroSite services={servicesForCards} />
       <ChatWidget />
     </>
   );

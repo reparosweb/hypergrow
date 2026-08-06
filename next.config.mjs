@@ -18,6 +18,11 @@ const MONTH = "public, max-age=2592000, must-revalidate";
 const nextConfig = {
   reactStrictMode: true,
   poweredByHeader: false,
+  // /claro virou a home oficial em 2026-08-05 (era prévia separada) —
+  // redireciona quem tinha o link antigo em vez de devolver 404.
+  async redirects() {
+    return [{ source: "/claro", destination: "/", permanent: true }];
+  },
   async headers() {
     return [
       { source: "/media/:path*", headers: [{ key: "Cache-Control", value: YEAR }] },
