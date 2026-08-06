@@ -38,11 +38,18 @@ import { ClaroHead } from "./ClaroUI";
    quando o conteúdo mudar — sobrescrever deixaria quem já visitou com o arquivo
    velho em cache por um ano.
 
-   LIMITE QUE PERMANECE, e é honesto declarar: o vídeo de origem é QUADRADO
-   (1080×1080). Num hero widescreen o `object-fit:cover` amplia ~1,8× e corta
-   ~44% da altura. Não dá para inventar pixel que não existe no arquivo — para
-   ficar perfeitamente nítido em tela cheia seria preciso um vídeo de origem
-   16:9 em 1440p ou mais.
+   4. RESOLVIDO EM 2026-08-06: o `launch.mp4` era 1080×1080 — QUADRADO. Num hero
+      widescreen o `object-fit:cover` ampliava ~1,8× e cortava ~44% da altura;
+      por melhor que fosse o encode, sempre sobrava ampliação. Eu tinha
+      registrado isso aqui como limite insolúvel sem um master 16:9 — e o dono
+      então forneceu exatamente isso (`Starship_s_Fifth_Flight_Test.mp4`,
+      1920×1080, 24fps). O hero passou a usar `hero-v2.mp4`: recorte de 22 s da
+      decolagem, 1920×1080 NATIVO, 4,7 MB, faststart, sem áudio. Em tela de
+      1920 px não há mais ampliação nenhuma. O `launch-hero.mp4` (passo
+      intermediário, ainda do master quadrado) foi REMOVIDO do repositório no
+      mesmo commit para não deixar 3,9 MB de peso morto — o `launch.mp4`
+      original continua lá porque o tema escuro, que segue no repo, aponta
+      para ele.
 
    Fallback sem vídeo (tela pequena / prefers-reduced-motion / saveData): os 3
    orbs de luz em CSS. O poster também fica como camada de fundo com zoom lento
@@ -106,7 +113,7 @@ export default function ClaroHero() {
               preload="auto"
               onLoadedMetadata={(e) => { e.currentTarget.muted = true; e.currentTarget.volume = 0; }}
             >
-              <source src="/media/launch-hero.mp4" type="video/mp4" />
+              <source src="/media/hero-v2.mp4" type="video/mp4" />
             </video>
           ) : (
             <>
@@ -186,7 +193,7 @@ const CSS = `
 
   /* poster como camada de fundo com zoom lento: o topo nunca fica estático
      esperando o vídeo baixar (mesmo mecanismo do .hv-poster do design) */
-  .cl-hero-poster { position: absolute; inset: 0; background: url('/media/launch-hero-poster.webp') center 45% / cover no-repeat; animation: cl-hero-zoom 26s var(--ease) infinite alternate; }
+  .cl-hero-poster { position: absolute; inset: 0; background: url('/media/hero-v2-poster.webp') center 45% / cover no-repeat; animation: cl-hero-zoom 26s var(--ease) infinite alternate; }
   @keyframes cl-hero-zoom { from { transform: scale(1.02); } to { transform: scale(1.12); } }
 
   /* opacidade CHEIA — o .82 de antes lavava a imagem e lia como desfoque */

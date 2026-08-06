@@ -7,6 +7,7 @@ import ClaroHero from "./ClaroHero";
 import ClaroShow from "./ClaroShow";
 import ClaroSolucoes from "./ClaroSolucoes";
 import ClaroDiag from "./ClaroDiag";
+import ClaroCaptura from "./ClaroCaptura";
 /* `ClaroBanner` existe em ClaroExtra.tsx mas NÃO é montado aqui — ver nota
    sobre o banner na ordem das seções, logo abaixo. O componente ficou no
    arquivo (não apaguei código) caso o dono queira trazer de volta. */
@@ -45,8 +46,15 @@ import {
    em cada um onde depende da vizinha):
    Hero(vídeo) → Hero/compat(plain) → Show(alt) →
    Solucoes(plain) → Fluxo(alt) → Portfolio(plain) → Resultados(alt) →
-   Diag(plain) → Clientes(alt) → Depoimentos(plain) → Sobre(alt) →
-   Blog(plain) → Faq(alt) → Contato(plain) → Footer. */
+   Captura(vídeo full-bleed) → Diag(plain) → Clientes(alt) →
+   Depoimentos(plain) → Sobre(alt) → Blog(plain) → Faq(alt) →
+   Contato(plain) → Footer.
+
+   `Captura` entra entre Resultados e Diagnóstico de propósito: é onde nasce a
+   objeção "bonito, mas vocês entregam e somem?" — depois da prova, antes de
+   pedir a ação. Como é uma faixa escura full-bleed (não usa `.sec`), ela não
+   participa da alternância --paper/--paper-2: Resultados(alt) e Diag(plain)
+   continuam corretos sem tocar em nenhum className. */
 export default function ClaroSite({ services }: { services: ServiceCardData[] }) {
   useEffect(() => {
     const io = new IntersectionObserver(
@@ -74,6 +82,7 @@ export default function ClaroSite({ services }: { services: ServiceCardData[] })
         <ClaroFluxo />
         <ClaroPortfolio />
         <ClaroResultados />
+        <ClaroCaptura />
         <ClaroDiag />
         <ClaroClientes />
         <ClaroDepoimentos />
