@@ -129,15 +129,95 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
     return () => window.removeEventListener("resize", onResize);
   }, [closeMenu]);
 
-  // Trava o scroll do body enquanto o drawer mobile está aberto.
+  /* Trava a rolagem do corpo enquanto o drawer está aberto.
+     Era só `overflow:hidden`, e faltavam as duas metades que fazem a trava
+     parecer aplicativo em vez de site:
+
+     1. COMPENSAÇÃO DA BARRA DE ROLAGEM (desktop). Ao esconder o overflow, a
+        barra some e a área útil ENGORDA ~15px — a página inteira dá um pulo
+        para a direita no instante em que o menu abre. A medida entra como
+        padding no corpo e, via `--cl-sb`, também no cabeçalho fixo (que é
+        largura de viewport e não recebe o padding do corpo). Em celular o
+        valor é 0, porque a barra de rolagem é sobreposta.
+     2. TRAVA NO <html> TAMBÉM. No iOS o `overflow:hidden` só no <body> não
+        segura o gesto — quem rola de fato é o elemento raiz, e o fundo
+        continuava correndo por trás do painel. É o sintoma nº 1 de "isto não é
+        um app". A dupla html+body é o par que o Safari respeita; o gesto DENTRO
+        do painel continua livre porque o `.dw-p` tem `overflow-y:auto` próprio
+        (com `overscroll-behavior:contain`, para o fim da lista não empurrar a
+        página por baixo). A posição de rolagem é preservada: nada de
+        `position:fixed` no corpo, que é a receita que faz a página saltar para
+        o topo quando o menu fecha. */
   useEffect(() => {
     if (!drawerOpen) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
+    const corpo = document.body;
+    const raiz = document.documentElement;
+    const antes = {
+      corpoOverflow: corpo.style.overflow,
+      corpoPadding: corpo.style.paddingRight,
+      raizOverflow: raiz.style.overflow,
+    };
+    const barra = window.innerWidth - raiz.clientWidth;
+
+    raiz.style.overflow = "hidden";
+    corpo.style.overflow = "hidden";
+    if (barra > 0) {
+      corpo.style.paddingRight = `${barra}px`;
+      raiz.style.setProperty("--cl-sb", `${barra}px`);
+    }
     return () => {
-      document.body.style.overflow = prev;
+      raiz.style.overflow = antes.raizOverflow;
+      corpo.style.overflow = antes.corpoOverflow;
+      corpo.style.paddingRight = antes.corpoPadding;
+      raiz.style.removeProperty("--cl-sb");
     };
   }, [drawerOpen]);
+
+  /* ECONOMIA DE BATERIA — pausa as esteiras (.mq) que não estão na tela.
+     São três (duas no topo, uma em "Clientes") rodando em laço INFINITO de
+     42s/52s. O CSS já as pausava no `:hover`/`:focus-within`, mas no celular
+     hover não existe: elas animavam o tempo todo, inclusive fora da viewport e
+     com a aba em segundo plano. Composto de `transform`, mas ainda assim é o
+     compositor acordado a cada quadro, sem ninguém olhando.
+
+     Por que este observador mora AQUI: as esteiras são renderizadas por
+     ClaroHero e ClaroExtra, e o ClaroNav é o único componente-cliente montado
+     uma vez só na página que pertence a este dono. Ele não conhece as esteiras
+     — só liga/desliga a classe `.mq-pause` declarada em app/claro-tokens.css.
+     Mesmo padrão de IntersectionObserver já usado em ClaroCaptura.tsx.
+
+     O DOM já está inteiro no momento em que este efeito roda: o React executa
+     os efeitos depois de confirmar toda a árvore. */
+  useEffect(() => {
+    const esteiras = Array.from(document.querySelectorAll<HTMLElement>(".cl .mq"));
+    if (!esteiras.length) return;
+
+    const naTela = new Set<HTMLElement>();
+    const aplicar = () => {
+      const abaOculta = document.hidden;
+      esteiras.forEach((el) => el.classList.toggle("mq-pause", abaOculta || !naTela.has(el)));
+    };
+
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e) => {
+          const el = e.target as HTMLElement;
+          if (e.isIntersecting) naTela.add(el);
+          else naTela.delete(el);
+        });
+        aplicar();
+      },
+      { threshold: 0 }
+    );
+    esteiras.forEach((el) => io.observe(el));
+    document.addEventListener("visibilitychange", aplicar);
+
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", aplicar);
+      esteiras.forEach((el) => el.classList.remove("mq-pause"));
+    };
+  }, []);
 
   const solid = scrolled || menuOpen || drawerOpen;
   const pillar = PILLARS[activePillar];

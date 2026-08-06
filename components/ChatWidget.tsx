@@ -9,6 +9,59 @@ const CALCOM = process.env.NEXT_PUBLIC_CALCOM_LINK || "";
 
 type Msg = { role: "user" | "assistant"; content: string };
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   POSIÇÃO DOS ELEMENTOS FLUTUANTES — contrato com app/claro-tokens.css.
+
+   Este botão e o `.wa-f` (WhatsApp, em components/claro/ClaroClose.tsx) ficavam
+   os dois no canto inferior direito, praticamente no mesmo ponto: `bottom-5
+   right-5` aqui contra `right:22px;bottom:22px` lá. Em telas ≤600px o WhatsApp
+   perde o rótulo e vira um círculo — aí a sobreposição deixava de ser "quase" e
+   passava a esconder um botão atrás do outro.
+
+   A régua agora é única e mora no `:root` de claro-tokens.css (bloco `--fab-*`):
+   este botão é o DEGRAU 1 (canto) e o WhatsApp o DEGRAU 2, sempre `--fab-gap`
+   acima. Os `var(..., fallback)` abaixo mantêm o widget funcional em qualquer
+   rota que não carregue aquela folha.
+
+   `env(safe-area-inset-bottom)` no fallback: sem isso, no iPhone o botão fica
+   por baixo da barra de gestos (a faixa preta que o iOS reserva embaixo) e o
+   toque só pega na metade de cima dele.
+
+   O PAINEL usa `dvh`, não `vh`: `100vh` no iOS mede a tela COM a barra de
+   endereço recolhida, então um painel de 480px em aparelho de tela baixa (ou em
+   paisagem) era cortado por baixo pela barra do navegador. Fica em CSS, e não
+   em style inline, porque precisa de duas declarações em cascata (`vh` como
+   reserva, `dvh` por cima) — coisa que um objeto de estilo do React não
+   permite, já que a segunda chave sobrescreveria a primeira.
+   Sempre `dangerouslySetInnerHTML` (regra 1 da skill hg-regras-de-bug). */
+const FAB_CSS = `
+  .hg-fab{
+    position:fixed;
+    right:var(--fab-r,calc(20px + env(safe-area-inset-right,0px)));
+    bottom:var(--fab-b,calc(20px + env(safe-area-inset-bottom,0px)));
+  }
+  .hg-chat-panel{
+    position:fixed;
+    right:var(--fab-r,calc(20px + env(safe-area-inset-right,0px)));
+    bottom:calc(var(--fab-b,calc(20px + env(safe-area-inset-bottom,0px))) + var(--fab-size,56px) + var(--fab-gap,12px));
+    width:350px;
+    max-width:calc(100vw - 2.5rem);
+    height:480px;
+    max-height:calc(100vh - 150px - env(safe-area-inset-bottom,0px));
+    max-height:calc(100dvh - 150px - env(safe-area-inset-bottom,0px));
+  }
+  /* Celular deitado: sobra tão pouca altura que o painel encosta nas duas
+     bordas. Vira uma folha quase de tela cheia, que é o comportamento que um
+     aplicativo teria. */
+  @media(max-height:520px){
+    .hg-chat-panel{
+      top:calc(12px + env(safe-area-inset-top,0px));
+      height:auto;
+      max-height:none;
+    }
+  }
+`;
+
 const GREETING: Msg = {
   role: "assistant",
   content:
@@ -70,7 +123,7 @@ export default function ChatWidget() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 16, scale: 0.96 }}
             transition={{ duration: 0.25 }}
-            className="glass fixed bottom-24 right-5 z-50 flex h-[480px] w-[350px] max-w-[calc(100vw-2.5rem)] flex-col overflow-hidden rounded-3xl border border-white/10 shadow-2xl"
+            className="glass hg-chat-panel z-50 flex flex-col overflow-hidden rounded-3xl border border-white/10 shadow-2xl"
           >
             <div className="flex items-center gap-3 bg-gradient-to-r from-brand-600 to-accent-violet px-4 py-3">
               <div className="grid h-9 w-9 place-items-center rounded-full bg-white/15 text-white">
@@ -150,11 +203,14 @@ export default function ChatWidget() {
 
       <button
         onClick={() => setOpen((v) => !v)}
-        aria-label="Abrir chat"
-        className="fixed bottom-5 right-5 z-50 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-accent-violet text-white shadow-xl shadow-brand-600/40 transition-transform hover:scale-110"
+        aria-label={open ? "Fechar chat" : "Abrir chat"}
+        aria-expanded={open}
+        className="hg-fab z-50 grid h-14 w-14 place-items-center rounded-full bg-gradient-to-br from-brand-500 to-accent-violet text-white shadow-xl shadow-brand-600/40 transition-transform hover:scale-110"
       >
         {open ? <X size={22} /> : <MessageCircle size={24} />}
       </button>
+
+      <style dangerouslySetInnerHTML={{ __html: FAB_CSS }} />
     </>
   );
 }

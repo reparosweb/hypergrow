@@ -1,8 +1,8 @@
-import "../../hg-tokens.css";
-import "../../hg-styles.css";
+import "../../claro-tokens.css";
 import Link from "next/link";
 import type { Metadata } from "next";
-import PageShell, { Arrow } from "@/components/site/PageShell";
+import PageShellClaro, { Arrow } from "@/components/site/PageShellClaro";
+import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
 import ServiceGlyph from "@/components/site/ServiceGlyphs";
 import { getService } from "@/lib/site-services";
 import { pillarOf } from "@/lib/pillars";
@@ -53,7 +53,8 @@ const DORES: { dor: string; resolve: string }[] = [
 ];
 
 export default function ClinicasPage() {
-  const pil = pillarOf("criacao-de-site"); // tema visual: mesma cor de "Vender online"
+  // tema visual: mesma cor de "Vender online" no tema claro
+  const cor = CLARO_PILLAR_ACCENT[pillarOf("criacao-de-site").key];
 
   const schema = {
     "@context": "https://schema.org",
@@ -78,7 +79,7 @@ export default function ClinicasPage() {
   };
 
   return (
-    <PageShell crumbs={[{ label: "Início", href: "/" }, { label: "Para clínicas" }]} accent={pil.accent} rail={pil.rail} glow={pil.glow}>
+    <PageShellClaro crumbs={[{ label: "Início", href: "/" }, { label: "Para clínicas" }]} accent={cor}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
@@ -108,16 +109,16 @@ export default function ClinicasPage() {
 
           <div className="pg-grid" style={{ marginTop: 24 }}>
             {COMPOSTO.map((c) => {
-              const p = pillarOf(c.slug);
+              const cp = CLARO_PILLAR_ACCENT[pillarOf(c.slug).key];
               const svc = getService(c.slug);
               return (
-                <Link key={c.slug} href={`/servicos/${c.slug}`} className="pg-card" style={{ ["--acc" as string]: p.accent }}>
-                  <span aria-hidden style={{ display: "block", color: p.accent, marginBottom: 12 }}>
+                <Link key={c.slug} href={`/servicos/${c.slug}`} className="pg-card" style={{ ["--acc" as string]: cp }}>
+                  <span aria-hidden style={{ display: "block", color: cp, marginBottom: 12 }}>
                     <ServiceGlyph slug={c.slug} height={48} />
                   </span>
-                  <h3 className="pg-h3">{svc?.title ?? c.slug}</h3>
-                  <p style={{ font: "400 13.5px/1.55 var(--font-sans)", color: "rgba(232,226,217,0.68)", margin: 0 }}>{c.papel}</p>
-                  <span className="pg-card-go" style={{ color: p.accent }}>Ver serviço <Arrow /></span>
+                  <h3 className="pg-card-t">{svc?.title ?? c.slug}</h3>
+                  <p className="pg-card-d">{c.papel}</p>
+                  <span className="pg-card-go">Ver serviço <Arrow /></span>
                 </Link>
               );
             })}
@@ -166,16 +167,19 @@ export default function ClinicasPage() {
       {/* ── CTA FINAL ────────────────────────────────────────────────────── */}
       <section className="sec">
         <div className="wrap">
-          <div className="glass-top" style={{ borderRadius: 24, padding: "clamp(32px, 5vw, 56px)", textAlign: "center", background: "radial-gradient(120% 120% at 50% -20%, var(--glow), rgba(23,27,32,0.6) 55%, rgba(13,16,19,0.7))", border: "1px solid color-mix(in srgb, var(--acc) 32%, transparent)" }}>
-            <h2 className="pg-h2" style={{ marginBottom: 12 }}>Quer ver isso aplicado na sua clínica?</h2>
-            <p className="pg-p" style={{ margin: "0 auto 26px", maxWidth: "min(52ch, 100%)" }}>
+          <div className="pg-cta">
+            <h2 className="pg-h2">Quer ver isso aplicado na sua clínica?</h2>
+            <p className="pg-p">
               Conte o tipo de atendimento e a região em uma frase. Em até 1 dia útil você recebe
               um diagnóstico e a proposta do que resolve primeiro.
             </p>
-            <Link href="/contato" className="btn btn-cta">Falar com a HyperGrow</Link>
+            <div className="pg-cta-actions">
+              <Link href="/contato" className="btn btn-p">Falar com a HyperGrow</Link>
+              <Link href="/servicos" className="btn btn-s">Ver todos os serviços</Link>
+            </div>
           </div>
         </div>
       </section>
-    </PageShell>
+    </PageShellClaro>
   );
 }

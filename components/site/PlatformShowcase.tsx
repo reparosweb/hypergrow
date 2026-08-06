@@ -3,9 +3,9 @@ import {
   PLATFORMS,
   PLATFORM_GROUPS,
   CATEGORY_SHORT,
-  CATEGORY_TONE,
   platformsOf,
   countOf,
+  type PlatformCategory,
 } from "@/lib/ecommerce-platforms";
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -32,7 +32,21 @@ import {
    · Toda largura fixa passa por min(Xpx, 100%) e todo grid é
      repeat(auto-fit, minmax(min(100%, X), 1fr)) — as duas regras que já
      causaram vazamento horizontal neste projeto.
+   · TEMA CLARO: esta seção vive dentro de /servicos/[slug], que migrou para o
+     shell claro. `CATEGORY_TONE` de lib/ecommerce-platforms.ts é jade/cobre,
+     calibrado contra o canvas escuro — sobre papel branco mede menos de 2:1 e
+     as quatro categorias ficariam indistinguíveis. O mapa abaixo é o mesmo
+     conjunto de cores da rota clara (azul, violeta, azul-petróleo, rosa), todas
+     acima de 5:1 sobre #FBFBFD. `lib/ecommerce-platforms.ts` não foi tocado:
+     é dado compartilhado e o tom escuro continua válido para quem usá-lo.
    ──────────────────────────────────────────────────────────────────────────── */
+
+const TONE_CLARO: Record<PlatformCategory, string> = {
+  loja: "#1550E8",        // azul de marca — 6,14:1
+  erp: "#3B2FCC",         // violeta — 8,32:1
+  hub: "#0A6C9E",         // azul-petróleo — 5,62:1
+  marketplace: "#B0155F", // rosa — 6,58:1
+};
 
 const tone = (c: string) => ({ "--tone": c } as CSSProperties);
 
@@ -63,7 +77,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
 
         <ul className="plat-stats" aria-label="Resumo por categoria">
           {PLATFORM_GROUPS.map((g) => (
-            <li key={g.key} className="plat-stat" style={tone(CATEGORY_TONE[g.key])}>
+            <li key={g.key} className="plat-stat" style={tone(TONE_CLARO[g.key])}>
               <span className="plat-stat-n mono">{countOf(g.key)}</span>
               <span className="plat-stat-l">{CATEGORY_SHORT[g.key]}</span>
             </li>
@@ -72,7 +86,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
 
         {/* ── grids de wordmark, um por categoria ───────────────────────── */}
         {PLATFORM_GROUPS.map((g, gi) => (
-          <div className="plat-group" key={g.key} style={tone(CATEGORY_TONE[g.key])}>
+          <div className="plat-group" key={g.key} style={tone(TONE_CLARO[g.key])}>
             <div className="plat-group-head">
               <StepMark n={gi + 1} />
               <div className="plat-group-text">
@@ -147,7 +161,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
             <tbody>
               {PLATFORM_GROUPS.flatMap((g) =>
                 platformsOf(g.key).map((p) => (
-                  <tr key={p.name} style={tone(CATEGORY_TONE[p.category])}>
+                  <tr key={p.name} style={tone(TONE_CLARO[p.category])}>
                     <th scope="row" className="plat-td-name">
                       {p.name}
                     </th>
@@ -179,7 +193,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
           </p>
 
           <div className="plat-ops-grid plat-rise">
-            <article className="plat-op" style={tone("#2DD4A0")}>
+            <article className="plat-op" style={tone(TONE_CLARO.loja)}>
               <StepMark n={1} />
               <h4 className="plat-op-h">Cadastro de produto que aguenta escala</h4>
               <p className="plat-op-p">
@@ -191,7 +205,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
               </p>
             </article>
 
-            <article className="plat-op" style={tone("#D3B78E")}>
+            <article className="plat-op" style={tone(TONE_CLARO.erp)}>
               <StepMark n={2} />
               <h4 className="plat-op-h">ERP ligado à loja, não ao lado dela</h4>
               <p className="plat-op-p">
@@ -203,7 +217,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
               </p>
             </article>
 
-            <article className="plat-op" style={tone("#D99461")}>
+            <article className="plat-op" style={tone(TONE_CLARO.marketplace)}>
               <StepMark n={3} />
               <h4 className="plat-op-h">Hub, a partir do segundo canal</h4>
               <p className="plat-op-p">

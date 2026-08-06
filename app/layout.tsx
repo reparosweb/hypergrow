@@ -93,7 +93,19 @@ export const viewport: Viewport = {
   themeColor: "#0D1013",
   width: "device-width",
   initialScale: 1,
+  // `maximumScale: 5` fica: bloquear o zoom (=1) reprova em WCAG 1.4.4.
   maximumScale: 5,
+  /* `viewport-fit: cover` — o que separa "site aberto no celular" de "aplicativo".
+     Sem ele, no iPhone com entalhe o iOS encolhe a página para dentro da área
+     segura e sobram tarjas na cor de fundo em cima e embaixo; com ele, a página
+     ocupa a tela inteira e o fundo escuro do hero/rodapé vai até a borda.
+
+     A contrapartida é obrigatória e está feita em app/claro-tokens.css: a partir
+     daqui é o CSS que precisa afastar o conteúdo do entalhe e da barra de
+     gestos, via `env(safe-area-inset-*)` (variáveis --sa-t/-b/-l/-r). Ligar isto
+     sem aquelas regras jogaria o botão flutuante debaixo da barra de gestos e o
+     texto do .wrap debaixo do entalhe em modo paisagem. */
+  viewportFit: "cover",
 };
 
 /* Grafo de entidade. Antes era uma Organization solta, sem `@id`, sem `logo` e

@@ -1,7 +1,6 @@
-import "../hg-tokens.css";
-import "../hg-styles.css";
+import "../claro-tokens.css";
 import type { Metadata } from "next";
-import PageShell, { Check } from "@/components/site/PageShell";
+import PageShellClaro, { Check } from "@/components/site/PageShellClaro";
 import ContactForm from "@/components/site/ContactForm";
 import { SITE_URL } from "@/lib/seo";
 
@@ -60,7 +59,7 @@ export default function ContatoPage() {
   };
 
   return (
-    <PageShell crumbs={[{ label: "Início", href: "/" }, { label: "Contato" }]}>
+    <PageShellClaro crumbs={[{ label: "Início", href: "/" }, { label: "Contato" }]}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       <section className="sec">
@@ -77,10 +76,8 @@ export default function ContatoPage() {
             <ol className="pg-list" style={{ marginTop: 16 }}>
               {ETAPAS.map(([t, d], i) => (
                 <li key={t} style={{ alignItems: "flex-start" }}>
-                  <span aria-hidden className="mono" style={{ flexShrink: 0, minWidth: 26, color: "var(--acc)", font: "600 13px var(--font-mono)", paddingTop: 3 }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <span><strong style={{ color: "#fff", fontWeight: 600 }}>{t}.</strong> {d}</span>
+                  <span aria-hidden className="pg-num">{String(i + 1).padStart(2, "0")}</span>
+                  <span><strong style={{ color: "var(--ink)", fontWeight: 600 }}>{t}.</strong> {d}</span>
                 </li>
               ))}
             </ol>
@@ -95,7 +92,7 @@ export default function ContatoPage() {
             </ul>
 
             {/* Só canal que responde de verdade. */}
-            <p className="pg-p" style={{ marginTop: 34, fontSize: 14, color: "rgba(232,226,217,0.5)" }}>
+            <p className="pg-small" style={{ marginTop: 34 }}>
               {WHATSAPP
                 ? "Prefere falar por WhatsApp? Use o botão flutuante na home — respondemos em horário comercial."
                 : "O formulário ao lado é o canal oficial de atendimento e cai direto no nosso painel. Respondemos em até 1 dia útil."}
@@ -108,14 +105,57 @@ export default function ContatoPage() {
         </div>
       </section>
 
-      <style>{`
-        .ct-grid { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr); gap: clamp(28px, 4vw, 52px); align-items: start; }
-        .ct-form { position: sticky; top: 28px; }
-        @media (max-width: 900px) {
-          .ct-grid { grid-template-columns: 1fr !important; }
-          .ct-form { position: static; }
-        }
-      `}</style>
-    </PageShell>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+    </PageShellClaro>
   );
 }
+
+/* ─────────────────────────────────────────────────────────────────────────────
+   ⚠️ SOBRESCRITA DO FORMULÁRIO — dívida declarada, não solução definitiva.
+
+   `components/site/ContactForm.tsx` (dono: outro agente nesta rodada) tem TODAS
+   as cores em estilo INLINE e foi escrito para o tema escuro: texto `#fff`,
+   fundo `rgba(255,255,255,0.04)`, rótulos `rgba(255,255,255,0.7)`. Dentro do
+   tema claro isso vira BRANCO SOBRE BRANCO — o formulário sumia por completo,
+   e ele é o único canal de conversão que realmente funciona no site.
+
+   Como estilo inline só perde para `!important`, as regras abaixo usam
+   `!important` de propósito, escopadas em `.ct-form` para não vazar para
+   nenhum outro lugar. Isso resolve o problema HOJE, mas o certo é o dono do
+   ContactForm trocar os estilos inline por classes (ou por variáveis de tema).
+   Está reportado.
+   ──────────────────────────────────────────────────────────────────────────── */
+const CSS = `
+  .cl .ct-grid { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: clamp(28px, 4vw, 52px); align-items: start; }
+  .cl .ct-form { position: sticky; top: 108px; }
+  @media (max-width: 900px) {
+    .cl .ct-grid { grid-template-columns: 1fr !important; }
+    .cl .ct-form { position: static; }
+  }
+
+  /* cartão */
+  .cl .ct-form > div { background: var(--card) !important; border: 1px solid var(--line) !important;
+    box-shadow: var(--sh-2) !important; }
+  /* rótulos e textos */
+  .cl .ct-form label { color: var(--ink-2) !important; }
+  .cl .ct-form h3 { color: var(--ink) !important; }
+  .cl .ct-form p { color: var(--ink-2) !important; }
+  /* o vermelho de erro do tema escuro (#E0736A) mede 2,9:1 sobre branco */
+  .cl .ct-form p[role="alert"] { color: #B3261E !important; }
+  /* campos */
+  .cl .ct-form input, .cl .ct-form select, .cl .ct-form textarea {
+    color: var(--ink) !important; background: #fff !important; border-color: var(--line) !important; }
+  .cl .ct-form input::placeholder, .cl .ct-form textarea::placeholder { color: #7C8698 !important; }
+  .cl .ct-form input:focus, .cl .ct-form select:focus, .cl .ct-form textarea:focus {
+    border-color: var(--brand) !important; box-shadow: 0 0 0 3px rgba(21,80,232,.16) !important; }
+  /* o marcador de sucesso vinha em jade (tema escuro) */
+  .cl .ct-form [role="status"] > span { background: linear-gradient(135deg, var(--brand), #5B3CFF) !important;
+    box-shadow: 0 14px 34px -14px rgba(21,80,232,.7) !important; }
+  /* botão de envio: a classe btn-cta não existe no tema claro — vira o rosa primário.
+     (sem crases neste comentário: ele vive dentro de um template literal, e uma
+     crase aqui fecharia a string no meio — foi o que quebrou o build antes) */
+  .cl .ct-form .btn-cta { background: var(--cta) !important; color: #fff !important;
+    border-color: transparent !important; box-shadow: 0 12px 28px -14px rgba(224,22,95,.7) !important; }
+  .cl .ct-form .btn-cta:hover { background: var(--cta-d) !important; }
+`;

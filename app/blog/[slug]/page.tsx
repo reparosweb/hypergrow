@@ -1,13 +1,23 @@
-import "../../hg-tokens.css";
-import "../../hg-styles.css";
+import "../../claro-tokens.css";
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { blogPosts, getPost, type BlogPost } from "@/lib/blog-posts";
 import { getService, pillarOf } from "@/lib/site-services";
+import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
+import PageShellClaro from "@/components/site/PageShellClaro";
 import { SITE_URL } from "@/lib/seo";
-import SiteHeader from "@/components/site/SiteHeader";
+
+/* /blog/[slug] — migrado do tema escuro para o shell claro.
+
+   O artigo perdeu o próprio <main>, o próprio fundo, a própria barra de
+   progresso e o próprio rodapé: tudo isso agora vem de `PageShellClaro`, igual
+   às outras rotas. O que continua daqui é o que é específico de artigo — a
+   medida de leitura, o índice lateral fixo e o acordeão de FAQ.
+
+   SEO preservado integralmente: generateStaticParams, generateMetadata,
+   Article + BreadcrumbList + FAQPage. */
 
 export function generateStaticParams() {
   return blogPosts.map((p) => ({ slug: p.slug }));
@@ -58,71 +68,98 @@ function anchor(s: string) {
     .replace(/^-+|-+$/g, "");
 }
 
-/* O `accent` bruto de alguns posts (ex.: #0B7A4C) não alcança contraste de texto
-   sobre o canvas ink. O pilar do 1º serviço relacionado já é uma cor validada
-   (piso 7:1) e amarra o artigo ao mesmo código de cores dos serviços. */
+/* Cor da frente no tema CLARO — a do tema escuro (jade/cobre) mede menos de
+   2:1 sobre papel branco. Mesmo mapa que a home usa no mega-menu. */
 function tone(p: BlogPost) {
-  return pillarOf(p.related[0] ?? "");
+  const pil = pillarOf(p.related[0] ?? "");
+  return { label: pil.label, cor: CLARO_PILLAR_ACCENT[pil.key] };
 }
 
 const CSS = `
-.hgb-topbar { position: sticky; top: 0; z-index: 30; background: rgba(13,16,19,0.94); border-bottom: 1px solid rgba(232,226,217,0.07); }
-/* Barra de progresso de leitura — CSS puro, zero JS, mesmo padrão de PageShell.tsx.
-   Fora do @supports a div fica sem estilo nenhum (0x0, invisível) — degrada em silêncio. */
-@supports (animation-timeline: scroll()) {
-  .hgb-progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 1001; transform-origin: 0 50%;
-    background: linear-gradient(90deg, var(--acc), #C4763C); transform: scaleX(0);
-    animation: hgb-progress-fill linear both; animation-timeline: scroll(root); }
-}
-@keyframes hgb-progress-fill { to { transform: scaleX(1); } }
-@media (prefers-reduced-motion: reduce) { .hgb-progress { animation: none; opacity: 0; } }
-.hgb-accent { background: linear-gradient(108deg,#4FCB9B 0%,#0B7A4C 42%,#D99461 100%); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 38px rgba(11,122,76,0.18); }
-.hgb-meta { font: 400 11.5px var(--font-mono); letter-spacing: 0.07em; color: rgba(232,226,217,0.45); text-transform: uppercase; }
-.hgb-tag { display: inline-flex; align-items: center; gap: 7px; font: 600 10.5px var(--font-mono); letter-spacing: 0.14em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px; }
+  .cl .hgb-meta { font: 400 11.5px var(--code); letter-spacing: .07em; color: #5A6579; text-transform: uppercase; }
+  .cl .hgb-tag { display: inline-flex; align-items: center; gap: 7px; font: 600 10.5px var(--code);
+    letter-spacing: .14em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px;
+    color: var(--acc); background: var(--acc-soft); border: 1px solid var(--acc-line); }
 
-/* ── medida de leitura ───────────────────────────────────────────────────── */
-.hgb-shell { display: grid; gap: 34px; }
-.hgb-body { min-width: 0; max-width: 600px; }
-.hgb-block + .hgb-block { margin-top: 36px; padding-top: 36px; border-top: 1px solid rgba(232,226,217,0.07); }
-.hgb-h2 {
-  display: flex; gap: 13px; align-items: baseline; text-wrap: balance;
-  font: 700 clamp(20px,2.4vw,27px)/1.22 var(--font-display); letter-spacing: -0.025em;
-  color: #fff; margin: 0 0 14px; scroll-margin-top: 92px;
-}
-.hgb-idx { flex: none; font: 500 12px var(--font-mono); letter-spacing: 0.08em; color: var(--acc); }
-.hgb-p { font: 400 clamp(17px,1.25vw,18px)/1.78 var(--font-sans); color: rgba(232,226,217,0.76); margin: 0; max-width: 66ch; text-wrap: pretty; letter-spacing: 0.004em; }
+  /* ── resumo / resposta direta ── */
+  .cl .hgb-lead { position: relative; overflow: hidden; margin-top: 30px; max-width: 760px; border-radius: 18px;
+    padding: 24px 26px 26px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--sh-1); }
+  .cl .hgb-lead-bar { position: absolute; top: 0; bottom: 0; left: 0; width: 3px;
+    background: linear-gradient(180deg, var(--acc), transparent); }
+  .cl .hgb-lead p { font: 400 clamp(17px,1.3vw,19px)/1.68 var(--text); color: var(--ink); margin: 12px 0 0;
+    max-width: 62ch; text-wrap: pretty; }
 
-/* ── índice lateral (sticky só no desktop largo) ─────────────────────────── */
-.hgb-toc { align-self: start; border-radius: 16px; padding: 20px 20px 18px; background: linear-gradient(180deg, rgba(232,226,217,0.045), rgba(232,226,217,0.012)); border: 1px solid rgba(232,226,217,0.08); }
-.hgb-toc ol { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column; gap: 11px; counter-reset: toc; }
-.hgb-toc li { counter-increment: toc; }
-.hgb-toc a { display: flex; gap: 10px; font: 400 13.5px/1.45 var(--font-sans); color: rgba(232,226,217,0.62); transition: color .25s ease; }
-.hgb-toc a::before { content: counter(toc,decimal-leading-zero); flex: none; font: 500 11px var(--font-mono); color: rgba(232,226,217,0.3); padding-top: 2px; }
-.hgb-toc a:hover { color: #fff; }
-.hgb-toc a:hover::before { color: var(--acc); }
-@media (min-width: 1180px) {
-  .hgb-shell { grid-template-columns: minmax(0,1fr) 236px; gap: 54px; align-items: start; }
-  .hgb-body { grid-column: 1; grid-row: 1; }
-  .hgb-toc { grid-column: 2; grid-row: 1; position: sticky; top: 96px; }
-}
+  /* ── medida de leitura ── */
+  .cl .hgb-shell { display: grid; gap: 34px; }
+  .cl .hgb-body { min-width: 0; max-width: 640px; }
+  .cl .hgb-block + .hgb-block { margin-top: 36px; padding-top: 36px; border-top: 1px solid var(--line-2); }
+  .cl .hgb-h2 { display: flex; gap: 13px; align-items: baseline; text-wrap: balance;
+    font: 700 clamp(20px,2.4vw,27px)/1.22 var(--disp); letter-spacing: -.025em; color: var(--ink);
+    margin: 0 0 14px; scroll-margin-top: 112px; }
+  .cl .hgb-idx { flex: none; font: 600 12px var(--code); letter-spacing: .08em; color: var(--acc); }
+  .cl .hgb-p { font: 400 clamp(16.5px,1.25vw,17.5px)/1.78 var(--text); color: var(--ink-2); margin: 0;
+    max-width: 66ch; text-wrap: pretty; }
 
-/* ── FAQ ─────────────────────────────────────────────────────────────────── */
-.hgb-faq { border-radius: 16px; background: rgba(232,226,217,0.028); border: 1px solid rgba(232,226,217,0.08); padding: 0 22px; transition: border-color .3s ease, background .3s ease; }
-.hgb-faq[open] { background: rgba(232,226,217,0.045); border-color: rgba(232,226,217,0.14); }
-.hgb-faq summary { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; cursor: pointer; list-style: none; padding: 18px 0; font: 600 15.5px/1.45 var(--font-sans); color: #fff; }
-.hgb-faq summary::-webkit-details-marker { display: none; }
-.hgb-faq summary::after { content: ''; flex: none; width: 11px; height: 11px; margin-top: 6px; border-right: 2px solid var(--acc); border-bottom: 2px solid var(--acc); transform: rotate(45deg); transition: transform .3s cubic-bezier(0.16,1,0.3,1); }
-.hgb-faq[open] summary::after { transform: rotate(-135deg); }
-.hgb-faq p { font: 400 15px/1.7 var(--font-sans); color: rgba(232,226,217,0.72); margin: 0; padding: 0 0 20px; max-width: 66ch; text-wrap: pretty; }
+  /* ── índice lateral (fixo só no desktop largo) ── */
+  .cl .hgb-toc { align-self: start; border-radius: 16px; padding: 20px 20px 18px; background: var(--paper-2);
+    border: 1px solid var(--line); }
+  .cl .hgb-toc ol { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column;
+    gap: 6px; counter-reset: toc; }
+  .cl .hgb-toc li { counter-increment: toc; }
+  .cl .hgb-toc a { display: flex; gap: 10px; min-height: 32px; align-items: flex-start;
+    font: 400 13.5px/1.45 var(--text); color: var(--ink-2); transition: color .25s var(--ease); }
+  .cl .hgb-toc a::before { content: counter(toc, decimal-leading-zero); flex: none; font: 600 11px var(--code);
+    color: #7C8698; padding-top: 2px; }
+  .cl .hgb-toc a:hover { color: var(--acc); }
+  .cl .hgb-toc a:hover::before { color: var(--acc); }
+  @media (min-width: 1180px) {
+    .cl .hgb-shell { grid-template-columns: minmax(0,1fr) 236px; gap: 54px; align-items: start; }
+    .cl .hgb-body { grid-column: 1; grid-row: 1; }
+    .cl .hgb-toc { grid-column: 2; grid-row: 1; position: sticky; top: 112px; }
+  }
 
-/* ── navegação entre posts ───────────────────────────────────────────────── */
-.hgb-next { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
-.hgb-nextcard { position: relative; overflow: hidden; border-radius: 18px; padding: 22px; color: inherit; display: flex; flex-direction: column; gap: 10px; }
-.hgb-nextcard strong { font: 700 16.5px/1.32 var(--font-display); letter-spacing: -0.018em; color: #fff; text-wrap: balance; }
-.hgb-arrow { transition: transform .35s cubic-bezier(0.34,1.32,0.42,1); }
-a:hover > .hgb-arrow, a:hover .hgb-arrow { transform: translateX(4px); }
-a.pill { cursor: pointer; }
-@media (prefers-reduced-motion: reduce) { .hgb-arrow, .hgb-faq summary::after { transition: none; } }
+  /* ── FAQ ── */
+  .cl .hgb-faq { border-radius: 16px; background: var(--card); border: 1px solid var(--line); padding: 0 22px;
+    box-shadow: var(--sh-1); transition: border-color .3s var(--ease); }
+  .cl .hgb-faq[open] { border-color: var(--acc-line); }
+  .cl .hgb-faq summary { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+    cursor: pointer; list-style: none; min-height: 56px; padding: 18px 0;
+    font: 600 15.5px/1.45 var(--text); color: var(--ink); }
+  .cl .hgb-faq summary::-webkit-details-marker { display: none; }
+  .cl .hgb-faq summary::after { content: ""; flex: none; width: 11px; height: 11px; margin-top: 6px;
+    border-right: 2px solid var(--acc); border-bottom: 2px solid var(--acc); transform: rotate(45deg);
+    transition: transform .3s var(--ease); }
+  .cl .hgb-faq[open] summary::after { transform: rotate(-135deg); }
+  .cl .hgb-faq p { font: 400 15.5px/1.7 var(--text); color: var(--ink-2); margin: 0; padding: 0 0 20px;
+    max-width: 66ch; text-wrap: pretty; }
+
+  /* ── navegação entre posts ── */
+  .cl .hgb-next { display: grid; gap: 14px;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); }
+  .cl .hgb-nextcard { position: relative; overflow: hidden; border-radius: 18px; padding: 22px; color: inherit;
+    text-decoration: none; display: flex; flex-direction: column; gap: 10px; background: var(--card);
+    border: 1px solid var(--line); box-shadow: var(--sh-1);
+    transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease); }
+  .cl .hgb-nextcard:hover, .cl .hgb-nextcard:focus-visible { transform: translateY(-3px); box-shadow: var(--sh-2);
+    border-color: color-mix(in srgb, var(--beam, var(--brand)) 34%, var(--line)); }
+  .cl .hgb-nextcard strong { font: 700 16.5px/1.32 var(--disp); letter-spacing: -.018em; color: var(--ink);
+    text-wrap: balance; }
+  .cl .hgb-arrow { transition: transform .35s var(--ease); }
+  .cl a:hover .hgb-arrow { transform: translateX(4px); }
+
+  /* ── etiqueta de serviço relacionado ── */
+  .cl .hgb-rel { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 14px;
+    border-radius: 999px; border: 1px solid var(--line); background: var(--card); box-shadow: var(--sh-1);
+    font: 500 14px var(--text); color: var(--ink-2); text-decoration: none;
+    transition: border-color .25s var(--ease), color .25s var(--ease), transform .25s var(--ease); }
+  .cl .hgb-rel:hover, .cl .hgb-rel:focus-visible { color: var(--ink); transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--beam, var(--brand)) 42%, var(--line)); }
+  .cl .hgb-rel-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--beam, var(--brand)); flex: none; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cl .hgb-arrow, .cl .hgb-faq summary::after { transition: none; }
+    .cl .hgb-nextcard:hover, .cl .hgb-rel:hover { transform: none; }
+  }
 `;
 
 function Arrow() {
@@ -178,42 +215,33 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
   };
 
   return (
-    <main style={{ minHeight: "100vh", position: "relative", "--acc": t.accent } as CSSProperties}>
+    <PageShellClaro
+      crumbs={[{ label: "Início", href: "/" }, { label: "Blog", href: "/blog" }, { label: p.title }]}
+      accent={t.cor}
+    >
       <style dangerouslySetInnerHTML={{ __html: CSS }} />
-      <div aria-hidden style={{ position: "fixed", inset: 0, zIndex: -1, pointerEvents: "none", background: `radial-gradient(68% 46% at 14% -8%, ${t.accent}1f, transparent 62%), radial-gradient(62% 42% at 94% 4%, rgba(196,118,60,0.1), transparent 62%), #0D1013` }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-
-      <div className="hgb-progress" aria-hidden />
-
-      {/* Header ÚNICO do site. O blog tinha ficado de fora da unificação de
-          navegação: só logo + CTA, sem menu — mesmo problema que já foi
-          corrigido em home/servicos/sobre/contato. */}
-      <SiteHeader />
 
       <article>
         {/* ── abertura ─────────────────────────────────────────────────────── */}
-        <section className="sec" style={{ paddingTop: 40, paddingBottom: 0 }}>
-          <div className="wrap" style={{ maxWidth: 1010 }}>
-            <nav style={{ display: "flex", alignItems: "center", gap: 9 }}>
-              <Link href="/blog" className="hgb-meta" style={{ color: "rgba(232,226,217,0.58)" }}>Blog</Link>
-              <span aria-hidden className="hgb-meta" style={{ color: "rgba(232,226,217,0.25)" }}>/</span>
-              <span className="hgb-meta" style={{ color: t.accent }}>{p.category}</span>
-            </nav>
+        <section className="sec" style={{ paddingTop: 34, paddingBottom: 0 }}>
+          <div className="wrap pg-in" style={{ maxWidth: 1010 }}>
+            <h1 className="pg-h1" style={{ maxWidth: "20ch" }}>{p.title}</h1>
 
-            <h1 style={{ font: "800 clamp(29px,4.4vw,50px)/1.08 var(--font-display)", letterSpacing: "-0.035em", color: "#fff", margin: "20px 0 0", textWrap: "balance", maxWidth: "20ch" }}>{p.title}</h1>
-
-            <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 20, flexWrap: "wrap" }}>
-              <span className="hgb-tag" style={{ color: t.accent, background: `${t.accent}18`, border: `1px solid ${t.accent}3d` }}>{t.label}</span>
+            <div style={{ display: "flex", alignItems: "center", gap: 10, marginTop: 22, flexWrap: "wrap" }}>
+              <span className="hgb-tag">{p.category}</span>
               <span className="hgb-meta">{fmtDate(p.date)}</span>
-              <span aria-hidden className="hgb-meta" style={{ color: "rgba(232,226,217,0.25)" }}>·</span>
+              <span aria-hidden className="hgb-meta">·</span>
               <span className="hgb-meta">{mins} min de leitura</span>
+              <span aria-hidden className="hgb-meta">·</span>
+              <span className="hgb-meta">{t.label}</span>
             </div>
 
-            {/* lead / resposta direta */}
-            <div style={{ position: "relative", marginTop: 30, maxWidth: 760, borderRadius: 18, padding: "24px 26px 26px", overflow: "hidden", background: `linear-gradient(180deg, ${t.accent}0f, rgba(232,226,217,0.02))`, border: "1px solid rgba(232,226,217,0.09)" }}>
-              <span aria-hidden style={{ position: "absolute", top: 0, bottom: 0, left: 0, width: 3, background: `linear-gradient(180deg, ${t.accent}, ${t.rail} 60%, transparent)` }} />
-              <span className="hgb-meta" style={{ letterSpacing: "0.16em", color: t.accent }}>Resumo</span>
-              <p style={{ font: "400 clamp(17px,1.3vw,19px)/1.68 var(--font-sans)", color: "rgba(232,226,217,0.88)", margin: "12px 0 0", maxWidth: "62ch", textWrap: "pretty" }}>{p.intro}</p>
+            {/* resumo / resposta direta */}
+            <div className="hgb-lead">
+              <span aria-hidden className="hgb-lead-bar" />
+              <span className="hgb-meta" style={{ letterSpacing: "0.16em", color: "var(--acc)" }}>Resumo</span>
+              <p>{p.intro}</p>
             </div>
           </div>
         </section>
@@ -249,7 +277,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       <section className="sec" style={{ paddingTop: 56, paddingBottom: 0 }}>
         <div className="wrap" style={{ maxWidth: 820 }}>
           <hr className="hairline" />
-          <h2 style={{ font: "700 clamp(22px,3vw,31px) var(--font-display)", color: "#fff", margin: "40px 0 22px", letterSpacing: "-0.028em", textWrap: "balance" }}>Perguntas frequentes</h2>
+          <h2 className="pg-h2" style={{ margin: "40px 0 22px" }}>Perguntas frequentes</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {p.faq.map((f) => (
               <details key={f.q} className="hgb-faq">
@@ -264,12 +292,14 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
       {/* ── CTA + serviços relacionados ────────────────────────────────────── */}
       <section className="sec" style={{ paddingTop: 48, paddingBottom: 0 }}>
         <div className="wrap" style={{ maxWidth: 820 }}>
-          <div className="neon-card glass-top" style={{ position: "relative", borderRadius: 26, padding: "clamp(36px,5vw,52px) clamp(24px,4vw,40px)", textAlign: "center", overflow: "hidden", background: `radial-gradient(120% 130% at 50% -25%, ${t.accent}2e, rgba(23,27,32,0.72) 52%, rgba(13,16,19,0.85))`, border: "1px solid rgba(232,226,217,0.1)" }}>
-            <h2 style={{ font: "800 clamp(23px,3.3vw,35px)/1.12 var(--font-display)", letterSpacing: "-0.03em", color: "#fff", margin: 0, maxWidth: 560, marginInline: "auto", textWrap: "balance" }}>Quer isso feito por especialistas?</h2>
-            <p style={{ font: "400 clamp(15px,1.2vw,16.5px)/1.62 var(--font-sans)", color: "rgba(232,226,217,0.7)", margin: "14px auto 0", maxWidth: "46ch", textWrap: "pretty" }}>A HyperGrow coloca no ar e opera. Receba uma proposta sob medida em até 1 dia útil.</p>
-            <div style={{ display: "flex", gap: 12, justifyContent: "center", flexWrap: "wrap", marginTop: 28 }}>
-              <Link href="/contato" className="btn btn-cta">Solicitar orçamento</Link>
-              <Link href="/servicos" className="btn btn-ghost">Ver todos os serviços</Link>
+          <div className="pg-cta">
+            <h2 className="pg-h2">Quer isso feito por especialistas?</h2>
+            <p className="pg-p">
+              A HyperGrow coloca no ar e opera. Receba uma proposta sob medida em até 1 dia útil.
+            </p>
+            <div className="pg-cta-actions">
+              <Link href="/contato" className="btn btn-p">Solicitar orçamento</Link>
+              <Link href="/servicos" className="btn btn-s">Ver todos os serviços</Link>
             </div>
           </div>
 
@@ -280,15 +310,17 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
                 <hr className="hairline" style={{ flex: 1 }} />
               </div>
               <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
-                {related.map((s) => {
-                  const sp = pillarOf(s.slug);
-                  return (
-                    <Link key={s.slug} href={`/servicos/${s.slug}`} className="pill" style={{ borderColor: `${sp.accent}3d`, color: "rgba(232,226,217,0.86)" }}>
-                      <span aria-hidden style={{ width: 6, height: 6, borderRadius: 999, background: sp.accent, boxShadow: `0 0 8px ${sp.accent}` }} />
-                      {s.title}
-                    </Link>
-                  );
-                })}
+                {related.map((s) => (
+                  <Link
+                    key={s.slug}
+                    href={`/servicos/${s.slug}`}
+                    className="hgb-rel"
+                    style={{ "--beam": CLARO_PILLAR_ACCENT[pillarOf(s.slug).key] } as CSSProperties}
+                  >
+                    <span aria-hidden className="hgb-rel-dot" />
+                    {s.title}
+                  </Link>
+                ))}
               </div>
             </div>
           )}
@@ -307,10 +339,12 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               {others.map((o) => {
                 const ot = tone(o);
                 return (
-                  <Link key={o.slug} href={`/blog/${o.slug}`} className="glowcard hgb-nextcard" style={{ "--cardglow": ot.glow } as CSSProperties}>
-                    <span className="hgb-meta" style={{ color: ot.accent }}>{o.category}</span>
+                  <Link key={o.slug} href={`/blog/${o.slug}`} className="hgb-nextcard" style={{ "--beam": ot.cor } as CSSProperties}>
+                    <span className="hgb-meta" style={{ color: ot.cor }}>{o.category}</span>
                     <strong>{o.title}</strong>
-                    <span className="hgb-meta" style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 2 }}>{readingTime(o)} min <Arrow /></span>
+                    <span className="hgb-meta" style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 2 }}>
+                      {readingTime(o)} min <Arrow />
+                    </span>
                   </Link>
                 );
               })}
@@ -318,13 +352,6 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           </div>
         </section>
       )}
-
-      <footer style={{ borderTop: "1px solid rgba(232,226,217,0.08)" }}>
-        <div className="wrap" style={{ paddingTop: 24, paddingBottom: 24, display: "flex", justifyContent: "space-between", flexWrap: "wrap", gap: 12, font: "400 13px var(--font-sans)", color: "rgba(232,226,217,0.45)" }}>
-          <span>© 2026 HyperGrow</span>
-          <Link href="/blog" style={{ color: "rgba(232,226,217,0.62)" }}>← Todos os artigos</Link>
-        </div>
-      </footer>
-    </main>
+    </PageShellClaro>
   );
 }

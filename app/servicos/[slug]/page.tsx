@@ -1,14 +1,27 @@
-import "../../hg-tokens.css";
-import "../../hg-styles.css";
+import "../../claro-tokens.css";
 import Link from "next/link";
 import type { Metadata } from "next";
-import type { CSSProperties } from "react";
 import { notFound } from "next/navigation";
 import { siteServices, getService, pillarOf } from "@/lib/site-services";
 import ServiceGlyph from "@/components/site/ServiceGlyphs";
 import PlatformShowcase from "@/components/site/PlatformShowcase";
-import SiteHeader from "@/components/site/SiteHeader";
+import PageShellClaro from "@/components/site/PageShellClaro";
+import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
 import { SITE_URL } from "@/lib/seo";
+
+/* /servicos/[slug] — as 19 páginas de serviço, migradas para o tema claro.
+
+   O QUE SAIU DAQUI: o <main>, o fundo fixo escuro, o trilho do topo, o header
+   próprio, a trilha própria e o rodapé próprio. Tudo isso passou a vir de
+   `PageShellClaro`, o mesmo shell das outras rotas — era isso que fazia o site
+   "mudar de identidade" a cada clique.
+
+   O QUE FICOU: a placa do grafismo (cada serviço abre com o próprio desenho),
+   o corpo numerado, o FAQ em <details> e a malha de links internos. Só as
+   cores mudaram de lado.
+
+   SEO intocado: generateStaticParams, generateMetadata, Service +
+   BreadcrumbList + FAQPage. */
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
 
@@ -39,6 +52,7 @@ function Check() {
     </svg>
   );
 }
+
 /* Fotografia real (StockSnap, CC0 1.0 — uso comercial liberado; créditos e link
    da licença em public/fotos/CREDITOS.json). Só nas páginas em que a foto DIZ
    alguma coisa: foto genérica em todas as 19 vira ruído e volta a parecer
@@ -58,11 +72,12 @@ function PhotoBand({ slug }: { slug: string }) {
   return (
     <section className="sec svc-sec" style={{ paddingTop: 0 }}>
       <div className="wrap">
-        <div style={{ position: "relative", borderRadius: 20, overflow: "hidden", aspectRatio: "16/6", background: "#171B20", border: "1px solid rgba(232,226,217,0.09)" }}>
+        {/* Sem véu escuro: não há texto sobre a foto e um degradê preto no meio
+            de uma página clara lia como mancha. */}
+        <div className="pg-media">
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img src={p.src} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async"
-            style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 45%" }} />
-          <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(13,16,19,0.22), rgba(13,16,19,0.66))" }}></span>
+            style={{ objectPosition: "center 45%" }} />
         </div>
       </div>
     </section>
@@ -82,6 +97,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
   if (!s) notFound();
 
   const pil = pillarOf(s.slug);
+  const cor = CLARO_PILLAR_ACCENT[pil.key];
   const wa = WHATSAPP
     ? `https://wa.me/${WHATSAPP}?text=${encodeURIComponent(`Olá! Quero falar sobre ${s.title}.`)}`
     : "/contato";
@@ -90,13 +106,6 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
   // um serviço só, então essa lista pode vir vazia — o bloco some nesse caso).
   const samePillar = siteServices.filter((o) => o.slug !== s.slug && pil.slugs.includes(o.slug));
   const others = siteServices.filter((o) => o.slug !== s.slug);
-
-  // Cor do pilar distribuída por toda a página via custom properties.
-  const cssVars = {
-    "--acc": pil.accent,
-    "--rail": pil.rail,
-    "--glow": pil.glow,
-  } as unknown as CSSProperties;
 
   const schema = {
     "@context": "https://schema.org",
@@ -140,60 +149,40 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
   };
 
   return (
-    <main id="main" className="svc-page" style={{ minHeight: "100vh", position: "relative", ...cssVars }}>
-      {/* Ambiente: só degradês (nenhum filter:blur em position:fixed — trava o scroll no mobile). */}
-      <div
-        aria-hidden
-        style={{
-          position: "fixed",
-          inset: 0,
-          zIndex: -1,
-          pointerEvents: "none",
-          background: `radial-gradient(65% 45% at 12% -8%, ${pil.glow}, transparent 62%), radial-gradient(60% 40% at 95% 4%, rgba(196,118,60,0.11), transparent 60%), #0D1013`,
-        }}
-      />
+    <PageShellClaro
+      crumbs={[{ label: "Início", href: "/" }, { label: "Serviços", href: "/servicos" }, { label: s.title }]}
+      accent={cor}
+    >
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
-
-      {/* trilho do pilar: a primeira coisa que a página diz, antes de qualquer texto */}
-      <div className="svc-rail" aria-hidden />
-
-      {/* Header ÚNICO do site — antes esta rota tinha o próprio topo, sem menu. */}
-      <SiteHeader />
 
       {/* ── HERO ─────────────────────────────────────────────────────────── */}
       <section className="sec svc-sec-hero">
-        <nav className="wrap svc-crumbs" aria-label="Você está aqui">
-          <Link href="/">Início</Link>
-          <span aria-hidden>/</span>
-          <Link href="/servicos">Serviços</Link>
-          <span aria-hidden>/</span>
-          {/* Mostra o NOME do serviço, não o pilar: a trilha dizia "Início /
-              Serviços / Vender online" e o visitante nunca via onde estava. */}
-          <span className="svc-crumb-now">{s.title}</span>
-        </nav>
-
         <div className="wrap svc-hero">
           <div className="svc-hero-copy">
-            <div className="svc-badge svc-in" style={{ animationDelay: "0.02s" }}>
+            <div className="svc-badge pg-in" style={{ animationDelay: "0.02s" }}>
               <span className="svc-badge-dot" aria-hidden />
               {pil.short}
               <span className="svc-badge-sep" aria-hidden />
               <span className="svc-badge-label">{pil.label}</span>
             </div>
 
-            <h1 className="svc-h1 svc-in" style={{ animationDelay: "0.08s" }}>{s.title}</h1>
+            <h1 className="pg-h1 svc-h1 pg-in" style={{ animationDelay: "0.08s" }}>{s.title}</h1>
 
-            <p className="svc-lede svc-in" style={{ animationDelay: "0.14s" }}>{s.long}</p>
+            <p className="pg-lede pg-in" style={{ animationDelay: "0.14s" }}>{s.long}</p>
 
-            <div className="svc-actions svc-in" style={{ animationDelay: "0.2s" }}>
-              <Link href="/contato" className="btn btn-cta">Solicitar orçamento</Link>
-              {WHATSAPP ? (<a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Falar no WhatsApp</a>) : (<Link href="/sobre" className="btn btn-ghost">Ver projetos no ar</Link>)}
+            <div className="svc-actions pg-in" style={{ animationDelay: "0.2s" }}>
+              <Link href="/contato" className="btn btn-p">Solicitar orçamento</Link>
+              {WHATSAPP ? (
+                <a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-s">Falar no WhatsApp</a>
+              ) : (
+                <Link href="/sobre" className="btn btn-s">Ver projetos no ar</Link>
+              )}
             </div>
           </div>
 
           {/* O grafismo do serviço como protagonista — cada página abre com o
               seu próprio desenho, não com um efeito genérico repetido 19 vezes. */}
-          <div className="svc-plate svc-in" style={{ animationDelay: "0.12s" }}>
+          <div className="svc-plate pg-in" style={{ animationDelay: "0.12s" }}>
             <span className="svc-plate-grid" aria-hidden />
             <span className="svc-plate-glow" aria-hidden />
             <span className="svc-tick tl" aria-hidden />
@@ -245,13 +234,13 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       {/* ── INCLUÍDO + GANHA ─────────────────────────────────────────────── */}
       <section className="sec svc-sec">
         <div className="wrap svc-duo">
-          <div className="glowcard svc-card svc-rise">
+          <div className="svc-card">
             <h2 className="svc-card-h">O que está incluído</h2>
             <div className="svc-tags">
-              {s.tags.map((t) => <span key={t} className="pill">{t}</span>)}
+              {s.tags.map((t) => <span key={t} className="chip">{t}</span>)}
             </div>
           </div>
-          <div className="glowcard svc-card svc-card-acc svc-rise">
+          <div className="svc-card svc-card-acc">
             <h2 className="svc-card-h">O que você ganha</h2>
             <ul className="svc-outcomes">
               {s.outcomes.map((o) => (
@@ -265,8 +254,8 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       {/* ── FAQ ──────────────────────────────────────────────────────────── */}
       <section className="sec svc-sec">
         <div className="wrap svc-faq-wrap">
-          <span className="svc-kicker">Dúvidas</span>
-          <h2 className="svc-h-sec">Perguntas frequentes</h2>
+          <span className="pg-kicker">Dúvidas</span>
+          <h2 className="pg-h2">Perguntas frequentes</h2>
           <div className="svc-faq-list">
             {s.faq.map((f) => (
               <details key={f.q} className="svc-faq">
@@ -281,12 +270,16 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       {/* ── CTA FINAL ────────────────────────────────────────────────────── */}
       <section className="sec svc-sec">
         <div className="wrap">
-          <div className="glass-top svc-cta svc-rise">
-            <h2 className="svc-cta-h">Pronto para {s.title.toLowerCase()}?</h2>
-            <p className="svc-cta-p">Fale com a HyperGrow e receba uma proposta sob medida em até 1 dia útil.</p>
-            <div className="svc-actions svc-actions-c">
-              <Link href="/contato" className="btn btn-cta">Solicitar proposta</Link>
-              {WHATSAPP ? (<a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-ghost">Conversar no WhatsApp</a>) : (<Link href="/servicos" className="btn btn-ghost">Ver todos os serviços</Link>)}
+          <div className="pg-cta">
+            <h2 className="pg-h2">Pronto para {s.title.toLowerCase()}?</h2>
+            <p className="pg-p">Fale com a HyperGrow e receba uma proposta sob medida em até 1 dia útil.</p>
+            <div className="pg-cta-actions">
+              <Link href="/contato" className="btn btn-p">Solicitar proposta</Link>
+              {WHATSAPP ? (
+                <a href={wa} target="_blank" rel="noopener noreferrer" className="btn btn-s">Conversar no WhatsApp</a>
+              ) : (
+                <Link href="/servicos" className="btn btn-s">Ver todos os serviços</Link>
+              )}
             </div>
           </div>
         </div>
@@ -297,12 +290,12 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
         <div className="wrap">
           {samePillar.length > 0 && (
             <>
-              <span className="svc-kicker">Mesmo pilar</span>
-              <h2 className="svc-h-sec">Outros serviços de {pil.label}</h2>
+              <span className="pg-kicker">Mesmo pilar</span>
+              <h2 className="pg-h2">Outros serviços de {pil.label}</h2>
               <p className="svc-rel-sub">{pil.desc}</p>
               <div className="svc-rel">
                 {samePillar.map((o) => (
-                  <Link key={o.slug} href={`/servicos/${o.slug}`} className="glowcard svc-rel-card svc-rise">
+                  <Link key={o.slug} href={`/servicos/${o.slug}`} className="svc-rel-card">
                     <span className="svc-rel-glyph" aria-hidden>
                       <ServiceGlyph slug={o.slug} height={46} />
                     </span>
@@ -322,315 +315,177 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             </div>
             <div className="svc-all-pills">
               {others.map((o) => (
-                <Link key={o.slug} href={`/servicos/${o.slug}`} className="pill svc-all-pill">{o.title}</Link>
+                <Link key={o.slug} href={`/servicos/${o.slug}`} className="chip svc-all-pill">{o.title}</Link>
               ))}
             </div>
           </div>
         </div>
       </section>
 
-      <footer className="svc-footer">
-        {/* Antes o rodapé destas 19 páginas tinha UM link ("Voltar ao site").
-            Elas não levavam a /blog, /sobre, /contato, /privacidade nem /termos —
-            eram becos sem saída para o visitante e para o buscador. */}
-        <div className="wrap svc-footer-in">
-          <span>© 2026 HyperGrow</span>
-          <span style={{ display: "flex", flexWrap: "wrap", gap: 18 }}>
-            <Link href="/servicos">Serviços</Link>
-            <Link href="/sobre">Sobre</Link>
-            <Link href="/contato">Contato</Link>
-            <Link href="/blog">Blog</Link>
-            <Link href="/privacidade">Privacidade</Link>
-            <Link href="/termos">Termos</Link>
-          </span>
-        </div>
-      </footer>
-
-      <style dangerouslySetInnerHTML={{ __html: `
-        /* ═══ Página de serviço — sistema visual por pilar ═══════════════════
-           Regras de sobrevivência aplicadas aqui:
-           · nenhuma largura fixa em px sem min(Xpx, 100%)
-           · grids sempre repeat(auto-fit, minmax(min(100%, X), 1fr))
-           · nenhum filter:blur() e nenhum backdrop-filter em elemento grande
-           · nenhuma classe .reveal/.stagger: o IntersectionObserver que as liga
-             vive no HypergrowSite (home). Aqui elas ficariam em opacity:0 pra
-             sempre. Entrada do hero = animação de tempo (sempre completa);
-             reveal de scroll = progressive enhancement com estado base VISÍVEL.
-           ══════════════════════════════════════════════════════════════════ */
-
-        .svc-page { --edge: rgba(232,226,217,0.10); }
-
-        .svc-rail {
-          height: 3px; width: 100%;
-          background: linear-gradient(90deg, var(--rail), var(--acc) 34%, rgba(232,226,217,0.07) 72%, transparent);
-        }
-
-        /* ── topo ─────────────────────────────────────────────────────────── */
-        .svc-top { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 74px; }
-        /* alvos de toque: piso de 44px em tudo que é clicável */
-        .svc-logo {
-          display: inline-flex; align-items: center; min-height: 44px;
-          font: 800 19px var(--font-display); letter-spacing: -0.045em; color: #fff;
-          text-decoration: none; flex-shrink: 0;
-        }
-        .svc-top-cta { min-height: 44px; padding: 11px 18px; font-size: 14px; border-radius: 12px; }
-        @media (max-width: 420px) { .svc-top-cta { padding: 11px 14px; font-size: 13px; } }
-
-        .svc-sec-hero { padding-top: clamp(26px, 3.5vw, 44px); padding-bottom: clamp(48px, 6vw, 84px); }
-        .svc-sec { padding-top: clamp(52px, 6.5vw, 92px); padding-bottom: 0; }
-        .svc-sec-last { padding-bottom: clamp(56px, 7vw, 96px); }
-
-        /* ── breadcrumb ───────────────────────────────────────────────────── */
-        .svc-crumbs {
-          display: flex; align-items: center; flex-wrap: wrap; gap: 9px;
-          font: 500 12.5px var(--font-sans); color: rgba(232,226,217,0.42);
-          margin-bottom: clamp(20px, 2.6vw, 30px);
-        }
-        .svc-crumbs a {
-          display: inline-flex; align-items: center; min-height: 44px;
-          color: rgba(232,226,217,0.62); text-decoration: none;
-          transition: color .3s var(--ease-silk);
-        }
-        .svc-crumbs a:hover { color: #fff; }
-        .svc-crumb-now { color: var(--acc); }
-
-        /* ── hero ─────────────────────────────────────────────────────────── */
-        .svc-hero {
-          display: grid;
-          grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
-          gap: clamp(30px, 4vw, 60px);
-          align-items: center;
-        }
-        .svc-hero-copy { min-width: 0; }
-
-        .svc-badge {
-          display: inline-flex; align-items: center; gap: 9px;
-          padding: 8px 15px; border-radius: 999px;
-          font: 700 11px var(--font-sans); letter-spacing: 0.16em; text-transform: uppercase;
-          color: var(--acc);
-          background: linear-gradient(180deg, rgba(232,226,217,0.06), rgba(232,226,217,0.015));
-          border: 1px solid var(--edge);
-          box-shadow: 0 1px 0 rgba(232,226,217,0.05) inset;
-          max-width: 100%;
-        }
-        .svc-badge-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--acc); box-shadow: 0 0 10px var(--glow); flex-shrink: 0; }
-        .svc-badge-sep { width: 1px; height: 11px; background: rgba(232,226,217,0.18); flex-shrink: 0; }
-        .svc-badge-label { color: rgba(232,226,217,0.58); letter-spacing: 0.1em; font-weight: 500; }
-        @media (max-width: 380px) { .svc-badge-sep, .svc-badge-label { display: none; } }
-
-        .svc-h1 {
-          font: 800 clamp(31px, 5.1vw, 58px)/1.03 var(--font-display);
-          letter-spacing: -0.042em; color: #fff; margin: 20px 0 0;
-          text-wrap: balance; overflow-wrap: break-word;
-        }
-        .svc-lede {
-          font: 400 clamp(16px, 1.5vw, 18.5px)/1.62 var(--font-sans);
-          color: rgba(232,226,217,0.72); margin: 20px 0 0; max-width: 60ch; text-wrap: pretty;
-        }
-        .svc-actions { display: flex; gap: 13px; flex-wrap: wrap; margin-top: clamp(26px, 3vw, 34px); }
-        .svc-actions-c { justify-content: center; }
-
-        /* ── placa do grafismo (o protagonista) ───────────────────────────── */
-        .svc-plate {
-          position: relative; overflow: hidden; min-width: 0;
-          /* teto de largura: impede que a placa vire um bloco gigante quando o
-             hero cai para uma coluna só (tablet). Centralizada nos dois casos. */
-          width: 100%; max-width: min(100%, 560px); margin-inline: auto;
-          aspect-ratio: 4 / 3;
-          display: flex; align-items: center; justify-content: center;
-          border-radius: clamp(18px, 2vw, 28px);
-          border: 1px solid var(--edge);
-          background:
-            radial-gradient(120% 90% at 50% -12%, rgba(232,226,217,0.06), transparent 58%),
-            linear-gradient(180deg, rgba(232,226,217,0.045), rgba(232,226,217,0.012)),
-            #12151A;
-          box-shadow: 0 1px 0 rgba(232,226,217,0.06) inset, 0 46px 100px -60px rgba(0,0,0,0.95);
-        }
-        /* grade técnica, esmaecida nas bordas por máscara (sem blur) */
-        .svc-plate-grid {
-          position: absolute; inset: 0; pointer-events: none;
-          background-image:
-            linear-gradient(rgba(232,226,217,0.045) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(232,226,217,0.045) 1px, transparent 1px);
-          background-size: 38px 38px; background-position: center;
-          -webkit-mask-image: radial-gradient(72% 72% at 50% 50%, #000, transparent 82%);
-          mask-image: radial-gradient(72% 72% at 50% 50%, #000, transparent 82%);
-        }
-        /* halo do pilar: gradiente puro, jamais filter:blur */
-        .svc-plate-glow {
-          position: absolute; left: 50%; top: 48%; width: 118%; aspect-ratio: 1 / 1;
-          transform: translate(-50%, -50%); pointer-events: none;
-          background: radial-gradient(circle, var(--glow), transparent 62%);
-          opacity: 0.5;
-        }
-        .svc-tick { position: absolute; width: 13px; height: 13px; pointer-events: none; opacity: 0.6; }
-        .svc-tick.tl { top: 14px; left: 14px; border-top: 1.5px solid var(--acc); border-left: 1.5px solid var(--acc); }
-        .svc-tick.tr { top: 14px; right: 14px; border-top: 1.5px solid var(--acc); border-right: 1.5px solid var(--acc); }
-        .svc-tick.bl { bottom: 14px; left: 14px; border-bottom: 1.5px solid var(--acc); border-left: 1.5px solid var(--acc); }
-        .svc-tick.br { bottom: 14px; right: 14px; border-bottom: 1.5px solid var(--acc); border-right: 1.5px solid var(--acc); }
-
-        .svc-glyph { position: relative; z-index: 2; width: min(70%, 430px); color: var(--acc); }
-        /* vence os atributos width/height do <svg> — nada de largura fixa em px */
-        .svc-glyph svg { width: 100%; height: auto; display: block; }
-
-        .svc-plate-foot {
-          position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
-          display: flex; align-items: center; justify-content: space-between; gap: 14px;
-          padding: 0 clamp(16px, 2.4vw, 24px) clamp(14px, 2vw, 20px);
-          font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase;
-          color: rgba(232,226,217,0.34);
-        }
-        .svc-plate-foot span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-        .svc-plate-foot-r { color: var(--acc); opacity: 0.75; text-align: right; }
-
-        /* ── corpo: índice numerado dá hierarquia e ritmo de leitura ──────── */
-        .svc-body { display: flex; flex-direction: column; gap: clamp(30px, 4vw, 46px); max-width: 900px; }
-        .svc-block { display: grid; grid-template-columns: auto 1fr; gap: clamp(14px, 2vw, 26px); align-items: start; }
-        .svc-idx { display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 4px; }
-        .svc-idx .mono { font-size: 11.5px; font-weight: 600; letter-spacing: 0.1em; color: var(--acc); }
-        .svc-idx-line { width: 1px; flex: 1; min-height: 26px; background: linear-gradient(180deg, var(--acc), transparent); opacity: 0.4; }
-        .svc-block-text { min-width: 0; }
-        .svc-h2 {
-          font: 700 clamp(20px, 2.5vw, 27px)/1.2 var(--font-display);
-          letter-spacing: -0.025em; color: #fff; margin: 0 0 12px; text-wrap: balance;
-        }
-        .svc-p { font: 400 clamp(15.5px, 1.3vw, 16.5px)/1.72 var(--font-sans); color: rgba(232,226,217,0.72); margin: 0; text-wrap: pretty; }
-
-        /* ── kicker + título de seção ─────────────────────────────────────── */
-        .svc-kicker {
-          display: inline-block; font: 600 10.5px var(--font-mono);
-          letter-spacing: 0.22em; text-transform: uppercase; color: var(--acc);
-        }
-        .svc-h-sec {
-          font: 700 clamp(25px, 3.3vw, 38px)/1.08 var(--font-display);
-          letter-spacing: -0.032em; color: #fff; margin: 12px 0 0; text-wrap: balance;
-        }
-
-        /* ── cards incluído / ganha ───────────────────────────────────────── */
-        .svc-duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 18px; }
-        .svc-card { border-radius: 22px; padding: clamp(24px, 3vw, 34px); }
-        .svc-card-acc { border-color: color-mix(in srgb, var(--acc) 26%, transparent); }
-        .svc-card-h { font: 700 clamp(18px, 1.8vw, 21px) var(--font-display); color: #fff; margin: 0; letter-spacing: -0.02em; }
-        .svc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
-        .svc-outcomes { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-direction: column; gap: 13px; }
-        .svc-outcomes li { display: flex; gap: 11px; font: 400 15px/1.55 var(--font-sans); color: rgba(232,226,217,0.84); }
-
-        /* ── FAQ ──────────────────────────────────────────────────────────── */
-        .svc-faq-wrap { max-width: 900px; }
-        .svc-faq-list { display: flex; flex-direction: column; gap: 10px; margin-top: clamp(22px, 2.6vw, 30px); }
-        .svc-faq {
-          border-radius: 16px; padding: 0 clamp(16px, 2.2vw, 24px);
-          background: linear-gradient(180deg, rgba(232,226,217,0.045), rgba(232,226,217,0.012));
-          border: 1px solid rgba(232,226,217,0.08);
-          transition: border-color .35s var(--ease-silk), background .35s var(--ease-silk);
-        }
-        .svc-faq:hover { border-color: color-mix(in srgb, var(--acc) 34%, transparent); }
-        .svc-faq[open] { border-color: color-mix(in srgb, var(--acc) 30%, transparent); }
-        .svc-faq summary {
-          cursor: pointer; list-style: none; display: flex; align-items: center;
-          justify-content: space-between; gap: 16px; min-height: 56px; padding: 15px 0;
-          font: 600 clamp(15px, 1.4vw, 16.5px)/1.4 var(--font-sans); color: #fff;
-        }
-        .svc-faq summary::-webkit-details-marker { display: none; }
-        /* sinal +/− construído com gradientes: sem dependência de ícone externo */
-        .svc-faq summary::after {
-          content: ''; flex: none; width: 14px; height: 14px; color: var(--acc);
-          background:
-            linear-gradient(currentColor, currentColor) center / 100% 1.7px no-repeat,
-            linear-gradient(currentColor, currentColor) center / 1.7px 100% no-repeat;
-          transition: transform .35s var(--ease-spring);
-        }
-        .svc-faq[open] summary::after {
-          background: linear-gradient(currentColor, currentColor) center / 100% 1.7px no-repeat;
-          transform: rotate(180deg);
-        }
-        .svc-faq p { font: 400 15px/1.7 var(--font-sans); color: rgba(232,226,217,0.7); margin: 0; padding: 0 0 20px; max-width: 68ch; text-wrap: pretty; }
-
-        /* ── CTA final ────────────────────────────────────────────────────── */
-        .svc-cta {
-          position: relative; overflow: hidden; text-align: center;
-          border-radius: clamp(20px, 2.2vw, 28px);
-          padding: clamp(34px, 5vw, 60px) clamp(20px, 4vw, 44px);
-          border: 1px solid color-mix(in srgb, var(--acc) 28%, transparent);
-          background:
-            radial-gradient(110% 130% at 50% -25%, var(--glow), transparent 58%),
-            linear-gradient(180deg, rgba(232,226,217,0.05), rgba(232,226,217,0.015)),
-            #12151A;
-          box-shadow: 0 1px 0 rgba(232,226,217,0.06) inset, 0 40px 90px -56px rgba(0,0,0,0.9);
-        }
-        .svc-cta-h {
-          font: 800 clamp(24px, 3.5vw, 40px)/1.08 var(--font-display);
-          letter-spacing: -0.035em; color: #fff; margin: 0 auto; max-width: 18ch; text-wrap: balance;
-        }
-        .svc-cta-p { font: 400 16px/1.6 var(--font-sans); color: rgba(232,226,217,0.7); margin: 16px auto 0; max-width: 46ch; }
-
-        /* ── outros serviços do mesmo pilar ───────────────────────────────── */
-        .svc-rel-sub { font: 400 15.5px/1.6 var(--font-sans); color: rgba(232,226,217,0.55); margin: 12px 0 0; max-width: 56ch; }
-        .svc-rel {
-          display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
-          gap: 16px; margin-top: clamp(24px, 3vw, 32px);
-        }
-        .svc-rel-card {
-          display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
-          border-radius: 20px; padding: clamp(20px, 2.4vw, 26px);
-          text-decoration: none; min-width: 0;
-        }
-        .svc-rel-glyph { color: var(--acc); display: block; width: min(68px, 100%); margin-bottom: 4px; }
-        .svc-rel-glyph svg { width: 100%; height: auto; display: block; }
-        .svc-rel-title { font: 700 16.5px/1.3 var(--font-display); letter-spacing: -0.02em; color: #fff; }
-        .svc-rel-desc { font: 400 14px/1.55 var(--font-sans); color: rgba(232,226,217,0.6); }
-        .svc-rel-go {
-          margin-top: auto; padding-top: 10px; display: inline-flex; align-items: center; gap: 7px;
-          font: 600 13px var(--font-sans); color: var(--acc);
-        }
-        .svc-rel-card:hover .svc-arrow { transform: translateX(3px); }
-        .svc-arrow { transition: transform .35s var(--ease-spring); }
-
-        /* ── todos os serviços (mantém a malha de links internos) ─────────── */
-        .svc-all { margin-top: clamp(40px, 5vw, 64px); padding-top: clamp(26px, 3vw, 34px); border-top: 1px solid rgba(232,226,217,0.08); }
-        .svc-all-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
-        .svc-all-h { font: 600 12px var(--font-sans); text-transform: uppercase; letter-spacing: 0.16em; color: rgba(232,226,217,0.48); margin: 0; }
-        .svc-all-link { display: inline-flex; align-items: center; min-height: 44px; gap: 7px; font: 600 13.5px var(--font-sans); color: var(--acc); text-decoration: none; }
-        .svc-all-link:hover .svc-arrow { transform: translateX(3px); }
-        .svc-all-pills { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 14px; }
-        .svc-all-pill { min-height: 44px; text-decoration: none; cursor: pointer; max-width: 100%; }
-
-        /* ── footer ───────────────────────────────────────────────────────── */
-        .svc-footer { border-top: 1px solid rgba(232,226,217,0.08); margin-top: clamp(20px, 3vw, 36px); }
-        .svc-footer-in {
-          padding-top: 22px; padding-bottom: max(22px, env(safe-area-inset-bottom));
-          display: flex; justify-content: space-between; flex-wrap: wrap; gap: 12px;
-          font: 400 13px var(--font-sans); color: rgba(232,226,217,0.45);
-        }
-        .svc-footer-in a { display: inline-flex; align-items: center; min-height: 44px; color: rgba(232,226,217,0.62); text-decoration: none; }
-        .svc-footer-in > span { display: inline-flex; align-items: center; min-height: 44px; }
-        .svc-footer-in a:hover { color: #fff; }
-
-        /* ── movimento ────────────────────────────────────────────────────── */
-        /* Entrada do hero: animação de TEMPO — sempre completa, nunca deixa
-           conteúdo preso invisível (ao contrário de reveal dependente de JS). */
-        .svc-in { animation: svc-in-kf .75s var(--ease-silk) both; }
-        @keyframes svc-in-kf { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
-
-        /* Reveal de scroll: progressive enhancement. Estado base = VISÍVEL;
-           só navegadores com scroll-driven animations aplicam o efeito, e a
-           faixa termina cedo (ainda durante a entrada) para nunca "travar". */
-        @supports (animation-timeline: view()) {
-          @media (prefers-reduced-motion: no-preference) {
-            .svc-rise {
-              animation: svc-in-kf linear both;
-              animation-timeline: view();
-              animation-range: entry 2% entry 58%;
-            }
-          }
-        }
-
-        @media (prefers-reduced-motion: reduce) {
-          .svc-in { animation: none; opacity: 1; transform: none; }
-          .svc-rise { animation: none; opacity: 1; transform: none; }
-          .svc-arrow, .svc-faq summary::after { transition: none; }
-        }
-      ` }} />
-    </main>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
+    </PageShellClaro>
   );
 }
+
+/* ═══ Página de serviço — sistema visual por pilar, tema CLARO ══════════════
+   Regras de sobrevivência aplicadas aqui:
+   · nenhuma largura fixa em px sem min(Xpx, 100%)
+   · grids sempre repeat(auto-fit, minmax(min(100%, X), 1fr))
+   · nenhum filter:blur() e nenhum backdrop-filter
+   · nenhuma classe .reveal/.stagger/.rv: o observer que as liga vive na home.
+     Aqui elas ficariam em opacity:0 para sempre. Entrada do hero = animação de
+     tempo (.pg-in, sempre completa); reveal de rolagem = progressive
+     enhancement com estado base VISÍVEL.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const CSS = `
+  .cl .svc-sec-hero { padding-top: clamp(20px, 3vw, 34px); padding-bottom: clamp(44px, 6vw, 76px); }
+  .cl .svc-sec { padding-top: clamp(48px, 6vw, 84px); padding-bottom: 0; }
+  .cl .svc-sec-last { padding-bottom: clamp(52px, 7vw, 88px); }
+
+  /* ── hero ─────────────────────────────────────────────────────────────── */
+  .cl .svc-hero { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 400px), 1fr));
+    gap: clamp(30px, 4vw, 60px); align-items: center; }
+  .cl .svc-hero-copy { min-width: 0; }
+  .cl .svc-h1 { margin-top: 20px; }
+
+  .cl .svc-badge { display: inline-flex; align-items: center; gap: 9px; padding: 8px 15px; border-radius: 999px;
+    font: 700 11px var(--text); letter-spacing: .16em; text-transform: uppercase; color: var(--acc);
+    background: var(--acc-soft); border: 1px solid var(--acc-line); max-width: 100%; }
+  .cl .svc-badge-dot { width: 7px; height: 7px; border-radius: 999px; background: var(--acc); flex-shrink: 0; }
+  .cl .svc-badge-sep { width: 1px; height: 11px; background: var(--acc-line); flex-shrink: 0; }
+  .cl .svc-badge-label { color: var(--ink-2); letter-spacing: .1em; font-weight: 500; }
+  @media (max-width: 380px) { .cl .svc-badge-sep, .cl .svc-badge-label { display: none; } }
+
+  .cl .svc-actions { display: flex; gap: 13px; flex-wrap: wrap; margin-top: clamp(26px, 3vw, 34px); }
+
+  /* ── placa do grafismo (o protagonista) ───────────────────────────────── */
+  .cl .svc-plate { position: relative; overflow: hidden; min-width: 0;
+    /* teto de largura: impede que a placa vire um bloco gigante quando o hero
+       cai para uma coluna só (tablet). Centralizada nos dois casos. */
+    width: 100%; max-width: min(100%, 560px); margin-inline: auto; aspect-ratio: 4 / 3;
+    display: flex; align-items: center; justify-content: center;
+    border-radius: clamp(18px, 2vw, 28px); border: 1px solid var(--line);
+    background: radial-gradient(120% 90% at 50% -12%, var(--acc-soft), transparent 60%),
+                linear-gradient(180deg, #fff, var(--paper-2));
+    box-shadow: var(--sh-3); }
+  /* grade técnica, esmaecida nas bordas por máscara (sem blur) */
+  .cl .svc-plate-grid { position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(11,18,32,.055) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(11,18,32,.055) 1px, transparent 1px);
+    background-size: 38px 38px; background-position: center;
+    -webkit-mask-image: radial-gradient(72% 72% at 50% 50%, #000, transparent 82%);
+    mask-image: radial-gradient(72% 72% at 50% 50%, #000, transparent 82%); }
+  /* halo do pilar: gradiente puro, jamais filter:blur */
+  .cl .svc-plate-glow { position: absolute; left: 50%; top: 48%; width: 118%; aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%); pointer-events: none;
+    background: radial-gradient(circle, var(--acc-glow), transparent 62%); opacity: .8; }
+  .cl .svc-tick { position: absolute; width: 13px; height: 13px; pointer-events: none; opacity: .7; }
+  .cl .svc-tick.tl { top: 14px; left: 14px; border-top: 1.5px solid var(--acc); border-left: 1.5px solid var(--acc); }
+  .cl .svc-tick.tr { top: 14px; right: 14px; border-top: 1.5px solid var(--acc); border-right: 1.5px solid var(--acc); }
+  .cl .svc-tick.bl { bottom: 14px; left: 14px; border-bottom: 1.5px solid var(--acc); border-left: 1.5px solid var(--acc); }
+  .cl .svc-tick.br { bottom: 14px; right: 14px; border-bottom: 1.5px solid var(--acc); border-right: 1.5px solid var(--acc); }
+
+  .cl .svc-glyph { position: relative; z-index: 2; width: min(70%, 430px); color: var(--acc); }
+  /* vence os atributos width/height do <svg> — nada de largura fixa em px */
+  .cl .svc-glyph svg { width: 100%; height: auto; display: block; }
+
+  .cl .svc-plate-foot { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex;
+    align-items: center; justify-content: space-between; gap: 14px;
+    padding: 0 clamp(16px, 2.4vw, 24px) clamp(14px, 2vw, 20px);
+    font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: #5A6579; }
+  .cl .svc-plate-foot span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .cl .svc-plate-foot-r { color: var(--acc); text-align: right; }
+
+  /* ── corpo: índice numerado dá hierarquia e ritmo de leitura ──────────── */
+  .cl .svc-body { display: flex; flex-direction: column; gap: clamp(30px, 4vw, 46px); max-width: 900px; }
+  .cl .svc-block { display: grid; grid-template-columns: auto 1fr; gap: clamp(14px, 2vw, 26px); align-items: start; }
+  .cl .svc-idx { display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 4px; }
+  .cl .svc-idx .mono { font-size: 11.5px; font-weight: 600; letter-spacing: .1em; color: var(--acc); }
+  .cl .svc-idx-line { width: 1px; flex: 1; min-height: 26px;
+    background: linear-gradient(180deg, var(--acc), transparent); opacity: .45; }
+  .cl .svc-block-text { min-width: 0; }
+  .cl .svc-h2 { font: 700 clamp(20px, 2.5vw, 27px)/1.2 var(--disp); letter-spacing: -.025em; color: var(--ink);
+    margin: 0 0 12px; text-wrap: balance; }
+  .cl .svc-p { font: 400 clamp(16px, 1.3vw, 17px)/1.72 var(--text); color: var(--ink-2); margin: 0; text-wrap: pretty; }
+
+  /* ── cards incluído / ganha ───────────────────────────────────────────── */
+  .cl .svc-duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 18px; }
+  .cl .svc-card { border-radius: 22px; padding: clamp(24px, 3vw, 34px); background: var(--card);
+    border: 1px solid var(--line); box-shadow: var(--sh-1); }
+  .cl .svc-card-acc { border-color: var(--acc-line); }
+  .cl .svc-card-h { font: 700 clamp(18px, 1.8vw, 21px) var(--disp); color: var(--ink); margin: 0;
+    letter-spacing: -.02em; }
+  .cl .svc-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 18px; }
+  .cl .svc-outcomes { list-style: none; padding: 0; margin: 18px 0 0; display: flex; flex-direction: column; gap: 13px; }
+  .cl .svc-outcomes li { display: flex; gap: 11px; font: 400 15.5px/1.6 var(--text); color: var(--ink-2); }
+
+  /* ── FAQ ──────────────────────────────────────────────────────────────── */
+  .cl .svc-faq-wrap { max-width: 900px; }
+  .cl .svc-faq-list { display: flex; flex-direction: column; gap: 10px; margin-top: clamp(22px, 2.6vw, 30px); }
+  .cl .svc-faq { border-radius: 16px; padding: 0 clamp(16px, 2.2vw, 24px); background: var(--card);
+    border: 1px solid var(--line); box-shadow: var(--sh-1);
+    transition: border-color .35s var(--ease), box-shadow .35s var(--ease); }
+  .cl .svc-faq:hover { border-color: var(--acc-line); box-shadow: var(--sh-2); }
+  .cl .svc-faq[open] { border-color: var(--acc-line); }
+  .cl .svc-faq summary { cursor: pointer; list-style: none; display: flex; align-items: center;
+    justify-content: space-between; gap: 16px; min-height: 56px; padding: 15px 0;
+    font: 600 clamp(15.5px, 1.4vw, 17px)/1.4 var(--text); color: var(--ink); }
+  .cl .svc-faq summary::-webkit-details-marker { display: none; }
+  /* sinal +/− construído com gradientes: sem dependência de ícone externo */
+  .cl .svc-faq summary::after { content: ""; flex: none; width: 14px; height: 14px; color: var(--acc);
+    background: linear-gradient(currentColor, currentColor) center / 100% 1.7px no-repeat,
+                linear-gradient(currentColor, currentColor) center / 1.7px 100% no-repeat;
+    transition: transform .35s var(--ease); }
+  .cl .svc-faq[open] summary::after {
+    background: linear-gradient(currentColor, currentColor) center / 100% 1.7px no-repeat;
+    transform: rotate(180deg); }
+  .cl .svc-faq p { font: 400 15.5px/1.7 var(--text); color: var(--ink-2); margin: 0; padding: 0 0 20px;
+    max-width: 68ch; text-wrap: pretty; }
+
+  /* ── outros serviços do mesmo pilar ───────────────────────────────────── */
+  .cl .svc-rel-sub { font: 400 15.5px/1.6 var(--text); color: #5A6579; margin: 12px 0 0; max-width: 56ch; }
+  .cl .svc-rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
+    gap: 16px; margin-top: clamp(24px, 3vw, 32px); }
+  .cl .svc-rel-card { display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+    border-radius: 20px; padding: clamp(20px, 2.4vw, 26px); text-decoration: none; min-width: 0;
+    background: var(--card); border: 1px solid var(--line); box-shadow: var(--sh-1);
+    transition: transform .3s var(--ease), box-shadow .3s var(--ease), border-color .3s var(--ease); }
+  .cl .svc-rel-card:hover, .cl .svc-rel-card:focus-visible { transform: translateY(-3px); box-shadow: var(--sh-2);
+    border-color: color-mix(in srgb, var(--acc) 34%, var(--line)); }
+  .cl .svc-rel-glyph { color: var(--acc); display: block; width: min(68px, 100%); margin-bottom: 4px; }
+  .cl .svc-rel-glyph svg { width: 100%; height: auto; display: block; }
+  .cl .svc-rel-title { font: 700 16.5px/1.3 var(--disp); letter-spacing: -.02em; color: var(--ink);
+    transition: color .25s var(--ease); }
+  .cl .svc-rel-card:hover .svc-rel-title { color: var(--acc); }
+  .cl .svc-rel-desc { font: 400 14px/1.55 var(--text); color: #5A6579; }
+  .cl .svc-rel-go { margin-top: auto; padding-top: 10px; display: inline-flex; align-items: center; gap: 7px;
+    font: 600 13px var(--text); color: var(--acc); }
+  .cl .svc-rel-card:hover .svc-arrow { transform: translateX(3px); }
+  .cl .svc-arrow { transition: transform .35s var(--ease); }
+
+  /* ── todos os serviços (mantém a malha de links internos) ─────────────── */
+  .cl .svc-all { margin-top: clamp(40px, 5vw, 64px); padding-top: clamp(26px, 3vw, 34px);
+    border-top: 1px solid var(--line); }
+  .cl .svc-all-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+  .cl .svc-all-h { font: 600 12px var(--text); text-transform: uppercase; letter-spacing: .16em;
+    color: #5A6579; margin: 0; }
+  .cl .svc-all-link { display: inline-flex; align-items: center; min-height: 44px; gap: 7px;
+    font: 600 13.5px var(--text); color: var(--acc); text-decoration: none; }
+  .cl .svc-all-link:hover .svc-arrow { transform: translateX(3px); }
+  .cl .svc-all-pills { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 14px; }
+  .cl .svc-all-pill { min-height: 44px; text-decoration: none; cursor: pointer; max-width: 100%;
+    transition: border-color .25s var(--ease), color .25s var(--ease), box-shadow .25s var(--ease); }
+  .cl .svc-all-pill:hover { color: var(--acc); border-color: var(--acc-line); box-shadow: var(--sh-1); }
+
+  /* ── movimento ────────────────────────────────────────────────────────── */
+  @supports (animation-timeline: view()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .cl .svc-card, .cl .svc-rel-card, .cl .svc-faq {
+        animation: pg-reveal-in linear both; animation-timeline: view(); animation-range: entry 2% entry 58%; }
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .cl .svc-arrow, .cl .svc-faq summary::after { transition: none; }
+    .cl .svc-rel-card:hover { transform: none; }
+  }
+`;

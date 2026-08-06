@@ -1,8 +1,8 @@
-import "../hg-tokens.css";
-import "../hg-styles.css";
+import "../claro-tokens.css";
 import Link from "next/link";
 import type { Metadata } from "next";
-import PageShell, { Check } from "@/components/site/PageShell";
+import PageShellClaro, { Check } from "@/components/site/PageShellClaro";
+import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
 import { StackedShowcase } from "@/components/site/DeviceMockup";
 import { PROJECTS } from "@/lib/projects";
 import { SITE_URL } from "@/lib/seo";
@@ -63,7 +63,7 @@ export default function SobrePage() {
   };
 
   return (
-    <PageShell crumbs={[{ label: "Início", href: "/" }, { label: "Sobre" }]} accent="#D3B78E" rail="#C4763C" glow="rgba(196,118,60,0.22)">
+    <PageShellClaro crumbs={[{ label: "Início", href: "/" }, { label: "Sobre" }]} accent={CLARO_PILLAR_ACCENT.marca}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       <section className="sec" style={{ paddingBottom: 0 }}>
@@ -143,7 +143,7 @@ export default function SobrePage() {
                           No ar ↗
                         </a>
                       ) : (
-                        <span style={{ color: "rgba(232,226,217,0.45)" }}>Uso interno</span>
+                        <span style={{ color: "#5A6579" }}>Uso interno</span>
                       )}
                     </td>
                   </tr>
@@ -164,8 +164,8 @@ export default function SobrePage() {
           <div className="pg-grid" style={{ marginTop: 20 }}>
             {clientes.map((p) => (
               <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer" className="pg-card">
-                <h3 className="pg-h3">{p.name}</h3>
-                <p style={{ font: "400 13.5px/1.55 var(--font-sans)", color: "rgba(232,226,217,0.6)", margin: 0 }}>{p.desc}</p>
+                <h3 className="pg-card-t">{p.name}</h3>
+                <p className="pg-card-d">{p.desc}</p>
                 <span className="pg-card-go">Ver no ar ↗</span>
               </a>
             ))}
@@ -179,22 +179,21 @@ export default function SobrePage() {
           {/* Fotografia real (StockSnap, CC0 1.0 — créditos em public/fotos/CREDITOS.json).
               Ilustra o método, NÃO é uma foto do time da HyperGrow: apresentar gente de
               banco de imagem como sendo o nosso time seria mentir para o visitante. */}
-          <div style={{ position: "relative", borderRadius: 18, overflow: "hidden", aspectRatio: "16/6", background: "#171B20", border: "1px solid rgba(232,226,217,0.09)", marginBottom: 34 }}>
+          {/* Sem véu escuro aqui: não há texto sobre esta foto, e um degradê
+              preto de 72% no meio de uma página clara lia como mancha. */}
+          <div className="pg-media" style={{ marginBottom: 34 }}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
             <img src="/fotos/reuniao-projeto.webp" alt="Planejamento de projeto sobre a mesa, com anotações e notebooks abertos" width={960} height={640} loading="lazy" decoding="async"
-              style={{ position: "absolute", inset: 0, width: "100%", height: "100%", objectFit: "cover", objectPosition: "center 40%" }} />
-            <span aria-hidden style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, rgba(13,16,19,0.30), rgba(13,16,19,0.72))" }}></span>
+              style={{ objectPosition: "center 40%" }} />
           </div>
 
           <h2 className="pg-h2">Como trabalhamos</h2>
           <ol className="pg-list" style={{ marginTop: 18, counterReset: "step" }}>
             {PROCESSO.map(([t, d], i) => (
               <li key={t} style={{ alignItems: "flex-start" }}>
-                <span aria-hidden className="mono" style={{ flexShrink: 0, minWidth: 26, color: "var(--acc)", font: "600 13px var(--font-mono)", paddingTop: 3 }}>
-                  {String(i + 1).padStart(2, "0")}
-                </span>
+                <span aria-hidden className="pg-num">{String(i + 1).padStart(2, "0")}</span>
                 <span>
-                  <strong style={{ color: "#fff", fontWeight: 600 }}>{t}.</strong>{" "}
+                  <strong style={{ color: "var(--ink)", fontWeight: 600 }}>{t}.</strong>{" "}
                   {d}
                 </span>
               </li>
@@ -217,16 +216,19 @@ export default function SobrePage() {
 
       <section className="sec" style={{ paddingTop: 0 }}>
         <div className="wrap">
-          <div className="glass-top" style={{ borderRadius: 24, padding: "clamp(32px, 5vw, 56px)", textAlign: "center", background: "radial-gradient(120% 120% at 50% -20%, rgba(196,118,60,0.26), rgba(23,27,32,0.6) 55%, rgba(13,16,19,0.7))", border: "1px solid rgba(196,118,60,0.3)" }}>
-            <h2 className="pg-h2" style={{ marginBottom: 12 }}>Quer ver isso aplicado no seu negócio?</h2>
-            <p className="pg-p" style={{ margin: "0 auto 26px", maxWidth: "min(52ch, 100%)" }}>
+          <div className="pg-cta">
+            <h2 className="pg-h2">Quer ver isso aplicado no seu negócio?</h2>
+            <p className="pg-p">
               Conte a situação em uma frase. Em até 1 dia útil você recebe um diagnóstico e a
               proposta do que resolve.
             </p>
-            <Link href="/contato" className="btn btn-cta">Falar com a HyperGrow</Link>
+            <div className="pg-cta-actions">
+              <Link href="/contato" className="btn btn-p">Falar com a HyperGrow</Link>
+              <Link href="/servicos" className="btn btn-s">Ver todos os serviços</Link>
+            </div>
           </div>
         </div>
       </section>
-    </PageShell>
+    </PageShellClaro>
   );
 }

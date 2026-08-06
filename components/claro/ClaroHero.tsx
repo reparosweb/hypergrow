@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowRight, ChevronDown } from "lucide-react";
 import { platformsOf } from "@/lib/ecommerce-platforms";
 import { ClaroHead } from "./ClaroUI";
+import ClaroVitrine from "./ClaroVitrine";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    HERO — vídeo de fundo + faixa de compatibilidade.
@@ -152,6 +153,12 @@ export default function ClaroHero() {
           <ChevronDown size={18} aria-hidden />
         </a>
       </section>
+
+      {/* Seção de vitrine (foto + cartões flutuantes + números). Vem do design
+          original (`LHero` em lit-hero.jsx) e estava faltando — o dono apontou
+          "logo abaixo do vídeo temos uma imagem e sumiu". A ordem aqui é a
+          mesma do design: vídeo → vitrine → esteiras de compatibilidade. */}
+      <ClaroVitrine />
 
       <section id="compat" className="sec cl-hero-plat">
         <div className="wrap">

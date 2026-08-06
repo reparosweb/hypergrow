@@ -61,7 +61,7 @@ export function ClaroResultados() {
         </div>
       </div>
       <style dangerouslySetInnerHTML={{ __html: `
-        #resultados .cl-res-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:20px;margin-top:46px}
+        #resultados .cl-res-g{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:var(--gap);margin-top:46px}
         /* IMPORTANTE: o .rv da folha de tokens declara "transition:opacity .7s,
            transform .7s" e, por vir depois do .card, ganha dele — ou seja, TODO
            card com reveal levantava no hover em 700ms, que é lento a ponto de
@@ -77,7 +77,14 @@ export function ClaroResultados() {
         #resultados .cl-res-t{margin-top:9px}
         #resultados .cl-res-d{margin-top:11px}
         @media(prefers-reduced-motion:reduce){#resultados .cl-res-c{transition-delay:0s!important}#resultados .cl-res-c:hover{transform:none}#resultados .cl-res-c:hover .cl-res-n{transform:none}}
+        /* MD da escala oficial (ver o bloco de breakpoints em
+           app/claro-tokens.css): três cartões de texto lado a lado abaixo de
+           900px dão ~260px cada — o título "Mês 0 · Diagnóstico" já quebra em
+           três linhas. Uma coluna. */
         @media(max-width:900px){#resultados .cl-res-g{grid-template-columns:minmax(0,1fr)}}
+        /* SM: o número da etapa (círculo em -16px) encostava na borda do cartão
+           quando o respiro lateral do .wrap cai para 20px. */
+        @media(max-width:600px){#resultados .cl-res-g{margin-top:38px}#resultados .cl-res-c{padding:28px 20px 24px}#resultados .cl-res-n{left:20px}}
       `}} />
     </section>
   );
@@ -205,7 +212,9 @@ export function ClaroFaq() {
         @media(prefers-reduced-motion:reduce){
           #faq .cl-faq-p,#faq .cl-faq-a,#faq .cl-faq-ic,#faq .cl-faq-i::before{transition:none}
         }
-        @media(max-width:560px){#faq .cl-faq-b{padding:18px 16px;font-size:15.5px}#faq .cl-faq-a{padding:0 16px 20px}}
+        /* SM da escala oficial (era 560px — ver o bloco de breakpoints em
+           app/claro-tokens.css: seis larguras viraram quatro). */
+        @media(max-width:600px){#faq .cl-faq-b{padding:18px 16px;font-size:15.5px}#faq .cl-faq-a{padding:0 16px 20px}}
       `}} />
     </section>
   );
@@ -447,7 +456,9 @@ export function ClaroContato() {
           #contato .cl-ct-go,#contato .cl-fm-b .cl-arw{transition:none}
           #contato a.cl-ct-row:hover .cl-ct-go{transform:none}
         }
-        @media(max-width:560px){#contato .cl-f-g{grid-template-columns:minmax(0,1fr)}#contato .cl-fm{padding:22px}}
+        /* SM da escala oficial (era 560px). Dois campos lado a lado num celular
+           deixam cada um com ~130px — não cabe "(00) 00000-0000". */
+        @media(max-width:600px){#contato .cl-f-g{grid-template-columns:minmax(0,1fr)}#contato .cl-fm{padding:22px}}
       `}} />
     </section>
   );
@@ -512,23 +523,40 @@ export function ClaroFooter() {
       <style dangerouslySetInnerHTML={{ __html: `
         .cl-ft{background:var(--ink);color:#fff;padding-top:66px}
         .cl-ft-g{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:34px}
+        /* LG da escala oficial: a partir de 1180px o menu já virou burger, então
+           o corpo também comprime — quatro colunas com 34px de gap deixavam a
+           primeira (logotipo + parágrafo) sem largura para o texto. */
+        @media(max-width:1180px){.cl-ft{padding-top:56px}.cl-ft-g{gap:26px}}
         .cl-ft-p{font:400 15px/1.6 var(--text);color:rgba(255,255,255,.62);margin-top:18px;max-width:300px}
         .cl-ft-h{color:rgba(255,255,255,.45)}
         .cl-ft-c{display:flex;flex-direction:column;align-items:flex-start;margin-top:12px}
         /* prefixo .cl de propósito: sem ele estes seletores EMPATAM em
            especificidade com o ".cl a" da folha de tokens (azul de marca) e o
            vencedor passaria a depender da ordem de carregamento do CSS. */
-        .cl .cl-ft-c a{display:inline-flex;align-items:center;min-height:40px;font:400 15px var(--text);color:rgba(255,255,255,.72);transition:color .25s var(--ease),transform .25s var(--ease)}
+        /* 44px, não 40px: é o alvo de toque mínimo (WCAG 2.5.8 / guia de
+           interface da Apple). O rodapé é uma pilha de links pequenos e
+           próximos — 4px a menos aqui é o erro de toque que faz a pessoa abrir
+           a página errada no celular. */
+        .cl .cl-ft-c a{display:inline-flex;align-items:center;min-height:44px;font:400 15px var(--text);color:rgba(255,255,255,.72);transition:color .25s var(--ease),transform .25s var(--ease)}
         .cl .cl-ft-c a span{position:relative}
         .cl .cl-ft-c a span::after{content:'';position:absolute;left:0;right:0;bottom:-3px;height:1px;background:currentColor;transform:scaleX(0);transform-origin:left;transition:transform .28s var(--ease)}
         .cl .cl-ft-c a:hover{color:#fff;transform:translateX(3px)}
         .cl .cl-ft-c a:hover span::after{transform:scaleX(1)}
         .cl .cl-ft-c a:focus-visible{outline:2px solid #fff;outline-offset:3px;border-radius:6px;color:#fff}
-        .cl-ft-b{border-top:1px solid rgba(255,255,255,.12);margin-top:46px;padding:22px 0 30px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
+        /* O rodapé é o ÚLTIMO elemento da página. Com viewport-fit cover
+           (app/layout.tsx) a página vai até a borda física do iPhone, então sem
+           somar a área segura aqui a faixa da barra de gestos ficaria pintada
+           com o branco do documento — tarja clara debaixo do rodapé escuro.
+           (Sem crase neste comentário de propósito: ele mora dentro de um
+           template literal, e uma crase aqui FECHA a string — foi exatamente o
+           erro de compilação que este arquivo acabou de dar.) */
+        .cl-ft-b{border-top:1px solid rgba(255,255,255,.12);margin-top:46px;padding:22px 0 calc(30px + var(--sa-b));display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap}
         .cl-ft-b .small{color:rgba(255,255,255,.5)}
         @media(prefers-reduced-motion:reduce){.cl .cl-ft-c a:hover{transform:none}.cl .cl-ft-c a span::after{transition:none}}
         @media(max-width:900px){.cl-ft-g{grid-template-columns:1fr 1fr}}
-        @media(max-width:560px){.cl-ft-g{grid-template-columns:1fr;gap:28px}}
+        /* SM da escala oficial (era 560px). O último bloco ganha respiro extra
+           embaixo: os dois botões flutuantes ficam exatamente sobre este canto. */
+        @media(max-width:600px){.cl-ft-g{grid-template-columns:1fr;gap:28px}.cl-ft-b{padding-bottom:calc(30px + var(--sa-b));text-align:left}}
       `}} />
     </footer>
   );

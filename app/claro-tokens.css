@@ -60,10 +60,81 @@
   --sh-2:0 10px 30px -12px rgba(11,18,32,.14),0 2px 6px rgba(11,18,32,.05);
   --sh-3:0 28px 60px -24px rgba(11,18,32,.22),0 4px 12px rgba(11,18,32,.06);
   --maxw:1180px;
+
+  /* ══ ESCALA DE BREAKPOINTS — ÚNICA PARA TODA A ROTA `.cl` ══════════════════
+     Antes existiam SEIS larguras escolhidas arquivo a arquivo (1180, 1000,
+     900, 760, 600, 560), sem sistema. O efeito colateral eram faixas inteiras
+     de aparelho descobertas: em 1024–1180px (iPad deitado) o cabeçalho já
+     mostrava o burger — comportamento de celular — enquanto o corpo continuava
+     numa grade pensada para 1180px de largura.
+
+     A escala oficial passa a ser esta, e SÓ ela:
+
+       ≥1181px   DESKTOP  menu horizontal, grades cheias, respiro máximo
+       ≤1180px   LG       tablet deitado / laptop pequeno. É onde o menu vira
+                          burger — então o CORPO comprime junto (menos respiro
+                          lateral, menos gap), em vez de manter grade de desktop
+       ≤900px    MD       tablet em pé / celular deitado. 2–3 colunas → 1
+       ≤600px    SM       celular. Uma coluna, densidade de aplicativo
+       ≤380px    XS       celular pequeno (o piso real em uso é 320px)
+
+     `@media` não aceita `var()`, então os números aparecem literais nas regras
+     lá embaixo. O que as variáveis fazem é concentrar num lugar só TUDO o que
+     cada faixa regula — quem criar seção nova mexe aqui, não inventa uma 5ª
+     largura.
+
+     LEGADO ainda não migrado (arquivos de outros donos, listados no relatório
+     desta tarefa): 1000px em ClaroExtra/ClaroSolucoes, 760px em ClaroHero/
+     ClaroCaptura, 560px em ClaroScenes/ClaroSolucoes. Correspondência:
+     1000→LG(1180) ou MD(900), 760→MD(900), 560→SM(600). */
+  --wrap-x:34px;      /* respiro lateral do .wrap */
+  --sec-y:104px;      /* respiro vertical do .sec */
+  --hd-h:88px;        /* altura da barra fixa (.hd-in) */
+  --gap:20px;         /* gap padrão das grades .g / .g-280 / .g-220 */
+  --gap-split:56px;   /* gap do .split (duas colunas) */
+
+  /* ══ ÁREA SEGURA — iPhone com entalhe e barra de gestos ════════════════════
+     `viewport-fit: cover` é declarado em app/layout.tsx. Sem ele, o iOS
+     encolhe a página para dentro da área segura e sobram tarjas; COM ele, a
+     página ocupa a tela inteira (é o que dá a sensação de aplicativo) e passa
+     a ser responsabilidade do CSS não deixar nada de útil debaixo do entalhe
+     nem da barra de gestos. Estas 4 variáveis são a fonte única disso.
+     Fallback `0px` para todo navegador que não implementa `env()`. */
+  --sa-t:env(safe-area-inset-top,0px);
+  --sa-b:env(safe-area-inset-bottom,0px);
+  --sa-l:env(safe-area-inset-left,0px);
+  --sa-r:env(safe-area-inset-right,0px);
+
+  /* ══ BOTÕES FLUTUANTES — contrato com components/ChatWidget.tsx ════════════
+     Havia DOIS botões fixos disputando o mesmo canto: `.wa-f` (WhatsApp, aqui
+     embaixo) em right/bottom 22px e o botão do chat em right/bottom 20px. Em
+     telas ≤600px o WhatsApp vira um círculo e os dois se sobrepunham de fato.
+
+     Agora eles se empilham numa régua só: o chat ocupa o degrau 1 (canto) e o
+     WhatsApp o degrau 2, sempre `--fab-gap` acima. Qualquer terceiro botão
+     flutuante que apareça no futuro usa `--fab-3` — e nunca `bottom` cru.
+     `--fab-size` é a altura do botão do chat (h-14 do Tailwind = 56px); se ele
+     mudar de tamanho, muda AQUI, não em dois arquivos. */
+  --fab-size:56px;
+  --fab-gap:12px;
+  --fab-b:calc(20px + var(--sa-b));
+  --fab-r:calc(20px + var(--sa-r));
+  --fab-2:calc(var(--fab-b) + var(--fab-size) + var(--fab-gap));
 }
+
+/* Os degraus da escala. Só variável entra aqui — assim dá para ler a página
+   inteira de respiro/densidade num bloco de cinco linhas. */
+@media(max-width:1180px){:root{--wrap-x:28px;--sec-y:88px;--hd-h:72px;--gap-split:40px}}
+@media(max-width:900px){:root{--wrap-x:24px;--sec-y:76px;--hd-h:66px;--gap:18px;--gap-split:34px}}
+@media(max-width:600px){:root{--wrap-x:20px;--sec-y:64px;--hd-h:64px;--gap:16px;--gap-split:28px}}
+@media(max-width:380px){:root{--wrap-x:16px;--sec-y:56px}}
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 .cl html{scroll-behavior:smooth}
-.cl{background:var(--paper);color:var(--ink);font:400 17px/1.65 var(--text);-webkit-font-smoothing:antialiased}
+/* `text-size-adjust:100%`: o iOS Safari INFLA o corpo de texto sozinho quando o
+   aparelho gira para paisagem (herança do tempo em que sites não eram
+   responsivos). Numa página que já é fluida isso só quebra o ritmo tipográfico
+   e estoura títulos — o site parece "site", não aplicativo. */
+.cl{background:var(--paper);color:var(--ink);font:400 17px/1.65 var(--text);-webkit-font-smoothing:antialiased;-webkit-text-size-adjust:100%;text-size-adjust:100%}
 .cl ::selection{background:#1550E824}
 .cl img{max-width:100%;display:block}
 .cl a{color:var(--brand);text-decoration:none}
@@ -84,18 +155,24 @@
   outline:2px solid var(--brand);outline-offset:3px
 }
 
-.cl .wrap{max-width:var(--maxw);margin:0 auto;padding:0 34px}
-.cl .sec{padding:104px 0;position:relative}
+/* O respiro lateral nunca é menor que a área segura: em iPhone DEITADO o
+   entalhe come ~44px de um dos lados, e sem o `max()` o texto passa por baixo
+   dele. Nos demais casos `env()` vale 0 e o valor da escala manda. */
+.cl .wrap{max-width:var(--maxw);margin:0 auto;padding-left:max(var(--wrap-x),var(--sa-l));padding-right:max(var(--wrap-x),var(--sa-r))}
+.cl .sec{padding:var(--sec-y) 0;position:relative}
 .cl .sec.alt{background:var(--paper-2)}
-@media(max-width:760px){.cl .sec{padding:68px 0}.cl .wrap{padding:0 20px}}
 
 /* type */
 .cl .eyebrow{display:inline-flex;align-items:center;gap:9px;font:600 12px/1 var(--text);letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
 .cl .eyebrow i{width:6px;height:6px;border-radius:99px;background:var(--brand);display:inline-block}
 .cl h1,.cl h2,.cl h3,.cl h4,.cl p{margin:0}
-.cl .h1{font:700 clamp(38px,5.4vw,66px)/1.04 var(--disp);letter-spacing:-.035em;text-wrap:balance}
-.cl .h2{font:700 clamp(29px,3.6vw,44px)/1.1 var(--disp);letter-spacing:-.03em;text-wrap:balance}
-.cl .h3{font:600 21px/1.3 var(--disp);letter-spacing:-.02em}
+/* `overflow-wrap:break-word` nos títulos: a 320px de largura real (o piso em
+   uso) sobram ~288px de linha, e uma palavra longa sozinha ("Diagnóstico",
+   "personalização") num display de 38px não cabe — sem isto ela vaza para fora
+   da tela e cria rolagem horizontal na página inteira. */
+.cl .h1{font:700 clamp(38px,5.4vw,66px)/1.04 var(--disp);letter-spacing:-.035em;text-wrap:balance;overflow-wrap:break-word}
+.cl .h2{font:700 clamp(29px,3.6vw,44px)/1.1 var(--disp);letter-spacing:-.03em;text-wrap:balance;overflow-wrap:break-word}
+.cl .h3{font:600 21px/1.3 var(--disp);letter-spacing:-.02em;overflow-wrap:break-word}
 .cl .lead{font:400 19px/1.62 var(--text);color:var(--ink-2);max-width:58ch;text-wrap:pretty}
 .cl .body{font:400 16.5px/1.7 var(--text);color:var(--ink-2);text-wrap:pretty}
 .cl .small{font:400 14.5px/1.6 var(--text);color:var(--ink-3)}
@@ -167,29 +244,61 @@
 .cl .card.rv.in:hover{transform:translateY(-3px);box-shadow:var(--sh-2)}
 @media(prefers-reduced-motion:reduce){.cl .card.rv.in:hover{transform:none}}
 
-/* grids */
-.cl .g{display:grid;gap:20px}
+/* grids — o gap sai da escala de breakpoints (var(--gap)/var(--gap-split)),
+   então uma grade não precisa mais declarar media query própria só para
+   respirar menos no celular. As colunas seguem em `auto-fit` + `min(Xpx,100%)`
+   de propósito: é o padrão que não quebra em tela estreita. */
+.cl .g{display:grid;gap:var(--gap)}
 .cl .g-280{grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}
 .cl .g-220{grid-template-columns:repeat(auto-fit,minmax(min(220px,100%),1fr))}
-.cl .split{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
-@media(max-width:900px){.cl .split{grid-template-columns:1fr;gap:34px}}
+.cl .split{display:grid;grid-template-columns:1fr 1fr;gap:var(--gap-split);align-items:center}
+/* MD: duas colunas de conteúdo em tablet retrato ficam com ~330px cada e o
+   texto passa a quebrar de 4 em 4 palavras — vira uma coluna. */
+@media(max-width:900px){.cl .split{grid-template-columns:1fr}}
 
 /* marquee */
 .cl .mq{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
 .cl .mq-t{display:flex;flex-shrink:0;align-items:center;gap:54px;padding-right:54px;animation:cl-mq 42s linear infinite}
 .cl .mq.rev .mq-t{animation-direction:reverse;animation-duration:52s}
 .cl .mq:hover .mq-t,.cl .mq:focus-within .mq-t{animation-play-state:paused}
+/* `.mq-pause` é ligada/desligada pelo observador em components/claro/ClaroNav.tsx
+   (efeito "esteiras fora da tela"): as duas esteiras do topo e a de clientes
+   rodavam 42s/52s em laço INFINITO o tempo todo, inclusive fora da viewport e
+   com a aba em segundo plano. No desktop o `:hover` acima dava uma pausa; no
+   celular hover não existe — era bateria queimando sem ninguém olhando.
+   Só `animation-play-state`: a esteira retoma exatamente de onde parou, sem
+   pulo visível quando a seção volta para a tela. */
+.cl .mq.mq-pause .mq-t{animation-play-state:paused}
 @keyframes cl-mq{to{transform:translateX(-100%)}}
 .cl .mq-i{white-space:nowrap;font:700 19px var(--disp);letter-spacing:-.02em;color:#5A6579;transition:color .3s}
 .cl .mq-i:hover{color:var(--ink)}
 @media(prefers-reduced-motion:reduce){.cl .mq-t{animation:none}}
 
-/* nav */
-.cl .hd{position:fixed;inset:0 0 auto;z-index:900;transition:background .35s var(--ease),box-shadow .35s,border-color .35s;border-bottom:1px solid transparent}
+/* nav
+   `padding-top:var(--sa-t)`: com `viewport-fit:cover` a página começa DEBAIXO
+   do relógio/entalhe do iPhone quando o site roda em tela cheia (adicionado à
+   tela de início, `black-translucent` em app/layout.tsx). Sem isto o logotipo
+   fica escondido atrás da barra de status.
+   `padding-right:var(--cl-sb,0px)`: enquanto o drawer trava a rolagem, o
+   ClaroNav mede a barra de rolagem que sumiu e publica a medida nesta
+   variável — sem isso a barra fixa (que é largura de VIEWPORT) se desalinharia
+   do conteúdo do corpo (que ganhou o padding compensatório) e o cabeçalho
+   "pularia" alguns pixels no instante em que o menu abre. */
+.cl .hd{position:fixed;inset:0 0 auto;z-index:900;padding-top:var(--sa-t);padding-right:var(--cl-sb,0px);transition:background .35s var(--ease),box-shadow .35s,border-color .35s;border-bottom:1px solid transparent}
 .cl .hd.on{background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-color:var(--line);box-shadow:0 1px 0 rgba(13,16,19,.03)}
-.cl .hd-in{display:flex;align-items:center;justify-content:space-between;height:88px;gap:18px}
+/* Regra 5 da skill hg-regras-de-bug: NUNCA backdrop-filter em elemento grande e
+   fixo — é o que já travou a rolagem no mobile deste projeto. A barra ocupa a
+   largura inteira da tela e fica fixa: em aparelho sem ponteiro fino (celular e
+   tablet) o desfoque é trocado por um branco quase opaco, que dá a mesma
+   leitura de "vidro" sem repintar a cada quadro de rolagem. */
+@media(hover:none),(max-width:900px){
+  .cl .hd.on{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,.97)}
+}
+.cl .hd-in{display:flex;align-items:center;justify-content:space-between;height:var(--hd-h);gap:18px}
 .cl .nl{display:flex;align-items:center;gap:6px}
-.cl .nl>a,.cl .nt{font:500 15px var(--text);color:var(--ink-2);background:none;border:none;padding:10px 12px;border-radius:10px;display:inline-flex;align-items:center;gap:6px;transition:color .2s,background .2s}
+/* min-height 44px = alvo de toque mínimo (WCAG 2.5.8). Vale mesmo aqui, que é
+   faixa de desktop: laptop com tela sensível ao toque usa este menu. */
+.cl .nl>a,.cl .nt{font:500 15px var(--text);color:var(--ink-2);background:none;border:none;padding:10px 12px;min-height:44px;border-radius:10px;display:inline-flex;align-items:center;gap:6px;transition:color .2s,background .2s}
 .cl .nl>a:hover,.cl .nt:hover,.cl .ni:hover .nt{color:var(--ink);background:var(--paper-2)}
 .cl .hd:not(.on) .nl>a,.cl .hd:not(.on) .nt{color:rgba(255,255,255,.86)}
 .cl .hd:not(.on) .nl>a:hover,.cl .hd:not(.on) .nt:hover,.cl .hd:not(.on) .ni:hover .nt{color:#fff;background:rgba(255,255,255,.14)}
@@ -207,7 +316,7 @@
    parecer amassado — parte da reclamação "o menu está horrível". */
 .cl .casc{width:880px;display:grid;grid-template-columns:272px 1fr;gap:14px}
 .cl .rail{display:flex;flex-direction:column;gap:2px;padding-right:14px;border-right:1px solid var(--line-2)}
-.cl .dep{display:flex;align-items:center;gap:11px;width:100%;text-align:left;padding:12px;border-radius:11px;border:1px solid transparent;background:none;transition:all .2s var(--ease)}
+.cl .dep{display:flex;align-items:center;gap:11px;width:100%;min-height:44px;text-align:left;padding:12px;border-radius:11px;border:1px solid transparent;background:none;transition:all .2s var(--ease)}
 .cl .dep:hover{background:var(--paper-2)}
 .cl .dep-t{flex:1;font:600 14.5px var(--text);color:var(--ink-2)}
 .cl .dep.on .dep-t{color:var(--ink)}
@@ -231,20 +340,34 @@
 /* drawer */
 .cl .dw{position:fixed;inset:0;z-index:980;display:none}
 .cl .dw.open{display:block}
-.cl .dw-s{position:absolute;inset:0;background:rgba(13,16,19,.35);backdrop-filter:blur(3px)}
-.cl .dw-p{position:absolute;inset:0 0 0 auto;width:min(400px,90vw);background:#fff;padding:22px;overflow-y:auto;box-shadow:-24px 0 60px -20px rgba(13,16,19,.3);animation:cl-dwin .34s var(--ease)}
+/* O `backdrop-filter:blur(3px)` saiu daqui pelo mesmo motivo do cabeçalho
+   (regra 5 da hg-regras-de-bug): camada FIXA do tamanho da tela inteira,
+   desenhada exatamente no quadro em que o painel está deslizando — é o pior
+   lugar possível para um desfoque no Safari do iPhone. O escurecimento subiu
+   de .35 para .5, que separa o fundo melhor do que o blur separava. */
+.cl .dw-s{position:absolute;inset:0;background:rgba(13,16,19,.5);touch-action:none}
+/* `overscroll-behavior:contain` é metade da sensação de aplicativo: sem ele,
+   ao chegar no fim da lista do menu o gesto CONTINUA e começa a rolar a página
+   por baixo (scroll chaining). A outra metade é a trava de `body` feita no
+   ClaroNav. Padding: entalhe em cima, barra de gestos embaixo, e o lado direito
+   nunca menor que a área segura (iPhone deitado). */
+.cl .dw-p{position:absolute;inset:0 0 0 auto;width:min(400px,90vw);max-width:100%;background:#fff;padding:calc(22px + var(--sa-t)) max(22px,var(--sa-r)) calc(22px + var(--sa-b)) 22px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;box-shadow:-24px 0 60px -20px rgba(13,16,19,.3);animation:cl-dwin .34s var(--ease)}
 @keyframes cl-dwin{from{transform:translateX(100%)}}
+@media(prefers-reduced-motion:reduce){.cl .dw-p{animation:none}}
 .cl .acc{border-bottom:1px solid var(--line-2)}
-.cl .acc-h{display:flex;align-items:center;justify-content:space-between;width:100%;background:none;border:none;padding:16px 2px;font:600 16px var(--text);color:var(--ink)}
+.cl .acc-h{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:48px;background:none;border:none;padding:16px 2px;font:600 16px var(--text);color:var(--ink)}
 .cl .acc-b{overflow:hidden;max-height:0;transition:max-height .4s var(--ease);display:flex;flex-direction:column}
-.cl .acc-b a{padding:10px 12px;font:400 15px var(--text);color:var(--ink-2);border-radius:9px}
+/* 40px de altura (10px de padding + 15px de linha) ficava abaixo do mínimo de
+   44px para o dedo — e este é o menu que SÓ existe no celular. */
+.cl .acc-b a{display:flex;align-items:center;min-height:44px;padding:10px 12px;font:400 15px var(--text);color:var(--ink-2);border-radius:9px}
 .cl .acc-b a:hover{background:var(--paper-2);color:var(--ink)}
 
 @media(max-width:1180px){.cl .nl{display:none}.cl .burger{display:inline-flex!important}}
 .cl .burger{display:none;width:46px;height:46px;border-radius:11px;border:1px solid var(--line);background:#fff;align-items:center;justify-content:center;color:var(--ink)}
 
-/* progresso de rolagem */
-.cl .prog{position:fixed;top:0;left:0;height:3px;width:0;z-index:990;background:linear-gradient(90deg,var(--brand),#5B3CFF,var(--cta))}
+/* progresso de rolagem — `top:var(--sa-t)` para a barrinha não ficar escondida
+   atrás do relógio quando o site roda em tela cheia no iPhone */
+.cl .prog{position:fixed;top:var(--sa-t);left:0;height:3px;width:0;z-index:990;background:linear-gradient(90deg,var(--brand),#5B3CFF,var(--cta))}
 
 /* moldura de navegador do Portfólio (components/site/DeviceMockup.tsx,
    compartilhada com o site escuro — lá os 3 pontinhos são jade/champanhe/
@@ -255,7 +378,15 @@
 .cl .dv-dot--b{ background:#5B3CFF; }
 .cl .dv-dot--c{ background:var(--cta); }
 
-/* whatsapp flutuante */
-.cl .wa-f{position:fixed;right:22px;bottom:22px;z-index:960;display:inline-flex;align-items:center;gap:10px;background:var(--wa);color:#fff;border-radius:99px;padding:14px 20px;font:600 15px var(--text);box-shadow:0 16px 36px -14px rgba(15,157,88,.7)}
+/* whatsapp flutuante — DEGRAU 2 da régua de botões flutuantes (o degrau 1, no
+   canto, é o botão do chat). Ver o bloco `--fab-*` no :root: os dois ocupavam
+   o mesmo ponto e se sobrepunham de fato no celular, onde este aqui vira um
+   círculo. `min-width/min-height:52px` garante o alvo de toque mesmo na versão
+   só-ícone. */
+.cl .wa-f{position:fixed;right:var(--fab-r);bottom:var(--fab-2);z-index:960;display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:52px;background:var(--wa);color:#fff;border-radius:99px;padding:14px 20px;font:600 15px var(--text);box-shadow:0 16px 36px -14px rgba(15,157,88,.7)}
 .cl .wa-f:hover{background:#0B8146;color:#fff;transform:translateY(-2px)}
-@media(max-width:600px){.cl .wa-f{padding:15px;border-radius:99px}.cl .wa-f span{display:none}}
+@media(max-width:600px){.cl .wa-f{min-width:52px;padding:15px;border-radius:99px}.cl .wa-f span{display:none}}
+/* Tela MUITO baixa (celular pequeno deitado, ~320px de altura útil): dois
+   botões empilhados comem metade da tela. O de cima recolhe para o tamanho de
+   ícone independentemente da largura. */
+@media(max-height:460px){.cl .wa-f{min-width:52px;padding:15px}.cl .wa-f span{display:none}}

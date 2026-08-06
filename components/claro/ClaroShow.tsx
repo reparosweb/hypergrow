@@ -1,26 +1,26 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { ArrowRight, Bot, Palette, ShoppingCart, TrendingUp, type LucideIcon } from "lucide-react";
-import { PILLARS, type PillarKey } from "@/lib/pillars";
+import { ArrowRight, Clapperboard, GitMerge, Search, ShoppingBag, Sparkles, Target, type LucideIcon } from "lucide-react";
 import { ClaroHead } from "./ClaroUI";
-import { SCENE_CSS, SceneChat, SceneEcom, SceneFunil, SceneSocial } from "./ClaroScenes";
-import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
+import { SCENE_CSS, SceneCRM, SceneChat, SceneEcom, SceneFunil, SceneSEO, SceneSocial } from "./ClaroScenes";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   "Soluções em ação" — carrossel de 4 itens (um por pilar real, reduzido dos
-   6 "departamentos" fictícios do mockup). Rail de botões à esquerda, palco
-   com a cena correspondente à direita; troca sozinho a cada ~5,6s, pausa no
-   hover E no foco de teclado, clique troca na hora.
+   "Veja o trabalho acontecendo" — SEIS palcos animados. Rail de botões à
+   esquerda, cena correspondente à direita; troca sozinho a cada 5,6s, pausa no
+   hover e no foco de teclado, clique dirige.
 
-   Título/descrição de cada item = `pillar.label`/`pillar.desc`, JÁ escritos e
-   aprovados em `lib/pillars.ts` — reaproveitados literalmente, sem reescrever.
+   ⚠️ CORREÇÃO 2026-08-06: esta seção tinha sido portada com QUATRO itens (um
+   por pilar do catálogo) em vez dos SEIS do design. Foi decisão minha e estava
+   errada — o dono apontou: "temos 6 cards que têm efeitos e você só incluiu 4".
+   Os seis voltaram, com os títulos, as frases, as cores e as cenas exatas do
+   projeto Claude Design (lit-show.jsx), lido ao vivo pelo MCP.
 
-   Ícone de pilar: mesmo motivo do ClaroNav — `ClaroServiceIcon` não cobre
-   "shopping-cart"/"trending-up" (só ícone de SERVIÇO), então os 4 ficam num
-   Record fechado com import nomeado direto do lucide.
+   Estes 6 recortes NÃO competem com os 4 pilares: o catálogo de serviços
+   (ClaroSolucoes, logo abaixo) continua organizado por pilar, com os 22
+   serviços reais. Aqui o recorte é por CENA — é o que rende as 6 animações.
 
-   REVISÃO 2026-08-06 (pedido do dono: "não tem efeito ao passar o mouse
+   REVISÃO ANTERIOR (pedido do dono: "não tem efeito ao passar o mouse
    trocar de cor"):
    1. O hover REALMENTE não trocava a cor do título: `<b className="glow-t">`
       recebia `style={{color: ...}}` inline, e a regra `.cl .lit:hover .glow-t`
@@ -41,24 +41,27 @@ import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
    Só `transform`/`opacity`/cor são animados (regra de performance da casa).
    ──────────────────────────────────────────────────────────────────────────── */
 
-const PILLAR_ICON: Record<PillarKey, LucideIcon> = {
-  vender: ShoppingCart,
-  atrair: TrendingUp,
-  marca: Palette,
-  ia: Bot,
+/* Os 6 itens, com título, frase, ícone e cor EXATOS do design (lit-show.jsx).
+   As cores aqui são as do mockup (`--d-*` em app/claro-tokens.css) e não a
+   paleta de pilar — cada palco tem a sua, é o que dá a variação visual da
+   seção. Nenhuma delas é jade/cobre. */
+type ShowItem = {
+  key: string;
+  titulo: string;
+  frase: string;
+  Icon: LucideIcon;
+  hex: string;
+  Scene: (props: { c: string }) => JSX.Element;
 };
 
-const SCENE_BY_KEY: Record<PillarKey, (props: { c: string }) => JSX.Element> = {
-  vender: SceneEcom,
-  atrair: SceneFunil,
-  marca: SceneSocial,
-  ia: SceneChat,
-};
-
-const ITEMS = (["vender", "atrair", "marca", "ia"] as PillarKey[]).map((key) => {
-  const pillar = PILLARS.find((p) => p.key === key)!;
-  return { pillar, Scene: SCENE_BY_KEY[key] };
-});
+const ITEMS: ShowItem[] = [
+  { key: "ecom", titulo: "E-commerce & operação", frase: "Produto entrando na loja e o estoque batendo com o ERP.", Icon: ShoppingBag,  hex: "#3B2FCC", Scene: SceneEcom },
+  { key: "pres", titulo: "Presença & autoridade", frase: "Sua marca escalando até a primeira posição.",              Icon: Search,      hex: "#07835C", Scene: SceneSEO },
+  { key: "aqui", titulo: "Aquisição paga",        frase: "Cliques entrando no funil e saindo como venda.",           Icon: Target,      hex: "#A8560B", Scene: SceneFunil },
+  { key: "auto", titulo: "Automação & IA",        frase: "Uma conversa que se resolve sozinha às 22h47.",            Icon: Sparkles,    hex: "#0A6C9E", Scene: SceneChat },
+  { key: "cont", titulo: "Conteúdo & mídia",      frase: "Publicação no ar e o engajamento subindo.",                Icon: Clapperboard,hex: "#B0155F", Scene: SceneSocial },
+  { key: "estr", titulo: "Estrutura comercial",   frase: "O negócio andando de etapa em etapa, com previsão.",       Icon: GitMerge,    hex: "#1B3B8B", Scene: SceneCRM },
+];
 
 const AUTO_MS = 5600;
 
@@ -93,7 +96,7 @@ export default function ClaroShow() {
 
   const cur = ITEMS[active];
   const Scene = cur.Scene;
-  const corAtual = CLARO_PILLAR_ACCENT[cur.pillar.key];
+  const corAtual = cur.hex;
 
   /* Setas do teclado no rail vertical (WAI-ARIA tabs, ativação automática). */
   function onRailKey(e: React.KeyboardEvent<HTMLButtonElement>, i: number) {
@@ -115,9 +118,9 @@ export default function ClaroShow() {
         <ClaroHead
           center
           eyebrow="Soluções em ação"
-          sub="Quatro frentes reais, cada uma resolvendo uma parte diferente da operação — veja o que cada uma faz."
+          sub="Não listamos serviços: mostramos o que acontece quando cada um deles entra na sua operação."
         >
-          Um sistema, <span className="grad">não seis fornecedores</span>
+          Veja o trabalho <span className="grad">acontecendo</span>
         </ClaroHead>
 
         <div
@@ -127,31 +130,31 @@ export default function ClaroShow() {
           onFocusCapture={() => setPaused(true)}
           onBlurCapture={() => setPaused(false)}
         >
-          <div className="shw-rail" role="tablist" aria-label="Soluções por frente" aria-orientation="vertical">
+          <div className="shw-rail" role="tablist" aria-label="Soluções em ação" aria-orientation="vertical">
             {ITEMS.map((it, i) => {
-              const Icon = PILLAR_ICON[it.pillar.key];
+              const Icon = it.Icon;
               const on = i === active;
               return (
                 <button
-                  key={it.pillar.key}
+                  key={it.key}
                   type="button"
                   role="tab"
-                  id={`shw-tab-${it.pillar.key}`}
+                  id={`shw-tab-${it.key}`}
                   aria-selected={on}
                   aria-controls="shw-painel"
                   tabIndex={on ? 0 : -1}
                   ref={(el) => { railRef.current[i] = el; }}
                   className={"shw-btn lit" + (on ? " on" : "")}
-                  style={{ ["--beam" as string]: CLARO_PILLAR_ACCENT[it.pillar.key] }}
+                  style={{ ["--beam" as string]: it.hex }}
                   onClick={() => setActive(i)}
                   onKeyDown={(e) => onRailKey(e, i)}
                 >
                   <span className="shw-ic glow">
-                    <Icon size={18} aria-hidden />
+                    <Icon size={19} aria-hidden />
                   </span>
                   <span className="shw-tx">
-                    <b className="glow-t">{it.pillar.label}</b>
-                    <span className="shw-desc">{it.pillar.desc}</span>
+                    <b className="glow-t">{it.titulo}</b>
+                    <span className="shw-desc">{it.frase}</span>
                   </span>
                   {on && (
                     <span
@@ -176,16 +179,19 @@ export default function ClaroShow() {
             className="shw-stage"
             id="shw-painel"
             role="tabpanel"
-            aria-labelledby={`shw-tab-${cur.pillar.key}`}
+            aria-labelledby={`shw-tab-${cur.key}`}
             style={{ ["--beam" as string]: corAtual }}
           >
-            <div className="shw-halo" aria-hidden key={`halo-${cur.pillar.key}`} />
-            <div className="shw-scene" key={cur.pillar.key}>
+            <div className="shw-halo" aria-hidden key={`halo-${cur.key}`} />
+            <div className="shw-scene" key={cur.key}>
               <Scene c={corAtual} />
             </div>
             <div className="shw-foot">
-              <span className="mono shw-count">
-                {String(active + 1).padStart(2, "0")} / {String(ITEMS.length).padStart(2, "0")}
+              <span className="shw-foot-tx">
+                <span className="mono shw-count">
+                  {String(active + 1).padStart(2, "0")} / {String(ITEMS.length).padStart(2, "0")}
+                </span>
+                <b className="shw-foot-t">{cur.titulo}</b>
               </span>
               <a href="#contato" className="btn btn-s shw-cta">
                 Quero isso <ArrowRight size={15} aria-hidden />
@@ -228,6 +234,10 @@ const STAGE_CSS = `
   @keyframes shwin { from { opacity: 0; transform: scale(.985); } }
   .shw-foot { position: relative; z-index: 1; margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .shw-count { color: var(--beam); transition: color .3s var(--ease); }
+  /* rodapé do palco: contador na cor do item + nome do item, como no design */
+  .shw-foot-tx { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+  .shw-foot-t { font: 600 18px var(--disp); letter-spacing: -.02em; color: var(--ink); }
+  @media (max-width: 600px) { .shw-foot-t { font-size: 16px; } }
   .shw-cta { padding: 11px 17px; font-size: 14px; }
   .shw-cta svg { transition: transform .28s var(--ease); }
   .shw-cta:hover svg { transform: translateX(4px); }
