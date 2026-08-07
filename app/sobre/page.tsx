@@ -87,11 +87,20 @@ export default function SobrePage() {
           <StackedShowcase
             browserSrc="/portfolio/agentop.webp"
             browserAlt="Painel do Agentop: agenda, CRM e financeiro num sistema só"
-            /* Print REAL, não o card de marca: nutri.webp é um card desenhado
-               (o app renderiza em branco para capturador) e dentro da moldura de
-               celular virava uma tela verde chapada — parecia defeito. */
-            phoneSrc="/portfolio/sorteio.webp"
-            phoneAlt="Sorteio Bilionário IA aberto no celular"
+            /* 2026-08-07: trocado sorteio.webp (print DESKTOP, 800x500 paisagem)
+               por sorteio-mobile.webp — o dono reportou "está cortando". Causa:
+               PhoneFrame recorta com object-fit:cover numa caixa 9/19 retrato;
+               cortar uma imagem PAISAGEM até 9/19 sobra só a faixa central
+               estreita, cortando o título ("PARE DE APOSTAR no palpite.") ao
+               meio. sorteio-mobile.webp já É um print de celular de verdade
+               (emulação mobile real, não a versão desktop encolhida), então o
+               mesmo corte 9/19 agora tira só uma margem fina dos dois lados —
+               o título inteiro continua visível. Print REAL, não o card de
+               marca: nutri.webp é um card desenhado (o app renderiza em branco
+               para capturador) e dentro da moldura de celular virava uma tela
+               verde chapada — parecia defeito. */
+            phoneSrc="/portfolio/sorteio-mobile.webp"
+            phoneAlt="Sorteio Bilionário IA aberto no celular, tela de gerar combinação"
             title="agentop.com.br"
             priority
           />
