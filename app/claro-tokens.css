@@ -363,7 +363,13 @@
 .cl .acc-b a:hover{background:var(--paper-2);color:var(--ink)}
 
 @media(max-width:1180px){.cl .nl{display:none}.cl .burger{display:inline-flex!important}}
-.cl .burger{display:none;width:46px;height:46px;border-radius:11px;border:1px solid var(--line);background:#fff;align-items:center;justify-content:center;color:var(--ink)}
+.cl .burger{display:none;width:46px;height:46px;border-radius:11px;border:1px solid var(--line);background:#fff;align-items:center;justify-content:center;color:var(--ink);flex-shrink:0}
+/* BUG CRITICO achado pelo auditor (2026-08-06): nada protegia o espaco do
+   burger -- em qualquer iphone padrao (390px) o CTA "Falar com especialista"
+   do cabecalho (.hd-cta, ClaroNav.tsx) empurrava o botao de menu quase
+   inteiro pra fora da tela (~1px dos 46px visivel). O drawer mobile ja tem o
+   MESMO CTA em largura total, entao escondido aqui nao tira acesso nenhum. */
+@media(max-width:600px){.cl .hd-cta{display:none}}
 
 /* progresso de rolagem — `top:var(--sa-t)` para a barrinha não ficar escondida
    atrás do relógio quando o site roda em tela cheia no iPhone */

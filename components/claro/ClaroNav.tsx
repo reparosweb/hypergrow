@@ -353,7 +353,15 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
           </nav>
 
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <a href="#contato" className="btn btn-p">Falar com especialista</a>
+            {/* BUG CRITICO achado pelo auditor (2026-08-06): nada aqui protegia
+                o espaco do burger -- em qualquer iphone padrao (390px) o texto
+                "Falar com especialista" empurrava o botao de menu quase inteiro
+                pra fora da tela (so ~1px dos 46px ficava visivel). O drawer
+                mobile JA TEM o mesmo CTA em largura total (linha ~426 abaixo),
+                entao esconder este aqui em telas pequenas nao tira acesso
+                nenhum -- so evita a disputa de espaco. Classe extra (hd-cta)
+                escopa o CSS so nesta instancia, sem tocar no CTA do drawer. */}
+            <a href="#contato" className="btn btn-p hd-cta">Falar com especialista</a>
             <button
               type="button"
               className="burger"

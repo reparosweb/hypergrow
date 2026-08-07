@@ -6,6 +6,7 @@ import ClaroNav from "./ClaroNav";
 import ClaroHero from "./ClaroHero";
 import ClaroShow from "./ClaroShow";
 import ClaroSolucoes from "./ClaroSolucoes";
+import ClaroServicos from "./ClaroServicos";
 import ClaroDiag from "./ClaroDiag";
 import ClaroCaptura from "./ClaroCaptura";
 /* `ClaroBanner` existe em ClaroExtra.tsx mas NÃO é montado aqui — ver nota
@@ -46,9 +47,15 @@ import {
    em cada um onde depende da vizinha):
    Hero(vídeo) → Hero/compat(plain) → Show(alt) →
    Solucoes(plain) → Fluxo(alt) → Portfolio(plain) → Resultados(alt) →
-   Captura(vídeo full-bleed) → Diag(plain) → Clientes(alt) →
+   Captura(vídeo full-bleed) → Servicos(alt) → Diag(plain) → Clientes(alt) →
    Depoimentos(plain) → Sobre(alt) → Blog(plain) → Faq(alt) →
    Contato(plain) → Footer.
+
+   `Servicos` (2026-08-06, grade maior de serviços — ver ClaroServicos.tsx)
+   entra logo depois de `Captura` de propósito: como `Captura` é a faixa
+   full-bleed em vídeo (não usa `.sec`, não participa da alternância), inserir
+   a seção nova ali não obriga a recolorir nenhuma das seções seguintes —
+   `Diag` já era "plain" e continua correto sem tocar no seu className.
 
    `Captura` entra entre Resultados e Diagnóstico de propósito: é onde nasce a
    objeção "bonito, mas vocês entregam e somem?" — depois da prova, antes de
@@ -85,6 +92,7 @@ export default function ClaroSite({ services }: { services: ServiceCardData[] })
         <ClaroPortfolio />
         <ClaroResultados />
         <ClaroCaptura />
+        <ClaroServicos services={services} />
         <ClaroDiag />
         <ClaroClientes />
         <ClaroDepoimentos />

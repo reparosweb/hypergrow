@@ -365,11 +365,14 @@ export function ClaroSobre() {
       <div className="wrap">
         <div className="split">
           <figure className="rv cl-sb-fig">
-            {/* Foto do Pexels (PX 8475203) igual ao arquivo original — mesma
-                licença livre pra uso comercial, "figure" já trava aspect-ratio
-                5/4 então não precisa de width/height fixo aqui. */}
+            {/* Foto do Pexels (PX 6476259) — trocada em 2026-08-06: a original
+                (id 8475203) mostrava dono de loja/mercearia de avental, contexto
+                de varejo físico que não bate com uma agência de marketing
+                digital/tecnologia (bronca real do dono, com print). Licença
+                livre pra uso comercial igual à anterior; "figure" já trava
+                aspect-ratio 5/4 então não precisa de width/height fixo aqui. */}
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="https://images.pexels.com/photos/8475203/pexels-photo-8475203.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Equipe organizando a operação de um cliente" loading="lazy" decoding="async" />
+            <img src="https://images.pexels.com/photos/6476259/pexels-photo-6476259.jpeg?auto=compress&cs=tinysrgb&w=1400" alt="Equipe da HyperGrow em reunião de estratégia, acompanhando indicadores de marketing digital" loading="lazy" decoding="async" />
           </figure>
           <div>
             <ClaroHead eyebrow="Nossa agência" sub="Não entregamos apresentação bonita que morre na gaveta. Implantamos, operamos e respondemos pelo número.">

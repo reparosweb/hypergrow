@@ -17,8 +17,12 @@ import { ArrowRight, Check, MessageCircle, TrendingUp } from "lucide-react";
    como placeholder por ora"), na mesma linha de `ClaroClose.tsx`.
    Antes de qualquer campanha paga ou divulgação, isto vira dado real ou sai.
 
-   Foto: Pexels (mesma do design, id 3932728), licença livre para uso
-   comercial — igual às fotos já usadas em `ClaroSolucoes.tsx`.
+   Foto: Pexels, licença livre para uso comercial — igual às fotos já usadas
+   em `ClaroSolucoes.tsx`. Trocada em 2026-08-06 (id 3932728 → 34610771): a
+   original mostrava dono de loja/mercearia de avental, contexto de varejo
+   físico sem relação com uma agência de marketing digital/tecnologia (bronca
+   real do dono, com print). A nova mantém a mesma composição (retrato + laptop
+   em primeiro plano) que o `object-position` abaixo já foi ajustado para.
    ──────────────────────────────────────────────────────────────────────────── */
 
 const PX = (id: number) =>
@@ -65,8 +69,8 @@ export default function ClaroVitrine() {
             <figure className="vt-fig">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={PX(3932728)}
-                alt="Empreendedora sorrindo ao atender um pedido pelo celular na sua loja"
+                src={PX(34610771)}
+                alt="Profissional sorrindo enquanto acompanha o desempenho da loja virtual no notebook"
                 loading="lazy"
                 decoding="async"
               />

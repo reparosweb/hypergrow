@@ -15,15 +15,19 @@ import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
    lugar nenhum (`href="#solucoes"`); aqui cada um leva ao conteúdo completo
    já publicado — estrito upgrade, zero custo extra.
 
-   Foto por pilar: as MESMAS fotos do Pexels que o arquivo original usava
-   (`hypergrow-original/lit-sol.jsx`, helper `PX(id)`) — Pexels License, uso
-   comercial livre, sem precisar baixar/hospedar nada. Mapeadas dos 6
-   "departamentos" fictícios do mockup pros 4 pilares reais, no mesmo
-   esquema já usado pra cor em claroPillarAccent.ts (vender=ecom,
-   atrair=aqui, marca=cont, ia=auto). O mockup original tinha uma legenda
-   tipo "Loja de decoração · Sul / +38% de faturamento em 90 dias" atribuída
-   a um cliente FICTÍCIO — isso não foi portado: a legenda aqui usa a
+   Foto por pilar: fotos do Pexels (helper `PX(id)`) — Pexels License, uso
+   comercial livre, sem precisar baixar/hospedar nada. O mockup original tinha
+   uma legenda tipo "Loja de decoração · Sul / +38% de faturamento em 90 dias"
+   atribuída a um cliente FICTÍCIO — isso não foi portado: a legenda aqui usa a
    descrição real do pilar, sem inventar nome de cliente nem número.
+
+   TROCA 2026-08-06: as 4 fotos herdadas do mockup (4473496/8475204/6720592/
+   3932728) mostravam donos de loja física/mercearia de avental — contexto de
+   varejo físico, sem relação com uma agência de marketing digital, e-commerce
+   e automação (bronca real do dono, com print apontando exatamente a foto do
+   pilar "Vender"). Substituídas por fotos de escritório/tecnologia mais
+   próximas de cada pilar; `object-position: 50% 30%` (na folha abaixo) já foi
+   conferido contra as 4 fotos novas — nenhuma corta a cabeça da pessoa.
 
    REVISÃO 2026-08-06 (pedido do dono: "não tem efeito ao passar o mouse",
    "as bordas não têm efeito"):
@@ -44,10 +48,10 @@ import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
    Só `transform`/`opacity`/cor são animados (regra de performance da casa). */
 const PX = (id: number) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1400`;
 const FOTO_POR_PILAR: Record<string, { src: string; alt: string }> = {
-  vender: { src: PX(4473496), alt: "Gestora sorrindo ao acompanhar os pedidos da loja no balcão" },
-  atrair: { src: PX(8475204), alt: "Dois sócios sorrindo dentro da própria loja" },
-  marca: { src: PX(6720592), alt: "Profissional sorrindo enquanto atende uma cliente no ateliê" },
-  ia: { src: PX(3932728), alt: "Empreendedora atendendo um pedido pelo celular, sorrindo" },
+  vender: { src: PX(7289739), alt: "Gestora sorrindo organizando os pedidos da loja virtual" },
+  atrair: { src: PX(7693686), alt: "Time acompanhando gráficos de tráfego e captação de clientes" },
+  marca: { src: PX(9040531), alt: "Profissional de conteúdo produzindo fotos e vídeos para redes sociais" },
+  ia: { src: PX(8867220), alt: "Atendimento com apoio de automação, sorrindo em ambiente moderno" },
 };
 
 /* `services` chega do server (app/claro/page.tsx), já enxuto — mesma razão

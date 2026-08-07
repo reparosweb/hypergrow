@@ -304,6 +304,26 @@ export function ClaroContato() {
             <ClaroHead eyebrow="Contato" sub="Conte o que está travando. A gente responde com um diagnóstico, não com um orçamento genérico.">
               Vamos olhar <span className="grad">a sua operação</span>
             </ClaroHead>
+
+            {/* Rosto humano perto do formulário — pedido do dono. Foto de banco
+                (Pexels, mesma licença livre do resto do site) recortada em
+                círculo: é o jeito mais simples de simular "recorte" sem CSS de
+                máscara/feather, que arrisca borda serrilhada em telas de baixa
+                densidade. Sem nome/cargo inventado — "Atendimento HyperGrow"
+                descreve a FUNÇÃO, não uma pessoa específica que não existe. */}
+            <div className="rv cl-ct-face">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src="https://images.pexels.com/photos/7709255/pexels-photo-7709255.jpeg?auto=compress&cs=tinysrgb&w=240"
+                alt="Atendente sorrindo com headset, representando o time de suporte da HyperGrow"
+                width={72} height={72} loading="lazy" decoding="async"
+              />
+              <span>
+                <b>Atendimento HyperGrow</b>
+                <em>Responde pessoa, não robô — no WhatsApp ou pelo formulário</em>
+              </span>
+            </div>
+
             <div className="rv cl-ct-l">
               {wa.ativo ? (
                 <a className="card cl-ct-row lit" href={wa.url} target="_blank" rel="noreferrer"
@@ -315,7 +335,14 @@ export function ClaroContato() {
               ) : (
                 // Linha informativa, não clicável: sem levantar no hover — card
                 // que se mexe promete clique, e aqui não há para onde clicar.
-                <div className="card cl-ct-row cl-ct-row--fixo">
+                // Mesmo assim precisa de um tratamento de borda PADRONIZADO (não
+                // zero): antes o hover zerava sombra/borda de volta pro estado de
+                // repouso e o card parecia "quebrado" perto dos outros da página
+                // (bronca real do dono). Agora ganha o mesmo trilho de cor à
+                // esquerda que o FAQ usa em `.cl-faq-i::before`, só que ESTÁTICO
+                // (sem depender de hover/estado `.on`) — sinaliza "isto é
+                // informativo", não "isto não responde a nada".
+                <div className="card cl-ct-row cl-ct-row--fixo" style={{ ["--fixo-accent" as string]: "var(--ink-3)" }}>
                   <span className="cl-ct-ic" style={{ background: "var(--paper-2)", color: "var(--ink-3)" }}><Clock size={19} /></span>
                   <span><b>Formulário ao lado</b><em>resposta em até 1 dia útil</em></span>
                 </div>
@@ -323,7 +350,7 @@ export function ClaroContato() {
               {/* Sem link mailto: o domínio hypergrow.com.br ainda não existe
                   (confirmado por DNS nesta sessão) — anunciar e-mail que devolve
                   erro é pior que não anunciar. */}
-              <div className="card cl-ct-row cl-ct-row--fixo">
+              <div className="card cl-ct-row cl-ct-row--fixo" style={{ ["--fixo-accent" as string]: "var(--brand)" }}>
                 <span className="cl-ct-ic" style={{ background: "rgba(21,80,232,.1)", color: "var(--brand)" }}><Mail size={19} /></span>
                 <span><b>Formulário oficial</b><em>cai direto no nosso painel</em></span>
               </div>
@@ -399,10 +426,27 @@ export function ClaroContato() {
         </div>
       </div>
       <style dangerouslySetInnerHTML={{ __html: `
-        #contato .cl-ct-l{margin-top:30px;display:flex;flex-direction:column;gap:12px}
+        #contato .cl-ct-face{display:flex;align-items:center;gap:13px;margin-top:24px}
+        #contato .cl-ct-face img{width:72px;height:72px;border-radius:99px;object-fit:cover;object-position:50% 22%;flex-shrink:0;box-shadow:var(--sh-2);border:2px solid #fff;outline:1px solid var(--line)}
+        #contato .cl-ct-face b{display:block;font:600 14.5px var(--text);color:var(--ink)}
+        #contato .cl-ct-face em{display:block;font:400 13px/1.4 var(--text);font-style:normal;color:var(--ink-3);margin-top:2px}
+        #contato .cl-ct-l{margin-top:18px;display:flex;flex-direction:column;gap:12px}
         #contato .cl-ct-row{display:flex;align-items:center;gap:13px;padding:18px;color:var(--ink);text-decoration:none;min-height:76px}
-        #contato .cl-ct-row--fixo{cursor:default}
-        #contato .cl-ct-row--fixo:hover{transform:none;box-shadow:var(--sh-1);border-color:var(--line)}
+        /* Trilho estático de 3px, mesma receita do FAQ (.cl-faq-i::before) mas
+           sempre aceso (não é gatilho de hover/estado) e com padding-left extra
+           pra não colidir com o ícone. Cor por card via --fixo-accent (cinza
+           neutro no card do Clock, azul de marca no card do Mail) — cada um usa
+           a MESMA cor que já tinha no ícone, então nada de paleta nova aqui. */
+        #contato .cl-ct-row--fixo{cursor:default;position:relative;padding-left:23px;border-color:color-mix(in srgb,var(--fixo-accent,var(--line)) 22%,var(--line))}
+        #contato .cl-ct-row--fixo::before{content:'';position:absolute;left:0;top:14px;bottom:14px;width:3px;border-radius:0 3px 3px 0;background:var(--fixo-accent,var(--line-2))}
+        /* Hover fica IGUAL ao repouso, de propósito: card não-clicável não deve
+           fingir affordance de clique (nada de sombra subindo, borda mudando de
+           cor ou levantar). A diferença com o bug antigo é que agora o REPOUSO
+           já carrega tratamento visível (trilho + borda tingida na cor do
+           ícone) — antes o repouso também era "sem nada", e por isso o hover
+           parecia quebrado. Fixar os MESMOS valores do repouso aqui garante que
+           nada mude, sem depender da ordem de carregamento do CSS. */
+        #contato .cl-ct-row--fixo:hover{transform:none;box-shadow:var(--sh-1);border-color:color-mix(in srgb,var(--fixo-accent,var(--line)) 22%,var(--line))}
         #contato a.cl-ct-row:focus-visible{outline:2px solid var(--wa);outline-offset:3px}
         #contato .cl-ct-ic{flex-shrink:0;width:42px;height:42px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center}
         #contato .cl-ct-row b{display:block;font:600 15.5px var(--text);transition:color .3s}
@@ -411,7 +455,15 @@ export function ClaroContato() {
         #contato a.cl-ct-row:hover .cl-ct-go,#contato a.cl-ct-row:focus-visible .cl-ct-go{color:var(--wa);transform:translate(2px,-2px)}
 
         #contato .cl-fm{padding:30px}
-        #contato .cl-fm:hover{transform:none;box-shadow:var(--sh-1);border-color:var(--line)}
+        /* Varredura de padronização (2026-08-06): esta regra resetava
+           box-shadow/border-color de volta pro valor de repouso no hover — ou
+           seja, o formulário inteiro não respondia a NADA (mesmo bug relatado
+           nos cartões fixos de contato). O formulário é um container, não um
+           link único, então continua sem levantar (senão os campos "pulam"
+           debaixo do cursor) — mas agora recebe a mesma sombra elevada que
+           .cl-dg (o card do diagnóstico, mesma categoria: card não-clicável
+           que guarda campos interativos) já usa em #diagnostico .cl-dg:hover. */
+        #contato .cl-fm:hover{transform:none;box-shadow:var(--sh-2)}
         #contato .cl-fm-hint{margin-bottom:16px}
         #contato .cl-fm-hint i{font-style:normal;color:var(--cta);font-weight:700}
         #contato .cl-fm-ok:focus{outline:none}

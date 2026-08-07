@@ -226,11 +226,23 @@ const STAGE_CSS = `
   .shw-desc { display: block; font: 400 13px/1.45 var(--text); color: var(--ink-2); margin-top: 4px; }
   .shw-prog { position: absolute; left: 0; bottom: 0; height: 2px; width: 100%; background: var(--beam); transform: scaleX(0); transform-origin: left center; }
   @keyframes shwfill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
-  .shw-stage { position: relative; }
+  /* BUG REAL, CORRIGIDO DE VERDADE AGORA (dono achou por print, 2026-08-06;
+     minha primeira tentativa botou min-height em ".shw-stage" e nao resolveu
+     -- o auditor mediu ao vivo e a sobreposicao continuava nas 6 cenas).
+     Causa raiz: ".st" (a cena, em ClaroScenes.tsx) e position:absolute;inset:0.
+     O containing block dela e o ANCESTRAL POSICIONADO MAIS PROXIMO, que e
+     ".shw-scene" (position:relative), NAO ".shw-stage". Como o unico filho de
+     ".shw-scene" fica fora do fluxo, ".shw-scene" colapsava pra 0 de altura
+     -- e ".st" ficava presa exatamente no padding vertical dela (86px
+     desktop, 66px mobile), nao nos 420/340/300px que eu tinha colocado no
+     lugar errado. O min-height precisa estar em ".shw-scene", que e quem
+     realmente contem ".st". Mantenho tambem em ".shw-stage" (nao atrapalha,
+     e ajuda o overflow:hidden abaixo a conter o halo com folga). */
+  .shw-stage { position: relative; min-height: 420px; overflow: hidden; }
   .shw-halo { position: absolute; inset: -36px; z-index: 0; pointer-events: none; border-radius: 34px; background: radial-gradient(70% 60% at 78% 12%, color-mix(in srgb, var(--beam) 11%, transparent), transparent 62%); animation: shw-halo .6s var(--ease); }
   @keyframes shw-halo { from { opacity: 0; } }
   .shw-halo::before { content: ''; position: absolute; inset: 0; background-image: linear-gradient(color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px), linear-gradient(90deg, color-mix(in srgb, var(--ink) 6%, transparent) 1px, transparent 1px); background-size: 34px 34px; -webkit-mask-image: radial-gradient(70% 70% at 50% 40%, #000 30%, transparent 78%); mask-image: radial-gradient(70% 70% at 50% 40%, #000 30%, transparent 78%); }
-  .shw-scene { position: relative; z-index: 1; animation: shwin .55s var(--ease); }
+  .shw-scene { position: relative; z-index: 1; min-height: 420px; animation: shwin .55s var(--ease); }
   @keyframes shwin { from { opacity: 0; transform: scale(.985); } }
   .shw-foot { position: relative; z-index: 1; margin-top: 18px; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
   .shw-count { color: var(--beam); transition: color .3s var(--ease); }
@@ -242,7 +254,8 @@ const STAGE_CSS = `
   .shw-cta svg { transition: transform .28s var(--ease); }
   .shw-cta:hover svg { transform: translateX(4px); }
   .shw-cta:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
-  @media (max-width: 900px) { .shw { grid-template-columns: 1fr; gap: 26px; } .shw-btn { padding: 14px 15px; } .shw-desc { font-size: 12.5px; } }
+  @media (max-width: 900px) { .shw { grid-template-columns: 1fr; gap: 26px; } .shw-btn { padding: 14px 15px; } .shw-desc { font-size: 12.5px; } .shw-stage, .shw-scene { min-height: 340px; } }
+  @media (max-width: 600px) { .shw-stage, .shw-scene { min-height: 300px; } }
   @media (prefers-reduced-motion: reduce) {
     .shw-btn:hover, .shw-cta:hover svg { transform: none; }
     .shw-scene, .shw-halo { animation: none; }
