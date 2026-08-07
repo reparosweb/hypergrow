@@ -23,10 +23,9 @@ import { ClaroHead } from "./ClaroUI";
    estritamente melhor — não há motivo pra portar o fictício aqui.
 
    Os cartões de ESTATÍSTICA da seção Clientes (20+ anos, 480+ projetos, 7,4x
-   ROAS, 98% renovação) são a exceção: o dono pediu para MANTER como
-   placeholder por ora, não trocar por dado real (não existe dado real
-   equivalente ainda). Ficam com os MESMOS números do mockup original — não
-   um novo número inventado — e marcados abaixo com comentário PLACEHOLDER. */
+   ROAS, 98% renovação) eram a exceção que sobrava — foram REMOVIDOS em
+   2026-08-06 com autorização do dono. Detalhe do porquê logo acima da seção
+   Clientes, mais abaixo neste mesmo arquivo. */
 
 /* ── Banner full-bleed em vídeo ───────────────────────────────────────────── */
 export function ClaroBanner() {
@@ -254,17 +253,23 @@ export function ClaroPortfolio() {
   );
 }
 
-/* ── Clientes: marquee com os 10 nomes REAIS + estatísticas ──────────────────
-   PLACEHOLDER (declarado ao dono, não substituído por dado real ainda):
-   os 4 números abaixo são os MESMOS do mockup original — não foram trocados
-   por outro número inventado, só portados com o aviso explícito de que
-   precisam de dado real antes de esta rota virar produção. */
-const STATS_PLACEHOLDER = [
-  { v: 20, suf: "+", l: "anos de estrada" },
-  { v: 480, suf: "+", l: "projetos entregues" },
-  { v: 7.4, suf: "x", l: "ROAS médio" },
-  { v: 98, suf: "%", l: "clientes que renovam" },
-] as const;
+/* ── Clientes: marquee com os nomes REAIS dos projetos ───────────────────────
+   FAIXA DE ESTATÍSTICAS REMOVIDA (2026-08-06, autorizado pelo dono).
+   Existiam aqui 4 contadores animados do mockup — "20+ anos de estrada",
+   "480+ projetos entregues", "7,4x ROAS médio", "98% clientes que renovam".
+   Nenhum era dado real, e o "20+ anos" CONTRADIZIA o "5+ anos" que a seção
+   Vitrine (logo acima, na mesma página) exibia do mesmo mockup.
+
+   Não foram substituídos por outros números aqui de propósito: a Vitrine já
+   passou a mostrar as contagens reais (serviços, frentes, projetos no ar), e
+   repetir contagem parecida duas vezes na mesma rolagem é ruído — o dono
+   pediu explicitamente "não quero muito poluído". Nesta seção a prova é o
+   marquee: são os nomes REAIS dos projetos, e a seção "Prova real" logo
+   abaixo dá o endereço clicável de cada um.
+
+   O motor de contagem (`useClaroCount`) e o componente `ClaroStat` continuam
+   no arquivo, sem uso: no dia em que houver número auditável (ex.: contrato
+   ativo, NPS medido), é só voltar a chamar — não precisa reescrever nada. */
 
 /* Contagem animada ao entrar na tela — mesma mecânica do mockup original
    (useCount): sobe em easing cúbico até o valor PLACEHOLDER real quando o
@@ -332,15 +337,6 @@ export function ClaroClientes() {
         <div className="mq" tabIndex={0} role="group" aria-label="Projetos — pause com o mouse ou Tab">
           <div className="mq-t">{loop.map((x, i) => <span className="mq-i" key={i}>{x}</span>)}</div>
           <div className="mq-t" aria-hidden>{loop.map((x, i) => <span className="mq-i" key={"b" + i}>{x}</span>)}</div>
-        </div>
-      </div>
-      <div className="wrap">
-        {/* ⚠️ PLACEHOLDER — ver comentário de STATS_PLACEHOLDER acima. Não promover
-            esta rota sem substituir por número real ou remover a faixa. */}
-        <div className="g g-220 rv" style={{ marginTop: 44 }}>
-          {STATS_PLACEHOLDER.map((s, i) => (
-            <ClaroStat key={s.l} v={s.v} suf={s.suf} l={s.l} hex={STAT_BEAM[i % STAT_BEAM.length]} />
-          ))}
         </div>
       </div>
       <style dangerouslySetInnerHTML={{ __html: `

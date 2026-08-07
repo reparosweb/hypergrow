@@ -63,7 +63,9 @@ export default function SobrePage() {
   };
 
   return (
-    <PageShellClaro crumbs={[{ label: "Início", href: "/" }, { label: "Sobre" }]} accent={CLARO_PILLAR_ACCENT.marca}>
+    // `midia` era `marca` até 2026-08-07 (pilares viraram departamentos, ver
+    // lib/pillars.ts). Mesma cor rosa de antes — só a chave mudou de nome.
+    <PageShellClaro crumbs={[{ label: "Início", href: "/" }, { label: "Sobre" }]} accent={CLARO_PILLAR_ACCENT.midia}>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
 
       <section className="sec" style={{ paddingBottom: 0 }}>
@@ -163,7 +165,7 @@ export default function SobrePage() {
           </p>
           <div className="pg-grid" style={{ marginTop: 20 }}>
             {clientes.map((p) => (
-              <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer" className="pg-card">
+              <a key={p.id} href={p.url} target="_blank" rel="noopener noreferrer" className="pg-card lit">
                 <h3 className="pg-card-t">{p.name}</h3>
                 <p className="pg-card-d">{p.desc}</p>
                 <span className="pg-card-go">Ver no ar ↗</span>

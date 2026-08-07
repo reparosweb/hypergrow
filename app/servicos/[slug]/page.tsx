@@ -54,35 +54,46 @@ function Check() {
 }
 
 /* Fotografia real (StockSnap, CC0 1.0 — uso comercial liberado; créditos e link
-   da licença em public/fotos/CREDITOS.json). Só nas páginas em que a foto DIZ
-   alguma coisa: foto genérica em todas as 19 vira ruído e volta a parecer
-   template. Mostra o contexto do cliente, nunca "a nossa equipe". */
-const SERVICE_PHOTO: Record<string, { src: string; alt: string; w: number; h: number }> = {
-  "loja-virtual": { src: "/fotos/checkout-loja-virtual.webp", alt: "Cliente com o cartão na mão diante de uma loja virtual aberta no notebook", w: 960, h: 640 },
-  "consultoria-ecommerce": { src: "/fotos/embalando-pedido.webp", alt: "Pedido sendo embalado sobre a bancada de uma operação de e-commerce", w: 960, h: 641 },
-  "marketing-trafego": { src: "/fotos/painel-resultados.webp", alt: "Painel de métricas e gráficos de campanha aberto no notebook", w: 960, h: 640 },
-  seo: { src: "/fotos/painel-resultados.webp", alt: "Relatório de tráfego e gráficos de desempenho na tela do notebook", w: 960, h: 640 },
-  "automacoes-ia": { src: "/fotos/operacao-diaria.webp", alt: "Profissional atendendo pelo notebook em uma mesa de trabalho", w: 960, h: 640 },
-  "criacao-de-site": { src: "/fotos/escritorio-equipe.webp", alt: "Profissional trabalhando em notebook em um escritório real", w: 960, h: 641 },
-};
+   da licença em public/fotos/CREDITOS.json; download por scripts/fetch-images.mjs).
 
-function PhotoBand({ slug }: { slug: string }) {
-  const p = SERVICE_PHOTO[slug];
-  if (!p) return null;
-  return (
-    <section className="sec svc-sec" style={{ paddingTop: 0 }}>
-      <div className="wrap">
-        {/* Sem véu escuro: não há texto sobre a foto e um degradê preto no meio
-            de uma página clara lia como mancha. */}
-        <div className="pg-media">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={p.src} alt={p.alt} width={p.w} height={p.h} loading="lazy" decoding="async"
-            style={{ objectPosition: "center 45%" }} />
-        </div>
-      </div>
-    </section>
-  );
-}
+   MUDANÇA 2026-08-06: antes só 6 dos 22 serviços tinham foto — as outras 16
+   páginas não tinham imagem nenhuma ("site morto", bronca do dono comparando
+   com o concorrente). Agora TODOS os 22 têm, e a foto entrou DENTRO do primeiro
+   bloco do corpo em vez de virar uma faixa solta no meio da página.
+
+   Regras que valem para cada linha desta tabela:
+   · contexto de tecnologia / marketing / operação de empresa — nunca varejo
+     físico genérico (a foto de mercearia já foi bronca real neste projeto);
+   · cada foto foi ABERTA e olhada antes de entrar, nunca escolhida pelo nome
+     do arquivo;
+   · o `alt` descreve a CENA. Nunca "nossa equipe": é foto de banco, dizer que
+     é a nossa gente seria mentira.
+   `pos` é o object-position do recorte 4:3 — o enquadramento foi conferido
+   foto a foto (a de vídeo, por exemplo, é vertical e precisa subir o corte). */
+const SERVICE_PHOTO: Record<string, { src: string; alt: string; w: number; h: number; pos: string }> = {
+  "criacao-de-site": { src: "/fotos/escritorio-equipe.webp", alt: "Profissional trabalhando em um notebook em um escritório de parede de tijolos", w: 960, h: 641, pos: "center 45%" },
+  "loja-virtual": { src: "/fotos/checkout-loja-virtual.webp", alt: "Mão segurando um cartão de crédito diante de um notebook com uma loja virtual aberta", w: 960, h: 640, pos: "center 45%" },
+  "consultoria-ecommerce": { src: "/fotos/embalando-pedido.webp", alt: "Pedido sendo embalado em caixa de papelão sobre a bancada de uma operação de e-commerce", w: 960, h: 641, pos: "center 45%" },
+  seo: { src: "/fotos/posicao-google.webp", alt: "Monitor sobre uma mesa clara exibindo um gráfico de tráfego em curva de crescimento", w: 960, h: 640, pos: "center 50%" },
+  hospedagem: { src: "/fotos/servidores-datacenter.webp", alt: "Duas profissionais com notebooks no corredor de um data center, entre racks de servidores", w: 960, h: 641, pos: "center 45%" },
+  "cartao-interativo": { src: "/fotos/cartao-no-celular.webp", alt: "Homem sentado em um café consultando o celular com as duas mãos", w: 960, h: 635, pos: "center 40%" },
+  "auditoria-comercial": { src: "/fotos/treinamento-comercial.webp", alt: "Profissional apresentando a um grupo diante de um quadro coberto de post-its", w: 960, h: 640, pos: "center 40%" },
+  "marketing-trafego": { src: "/fotos/painel-resultados.webp", alt: "Painel de métricas e gráficos de campanha aberto na tela do notebook", w: 960, h: 640, pos: "center 45%" },
+  "redes-sociais": { src: "/fotos/feed-instagram.webp", alt: "Celular com um feed de rede social aberto sobre um caderno pautado e uma caneta", w: 960, h: 640, pos: "center 50%" },
+  "posts-redes-sociais": { src: "/fotos/esboco-layout.webp", alt: "Caderno com o rascunho à mão do layout de uma peça, ao lado de um celular", w: 960, h: 720, pos: "center 50%" },
+  "posts-video": { src: "/fotos/gravando-video.webp", alt: "Mulher segurando uma filmadora apontada para a câmera diante de uma parede de tijolos", w: 960, h: 1709, pos: "center 30%" },
+  "stories-instagram": { src: "/fotos/celular-sofa.webp", alt: "Mulher sentada no sofá junto à janela deslizando o feed do celular", w: 960, h: 640, pos: "center 45%" },
+  "web-stories": { src: "/fotos/escrevendo-conteudo.webp", alt: "Mãos digitando em um notebook com o editor de um artigo aberto na tela", w: 960, h: 640, pos: "center 50%" },
+  "email-marketing": { src: "/fotos/escrevendo-email.webp", alt: "Vista de cima de uma pessoa escrevendo no notebook ao lado de uma xícara de café", w: 960, h: 640, pos: "center 45%" },
+  "producao-de-video": { src: "/fotos/camera-estudio.webp", alt: "Câmera profissional montada em tripé apontada para o cenário de um estúdio", w: 960, h: 640, pos: "center 50%" },
+  "producao-fotografica": { src: "/fotos/fotografa-camera.webp", alt: "Fotógrafa segurando uma câmera DSLR pronta para o próximo clique", w: 960, h: 640, pos: "center 40%" },
+  "fotos-produtos": { src: "/fotos/still-produtos.webp", alt: "Produtos de maquiagem organizados sobre fundo branco em um still de catálogo", w: 960, h: 640, pos: "center 50%" },
+  "design-identidade": { src: "/fotos/flatlay-marca.webp", alt: "Caderno preto, caneta, relógio e notebook alinhados em uma composição vista de cima", w: 960, h: 641, pos: "center 50%" },
+  "criacao-logo": { src: "/fotos/letra-desenho.webp", alt: "Mão desenhando letras a lápis em uma folha grande sobre a mesa", w: 960, h: 640, pos: "center 50%" },
+  "automacoes-ia": { src: "/fotos/operacao-diaria.webp", alt: "Profissional atendendo pelo notebook em uma mesa de trabalho", w: 960, h: 640, pos: "center 45%" },
+  "crm-com-ia": { src: "/fotos/atendimento-crm.webp", alt: "Profissional de óculos atendendo pelo celular com o notebook aberto na mesa", w: 960, h: 640, pos: "center 40%" },
+  "sdr-com-ia": { src: "/fotos/videochamada-comercial.webp", alt: "Homem sorrindo ao olhar para a tela do celular durante uma reunião, com colegas ao fundo", w: 960, h: 640, pos: "center 35%" },
+};
 
 function Arrow() {
   return (
@@ -202,26 +213,62 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
 
       <div className="wrap"><hr className="hairline" /></div>
 
-      {/* ── CORPO ────────────────────────────────────────────────────────── */}
+      {/* ── CORPO: um bloco grande por etapa, alternando de lado ───────────
+          Era uma lista vertical com um "01" de 11px em mono — o mesmo texto,
+          apresentado como documento. Agora cada item de `s.body` é um bloco
+          com número grande na cor do pilar, título ao lado, o texto num painel
+          com borda que acende no hover (.lit, o mesmo mecanismo da home) e um
+          elemento gráfico. O conteúdo NÃO mudou: continua vindo inteiro de
+          lib/site-services.ts.
+
+          Um elemento gráfico por bloco, nunca dois — o pedido do dono foi
+          "com efeitos, mas não poluído". O primeiro bloco recebe a fotografia
+          do serviço; os seguintes recebem a placa com o grafismo do próprio
+          serviço, que é desenho de marca e não foto de banco repetida. */}
       <section className="sec svc-sec">
-        <div className="wrap svc-body">
-          {s.body.map((b, i) => (
-            <article key={b.h} className="svc-block">
-              <div className="svc-idx" aria-hidden>
-                <span className="mono">{String(i + 1).padStart(2, "0")}</span>
-                <span className="svc-idx-line" />
-              </div>
-              <div className="svc-block-text">
-                <h2 className="svc-h2">{b.h}</h2>
-                <p className="svc-p">{b.p}</p>
-              </div>
-            </article>
-          ))}
+        <div className="wrap svc-steps">
+          {s.body.map((b, i) => {
+            const n = String(i + 1).padStart(2, "0");
+            const foto = i === 0 ? SERVICE_PHOTO[s.slug] : undefined;
+            return (
+              <article key={b.h} className={"svc-step" + (i % 2 === 1 ? " svc-step-flip" : "")}>
+                <div className="svc-step-txt">
+                  <div className="svc-step-head">
+                    <span className="svc-step-n" aria-hidden>{n}</span>
+                    <h2 className="svc-step-h">{b.h}</h2>
+                  </div>
+                  <div className="svc-step-panel lit">
+                    <p className="svc-step-p">{b.p}</p>
+                  </div>
+                </div>
+
+                <figure className="svc-step-fig lit">
+                  {foto ? (
+                    /* eslint-disable-next-line @next/next/no-img-element */
+                    <img
+                      className="svc-step-img"
+                      src={foto.src}
+                      alt={foto.alt}
+                      width={foto.w}
+                      height={foto.h}
+                      loading="lazy"
+                      decoding="async"
+                      style={{ objectPosition: foto.pos }}
+                    />
+                  ) : (
+                    <span className="svc-step-plate" aria-hidden>
+                      <span className="svc-step-grid" />
+                      <span className="svc-step-glyph">
+                        <ServiceGlyph slug={s.slug} height={200} />
+                      </span>
+                    </span>
+                  )}
+                </figure>
+              </article>
+            );
+          })}
         </div>
       </section>
-
-      {/* Faixa fotográfica — só nos 6 slugs em que a foto diz alguma coisa. */}
-      <PhotoBand slug={s.slug} />
 
       {/* ── PLATAFORMAS (só onde faz sentido) ────────────────────────────────
           Pedido direto do dono: a página de loja virtual precisa mostrar que
@@ -234,13 +281,13 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
       {/* ── INCLUÍDO + GANHA ─────────────────────────────────────────────── */}
       <section className="sec svc-sec">
         <div className="wrap svc-duo">
-          <div className="svc-card">
+          <div className="svc-card lit">
             <h2 className="svc-card-h">O que está incluído</h2>
             <div className="svc-tags">
               {s.tags.map((t) => <span key={t} className="chip">{t}</span>)}
             </div>
           </div>
-          <div className="svc-card svc-card-acc">
+          <div className="svc-card svc-card-acc lit">
             <h2 className="svc-card-h">O que você ganha</h2>
             <ul className="svc-outcomes">
               {s.outcomes.map((o) => (
@@ -258,7 +305,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           <h2 className="pg-h2">Perguntas frequentes</h2>
           <div className="svc-faq-list">
             {s.faq.map((f) => (
-              <details key={f.q} className="svc-faq">
+              <details key={f.q} className="svc-faq lit">
                 <summary>{f.q}</summary>
                 <p>{f.a}</p>
               </details>
@@ -295,7 +342,7 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
               <p className="svc-rel-sub">{pil.desc}</p>
               <div className="svc-rel">
                 {samePillar.map((o) => (
-                  <Link key={o.slug} href={`/servicos/${o.slug}`} className="svc-rel-card">
+                  <Link key={o.slug} href={`/servicos/${o.slug}`} className="svc-rel-card lit">
                     <span className="svc-rel-glyph" aria-hidden>
                       <ServiceGlyph slug={o.slug} height={46} />
                     </span>
@@ -396,22 +443,88 @@ const CSS = `
   .cl .svc-plate-foot span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cl .svc-plate-foot-r { color: var(--acc); text-align: right; }
 
-  /* ── corpo: índice numerado dá hierarquia e ritmo de leitura ──────────── */
-  .cl .svc-body { display: flex; flex-direction: column; gap: clamp(30px, 4vw, 46px); max-width: 900px; }
-  .cl .svc-block { display: grid; grid-template-columns: auto 1fr; gap: clamp(14px, 2vw, 26px); align-items: start; }
-  .cl .svc-idx { display: flex; flex-direction: column; align-items: center; gap: 10px; padding-top: 4px; }
-  .cl .svc-idx .mono { font-size: 11.5px; font-weight: 600; letter-spacing: .1em; color: var(--acc); }
-  .cl .svc-idx-line { width: 1px; flex: 1; min-height: 26px;
-    background: linear-gradient(180deg, var(--acc), transparent); opacity: .45; }
-  .cl .svc-block-text { min-width: 0; }
-  .cl .svc-h2 { font: 700 clamp(20px, 2.5vw, 27px)/1.2 var(--disp); letter-spacing: -.025em; color: var(--ink);
-    margin: 0 0 12px; text-wrap: balance; }
-  .cl .svc-p { font: 400 clamp(16px, 1.3vw, 17px)/1.72 var(--text); color: var(--ink-2); margin: 0; text-wrap: pretty; }
+  /* ── corpo: blocos grandes alternando de lado ──────────────────────────
+     Cada etapa vira um bloco de duas colunas; o bloco par inverte os lados
+     (a ordem no HTML nao muda, so a coluna visual). Em MD (900px) da escala
+     oficial vira uma coluna, e o texto SEMPRE vem antes da imagem.
+     minmax(0,...) nas duas colunas: sem isso o conteudo define o minimo da
+     coluna e um paragrafo longo empurra a grade para fora da tela. */
+  .cl .svc-steps { display: flex; flex-direction: column; gap: clamp(44px, 6vw, 92px); }
+  .cl .svc-step { display: grid; grid-template-columns: minmax(0, 1.06fr) minmax(0, .94fr);
+    gap: clamp(20px, 3.4vw, 54px); align-items: start; }
+  .cl .svc-step-flip .svc-step-txt { order: 2; }
+  .cl .svc-step-txt { min-width: 0; }
+
+  /* numero: protagonista visual, nao mais um detalhe de 11px em mono */
+  .cl .svc-step-head { display: flex; align-items: baseline; gap: clamp(12px, 1.8vw, 22px);
+    flex-wrap: wrap; margin-bottom: clamp(14px, 1.8vw, 22px); }
+  .cl .svc-step-n { flex: none; font: 800 clamp(46px, 7.4vw, 88px)/.82 var(--disp);
+    letter-spacing: -.05em; color: var(--acc); font-variant-numeric: tabular-nums; }
+  .cl .svc-step-h { min-width: 0; flex: 1 1 min(100%, 240px);
+    font: 700 clamp(21px, 2.6vw, 30px)/1.16 var(--disp); letter-spacing: -.03em; color: var(--ink);
+    margin: 0; text-wrap: balance; }
+
+  /* painel do texto: fundo levissimo na cor do pilar (~4%), borda que responde */
+  .cl .svc-step-panel { border-radius: clamp(16px, 1.8vw, 22px); padding: clamp(18px, 2.4vw, 30px);
+    background: color-mix(in srgb, var(--acc) 4%, var(--card)); border: 1px solid var(--line);
+    box-shadow: var(--sh-1); transition: border-color .3s var(--ease), box-shadow .3s var(--ease); }
+  .cl .svc-step-panel:hover { border-color: var(--acc-line); box-shadow: var(--sh-2); }
+  .cl .svc-step-p { font: 400 clamp(15.5px, 1.25vw, 17px)/1.75 var(--text); color: var(--ink-2);
+    margin: 0; text-wrap: pretty; }
+
+  /* elemento grafico: foto no 1o bloco, placa do grafismo nos demais */
+  .cl .svc-step-fig { position: relative; margin: 0; overflow: hidden; width: 100%;
+    aspect-ratio: 4 / 3; border-radius: clamp(18px, 2vw, 26px); border: 1px solid var(--line);
+    background: var(--paper-2); box-shadow: var(--sh-2); }
+  .cl .svc-step-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .cl .svc-step-plate { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(120% 92% at 50% -10%, var(--acc-soft), transparent 62%),
+                linear-gradient(180deg, #fff, var(--paper-2)); }
+  .cl .svc-step-grid { position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(11,18,32,.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(11,18,32,.05) 1px, transparent 1px);
+    background-size: 34px 34px; background-position: center;
+    -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 84%);
+    mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 84%); }
+  .cl .svc-step-glyph { position: relative; z-index: 2; width: min(68%, 380px); color: var(--acc); }
+  .cl .svc-step-glyph svg { width: 100%; height: auto; display: block; }
+  /* variacao discreta entre as placas para os blocos nao ficarem iguais */
+  .cl .svc-step:nth-of-type(3) .svc-step-plate { background:
+      radial-gradient(110% 88% at 12% 108%, var(--acc-soft), transparent 60%),
+      linear-gradient(180deg, #fff, var(--paper-2)); }
+  .cl .svc-step:nth-of-type(3) .svc-step-glyph { width: min(78%, 420px); }
+  /* 4a placa: recorte macro do mesmo desenho (o grafismo estoura a moldura e a
+     placa corta). E o que evita tres placas iguais numa pagina de 4 blocos sem
+     precisar de mais uma foto de banco. */
+  .cl .svc-step:nth-of-type(4) .svc-step-plate { background:
+      radial-gradient(100% 84% at 92% 6%, var(--acc-soft), transparent 58%),
+      linear-gradient(180deg, #fff, var(--paper-2)); }
+  .cl .svc-step:nth-of-type(4) .svc-step-glyph { width: min(118%, 620px); transform: translateX(-13%); }
+  @media (max-width: 600px) {
+    .cl .svc-step:nth-of-type(4) .svc-step-glyph { width: min(100%, 420px); transform: none; }
+  }
+
+  /* MD: uma coluna. Ordem visual = a do HTML (numero + titulo + texto, depois
+     imagem) para nao inverter a leitura no celular. */
+  @media (max-width: 900px) {
+    .cl .svc-step { grid-template-columns: 1fr; gap: clamp(18px, 3vw, 26px); }
+    .cl .svc-step-flip .svc-step-txt { order: 0; }
+    .cl .svc-step-fig { aspect-ratio: 16 / 10; }
+  }
+  @media (max-width: 600px) {
+    .cl .svc-step-head { gap: 10px; }
+    .cl .svc-step-fig { aspect-ratio: 3 / 2; }
+  }
 
   /* ── cards incluído / ganha ───────────────────────────────────────────── */
   .cl .svc-duo { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 18px; }
+  /* Mesma reacao dos demais cartoes do site (borda assume a cor do pilar +
+     sombra sobe). Sem translateY aqui: sao dois blocos lado a lado do mesmo
+     tamanho, e levantar um so descasa a linha de base dos dois. */
   .cl .svc-card { border-radius: 22px; padding: clamp(24px, 3vw, 34px); background: var(--card);
-    border: 1px solid var(--line); box-shadow: var(--sh-1); }
+    border: 1px solid var(--line); box-shadow: var(--sh-1);
+    transition: border-color .3s var(--ease), box-shadow .3s var(--ease); }
+  .cl .svc-card:hover { border-color: color-mix(in srgb, var(--acc) 34%, var(--line)); box-shadow: var(--sh-2); }
   .cl .svc-card-acc { border-color: var(--acc-line); }
   .cl .svc-card-h { font: 700 clamp(18px, 1.8vw, 21px) var(--disp); color: var(--ink); margin: 0;
     letter-spacing: -.02em; }
@@ -480,7 +593,7 @@ const CSS = `
   /* ── movimento ────────────────────────────────────────────────────────── */
   @supports (animation-timeline: view()) {
     @media (prefers-reduced-motion: no-preference) {
-      .cl .svc-card, .cl .svc-rel-card, .cl .svc-faq {
+      .cl .svc-card, .cl .svc-rel-card, .cl .svc-faq, .cl .svc-step {
         animation: pg-reveal-in linear both; animation-timeline: view(); animation-range: entry 2% entry 58%; }
     }
   }

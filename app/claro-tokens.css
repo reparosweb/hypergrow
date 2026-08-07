@@ -149,10 +149,21 @@
    SEM `border-radius` aqui de propósito: forçar um raio nesta regra ENCOLHE o
    canto real do elemento focado (11px nos itens do mega-menu, 10px nos links
    de nav, 9px no acordeão) e o canto "pula" no momento do Tab. O `outline`
-   já acompanha sozinho o raio de quem recebe o foco. */
+   já acompanha sozinho o raio de quem recebe o foco.
+
+   `summary` entrou na lista em 2026-08-06: `<details>/<summary>` recebe foco
+   por Tab (e o FAQ das paginas de servico e do blog e feito assim), mas nao e
+   nem `a` nem `button` — ficava de fora e quem navegava por teclado nao via
+   onde estava. `[open]` tambem nao ajuda: o anel simplesmente nao existia.
+
+   `var(--acc,var(--brand))`: dentro das paginas internas o `--acc` e a cor do
+   pilar (PageShellClaro publica no `.pgc`), entao o anel de foco passa a ser
+   da MESMA cor do resto da pagina; na home, onde `--acc` nao existe, cai no
+   azul de marca de antes. Um comportamento so, em qualquer rota. */
 .cl a:focus-visible,.cl button:focus-visible,.cl input:focus-visible,
-.cl select:focus-visible,.cl textarea:focus-visible,.cl [tabindex]:focus-visible{
-  outline:2px solid var(--brand);outline-offset:3px
+.cl select:focus-visible,.cl textarea:focus-visible,.cl summary:focus-visible,
+.cl [tabindex]:focus-visible{
+  outline:2px solid var(--acc,var(--brand));outline-offset:3px
 }
 
 /* O respiro lateral nunca é menor que a área segura: em iPhone DEITADO o

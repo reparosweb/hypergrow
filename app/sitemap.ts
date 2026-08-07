@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { siteServices } from "@/lib/site-services";
 import { blogPosts } from "@/lib/blog-posts";
+import { FERRAMENTAS } from "@/lib/ferramentas";
 import { SITE_URL } from "@/lib/seo";
 
 export default function sitemap(): MetadataRoute.Sitemap {
@@ -14,6 +15,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/contato`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
     // Página de vertical (não é serviço, então não vem do map de siteServices).
     { url: `${SITE_URL}/para/clinicas`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
+    // Hub das ferramentas grátis: porta de entrada de busca por conta pronta
+    // ("calculadora de ROAS", "gerador de link do WhatsApp") — público que
+    // ainda não procura agência, mas tem o problema que a agência resolve.
+    { url: `${SITE_URL}/ferramentas`, lastModified: now, changeFrequency: "monthly", priority: 0.8 },
     { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: "weekly", priority: 0.6 },
     { url: `${SITE_URL}/privacidade`, lastModified: now, priority: 0.2 },
     { url: `${SITE_URL}/termos`, lastModified: now, priority: 0.2 },
@@ -30,5 +35,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly",
     priority: 0.7,
   }));
-  return [...main, ...services, ...posts];
+  // Cada ferramenta é uma página de entrada própria. A lista vem de
+  // lib/ferramentas.ts, então ferramenta nova entra no mapa sozinha.
+  const ferramentas: MetadataRoute.Sitemap = FERRAMENTAS.map((f) => ({
+    url: `${SITE_URL}/ferramentas/${f.slug}`,
+    lastModified: now,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
+  return [...main, ...services, ...posts, ...ferramentas];
 }

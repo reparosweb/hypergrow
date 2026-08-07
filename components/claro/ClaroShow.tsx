@@ -199,6 +199,20 @@ export default function ClaroShow() {
             </div>
           </div>
         </div>
+
+        {/* Legenda obrigatória — NÃO REMOVER. As seis cenas são miniaturas
+            animadas de interface (painel, chat, kanban) e os números dentro
+            delas vêm do arquivo de design, nunca de uma operação real. Sem
+            esta linha, um visitante pode ler "312 mil" ou "+186%" como
+            resultado que a HyperGrow entregou — foi exatamente por esse tipo
+            de leitura que os números inventados do resto da home saíram do ar
+            em 2026-08-06. Mesmo padrão da legenda do vídeo da SpaceX em
+            ClaroCaptura.tsx. */}
+        <p className="small shw-legenda">
+          As telas acima são ilustrações de interface, feitas para mostrar como cada frente
+          aparece no dia a dia. Os números dentro delas são de exemplo — não são resultado de
+          cliente. O que é real e conferível está em <a href="#depoimentos">Prova real</a>.
+        </p>
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: SCENE_CSS + STAGE_CSS }} />
@@ -250,6 +264,10 @@ const STAGE_CSS = `
   .shw-foot-tx { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
   .shw-foot-t { font: 600 18px var(--disp); letter-spacing: -.02em; color: var(--ink); }
   @media (max-width: 600px) { .shw-foot-t { font-size: 16px; } }
+  .shw-legenda { margin: 26px auto 0; max-width: 74ch; text-align: center; }
+  .shw-legenda a { font-weight: 600; border-bottom: 1px solid rgba(21,80,232,.35); transition: border-color .25s; }
+  .shw-legenda a:hover { border-color: var(--brand-d); }
+  .shw-legenda a:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; border-radius: 4px; }
   .shw-cta { padding: 11px 17px; font-size: 14px; }
   .shw-cta svg { transition: transform .28s var(--ease); }
   .shw-cta:hover svg { transform: translateX(4px); }

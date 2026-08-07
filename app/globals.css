@@ -53,10 +53,19 @@ html:has(.cl) body {
   left: -9999px;
   top: 0;
   z-index: 1000;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
 }
+/* `display:inline-flex` + `min-height:44px`: o link media 24px de altura, abaixo
+   do alvo mínimo de toque. Ele só aparece com foco, mas em tablet/celular com
+   teclado externo é um alvo de dedo como qualquer outro. */
 .skip-link:focus {
   left: 12px;
   top: 12px;
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
   padding: 10px 16px;
   border-radius: 10px;
   background: #fff;

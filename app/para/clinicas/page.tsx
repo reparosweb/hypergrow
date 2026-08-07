@@ -112,7 +112,7 @@ export default function ClinicasPage() {
               const cp = CLARO_PILLAR_ACCENT[pillarOf(c.slug).key];
               const svc = getService(c.slug);
               return (
-                <Link key={c.slug} href={`/servicos/${c.slug}`} className="pg-card" style={{ ["--acc" as string]: cp }}>
+                <Link key={c.slug} href={`/servicos/${c.slug}`} className="pg-card lit" style={{ ["--acc" as string]: cp }}>
                   <span aria-hidden style={{ display: "block", color: cp, marginBottom: 12 }}>
                     <ServiceGlyph slug={c.slug} height={48} />
                   </span>

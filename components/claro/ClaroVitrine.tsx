@@ -1,4 +1,10 @@
-import { ArrowRight, Check, MessageCircle, TrendingUp } from "lucide-react";
+import { ArrowRight, Check, MessageCircle, Rocket } from "lucide-react";
+/* Módulos LEVES (só dados) — seguros no bundle do cliente. NÃO importar
+   lib/site-services.ts aqui: são 63 KB de texto das páginas de serviço, e
+   esta seção roda na home, que é client component (auditoria de performance
+   já mediu isso). O total de serviços sai somando os slugs dos pilares. */
+import { PROJECTS } from "@/lib/projects";
+import { PILLARS } from "@/lib/pillars";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    VITRINE — a seção logo abaixo do vídeo do topo.
@@ -9,13 +15,20 @@ import { ArrowRight, Check, MessageCircle, TrendingUp } from "lucide-react";
    imagem e sumiu?". Restaurada aqui com o conteúdo exato do projeto do Claude
    Design, lido ao vivo pelo MCP — copy, foto, cartões flutuantes e números.
 
-   ⚠️ PLACEHOLDER — OS NÚMEROS NÃO SÃO DADOS REAIS DA HYPERGROW.
-   Os 4 indicadores ("5+ anos", "200+ lojas", "7,4x ROAS", "98% renovam") e as
-   duas frases dos cartões flutuantes ("+38% em 90 dias", "respondido em 38
-   segundos") vêm do mockup. São exatamente os mesmos do arquivo original —
-   nada foi inventado aqui — e ficam por decisão explícita do dono ("manter
-   como placeholder por ora"), na mesma linha de `ClaroClose.tsx`.
-   Antes de qualquer campanha paga ou divulgação, isto vira dado real ou sai.
+   NÚMEROS INVENTADOS REMOVIDOS (2026-08-06, autorizado pelo dono).
+   Aqui existiam 4 indicadores do mockup ("5+ anos", "200+ lojas", "7,4x
+   ROAS", "98% renovam") e 2 cartões flutuantes ("+38% em 90 dias",
+   "respondido em 38 segundos"). Nenhum era dado real da HyperGrow. Pior: a
+   seção Clientes (ClaroExtra) trazia OUTRO conjunto do mesmo mockup que
+   dizia "20+ anos" — a mesma página afirmava 5 anos num lugar e 20 noutro,
+   contradição que qualquer visitante rolando a página encontraria.
+
+   O QUE ENTROU: só o que é CONTÁVEL a partir dos dados do próprio site
+   (lib/projects.ts, lib/pillars.ts), calculado em tempo de render. Se um
+   projeto ou serviço entrar/sair, o número acompanha sozinho e nunca vira
+   estatística velha. Os dois cartões flutuantes viraram provas que o
+   visitante testa AGORA: o agente de IA responde neste site, e o Agentop
+   está no ar num endereço público.
 
    Foto: Pexels, licença livre para uso comercial — igual às fotos já usadas
    em `ClaroSolucoes.tsx`. Trocada em 2026-08-06 (id 3932728 → 34610771): a
@@ -30,15 +43,19 @@ const PX = (id: number) =>
 
 const CHIPS = ["Sem contrato de fidelidade", "Relatório que você entende", "Time humano, não robô"];
 
-/* ⚠️ PLACEHOLDER — ver aviso no topo do arquivo. */
-const NUMEROS: [string, string][] = [
-  ["5+", "anos de operação"],
-  ["200+", "lojas e marcas atendidas"],
-  ["7,4x", "ROAS médio alcançado"],
-  ["98%", "clientes que renovam"],
-];
-
 export default function ClaroVitrine() {
+  /* Contados na hora, nunca digitados à mão — ver nota no topo do arquivo. */
+  const noAr = PROJECTS.filter((p) => !!p.url);
+  const propriosNoAr = noAr.filter((p) => p.own).length;
+  const totalServicos = PILLARS.reduce((n, p) => n + p.slugs.length, 0);
+
+  const NUMEROS: [string, string][] = [
+    [String(totalServicos), "serviços no catálogo"],
+    [String(PILLARS.length), "frentes, um time só"],
+    [String(noAr.length), "projetos no ar agora"],
+    [String(propriosNoAr), "deles são produtos nossos"],
+  ];
+
   return (
     <section id="vitrine" className="sec vt">
       <div className="vt-glow" aria-hidden />
@@ -76,29 +93,30 @@ export default function ClaroVitrine() {
               />
             </figure>
 
-            {/* ⚠️ PLACEHOLDER — frases do mockup, não são caso real. */}
+            {/* Duas provas TESTÁVEIS no lugar das duas frases inventadas do
+                mockup: as duas o visitante confere sem sair da página (o chat
+                fica no canto inferior) ou num clique. Nenhum número aqui. */}
             <div className="card vt-note">
               <span className="vt-note-ic" style={{ background: "rgba(15,157,88,.1)", color: "var(--wa)" }}>
                 <MessageCircle size={18} aria-hidden />
               </span>
               <div>
-                <b>Pedido novo pelo WhatsApp</b>
-                <span>respondido em 38 segundos, sem ninguém no plantão</span>
+                <b>Agente de IA atendendo</b>
+                <span>é o chat no canto desta página — pode testar agora</span>
               </div>
             </div>
             <div className="card vt-note vt-note--2">
               <span className="vt-note-ic" style={{ background: "rgba(21,80,232,.1)", color: "var(--brand)" }}>
-                <TrendingUp size={18} aria-hidden />
+                <Rocket size={18} aria-hidden />
               </span>
               <div>
-                <b>Faturamento da loja</b>
-                <span>+38% em 90 dias · ROAS 7,4</span>
+                <b>Agentop, sistema nosso</b>
+                <span>no ar em agentop.com.br, com cliente pagando</span>
               </div>
             </div>
           </div>
         </div>
 
-        {/* ⚠️ PLACEHOLDER — ver aviso no topo do arquivo. */}
         <div className="rv vt-num">
           <div className="g g-220">
             {NUMEROS.map(([v, l]) => (

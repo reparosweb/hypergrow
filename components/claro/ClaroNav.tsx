@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { ArrowRight, Bot, ChevronDown, Menu, Palette, ShoppingCart, TrendingUp, X, type LucideIcon } from "lucide-react";
+import { ArrowRight, Bot, ChevronDown, LayoutTemplate, Menu, Palette, ShoppingCart, TrendingUp, X, type LucideIcon } from "lucide-react";
 import { PILLARS, type PillarKey, type ServiceCardData } from "@/lib/pillars";
 import { ClaroLogo } from "./ClaroUI";
 import { ClaroServiceIcon } from "./ClaroServiceIcon";
@@ -13,17 +13,22 @@ import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
    cascata por pilar (hover/foco/clique) e drawer mobile com acordeão.
 
    Ícone de PILAR: `ClaroServiceIcon` só resolve os 22 ícones de SERVIÇO — os
-   4 ícones de pilar ("shopping-cart", "trending-up", "palette", "bot") não
-   estão nesse mapa. Em vez de recorrer a um lookup dinâmico por string aqui
-   também, os 4 ficam num Record fechado (chave = PillarKey, só 4 valores
-   possíveis) com import nomeado direto do lucide — mesmo espírito da regra
-   "nunca Icons[nome]", só que fixado a um conjunto fechado de 4 em vez de 22.
+   ícones de pilar não estão nesse mapa. Em vez de recorrer a um lookup
+   dinâmico por string aqui também, eles ficam num Record fechado (chave =
+   PillarKey) com import nomeado direto do lucide — mesmo espírito da regra
+   "nunca Icons[nome]", só que fixado a um conjunto fechado.
+
+   Passou de 4 para 5 em 2026-08-07 (departamentos, ver lib/pillars.ts). Como
+   o Record é tipado por `PillarKey`, o TypeScript acusa na hora se alguém
+   mexer nos pilares e esquecer de vir aqui — foi o que aconteceu e é por isso
+   que este mapa é fechado em vez de dinâmico.
    ──────────────────────────────────────────────────────────────────────────── */
 
 const PILLAR_ICON: Record<PillarKey, LucideIcon> = {
-  vender: ShoppingCart,
-  atrair: TrendingUp,
-  marca: Palette,
+  site: LayoutTemplate,
+  ecommerce: ShoppingCart,
+  marketing: TrendingUp,
+  midia: Palette,
   ia: Bot,
 };
 

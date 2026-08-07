@@ -20,7 +20,22 @@
    Contrastes medidos contra o fundo real do card (#191D23): piso 7,2:1 — antes
    havia cards a 3,14:1, com o ícone quase invisível.
    ──────────────────────────────────────────────────────────────────────────── */
-export type PillarKey = "vender" | "atrair" | "marca" | "ia";
+/* ⚠️ MUDANÇA DE TAXONOMIA (2026-08-07, pedido direto do dono).
+   Eram 4 pilares por VERBO ("Vender online", "Atrair demanda"). O dono olhou
+   o catálogo da home e pediu agrupamento por DEPARTAMENTO, com as palavras
+   que o cliente dele usa: "organize por departamento, exemplo mídia,
+   marketing digital, ecommerce, web site".
+
+   O que mudou de fato: "Vender online" juntava num balaio só o site
+   institucional E a loja virtual — que era exatamente o que ele quis separar.
+   Virou "Site & Presença" + "E-commerce & Vendas". Os outros três só foram
+   renomeados para o vocabulário de departamento; o conteúdo é o mesmo.
+
+   Nenhum serviço foi criado, removido ou movido para fora do seu assunto:
+   3 + 3 + 4 + 9 + 3 = 22, o mesmo total do catálogo (lib/site-services.ts).
+   SEO saiu de "vender" para "Marketing Digital" — é geração de demanda, e é
+   onde quem procura o serviço espera encontrar. */
+export type PillarKey = "site" | "ecommerce" | "marketing" | "midia" | "ia";
 
 export type Pillar = {
   key: PillarKey;
@@ -36,27 +51,33 @@ export type Pillar = {
 
 export const PILLARS: Pillar[] = [
   {
-    key: "vender", label: "Vender online", short: "Vender", icon: "shopping-cart",
-    desc: "Site, loja e presença que convertem visita em cliente.",
+    key: "site", label: "Site & Presença", short: "Site", icon: "layout-template",
+    desc: "O endereço da sua empresa na internet: rápido, achável e no ar.",
     accent: "#2DD4A0", rail: "#0FA968", glow: "rgba(45,212,160,0.42)", // 8,89:1
-    slugs: ["criacao-de-site", "loja-virtual", "consultoria-ecommerce", "seo", "hospedagem", "cartao-interativo", "auditoria-comercial"],
+    slugs: ["criacao-de-site", "cartao-interativo", "hospedagem"],
   },
   {
-    key: "atrair", label: "Atrair demanda", short: "Atrair", icon: "trending-up",
-    desc: "Tráfego e réguas que trazem gente pronta pra comprar.",
+    key: "ecommerce", label: "E-commerce & Vendas", short: "E-commerce", icon: "shopping-cart",
+    desc: "Loja virtual, marketplaces e o processo comercial que fecha a venda.",
+    accent: "#5FD3C6", rail: "#3BA8A0", glow: "rgba(95,211,198,0.42)", // 9,4:1
+    slugs: ["loja-virtual", "consultoria-ecommerce", "auditoria-comercial"],
+  },
+  {
+    key: "marketing", label: "Marketing Digital", short: "Marketing", icon: "trending-up",
+    desc: "Anúncio, busca e réguas que trazem gente pronta para comprar.",
     accent: "#E09A63", rail: "#C4763C", glow: "rgba(224,154,99,0.42)", // 7,23:1
-    slugs: ["marketing-trafego", "email-marketing", "web-stories"],
+    slugs: ["marketing-trafego", "seo", "email-marketing", "web-stories"],
   },
   {
-    key: "marca", label: "Marca & conteúdo", short: "Marca", icon: "palette",
+    key: "midia", label: "Mídia & Conteúdo", short: "Mídia", icon: "palette",
     desc: "Identidade, foto, vídeo e redes com o padrão da sua marca.",
     accent: "#D3B78E", rail: "#D3B78E", glow: "rgba(211,183,142,0.42)", // 8,81:1 — champanhe dessaturado
     slugs: ["redes-sociais", "posts-redes-sociais", "posts-video", "stories-instagram", "producao-de-video", "producao-fotografica", "fotos-produtos", "design-identidade", "criacao-logo"],
   },
   {
-    key: "ia", label: "Operar com IA", short: "IA", icon: "bot",
-    desc: "Agentes e automações que atendem e vendem sozinhos.",
-    accent: "#5FD3C6", rail: "#3BA8A0", glow: "rgba(95,211,198,0.42)", // 9,4:1
+    key: "ia", label: "IA & Automação", short: "IA", icon: "bot",
+    desc: "Agentes e automações que atendem e qualificam sozinhos.",
+    accent: "#7FD8C0", rail: "#2F9C86", glow: "rgba(127,216,192,0.42)", // 9,9:1
     slugs: ["automacoes-ia", "crm-com-ia", "sdr-com-ia"],
   },
 ];

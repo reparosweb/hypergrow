@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { FLAGSHIP_SLUGS, pillarOf, type ServiceCardData } from "@/lib/pillars";
+import { FLAGSHIP_SLUGS, PILLARS, type ServiceCardData } from "@/lib/pillars";
 import { ClaroHead } from "./ClaroUI";
 import { ClaroServiceIcon } from "./ClaroServiceIcon";
 import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
@@ -68,11 +68,37 @@ export const CATALOGO_COPY_OVERRIDES: Record<string, ServicoCopyOverride> = {
   "design-identidade": { headline: "Peças feitas para vender, não só bonitas", blurb: "Cada peça nasce com um objetivo: clique, lead ou venda — nunca só estética." },
 };
 
+/* Uma fotografia REAL por departamento, encabeçando o grupo.
+   Arquivos locais em public/fotos/ (StockSnap, CC0 1.0 — domínio público,
+   créditos em public/fotos/CREDITOS.json), já otimizados em .webp pela
+   pipeline scripts/fetch-images.mjs. Auto-hospedado de propósito: carrega mais
+   rápido que hotlink e não depende de serviço de terceiro continuar no ar.
+   O `alt` descreve a CENA — nunca "nossa equipe", que seria mentira: são
+   fotos de banco, não do time da HyperGrow. */
+const FOTO_DEPARTAMENTO: Record<string, { src: string; alt: string }> = {
+  site: { src: "/fotos/esboco-layout.webp", alt: "Rascunho de layout de site desenhado à mão ao lado do celular" },
+  ecommerce: { src: "/fotos/checkout-loja-virtual.webp", alt: "Mão segurando cartão de crédito diante de uma loja virtual aberta no notebook" },
+  marketing: { src: "/fotos/painel-resultados.webp", alt: "Painel de métricas e gráficos de campanha aberto na tela" },
+  midia: { src: "/fotos/camera-estudio.webp", alt: "Câmera montada em tripé dentro de um estúdio de gravação" },
+  ia: { src: "/fotos/atendimento-crm.webp", alt: "Atendimento a cliente acontecendo pelo celular com o sistema aberto no notebook" },
+};
+
 export default function ClaroServicos({ services }: { services: ServiceCardData[] }) {
   const porSlug = new Map(services.map((s) => [s.slug, s]));
-  const itens = CATALOGO_HOME
-    .map((slug) => porSlug.get(slug))
-    .filter((s): s is ServiceCardData => !!s);
+
+  /* Agrupa por DEPARTAMENTO (pedido do dono: "todos os cards estão
+     misturados, organize por departamento"). A ordem dos grupos é a de
+     PILLARS; dentro do grupo, a ordem é a do próprio pilar — as duas vindas
+     da fonte única, então nada aqui precisa ser mantido em sincronia à mão.
+     `filter(Boolean)` protege contra slug que exista no pilar mas não tenha
+     chegado em `services`: o grupo encolhe, a página não quebra. */
+  const grupos = PILLARS.map((pil) => ({
+    pil,
+    foto: FOTO_DEPARTAMENTO[pil.key],
+    itens: pil.slugs
+      .map((slug) => porSlug.get(slug))
+      .filter((s): s is ServiceCardData => !!s),
+  })).filter((g) => g.itens.length > 0);
 
   return (
     // "alt" de propósito: entra logo depois de ClaroCaptura (faixa full-bleed
@@ -82,40 +108,60 @@ export default function ClaroServicos({ services }: { services: ServiceCardData[
     // exige tocar no className de nenhuma outra seção da página.
     <section id="catalogo" className="sec alt">
       <div className="wrap">
-        <ClaroHead center eyebrow="Catálogo" sub={`Um recorte do que fazemos, direto na página — sem precisar trocar de aba. O catálogo completo tem ${services.length} serviços.`}>
-          Mais soluções, <span className="grad">na mesma operação</span>
+        <ClaroHead center eyebrow="Catálogo" sub={`Os ${services.length} serviços da HyperGrow, separados por departamento. Cada um tem página própria com o que está incluído, prazo e perguntas frequentes.`}>
+          Tudo que fazemos, <span className="grad">por departamento</span>
         </ClaroHead>
 
-        <div className="svm-grid">
-          {itens.map((s, i) => {
-            const cor = CLARO_PILLAR_ACCENT[pillarOf(s.slug).key];
-            const overr = CATALOGO_COPY_OVERRIDES[s.slug];
-            const headline = overr?.headline || s.title;
-            // ⚠️ PLACEHOLDER — s.desc é o texto curto já publicado em
-            // /servicos/[slug]; some assim que a copy definitiva (hg-conteudo)
-            // preencher CATALOGO_COPY_OVERRIDES[s.slug].blurb.
-            const blurb = overr?.blurb || s.desc;
-            const flagship = FLAGSHIP_SLUGS.includes(s.slug);
-            return (
-              <Link
-                href={`/servicos/${s.slug}`}
-                className="card svm-card lit"
-                key={s.slug}
-                style={{ ["--beam" as string]: cor, animationDelay: `${i * 30}ms` }}
-              >
-                {flagship && (
-                  <span className="chip svm-flag" style={{ color: cor, borderColor: cor + "40", background: cor + "0f" }}>
-                    Carro-chefe
-                  </span>
+        {grupos.map(({ pil, foto, itens }) => {
+          const cor = CLARO_PILLAR_ACCENT[pil.key];
+          return (
+            /* id="dep-<key>" é o alvo das âncoras do rodapé (ClaroClose.tsx) —
+               se mudar aqui, muda lá. `scroll-margin-top` no CSS impede que o
+               cabeçalho fixo cubra o título ao chegar pela âncora. */
+            <div className="svm-dep" id={`dep-${pil.key}`} key={pil.key} style={{ ["--beam" as string]: cor }}>
+              <div className="svm-dep-hd rv">
+                {foto && (
+                  <figure className="svm-dep-fig">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={foto.src} alt={foto.alt} width={960} height={640} loading="lazy" decoding="async" />
+                  </figure>
                 )}
-                <span className="svm-ic glow"><ClaroServiceIcon name={s.icon} size={20} /></span>
-                <b className="glow-t svm-t">{headline}</b>
-                <p className="svm-d">{blurb}</p>
-                <span className="svm-go">Ver serviço <ArrowRight size={14} aria-hidden /></span>
-              </Link>
-            );
-          })}
-        </div>
+                <div className="svm-dep-tx">
+                  <span className="mono svm-dep-kicker">{pil.short} · {itens.length} {itens.length === 1 ? "serviço" : "serviços"}</span>
+                  <h3 className="h3 svm-dep-t">{pil.label}</h3>
+                  <p className="body svm-dep-d">{pil.desc}</p>
+                </div>
+              </div>
+
+              <div className="svm-grid">
+                {itens.map((s, i) => {
+                  const overr = CATALOGO_COPY_OVERRIDES[s.slug];
+                  const headline = overr?.headline || s.title;
+                  const blurb = overr?.blurb || s.desc;
+                  const flagship = FLAGSHIP_SLUGS.includes(s.slug);
+                  return (
+                    <Link
+                      href={`/servicos/${s.slug}`}
+                      className="card svm-card lit"
+                      key={s.slug}
+                      style={{ animationDelay: `${i * 30}ms` }}
+                    >
+                      {flagship && (
+                        <span className="chip svm-flag" style={{ color: cor, borderColor: cor + "40", background: cor + "0f" }}>
+                          Carro-chefe
+                        </span>
+                      )}
+                      <span className="svm-ic glow"><ClaroServiceIcon name={s.icon} size={20} /></span>
+                      <b className="glow-t svm-t">{headline}</b>
+                      <p className="svm-d">{blurb}</p>
+                      <span className="svm-go">Ver serviço <ArrowRight size={14} aria-hidden /></span>
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          );
+        })}
 
         <div className="svm-cta">
           <Link href="/servicos" className="btn btn-d">
@@ -125,14 +171,37 @@ export default function ClaroServicos({ services }: { services: ServiceCardData[
       </div>
 
       <style dangerouslySetInnerHTML={{ __html: `
-        #catalogo .svm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:var(--gap);margin-top:44px}
+        /* ── cabecalho de departamento ─────────────────────────────────── */
+        #catalogo .svm-dep{margin-top:clamp(48px,6vw,76px);scroll-margin-top:calc(var(--hd-h) + 18px)}
+        #catalogo .svm-dep-hd{display:grid;grid-template-columns:minmax(0,.62fr) minmax(0,1fr);gap:clamp(20px,3vw,34px);align-items:center}
+        #catalogo .svm-dep-fig{margin:0;border-radius:18px;overflow:hidden;aspect-ratio:16/10;box-shadow:var(--sh-2);background:var(--paper-2)}
+        #catalogo .svm-dep-fig img{width:100%;height:100%;object-fit:cover;object-position:center 45%;display:block;filter:contrast(1.03) saturate(.97)}
+        #catalogo .svm-dep-tx{min-width:0}
+        #catalogo .svm-dep-kicker{display:block;color:var(--beam)}
+        #catalogo .svm-dep-t{margin-top:8px}
+        #catalogo .svm-dep-d{margin-top:9px;max-width:52ch}
+        /* MD da escala oficial: a foto vira faixa larga acima do texto em vez
+           de uma coluna estreita que corta a cena pela metade. */
+        @media(max-width:900px){
+          #catalogo .svm-dep-hd{grid-template-columns:minmax(0,1fr)}
+          #catalogo .svm-dep-fig{aspect-ratio:16/7}
+        }
+        #catalogo .svm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,240px),1fr));gap:var(--gap);margin-top:26px}
         /* fill-mode backwards (não forwards): a animação segura o estado inicial
            durante o delay e SOLTA o elemento quando termina — com forwards o
            transform final ficaria travado e mataria o levantar do :hover
            (mesmo bug documentado em ClaroSolucoes.tsx). */
         #catalogo .svm-card{position:relative;display:flex;flex-direction:column;gap:10px;padding:24px 22px;text-decoration:none;color:inherit;animation:svm-in .42s var(--ease) backwards}
         @keyframes svm-in{from{opacity:0;transform:translateY(9px)}}
-        #catalogo .svm-flag{align-self:flex-start;padding:4px 10px;font-size:11.5px}
+        /* absoluto no canto: como o selo so existe nos carro-chefe, no fluxo
+           normal ele empurrava o icone e o titulo daquele card para baixo e o
+           card ficava desalinhado dos irmaos na mesma linha da grade.
+           O padding-right no titulo reserva a faixa para ele nao passar por
+           baixo do selo. (Sem crase neste comentario: ele mora dentro de um
+           template literal e uma crase aqui FECHA a string.) */
+        #catalogo .svm-flag{position:absolute;top:14px;right:14px;padding:4px 10px;font-size:11.5px;z-index:2}
+        #catalogo .svm-card:has(.svm-flag) .svm-t{padding-right:96px}
+        @media(max-width:600px){#catalogo .svm-card:has(.svm-flag) .svm-t{padding-right:0}#catalogo .svm-flag{position:static;align-self:flex-start}}
         #catalogo .svm-ic{flex-shrink:0;width:44px;height:44px;border-radius:12px;border:1px solid color-mix(in srgb,var(--beam) 18%,white);background:color-mix(in srgb,var(--beam) 8%,white);color:var(--beam);display:inline-flex;align-items:center;justify-content:center;transition:color .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
         #catalogo .svm-t{font:600 16px/1.35 var(--text);color:var(--ink);transition:color .3s var(--ease)}
         #catalogo .svm-d{flex:1;font:400 14px/1.55 var(--text);color:var(--ink-2);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}

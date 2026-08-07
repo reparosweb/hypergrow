@@ -1,7 +1,7 @@
 import "../claro-tokens.css";
 import Link from "next/link";
 import type { Metadata } from "next";
-import { siteServices, PILLARS } from "@/lib/site-services";
+import { siteServices, PILLARS, type PillarKey } from "@/lib/site-services";
 import ServiceGlyph from "@/components/site/ServiceGlyphs";
 import PageShellClaro, { Arrow } from "@/components/site/PageShellClaro";
 import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
@@ -21,8 +21,14 @@ import { SITE_URL } from "@/lib/seo";
    tabelas como a maior lacuna de AEO — tabela é o formato que IA mais cita). */
 
 const TITLE = "Serviços — HyperGrow";
+/* O número sai de `siteServices.length`, nunca escrito à mão: o texto dizia
+   "Os 19 serviços" depois de o catálogo já ter 22 — número errado na descrição
+   que aparece no Google. Contado, não estimado. */
+/* A lista de departamentos sai de PILLARS, não digitada: quando eles passaram
+   de 4 para 5 (2026-08-07), esta descrição continuaria anunciando ao Google
+   "4 frentes: vender online, atrair demanda…" — nomes que não existem mais. */
 const DESC =
-  "Os 19 serviços da HyperGrow em 4 frentes: vender online, atrair demanda, marca e conteúdo, e operar com IA. Veja qual resolve o seu problema.";
+  `Os ${siteServices.length} serviços da HyperGrow em ${PILLARS.length} departamentos: ${PILLARS.map((p) => p.label.toLowerCase()).join(", ")}. Veja qual resolve o seu problema.`;
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -32,12 +38,15 @@ export const metadata: Metadata = {
   twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 
-/* Quando escolher cada frente — escrito a partir do que os serviços de cada
-   pilar realmente entregam (nada inventado; é a mesma promessa das 19 páginas). */
-const WHEN: Record<string, string> = {
-  vender: "Você já tem (ou quer ter) um canal de venda próprio e ele não converte, é lento ou ainda não existe.",
-  atrair: "O canal existe e funciona, mas não chega gente suficiente — ou chega gente que não compra.",
-  marca: "Sua comunicação não parece do tamanho do que você entrega: foto, vídeo, marca e redes fora do padrão.",
+/* Quando escolher cada departamento — escrito a partir do que os serviços de
+   cada um realmente entregam (nada inventado; é a mesma promessa das páginas).
+   Tipado por `PillarKey`: se alguém mexer nos departamentos e esquecer daqui,
+   o TypeScript acusa antes do build em vez de o site exibir texto vazio. */
+const WHEN: Record<PillarKey, string> = {
+  site: "Sua empresa não tem endereço próprio na internet — ou tem um que é lento, feio ou ninguém acha no Google.",
+  ecommerce: "Você vende (ou quer vender) online e o processo trava: loja que não converte, marketplace sem margem, venda que não fecha.",
+  marketing: "O canal existe e funciona, mas não chega gente suficiente — ou chega gente que não compra.",
+  midia: "Sua comunicação não parece do tamanho do que você entrega: foto, vídeo, marca e redes fora do padrão.",
   ia: "A equipe perde tempo com tarefa repetitiva e cliente fica sem resposta fora do horário comercial.",
 };
 
@@ -173,7 +182,7 @@ export default function ServicosHub() {
               <p className="pg-p" style={{ marginLeft: 17 }}>{p.desc}</p>
               <div className="pg-grid" style={{ marginTop: 20 }}>
                 {list.map((s) => (
-                  <Link key={s.slug} href={`/servicos/${s.slug}`} className="pg-card" style={{ ["--acc" as string]: cor }}>
+                  <Link key={s.slug} href={`/servicos/${s.slug}`} className="pg-card lit" style={{ ["--acc" as string]: cor }}>
                     <span aria-hidden style={{ display: "block", color: cor, marginBottom: 12 }}>
                       <ServiceGlyph slug={s.slug} height={52} />
                     </span>

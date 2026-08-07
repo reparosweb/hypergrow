@@ -3,10 +3,14 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import {
-  Quote, Plus, MessageCircle, Mail, ArrowUpRight, Check, Send, Clock,
+  Plus, MessageCircle, Mail, ArrowUpRight, Check, Send, Clock,
   AlertCircle, ChevronDown,
 } from "lucide-react";
 import { HOME_FAQ } from "@/lib/home-faq";
+/* Módulo LEVE (só dados) — seguro no bundle do cliente, é o mesmo que o
+   portfólio e /sobre já consomem. Ver nota no topo de lib/projects.ts. */
+import { PROJECTS } from "@/lib/projects";
+import { PILLARS } from "@/lib/pillars";
 import { ClaroLogo, ClaroHead } from "./ClaroUI";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
@@ -23,34 +27,44 @@ function useClaroWhatsApp() {
 }
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   RESULTADOS (case) e DEPOIMENTOS — ⚠️ PLACEHOLDER, por decisão explícita do
-   dono nesta sessão ("manter como placeholder por ora"). O case de evolução
-   mês-a-mês e as 3 falas de cliente são as MESMAS do mockup original — não
-   foi inventado nada NOVO, só portado com o aviso de que precisam virar dado
-   real (ou sair do ar) antes desta rota ser promovida a produção.
+   NOTA HISTÓRICA — este arquivo já foi o que mais tinha texto inventado do
+   site. Sessões anteriores mantiveram "por ora" um case de cliente e 3
+   depoimentos, ambos vindos do mockup de design, ambos publicados como se
+   fossem reais. Em 2026-08-06 o dono foi consultado de novo, confirmou que
+   não tem depoimento nem avaliação coletada, e autorizou remover tudo.
+   As duas seções abaixo passaram a se sustentar só no que é verificável.
+   Regra que fica para quem vier depois: nada aqui volta a afirmar número
+   sobre cliente sem fonte auditável. ─────────────────────────────────────── */
 
-   Diferença deliberada do mockup: os depoimentos usavam foto de banco (Pexels)
-   como se fosse o rosto da pessoa que "disse" a frase — isso não foi portado.
-   Aqui é iniciais num círculo, sem vincular rosto de banco a uma citação que a
-   pessoa nunca disse. ────────────────────────────────────────────────────── */
-const RESULTADOS_PLACEHOLDER = [
-  { t: "Mês 0 · Diagnóstico", d: "Loja com tráfego caro, ficha de produto incompleta e nenhum acompanhamento de pedido. Faturamento oscilando entre R$ 48 mil e R$ 90 mil.", k: "Ponto de partida", hex: "#B0155F" },
-  { t: "Mês 3 · Estrutura", d: "Produtos recadastrados, ERP integrado, checkout otimizado e campanhas reorganizadas por margem — não por volume.", k: "Base arrumada", hex: "#A8560B" },
-  { t: "Mês 12 · Escala", d: "Faturamento médio de R$ 210 mil/mês, ROAS 7,4 e um time que sabe o que fazer sem esperar reunião.", k: "Crescimento sustentável", hex: "#1550E8" },
+/* CASE INVENTADO REMOVIDO (2026-08-06, autorizado pelo dono).
+   Aqui vivia "A evolução de um cliente nosso": três etapas com faturamento
+   saindo de "R$ 48 a 90 mil" para "R$ 210 mil/mês, ROAS 7,4". Vinha do
+   mockup, o cliente não existe e o número nunca foi medido — era o texto de
+   maior risco do site inteiro, porque é promessa financeira específica
+   atribuída a um caso real.
+
+   O QUE ENTROU: a seção continua se chamando "Resultados" (o link do menu
+   aponta para #resultados e continua coerente), mas em vez de mostrar o
+   gráfico de uma empresa que não existe, ela explica COMO o resultado do
+   visitante vai ser medido e o que a HyperGrow garante antes de qualquer
+   número. Cada frase abaixo é um compromisso operacional verificável, não
+   uma estatística — inclusive a de "diagnóstico gratuito", que é o mesmo que
+   o formulário de contato desta página já entrega. */
+const RESULTADOS = [
+  { t: "Diagnóstico, não promessa", d: "Antes de falar em meta, olhamos a sua operação e dizemos onde ela trava — mesmo quando a conclusão honesta é que você ainda não precisa da gente.", k: "Antes de assinar", hex: "#B0155F" },
+  { t: "Relatório sem maquiagem", d: "Todo mês, o que deu certo e o que não deu, com o número do lado. Sem gráfico bonito escondendo a campanha que não converteu.", k: "Enquanto roda", hex: "#A8560B" },
+  { t: "Uma pessoa com nome", d: "Campanha parou de entregar, pedido não caiu no ERP, site fora do ar: você chama alguém que conhece a sua operação, não abre protocolo numa fila.", k: "Quando trava", hex: "#1550E8" },
 ] as const;
 
 export function ClaroResultados() {
   return (
     <section id="resultados" className="sec alt">
       <div className="wrap">
-        <ClaroHead center eyebrow="Resultados" sub="Um caso real, mês a mês. Sem gráfico bonito sem contexto — o que mudou na operação e o que isso fez com o faturamento.">
-          A evolução de <span className="grad">um cliente nosso</span>
+        <ClaroHead center eyebrow="Resultados" sub="Não vamos mostrar o gráfico de outra empresa para te convencer. Vamos mostrar como o SEU resultado é medido — e o que garantimos antes de existir número.">
+          O que a gente <span className="grad">assume com você</span>
         </ClaroHead>
-        {/* ⚠️ PLACEHOLDER — ver comentário acima. Só o VISUAL foi refinado
-            (borda de luz na cor da etapa, medalha que reage ao hover); texto e
-            números continuam exatamente os do mockup. */}
         <div className="cl-res-g">
-          {RESULTADOS_PLACEHOLDER.map((s, i) => (
+          {RESULTADOS.map((s, i) => (
             <article className="card cl-res-c lit rv" key={s.t} style={{ ["--beam" as string]: s.hex, transitionDelay: i * 0.08 + "s" }}>
               <span className="cl-res-n" style={{ background: s.hex }} aria-hidden>{i + 1}</span>
               <span className="mono cl-res-k" style={{ color: s.hex }}>{s.k}</span>
@@ -94,52 +108,90 @@ export function ClaroResultados() {
    marca. Só cor de UI; nada aqui vira afirmação sobre cliente. */
 const DEP_BEAM = ["#1550E8", "#3B2FCC", "#E0165F"];
 
-const DEPOIMENTOS_PLACEHOLDER = [
-  { q: "Entrei achando que precisava de mais anúncio. Saí com a loja arrumada, o estoque batendo com o ERP e o faturamento previsível. A diferença foi o método.", n: "Sócia-proprietária", r: "Loja de decoração" },
-  { q: "A automação de WhatsApp resolveu o que eu não conseguia: responder rápido. Hoje o cliente é atendido em segundos, mesmo de madrugada.", n: "Diretor de operações", r: "Clínica multiprofissional" },
-  { q: "Em três meses o cadastro de produtos deixou de ser gargalo e o tráfego passou a dar lucro, não só visita.", n: "Fundador", r: "Marca de moda" },
-] as const;
+/* ─────────────────────────────────────────────────────────────────────────────
+   PROVA REAL — substituiu os 3 depoimentos de mockup (2026-08-06).
 
+   POR QUE MUDOU: as 3 falas que viviam aqui ("Sócia-proprietária, Loja de
+   decoração"...) vinham do arquivo de design e NUNCA foram ditas por ninguém.
+   Estavam no ar como se fossem cliente real. O dono foi consultado nesta
+   sessão, confirmou que hoje NÃO tem depoimento nem avaliação de Google
+   coletada, e escolheu prova verificável em vez de prova inventada.
+
+   O QUE ENTROU NO LUGAR: os projetos que estão publicados AGORA, cada um com
+   endereço clicável. É a única prova social que este site pode fazer sem
+   mentir — e é mais forte que depoimento, porque o visitante confere sozinho
+   em vez de acreditar. Fonte: lib/projects.ts (a mesma do portfólio e de
+   /sobre; duas cópias da mesma verdade é como o site passa a mentir em uma
+   delas).
+
+   Os números são CONTADOS do array em tempo de render, nunca digitados à mão:
+   se um projeto entrar ou sair, o texto acompanha sozinho e não vira
+   estatística velha. ──────────────────────────────────────────────────────── */
 export function ClaroDepoimentos() {
+  const noAr = PROJECTS.filter((p) => !!p.url);
+  const deCliente = noAr.filter((p) => !p.own).length;
+  const proprios = noAr.filter((p) => p.own).length;
+
   return (
     <section id="depoimentos" className="sec">
       <div className="wrap">
-        <ClaroHead center eyebrow="Clientes" sub="Três frases que resumem por que as pessoas ficam.">Quem trabalha com a gente, <span className="grad">cresce</span></ClaroHead>
-        {/* ⚠️ PLACEHOLDER — ver comentário no topo do arquivo. Igual aos
-            Resultados: mexi só no visual (cor de acento por card, avatar que
-            acende no hover), nenhuma palavra da citação foi alterada. */}
+        <ClaroHead
+          center
+          eyebrow="Prova real"
+          sub={`${noAr.length} endereços publicados: ${deCliente} projetos de cliente e ${proprios} produtos que são nossos e sustentamos com o nosso dinheiro. Clique em qualquer um.`}
+        >
+          Não peça para acreditar. <span className="grad">Confira.</span>
+        </ClaroHead>
+
         <div className="g g-280 cl-dp">
-          {DEPOIMENTOS_PLACEHOLDER.map((t, i) => {
-            const iniciais = t.n.split(" ").map((w) => w[0]).slice(0, 2).join("").toUpperCase();
+          {noAr.map((p, i) => {
             const hex = DEP_BEAM[i % DEP_BEAM.length];
+            // rótulo do endereço sem "https://www." — o que interessa é o domínio
+            const dominio = p.url!.replace(/^https?:\/\/(www\.)?/, "").replace(/\/$/, "");
             return (
-              <article className="card lit rv cl-dp-c" key={t.n} style={{ ["--beam" as string]: hex }}>
-                <Quote className="cl-dp-q" size={26} style={{ color: hex }} aria-hidden />
-                <p className="cl-dp-t">{t.q}</p>
-                <div className="cl-dp-f">
-                  <span aria-hidden className="glow cl-dp-av">{iniciais}</span>
-                  <div>
-                    <div className="cl-dp-n">{t.n}</div>
-                    <div className="small">{t.r}</div>
-                  </div>
-                </div>
-              </article>
+              <a
+                className="card lit rv cl-dp-c"
+                key={p.id}
+                href={p.url}
+                target="_blank"
+                rel="noreferrer"
+                style={{ ["--beam" as string]: hex }}
+                aria-label={`Abrir ${p.name} em nova aba`}
+              >
+                <span className="cl-dp-tag" style={{ color: hex, borderColor: hex + "40", background: hex + "0f" }}>
+                  {p.own ? "Produto próprio" : "Projeto de cliente"}
+                </span>
+                <b className="glow-t cl-dp-n">{p.name}</b>
+                <p className="cl-dp-t">{p.desc}</p>
+                <span className="cl-dp-f">
+                  <span className="mono cl-dp-url">{dominio}</span>
+                  <ArrowUpRight className="cl-dp-go" size={16} aria-hidden />
+                </span>
+              </a>
             );
           })}
         </div>
+
+        <p className="small cl-dp-note rv">
+          Ainda não publicamos depoimento de cliente aqui: só entra com nome, autorização e a
+          pessoa por trás. Enquanto isso, o que mostramos é o que está no ar.
+        </p>
       </div>
       <style dangerouslySetInnerHTML={{ __html: `
         #depoimentos .cl-dp{margin-top:44px}
         /* mesma correção de transição explicada em #resultados */
-        #depoimentos .cl-dp-c{padding:28px;display:flex;flex-direction:column;transition:opacity .6s var(--ease),transform .34s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
+        #depoimentos .cl-dp-c{padding:26px;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:opacity .6s var(--ease),transform .34s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
         #depoimentos .cl-dp-c:hover{transform:translateY(-4px);box-shadow:var(--sh-2);border-color:#D6DDEA}
-        #depoimentos .cl-dp-q{opacity:.45;transition:opacity .3s var(--ease),transform .35s var(--ease)}
-        #depoimentos .cl-dp-c:hover .cl-dp-q{opacity:1;transform:translateY(-2px)}
-        #depoimentos .cl-dp-t{font:400 16.5px/1.62 var(--text);color:var(--ink);margin-top:16px;flex:1;text-wrap:pretty}
-        #depoimentos .cl-dp-f{display:flex;align-items:center;gap:13px;margin-top:24px;padding-top:19px;border-top:1px solid var(--line-2)}
-        #depoimentos .cl-dp-av{width:46px;height:46px;border-radius:99px;background:var(--paper-2);border:1px solid var(--line);display:inline-flex;align-items:center;justify-content:center;font:700 15px var(--disp);color:var(--ink-3);flex-shrink:0}
-        #depoimentos .cl-dp-n{font:600 14.5px var(--text);color:var(--ink)}
-        @media(prefers-reduced-motion:reduce){#depoimentos .cl-dp-c:hover{transform:none}#depoimentos .cl-dp-c:hover .cl-dp-q{transform:none}}
+        #depoimentos .cl-dp-c:focus-visible{outline:2px solid var(--beam);outline-offset:3px;transform:translateY(-4px);box-shadow:var(--sh-2)}
+        #depoimentos .cl-dp-tag{align-self:flex-start;display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;border:1px solid;font:600 11.5px var(--text)}
+        #depoimentos .cl-dp-n{display:block;font:700 17.5px/1.3 var(--disp);letter-spacing:-.02em;color:var(--ink);margin-top:14px;transition:color .3s var(--ease)}
+        #depoimentos .cl-dp-t{font:400 14.5px/1.6 var(--text);color:var(--ink-2);margin-top:9px;flex:1;text-wrap:pretty}
+        #depoimentos .cl-dp-f{display:flex;align-items:center;gap:10px;margin-top:20px;padding-top:16px;border-top:1px solid var(--line-2)}
+        #depoimentos .cl-dp-url{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink-3);font-size:12.5px}
+        #depoimentos .cl-dp-go{flex-shrink:0;color:var(--beam);transition:transform .3s var(--ease)}
+        #depoimentos .cl-dp-c:hover .cl-dp-go,#depoimentos .cl-dp-c:focus-visible .cl-dp-go{transform:translate(2px,-2px)}
+        #depoimentos .cl-dp-note{margin-top:26px;text-align:center;max-width:62ch;margin-inline:auto}
+        @media(prefers-reduced-motion:reduce){#depoimentos .cl-dp-c:hover,#depoimentos .cl-dp-c:focus-visible{transform:none}#depoimentos .cl-dp-c:hover .cl-dp-go{transform:none}}
       `}} />
     </section>
   );
@@ -401,8 +453,13 @@ export function ClaroContato() {
                   <label htmlFor="cl-servico">O que você precisa</label>
                   <div className="cl-f-sel">
                     <select id="cl-servico" name="servico" value={form.servico} onChange={set("servico")}>
-                      <option value="">Selecione uma frente</option>
-                      {["Vender online", "Atrair demanda", "Marca & conteúdo", "Operar com IA"].map((d) => <option key={d}>{d}</option>)}
+                      <option value="">Selecione um departamento</option>
+                      {/* Derivado de PILLARS: esta lista estava digitada à mão
+                          com os 4 rótulos antigos e teria continuado oferecendo
+                          "Vender online" depois que os departamentos mudaram —
+                          o lead chegaria no CRM com uma categoria que não
+                          existe mais. */}
+                      {PILLARS.map((p) => <option key={p.key}>{p.label}</option>)}
                     </select>
                     <ChevronDown size={17} aria-hidden />
                   </div>
@@ -518,16 +575,14 @@ export function ClaroContato() {
 
 /* Cada link do rodapé aponta para a seção QUE ELE NOMEIA. Antes os oito itens
    das duas colunas iam todos para "#solucoes" — quem clicava em "Portfólio" ou
-   "Diagnóstico gratuito" caía no lugar errado e voltava. As quatro frentes
-   continuam em #solucoes de propósito: é lá que a frente é escolhida (a aba não
-   tem URL própria), e o catálogo completo tem o seu próprio link. */
+   "Diagnóstico gratuito" caía no lugar errado e voltava.
+
+   Os departamentos agora saem de PILLARS (lib/pillars.ts) em vez de digitados:
+   quando passaram de 4 para 5 em 2026-08-07, esta lista teria ficado com os
+   rótulos velhos sem ninguém notar. Cada um leva à sua âncora dentro do
+   catálogo da home, que é onde o grupo tem cabeçalho próprio. */
 const RODAPE: [string, [string, string][]][] = [
-  ["Frentes", [
-    ["Vender online", "#solucoes"],
-    ["Atrair demanda", "#solucoes"],
-    ["Marca & conteúdo", "#solucoes"],
-    ["Operar com IA", "#solucoes"],
-  ]],
+  ["Departamentos", PILLARS.map((p) => [p.label, `#dep-${p.key}`] as [string, string])],
   ["Empresa", [
     ["Nossa agência", "#sobre"],
     ["Resultados", "#resultados"],

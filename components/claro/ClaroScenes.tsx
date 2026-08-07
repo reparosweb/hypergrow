@@ -1,16 +1,28 @@
 import { Eye, Heart, MessageCircle } from "lucide-react";
 
 /* ─────────────────────────────────────────────────────────────────────────────
-   ⚠️ PLACEHOLDER — TODO número que aparece nestas cenas veio do MOCKUP
-   (projeto Claude Design "Hypergrow", arquivo lit-scenes.jsx), NÃO da operação
-   real da HyperGrow: "1.284 SKUs", "+21 posições", "+186%", "184.320 / 9.412 /
-   1.106 / 287", "ROAS 7,4 · CPA R$ 41", "38 s", "312 mil / 18,4 mil / 1.207",
-   "R$ 214 mil". Estão aqui por decisão explícita do dono nesta sessão
-   ("manter como placeholder por ora") + pedido de fidelidade total ao design.
-   ANTES de promover esta rota a produção ou usar em campanha, cada número
-   precisa virar dado real e verificável OU sair do ar — regra 8 da skill
-   `hg-regras-de-bug` (prova social inventada já foi ao ar aqui uma vez).
-   Mesmo aviso que existe em components/claro/ClaroClose.tsx.
+   NÚMEROS DESTAS CENAS = ILUSTRAÇÃO DE INTERFACE, NÃO DADO DE CLIENTE.
+
+   Todo número aqui veio do mockup (projeto Claude Design "Hypergrow",
+   lit-scenes.jsx) e nunca foi medido numa operação real. Em 2026-08-06, ao
+   remover os números inventados do resto da home, estas cenas foram
+   reavaliadas e a decisão foi DIFERENTE das outras seções, de propósito:
+
+   · Nas outras seções o número aparecia como AFIRMAÇÃO da HyperGrow
+     ("7,4x ROAS médio alcançado") — isso era mentira e saiu.
+   · Aqui o número é parte do DESENHO de uma tela: são miniaturas animadas de
+     painel, chat e kanban, e uma tela de painel sem nenhum número dentro não
+     lê como painel, lê como caixa vazia. Esvaziar mataria a seção, que é
+     justamente a que dá vida à página.
+
+   As duas salvaguardas que tornam isso honesto, e que NÃO podem sair:
+   1. `ClaroShow.tsx` exibe uma legenda visível dizendo que são ilustrações de
+      interface, não resultado de cliente — mesmo padrão da legenda que
+      `ClaroCaptura.tsx` já usa para o vídeo da SpaceX.
+   2. Nenhum número daqui pode se repetir como AFIRMAÇÃO em outra seção. Foi o
+      que acontecia com "ROAS 7,4": aparecia na cena E como estatística da
+      empresa, e um reforçava o outro como se fosse dado real. A estatística
+      saiu; a cena trocou para uma métrica de interface neutra.
    ──────────────────────────────────────────────────────────────────────────── */
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -135,7 +147,11 @@ export function SceneFunil({ c }: SceneProps) {
           </div>
         ))}
       </div>
-      <div className="st-tag st-tag-ok">ROAS 7,4 · CPA R$ 41</div>
+      {/* NÃO reintroduzir "ROAS 7,4" aqui: era o mesmo número que a home
+          afirmava como estatística da empresa (removida em 2026-08-06 por ser
+          inventada). Repetir o número nos dois lugares fazia um validar o
+          outro. Rótulo de painel, sem valor de resultado. */}
+      <div className="st-tag st-tag-ok">Campanha ativa · otimizando</div>
     </div>
   );
 }

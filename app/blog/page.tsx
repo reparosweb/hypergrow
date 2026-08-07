@@ -143,7 +143,7 @@ export default function BlogPage() {
       {/* Destaque — o post mais recente ganha peso próprio */}
       <section className="sec" style={{ paddingTop: 34, paddingBottom: 0 }}>
         <div className="wrap">
-          <Link href={`/blog/${featured.slug}`} className="hgb-feat" style={{ "--beam": fp.cor } as CSSProperties}>
+          <Link href={`/blog/${featured.slug}`} className="hgb-feat lit" style={{ "--beam": fp.cor } as CSSProperties}>
             <span aria-hidden className="hgb-rail" />
 
             <div style={{ padding: "clamp(28px,3.4vw,40px)", display: "flex", flexDirection: "column", minWidth: 0 }}>
@@ -181,7 +181,7 @@ export default function BlogPage() {
             {rest.map((p) => {
               const t = tone(p);
               return (
-                <Link key={p.slug} href={`/blog/${p.slug}`} className="hgb-card" style={{ "--beam": t.cor } as CSSProperties}>
+                <Link key={p.slug} href={`/blog/${p.slug}`} className="hgb-card lit" style={{ "--beam": t.cor } as CSSProperties}>
                   <span aria-hidden className="hgb-rail" />
                   <span className="hgb-tag" style={{ color: t.cor, background: `${t.cor}14`, border: `1px solid ${t.cor}38` }}>{p.category}</span>
                   <h2>{p.title}</h2>

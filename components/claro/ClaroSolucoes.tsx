@@ -3,7 +3,7 @@
 import { useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import { PILLARS, type ServiceCardData } from "@/lib/pillars";
+import { PILLARS, type PillarKey, type ServiceCardData } from "@/lib/pillars";
 import { ClaroHead } from "./ClaroUI";
 import { ClaroServiceIcon } from "./ClaroServiceIcon";
 import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
@@ -46,12 +46,22 @@ import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
       setas do teclado, roving tabindex) e todo elemento interativo ganhou
       `:focus-visible` — antes só havia hover, nada por teclado.
    Só `transform`/`opacity`/cor são animados (regra de performance da casa). */
-const PX = (id: number) => `https://images.pexels.com/photos/${id}/pexels-photo-${id}.jpeg?auto=compress&cs=tinysrgb&w=1400`;
-const FOTO_POR_PILAR: Record<string, { src: string; alt: string }> = {
-  vender: { src: PX(7289739), alt: "Gestora sorrindo organizando os pedidos da loja virtual" },
-  atrair: { src: PX(7693686), alt: "Time acompanhando gráficos de tráfego e captação de clientes" },
-  marca: { src: PX(9040531), alt: "Profissional de conteúdo produzindo fotos e vídeos para redes sociais" },
-  ia: { src: PX(8867220), alt: "Atendimento com apoio de automação, sorrindo em ambiente moderno" },
+/* Uma foto por DEPARTAMENTO (as chaves mudaram em 2026-08-07, ver
+   lib/pillars.ts — este mapa usava `vender/atrair/marca` e passou a devolver
+   `undefined`, derrubando o build da home inteira com "Cannot read properties
+   of undefined (reading 'src')". Por isso o tipo agora é `Record<PillarKey,…>`
+   e não `Record<string,…>`: com a chave tipada, o TypeScript acusa o
+   descompasso antes do build, em vez de quebrar só na hora de gerar a página.
+
+   Arquivos LOCAIS (StockSnap CC0 1.0, public/fotos/, créditos em
+   CREDITOS.json), não mais hotlink do Pexels: são os mesmos que as páginas de
+   serviço já usam, então o navegador reaproveita o que já baixou. */
+const FOTO_POR_PILAR: Record<PillarKey, { src: string; alt: string }> = {
+  site: { src: "/fotos/esboco-layout.webp", alt: "Rascunho de layout de site desenhado à mão ao lado do celular" },
+  ecommerce: { src: "/fotos/checkout-loja-virtual.webp", alt: "Mão segurando cartão de crédito diante de uma loja virtual aberta no notebook" },
+  marketing: { src: "/fotos/painel-resultados.webp", alt: "Painel de métricas e gráficos de campanha aberto na tela" },
+  midia: { src: "/fotos/camera-estudio.webp", alt: "Câmera montada em tripé dentro de um estúdio de gravação" },
+  ia: { src: "/fotos/atendimento-crm.webp", alt: "Atendimento a cliente acontecendo pelo celular com o sistema aberto no notebook" },
 };
 
 /* `services` chega do server (app/claro/page.tsx), já enxuto — mesma razão
@@ -172,7 +182,7 @@ export default function ClaroSolucoes({ services }: { services: ServiceCardData[
       <style dangerouslySetInnerHTML={{ __html: `
         /* ── abas ───────────────────────────────────────────────────────── */
         #solucoes .sol-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-top:40px}
-        #solucoes .sol-tab{position:relative;display:inline-flex;align-items:center;gap:9px;padding:11px 17px;border-radius:99px;border:1px solid var(--line);background:#fff;font:500 14.5px var(--text);color:var(--ink-2);box-shadow:var(--sh-1);transition:color .26s var(--ease),background .26s var(--ease),border-color .26s var(--ease),box-shadow .26s var(--ease),transform .26s var(--ease)}
+        #solucoes .sol-tab{position:relative;display:inline-flex;align-items:center;min-height:44px;gap:9px;padding:11px 17px;border-radius:99px;border:1px solid var(--line);background:#fff;font:500 14.5px var(--text);color:var(--ink-2);box-shadow:var(--sh-1);transition:color .26s var(--ease),background .26s var(--ease),border-color .26s var(--ease),box-shadow .26s var(--ease),transform .26s var(--ease)}
         #solucoes .sol-tab-ic{display:inline-flex;align-items:center;color:var(--ink-3);transition:color .26s var(--ease)}
         #solucoes .sol-tab-n{font:600 11px var(--code);background:var(--paper-2);color:var(--ink-3);border-radius:99px;padding:2px 7px;transition:color .26s var(--ease),background .26s var(--ease)}
         #solucoes .sol-tab:not(.on):hover{color:var(--ink);border-color:color-mix(in srgb,var(--beam) 40%,var(--line));transform:translateY(-2px);box-shadow:var(--sh-2)}
@@ -234,7 +244,7 @@ export default function ClaroSolucoes({ services }: { services: ServiceCardData[
         #solucoes .sol-cta:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 
         @media(max-width:1000px){#solucoes .sol-body{grid-template-columns:1fr;gap:28px}#solucoes .sol-fig{min-height:280px}}
-        @media(max-width:560px){#solucoes .sol-tabs{gap:8px}#solucoes .sol-tab{padding:10px 14px;font-size:14px}#solucoes .sol-grid{gap:12px}#solucoes .sol-card{padding:16px}}
+        @media(max-width:560px){#solucoes .sol-tabs{gap:8px}#solucoes .sol-tab{padding:10px 14px;font-size:14px;min-height:44px}#solucoes .sol-grid{gap:12px}#solucoes .sol-card{padding:16px}}
         @media(prefers-reduced-motion:reduce){
           #solucoes .sol-fig,#solucoes .sol-card{animation:none}
           #solucoes .sol-tab:hover,#solucoes .sol-tab:focus-visible,#solucoes .sol-card:focus-visible,#solucoes .sol-fig:hover figcaption{transform:none}

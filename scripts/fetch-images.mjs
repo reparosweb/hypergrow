@@ -66,6 +66,117 @@ const PHOTOS = [
     titulo: 'Laptop Code',
     alt: 'Profissional concentrado no notebook ao lado da janela em escritorio claro',
   },
+
+  /* ── Lote 2026-08-06: uma foto POR SERVICO ────────────────────────────────
+     Antes so 6 dos 22 servicos tinham foto e as outras 16 paginas nao tinham
+     imagem nenhuma ("site morto", bronca do dono comparando com concorrente).
+     Cada foto abaixo foi ABERTA e olhada antes de entrar (contato em folha de
+     miniaturas) — nada escolhido pelo nome do arquivo. Contexto sempre de
+     tecnologia / marketing / operacao de empresa; nunca varejo fisico
+     generico (a foto de mercearia ja foi bronca real neste projeto).
+     O alt descreve a CENA, nunca "nossa equipe" — e foto de banco. */
+  {
+    slug: 'posicao-google',
+    id: '959IURDRGJ',
+    titulo: 'SEO Computer',
+    alt: 'Monitor sobre uma mesa clara exibindo um grafico de trafego em curva de crescimento',
+  },
+  {
+    slug: 'servidores-datacenter',
+    id: 'ZYGIOUX4QU',
+    titulo: 'Servers Woman',
+    alt: 'Duas profissionais com notebooks no corredor de um data center entre racks de servidores',
+  },
+  {
+    slug: 'cartao-no-celular',
+    id: 'QDJDQOP3R0',
+    titulo: 'Man Smartphone',
+    alt: 'Homem sentado em um cafe consultando o celular com as duas maos',
+  },
+  {
+    slug: 'treinamento-comercial',
+    id: 'GDRASWWKFQ',
+    titulo: 'Woman Business',
+    alt: 'Profissional apresentando a um grupo diante de um quadro coberto de post-its',
+  },
+  {
+    slug: 'feed-instagram',
+    id: '3M1WKORDOL',
+    titulo: 'Instagram Social Media',
+    alt: 'Celular com um feed de rede social aberto sobre um caderno pautado e uma caneta',
+  },
+  {
+    slug: 'esboco-layout',
+    id: '20VFXOOUWG',
+    titulo: 'Design Wireframe',
+    alt: 'Caderno com o rascunho a mao do layout de uma pagina ao lado de um celular',
+  },
+  {
+    slug: 'gravando-video',
+    id: 'HP3LHTW28Z',
+    titulo: 'Woman Video',
+    alt: 'Mulher segurando uma filmadora apontada para a camera diante de uma parede de tijolos',
+  },
+  {
+    slug: 'celular-sofa',
+    id: 'XEAGPIPKRN',
+    titulo: 'Browsing Smartphone',
+    alt: 'Mulher sentada no sofa junto a janela deslizando o feed do celular',
+  },
+  {
+    slug: 'escrevendo-conteudo',
+    id: 'QBMFQAYA0W',
+    titulo: 'Blogging Typing',
+    alt: 'Maos digitando em um notebook com o editor de um artigo aberto na tela',
+  },
+  {
+    slug: 'escrevendo-email',
+    id: 'YBKJ1G35EX',
+    titulo: 'Laptop Typing',
+    alt: 'Vista de cima de uma pessoa escrevendo no notebook ao lado de uma xicara de cafe',
+  },
+  {
+    slug: 'camera-estudio',
+    id: 'PDNKBKWJFI',
+    titulo: 'Camera Studio',
+    alt: 'Camera profissional montada em tripe apontada para o cenario de um estudio',
+  },
+  {
+    slug: 'fotografa-camera',
+    id: 'JMV8OP7OGI',
+    titulo: 'Female Photographer',
+    alt: 'Fotografa segurando uma camera DSLR pronta para o proximo clique',
+  },
+  {
+    slug: 'still-produtos',
+    id: 'I8SLDUOMYC',
+    titulo: 'Makeup Products',
+    alt: 'Produtos de maquiagem organizados sobre fundo branco em um still de catalogo',
+  },
+  {
+    slug: 'flatlay-marca',
+    id: 'XJN5SPL3IM',
+    titulo: 'Top Workspace',
+    alt: 'Caderno preto, caneta, relogio e notebook alinhados em uma composicao vista de cima',
+  },
+  {
+    slug: 'letra-desenho',
+    id: 'Y2P39NGLLO',
+    titulo: 'Writing Drawing',
+    alt: 'Mao desenhando letras a lapis em uma folha grande sobre a mesa',
+  },
+  {
+    slug: 'atendimento-crm',
+    id: 'C5EGG3XLRH',
+    titulo: 'Woman Working',
+    alt: 'Profissional de oculos atendendo pelo celular com o notebook aberto na mesa',
+  },
+  {
+    slug: 'videochamada-comercial',
+    id: 'ZDSQP4E3UL',
+    titulo: 'Video Meeting',
+    alt: 'Homem sorrindo ao olhar para a tela do celular durante uma reuniao, com colegas ao fundo',
+  },
 ];
 
 const srcUrl = (id) => `https://cdn.stocksnap.io/img-thumbs/960w/${id}.jpg`;

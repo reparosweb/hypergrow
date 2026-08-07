@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { ReactNode, CSSProperties } from "react";
+import { PILLARS } from "@/lib/pillars";
 import SiteHeaderClaro from "./SiteHeaderClaro";
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -60,13 +61,14 @@ export function Check() {
    `ClaroFooter` não pôde ser reusado porque os oito links dele são âncoras
    (#sobre, #resultados, #portfolio…): fora da home, o clique não vai a lugar
    nenhum e ainda suja a URL. Aqui cada destino é caminho absoluto ou `/#ancora`. */
+/* Os departamentos saem de PILLARS (lib/pillars.ts) em vez de digitados aqui:
+   quando eles passaram de 4 para 5 em 2026-08-07, esta lista teria ficado
+   desatualizada em silêncio — rótulo velho e âncora apontando para um id que
+   não existe mais. Derivar da fonte única evita o rodapé mentir. */
 const RODAPE: [string, [string, string][]][] = [
   ["Serviços", [
     ["Catálogo completo", "/servicos"],
-    ["Vender online", "/servicos#vender"],
-    ["Atrair demanda", "/servicos#atrair"],
-    ["Marca & conteúdo", "/servicos#marca"],
-    ["Operar com IA", "/servicos#ia"],
+    ...PILLARS.map((p) => [p.label, `/servicos#${p.key}`] as [string, string]),
   ]],
   ["Empresa", [
     ["Sobre a HyperGrow", "/sobre"],
@@ -166,8 +168,25 @@ export default function PageShellClaro({
    5,74:1 e é o mesmo tom que o token já usa em `.mq-i`. Texto corrido usa
    `--ink-2` (8,70:1) e título usa `--ink` (17,4:1). */
 const CSS = `
-  .cl.pgc { --maxw-txt: 74ch; position: relative; min-height: 100vh; display: flex; flex-direction: column; }
+  /* --beam: a cor da borda de luz viajante (.lit, definida em
+     app/claro-tokens.css). Publicar aqui, no shell, e o que UNIFICA o efeito:
+     antes so a home usava .lit e as paginas internas nao tinham borda animada
+     nenhuma ("nenhuma borda animada", bronca do dono). Agora qualquer elemento
+     .lit dentro de uma pagina interna acende na cor do pilar daquela pagina,
+     sem precisar repetir style inline em cada card. Quem quiser outra cor
+     (o blog usa a cor da categoria) declara --beam no proprio elemento. */
+  .cl.pgc { --maxw-txt: 74ch; --beam: var(--acc); position: relative; min-height: 100vh;
+    display: flex; flex-direction: column; }
+  /* Re-resolve --beam NO PROPRIO elemento .lit: assim um card que declara o
+     seu --acc (ex.: os cards por pilar em /servicos) acende na cor dele, e nao
+     na cor herdada do shell. Style inline continua ganhando de tudo isso. */
+  .cl.pgc .lit { --beam: var(--acc); }
   .cl.pgc > main { flex: 1; position: relative; }
+  /* SEM overflow-x:hidden/clip aqui de proposito: isso ESCONDE o vazamento
+     horizontal em vez de corrigir, e ainda faz a medicao
+     (scrollWidth === clientWidth) passar sempre, mascarando o defeito. As
+     larguras foram medidas de verdade (320 a 1440) e o que vazava foi
+     corrigido na origem. */
 
   /* Tinta de marca no topo: gradiente puro, nunca filter/backdrop-filter. */
   .cl .pgc-tint { position: absolute; inset: 0 0 auto; height: min(560px, 62vh); pointer-events: none; z-index: 0;
@@ -185,9 +204,15 @@ const CSS = `
   @keyframes pgc-fill { to { transform: scaleX(1); } }
   @media (prefers-reduced-motion: reduce) { .cl .pgc-progress { animation: none; opacity: 0; } }
 
-  /* ── trilha ── */
-  .cl .pgc-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; padding-top: 26px;
+  /* ── trilha ──
+     Os links mediam 16px de altura — metade do alvo mínimo de toque (44px,
+     WCAG 2.5.8) e a trilha é justamente o que mais se usa com o polegar para
+     voltar. Viraram inline-flex de 44px e o padding do bloco caiu de 26 para
+     10px, então o respiro na tela continua praticamente o mesmo: só a área
+     clicável cresceu. */
+  .cl .pgc-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; padding-top: 10px;
     font: 500 12.5px var(--code); letter-spacing: .02em; color: #5A6579; }
+  .cl .pgc-crumbs a, .cl .pgc-crumb-now { display: inline-flex; align-items: center; min-height: 44px; }
   .cl .pgc-crumbs a { color: #5A6579; text-decoration: none; transition: color .2s; }
   .cl .pgc-crumbs a:hover { color: var(--acc); }
   .cl .pgc-crumb-now { color: var(--acc); }
@@ -230,6 +255,12 @@ const CSS = `
   .cl .pg-table tbody th { font: 600 14.5px var(--text); color: var(--ink); }
   .cl .pg-table tbody tr { transition: background .25s var(--ease); }
   .cl .pg-table tbody tr:hover td, .cl .pg-table tbody tr:hover th { background: var(--paper-2); }
+  /* Link dentro da célula: mediam 19px de altura. Regra única aqui em vez de
+     ajuste solto em cada página — cobre o "Comece por" de /servicos e o
+     "No ar" de /sobre de uma vez. A margem negativa devolve o espaço que os
+     44px tomariam, então a tabela cresce ~5px por linha, não 25px. */
+  .cl .pg-table td a, .cl .pg-table tbody th a { display: inline-flex; align-items: center;
+    min-height: 44px; margin-block: -10px; }
   .cl .pg-tablehint { display: none; align-items: center; gap: 6px; font: 500 11.5px var(--code);
     letter-spacing: .1em; text-transform: uppercase; color: #5A6579; margin: 18px 0 8px; }
   @media (max-width: 860px) { .cl .pg-tablehint { display: flex; } }

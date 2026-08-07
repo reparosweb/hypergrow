@@ -106,7 +106,11 @@ const CSS = `
   .cl .hgb-toc ol { list-style: none; margin: 14px 0 0; padding: 0; display: flex; flex-direction: column;
     gap: 6px; counter-reset: toc; }
   .cl .hgb-toc li { counter-increment: toc; }
-  .cl .hgb-toc a { display: flex; gap: 10px; min-height: 32px; align-items: flex-start;
+  /* min-height 44px (era 32px): o sumário é uma LISTA de links, não link
+     inline dentro de um parágrafo — então vale o alvo mínimo de toque da
+     WCAG 2.5.8. O padding vertical mantém o texto centrado quando ele cabe em
+     uma linha só e ainda respira quando quebra em duas. */
+  .cl .hgb-toc a { display: flex; gap: 10px; min-height: 44px; align-items: center; padding: 5px 0;
     font: 400 13.5px/1.45 var(--text); color: var(--ink-2); transition: color .25s var(--ease); }
   .cl .hgb-toc a::before { content: counter(toc, decimal-leading-zero); flex: none; font: 600 11px var(--code);
     color: #7C8698; padding-top: 2px; }
@@ -280,7 +284,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
           <h2 className="pg-h2" style={{ margin: "40px 0 22px" }}>Perguntas frequentes</h2>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {p.faq.map((f) => (
-              <details key={f.q} className="hgb-faq">
+              <details key={f.q} className="hgb-faq lit">
                 <summary>{f.q}</summary>
                 <p>{f.a}</p>
               </details>
@@ -339,7 +343,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
               {others.map((o) => {
                 const ot = tone(o);
                 return (
-                  <Link key={o.slug} href={`/blog/${o.slug}`} className="hgb-nextcard" style={{ "--beam": ot.cor } as CSSProperties}>
+                  <Link key={o.slug} href={`/blog/${o.slug}`} className="hgb-nextcard lit" style={{ "--beam": ot.cor } as CSSProperties}>
                     <span className="hgb-meta" style={{ color: ot.cor }}>{o.category}</span>
                     <strong>{o.title}</strong>
                     <span className="hgb-meta" style={{ display: "inline-flex", alignItems: "center", gap: 7, marginTop: 2 }}>
