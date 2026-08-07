@@ -229,9 +229,19 @@ const CSS = `
   .cl-hero-lead { font: 400 clamp(16px,1.5vw,20px)/1.6 var(--font-sans); color: rgba(255,255,255,.86); max-width: min(560px, 100%); margin: 20px 0 0; text-wrap: pretty; text-shadow: 0 2px 20px rgba(0,0,0,.5); }
   .cl-hero-actions { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 34px; }
   .cl-hero-cta { padding: 16px 28px; font-size: 16px; }
-  .cl-hero-ghost { padding: 16px 26px; font-size: 16px; background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.32); backdrop-filter: blur(10px); }
-  .cl-hero-ghost:hover { background: rgba(255,255,255,.2); color: #fff; transform: translateY(-2px); }
-  .cl-hero-ghost:focus-visible, .cl-hero-cta:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  /* BUG REAL (dono achou por print, 2026-08-07): texto quase ilegivel, azul
+     em cima do video escuro em vez de branco. Causa: app/claro-tokens.css
+     tem uma regra generica ".cl a" que pinta todo link de azul -- como
+     seletor de tipo ("a") conta ponto de especificidade, ".cl a" (0,1,1)
+     VENCE ".cl-hero-ghost" sozinho (0,1,0), mesmo este vindo depois no CSS.
+     Os outros botoes (.btn-p, .btn-s...) ja nascem prefixados ".cl .btn-p"
+     em claro-tokens.css exatamente por isso (0,2,0, vence de qualquer jeito)
+     -- so este botao local do hero tinha ficado de fora do padrao. Mesmo
+     prefixo aqui resolve. Sem crase neste comentario de proposito: ele mora
+     dentro de um template literal e uma crase aqui FECHA a string. */
+  .cl .cl-hero-ghost { padding: 16px 26px; font-size: 16px; background: rgba(255,255,255,.12); color: #fff; border: 1px solid rgba(255,255,255,.32); backdrop-filter: blur(10px); }
+  .cl .cl-hero-ghost:hover { background: rgba(255,255,255,.2); color: #fff; transform: translateY(-2px); }
+  .cl .cl-hero-ghost:focus-visible, .cl .cl-hero-cta:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
   .cl-hero-cue { position: absolute; left: 50%; bottom: 22px; transform: translateX(-50%); z-index: 6; display: flex; flex-direction: column; align-items: center; gap: 8px; color: rgba(255,255,255,.7); transition: color .25s var(--ease); }
   .cl-hero-cue:hover { color: #fff; }
