@@ -8,10 +8,11 @@
 ## O que é
 
 Site institucional de uma **agência de e-commerce, marketing digital e tecnologia**.
-19 serviços em 4 pilares (Vender online / Atrair demanda / Marca & conteúdo /
-Operar com IA), blog, portfólio de projetos próprios e de clientes, CRM próprio
-em `/admin` e cobrança via Asaas. **Não** é mais vitrine de produtos — esse
-posicionamento (Nexlab) foi trocado pelo de agência em 2026-06-07.
+22 serviços em 5 departamentos (ver seção "Departamentos" abaixo), blog,
+portfólio de projetos próprios e de clientes, 4 ferramentas grátis em
+`/ferramentas`, CRM próprio em `/admin` e cobrança via Asaas. **Não** é mais
+vitrine de produtos — esse posicionamento (Nexlab) foi trocado pelo de agência
+em 2026-06-07.
 
 ## Stack
 
@@ -42,7 +43,7 @@ components/site/ContactForm.tsx     → formulário único (home + /contato)
 components/site/DeviceMockup.tsx    → moldura de navegador/celular com screenshot real
 components/site/PlatformShowcase.tsx→ grade+tabela de plataformas de e-commerce (só em /servicos/loja-virtual)
 lib/pillars.ts                      → pilares (módulo LEVE, seguro pro cliente)
-lib/site-services.ts                → 19 serviços com conteúdo completo (PESADO — só server)
+lib/site-services.ts                → 22 serviços com conteúdo completo (PESADO — só server)
 lib/projects.ts                     → portfólio (fonte única, usado por home E /sobre)
 app/servicos/[slug]/, app/servicos/page.tsx, app/sobre/, app/contato/, app/blog/
 ```
@@ -51,10 +52,44 @@ app/servicos/[slug]/, app/servicos/page.tsx, app/sobre/, app/contato/, app/blog/
 
 ## Sistema visual (decisão fechada — não mudar sem pedido explícito)
 
-Grafite `#12151A`/`#0D1013`, superfície `#171B20`, texto bone `#E8E2D9`. 4 cores
-por pilar (ver `lib/pillars.ts`). **Proibido azul e violeta** — o dono já
-rejeitou esse visual duas vezes. Tipografia: Archivo + IBM Plex Sans + IBM Plex
-Mono via `next/font`.
+⚠️ **LEIA ISTO ANTES DE "CORRIGIR" QUALQUER COR.** Existem DOIS temas neste
+repositório e eles têm regras OPOSTAS de cor. Confundir os dois faz você
+desfazer uma decisão que o dono já tomou.
+
+**Tema CLARO (`.cl`) — é o que está no ar hoje.** A home (`app/page.tsx`) e
+todas as páginas internas rodam nele. Paleta: azul `#1550E8` + violeta
+`#3B2FCC`/`#5B3CFF` + rosa `#E0165F`, sobre papel `#FBFBFD`. Tokens em
+`app/claro-tokens.css`, cor por departamento em
+`components/claro/claroPillarAccent.ts`.
+👉 **Azul e violeta são OBRIGATÓRIOS aqui** — vieram do arquivo de design que
+o dono aprovou, e ele mandou reverter explicitamente uma tentativa anterior de
+recolorir para jade/cobre. Não "conserte" isso.
+
+**Tema ESCURO (`components/site/HypergrowSite.tsx`) — não é mais montado por
+nenhuma rota.** Grafite `#12151A`/`#0D1013`, superfície `#171B20`, texto bone
+`#E8E2D9`, acentos jade/cobre de `lib/pillars.ts`.
+👉 **Aqui sim vale "proibido azul e violeta"** — o dono rejeitou esse visual
+duas vezes NESTE tema. A regra continua valendo se ele voltar a ser usado, e
+vale também para a logomarca (`ClaroLogo` em `ClaroUI.tsx`), que é jade/cobre
+de propósito em qualquer tema: é o mark oficial da marca.
+
+Tipografia (comum aos dois): Archivo (display) + IBM Plex Sans (corpo) + IBM
+Plex Mono (dados), via `next/font`.
+
+## Departamentos (era "pilares" — mudou em 2026-08-07)
+
+São **5**, definidos em `lib/pillars.ts`, que é a fonte única: Site & Presença ·
+E-commerce & Vendas · Marketing Digital · Mídia & Conteúdo · IA & Automação.
+
+Eram 4 por verbo ("Vender online", "Atrair demanda"...) e o dono pediu
+agrupamento por departamento, separando site institucional de loja virtual.
+**Nunca digite o rótulo de um departamento à mão** — menu, rodapé, formulário
+de contato e meta description derivam de `PILLARS`. Quando eram 4 e viraram 5,
+os quatro lugares que tinham a lista digitada ficaram desatualizados em
+silêncio; hoje todos derivam da fonte única para isso não repetir.
+`CLARO_PILLAR_ACCENT` e `PILLAR_ICON` são `Record<PillarKey, …>` de propósito:
+se alguém mexer nos departamentos e esquecer deles, o TypeScript acusa antes
+do build.
 
 ## Harness deste projeto
 

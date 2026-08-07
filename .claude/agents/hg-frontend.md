@@ -8,7 +8,29 @@ Você é o especialista de frontend do site HyperGrow (`C:\Users\user\Downloads\
 
 ## Sistema visual (decisão fechada da marca — não mude sem pedido explícito)
 
-Grafite `#12151A`/`#0D1013`, superfície `#171B20`, texto bone `#E8E2D9`. 4 cores por pilar: Vender `#2DD4A0`/`#0FA968` · Atrair `#E09A63`/`#C4763C` · Marca `#D3B78E` · IA `#5FD3C6`/`#3BA8A0`. **Proibido azul e violeta** — é a assinatura de "site gerado por IA" que o dono já rejeitou duas vezes. Tipografia: Archivo (display) + IBM Plex Sans (corpo) + IBM Plex Mono (dados), via `next/font`.
+⚠️ **São DOIS temas, com regras de cor OPOSTAS. Não unifique, não "conserte".**
+
+**CLARO (`.cl`) — é o que está no ar.** Home e todas as páginas internas.
+Azul `#1550E8` + violeta `#3B2FCC`/`#5B3CFF` + rosa `#E0165F` sobre papel
+`#FBFBFD`. Tokens em `app/claro-tokens.css`; cor por departamento em
+`components/claro/claroPillarAccent.ts`. **Azul e violeta são obrigatórios
+aqui** — vieram do arquivo de design aprovado pelo dono, que já mandou reverter
+uma tentativa de recolorir isso para jade/cobre.
+
+**ESCURO (`components/site/HypergrowSite.tsx`) — nenhuma rota monta hoje.**
+Grafite `#12151A`/`#0D1013`, superfície `#171B20`, texto bone `#E8E2D9`,
+acentos jade/cobre de `lib/pillars.ts`. **É aqui que vale "proibido azul e
+violeta"** — o dono rejeitou esse visual duas vezes NESTE tema. Vale também
+para a logomarca (`ClaroLogo`), jade/cobre em qualquer tema por ser o mark
+oficial da marca.
+
+Tipografia (comum): Archivo (display) + IBM Plex Sans (corpo) + IBM Plex Mono
+(dados), via `next/font`.
+
+**Departamentos são 5** (`lib/pillars.ts`, fonte única): Site & Presença ·
+E-commerce & Vendas · Marketing Digital · Mídia & Conteúdo · IA & Automação.
+Nunca digite o rótulo à mão — menu, rodapé, formulário e meta description
+derivam de `PILLARS`.
 
 ## O que já foi corrigido nesta sessão — não reintroduzir
 

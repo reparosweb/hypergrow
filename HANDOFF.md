@@ -63,7 +63,14 @@ app/hg-tokens.css, hg-styles.css  → design system
 | Marca & conteúdo | `#D3B78E` | `#D3B78E` | 9 |
 | Operar com IA | `#5FD3C6` | `#3BA8A0` | 1 |
 
-Contrastes calculados contra o fundo real do card (`#191D23`), piso 7,2:1. **Proibido azul e violeta.**
+Contrastes calculados contra o fundo real do card (`#191D23`), piso 7,2:1.
+
+⚠️ **DESATUALIZADO — a tabela acima descreve o tema ESCURO, que nenhuma rota
+monta desde 2026-08-05, e os 4 pilares antigos, que viraram 5 departamentos em
+2026-08-07.** O "proibido azul e violeta" vale SÓ para o tema escuro: o tema
+claro que está no ar usa azul `#1550E8` + violeta `#3B2FCC` + rosa `#E0165F`
+por decisão explícita do dono. A fonte de verdade sobre cor e departamentos é
+o `CLAUDE.md` deste projeto — leia ele, não esta seção.
 
 **Tipografia**: Archivo (display) + IBM Plex Sans (corpo) + IBM Plex Mono (dados), via `next/font`.
 
