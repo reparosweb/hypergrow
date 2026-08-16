@@ -147,6 +147,11 @@ export default function ClaroShow() {
                   className={"shw-btn lit" + (on ? " on" : "")}
                   style={{ ["--beam" as string]: it.hex }}
                   onClick={() => setActive(i)}
+                  /* Pedido direto do dono: passar o mouse já troca a cena, sem
+                     precisar clicar. onClick fica de propósito — é o que ainda
+                     funciona no toque (celular não tem hover) e no teclado
+                     (Enter/Espaço no botão focado). */
+                  onMouseEnter={() => setActive(i)}
                   onKeyDown={(e) => onRailKey(e, i)}
                 >
                   <span className="shw-ic glow">

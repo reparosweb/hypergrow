@@ -1,8 +1,31 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
+import { ArrowRight, Bot, ChevronDown, LayoutTemplate, Palette, ShoppingCart, TrendingUp, type LucideIcon } from "lucide-react";
 import { ClaroLogo } from "@/components/claro/ClaroUI";
+import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
+import { PILLARS, type PillarKey } from "@/lib/pillars";
+import { siteServices } from "@/lib/site-services";
+import ServiceGlyph from "./ServiceGlyphs";
+
+/* 2026-08-16: dropdown "Soluções" adicionado — pedido direto do dono vendo
+   /servicos/stories-instagram ao lado da home ("o menu não tem a seta com
+   todas as opções, precisa ser igual em toda página"). Reusa as MESMAS
+   classes de app/claro-tokens.css que o mega-menu da home já usa
+   (.pop/.casc/.rail/.dep/.pan/.pl…) — são globais, não presas a ClaroNav —
+   então o visual sai idêntico sem duplicar CSS nenhum. O que não foi
+   reaproveitado, de propósito: o componente ClaroNav inteiro (decisão
+   registrada acima permanece válida — ele carrega a barra de progresso de
+   leitura e a lógica de esteira, que não fazem sentido aqui). Só a cascata
+   pilar→serviços foi recriada, com dado real de siteServices/PILLARS. */
+const PILLAR_ICON: Record<PillarKey, LucideIcon> = {
+  site: LayoutTemplate,
+  ecommerce: ShoppingCart,
+  marketing: TrendingUp,
+  midia: Palette,
+  ia: Bot,
+};
 
 /* ─────────────────────────────────────────────────────────────────────────────
    HEADER ÚNICO DAS PÁGINAS INTERNAS — versão CLARA.
@@ -46,9 +69,9 @@ import { ClaroLogo } from "@/components/claro/ClaroUI";
 
 /* Só destinos que EXISTEM. O header escuro apontava para `/#ia`, âncora que a
    home clara não tem mais — o clique caía no topo da home sem rolar para lugar
-   nenhum. Conferido contra os `id` reais de components/claro/*. */
+   nenhum. Conferido contra os `id` reais de components/claro/*.
+   "Serviços" saiu daqui: virou o gatilho do dropdown "Soluções" abaixo. */
 const LINKS: [string, string][] = [
-  ["Serviços", "/servicos"],
   ["Portfólio", "/#portfolio"],
   ["Processo", "/#processo"],
   ["Resultados", "/#resultados"],
@@ -81,11 +104,56 @@ const CSS = `
     .cl .shc-cta-full { display: none; }
     .cl .shc-cta-short { display: inline; }
   }
+
+  /* Gatilho "Soluções" — mesma classe .nt/.chev do trigger da home (estilo já
+     em claro-tokens.css); .ni só precisa existir como o container relativo
+     que ancora o .pop (âncora real é o cabeçalho, ver claro-tokens.css). */
+  .cl .shc-ni { position: relative; }
+  .cl .shc-dw-sol { display: flex; align-items: center; justify-content: space-between; width: 100%;
+    min-height: 52px; padding: 0 2px; font: 600 16px var(--text); color: var(--ink);
+    border-bottom: 1px solid var(--line-2); background: none; border-left: none; border-right: none; border-top: none; text-align: left; }
+  .cl .shc-dw-sol-body { display: none; flex-direction: column; gap: 2px; padding: 6px 0 14px; }
+  .cl .shc-dw-sol-body.open { display: flex; }
+  .cl .shc-dw-sol-item { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 0 8px;
+    border-radius: 10px; font: 500 14.5px var(--text); color: var(--ink-2); }
+  .cl .shc-dw-sol-item:hover { background: var(--paper-2); color: var(--ink); }
 `;
 
 export default function SiteHeaderClaro() {
   const [lift, setLift] = useState(false);
   const [open, setOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activePillar, setActivePillar] = useState(0);
+  const [dwSolOpen, setDwSolOpen] = useState(false);
+  const niRef = useRef<HTMLDivElement>(null);
+  const shutTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const openMenu = useCallback(() => {
+    if (shutTimer.current) clearTimeout(shutTimer.current);
+    setMenuOpen(true);
+  }, []);
+  const closeMenu = useCallback((delay = 0) => {
+    if (shutTimer.current) clearTimeout(shutTimer.current);
+    if (delay > 0) shutTimer.current = setTimeout(() => setMenuOpen(false), delay);
+    else setMenuOpen(false);
+  }, []);
+  useEffect(() => () => {
+    if (shutTimer.current) clearTimeout(shutTimer.current);
+  }, []);
+
+  // Clique fora do dropdown fecha (cobre o caso de ter sido aberto por toque).
+  useEffect(() => {
+    if (!menuOpen) return;
+    const onDocClick = (e: MouseEvent) => {
+      if (niRef.current && !niRef.current.contains(e.target as Node)) closeMenu();
+    };
+    document.addEventListener("click", onDocClick);
+    return () => document.removeEventListener("click", onDocClick);
+  }, [menuOpen, closeMenu]);
+
+  const pillar = PILLARS[activePillar] ?? PILLARS[0];
+  const panServices = siteServices.filter((s) => pillar.slugs.includes(s.slug));
+  const pillarAccent = CLARO_PILLAR_ACCENT[pillar.key];
 
   useEffect(() => {
     const onScroll = () => setLift(window.scrollY > 8);
@@ -94,15 +162,18 @@ export default function SiteHeaderClaro() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Esc fecha a gaveta — quem abre pelo teclado precisa poder sair pelo teclado.
+  // Esc fecha a gaveta e o dropdown — quem abre pelo teclado precisa poder sair pelo teclado.
   useEffect(() => {
-    if (!open) return;
+    if (!open && !menuOpen) return;
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setOpen(false);
+      if (e.key === "Escape") {
+        setOpen(false);
+        closeMenu();
+      }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
+  }, [open, menuOpen, closeMenu]);
 
   // Voltar para desktop com a gaveta aberta deixava um painel preso na tela.
   useEffect(() => {
@@ -132,6 +203,84 @@ export default function SiteHeaderClaro() {
           </Link>
 
           <nav className="nl" aria-label="Navegação principal">
+            <div
+              className="ni shc-ni"
+              ref={niRef}
+              onMouseEnter={openMenu}
+              onMouseLeave={() => closeMenu(150)}
+            >
+              <button
+                type="button"
+                className="nt"
+                aria-haspopup="true"
+                aria-expanded={menuOpen}
+                aria-controls="shc-mm"
+                onClick={() => (menuOpen ? closeMenu() : openMenu())}
+              >
+                Soluções <ChevronDown size={15} className="chev" aria-hidden />
+              </button>
+
+              <div className={"pop" + (menuOpen ? " open" : "")} id="shc-mm">
+                <div className="casc">
+                  <div className="rail">
+                    {PILLARS.map((p, i) => {
+                      const Icon = PILLAR_ICON[p.key];
+                      const accent = CLARO_PILLAR_ACCENT[p.key];
+                      const on = i === activePillar;
+                      const depVars = {
+                        "--dc": accent,
+                        "--dc-soft": accent + "12",
+                        "--dc-line": accent + "30",
+                      } as CSSProperties;
+                      return (
+                        <button
+                          key={p.key}
+                          type="button"
+                          className={"dep" + (on ? " on" : "")}
+                          aria-controls="shc-mm-pan"
+                          onMouseEnter={() => setActivePillar(i)}
+                          onFocus={() => setActivePillar(i)}
+                          onClick={() => setActivePillar(i)}
+                          style={depVars}
+                        >
+                          <Icon size={17} className="dep-ic" aria-hidden />
+                          <span className="dep-t">{p.label}</span>
+                          <span className="dep-n">{p.slugs.length}</span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  <div className="pan" id="shc-mm-pan" key={pillar.key} style={{ "--pa": pillarAccent, "--pa-soft": pillarAccent + "12", "--pa-line": pillarAccent + "30" } as CSSProperties}>
+                    <div className="pan-h">
+                      <b>{pillar.label}</b>
+                      <span>{pillar.desc}</span>
+                    </div>
+                    <div className="pan-g">
+                      {panServices.map((s, i) => (
+                        <Link
+                          href={`/servicos/${s.slug}`}
+                          className="pl"
+                          key={s.slug}
+                          style={{ "--i": String(i) } as CSSProperties}
+                          onClick={() => closeMenu()}
+                        >
+                          <span className="pl-ic">
+                            <ServiceGlyph slug={s.slug} height={17} />
+                          </span>
+                          <div className="pl-tx">
+                            <b className="pl-t">{s.title}</b>
+                            <span className="pl-d">{s.desc}</span>
+                          </div>
+                          <ArrowRight size={15} className="pl-go" aria-hidden />
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
             {LINKS.map(([rotulo, href]) => (
               <Link key={rotulo} href={href}>
                 {rotulo}
@@ -187,6 +336,27 @@ export default function SiteHeaderClaro() {
           </div>
 
           <nav className="shc-dw-links" aria-label="Navegação principal (celular)">
+            <button
+              type="button"
+              className="shc-dw-sol"
+              aria-expanded={dwSolOpen}
+              aria-controls="shc-dw-sol-body"
+              onClick={() => setDwSolOpen((v) => !v)}
+            >
+              Soluções
+              <ChevronDown size={16} aria-hidden style={{ transform: dwSolOpen ? "rotate(180deg)" : "none", transition: "transform .3s var(--ease)" }} />
+            </button>
+            <div className={"shc-dw-sol-body" + (dwSolOpen ? " open" : "")} id="shc-dw-sol-body">
+              {PILLARS.map((p) => (
+                <Link key={p.key} href={`/servicos#${p.key}`} className="shc-dw-sol-item" onClick={() => setOpen(false)}>
+                  {p.label}
+                </Link>
+              ))}
+              <Link href="/servicos" className="shc-dw-sol-item" onClick={() => setOpen(false)} style={{ color: "var(--acc)", fontWeight: 600 }}>
+                Ver catálogo completo →
+              </Link>
+            </div>
+
             {LINKS.map(([rotulo, href]) => (
               <Link key={rotulo} href={href} onClick={() => setOpen(false)}>
                 {rotulo}
