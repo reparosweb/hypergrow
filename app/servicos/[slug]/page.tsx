@@ -217,7 +217,13 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
             </div>
             <div className="svc-plate-foot" aria-hidden>
               <span className="mono">{pil.label}</span>
-              <span className="mono svc-plate-foot-r">{s.tags[0]}</span>
+              {/* Era s.tags[0] — mostrava o primeiro item da lista de tags do
+                  serviço isolado no canto, e em "loja-virtual" isso calhava
+                  de ser "Shopify": parecia selo de parceria oficial com UMA
+                  plataforma concorrente, o que não é verdade (o serviço é
+                  agnóstico de plataforma). Trocado por uma marca fixa e
+                  sempre correta. */}
+              <span className="mono svc-plate-foot-r">HyperGrow</span>
             </div>
           </div>
         </div>

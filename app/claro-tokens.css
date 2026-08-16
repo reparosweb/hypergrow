@@ -59,7 +59,13 @@
   --sh-1:0 1px 2px rgba(11,18,32,.05);
   --sh-2:0 10px 30px -12px rgba(11,18,32,.14),0 2px 6px rgba(11,18,32,.05);
   --sh-3:0 28px 60px -24px rgba(11,18,32,.22),0 4px 12px rgba(11,18,32,.06);
-  --maxw:1180px;
+  /* 1180 -> 1440 em 2026-08-16: pedido direto do dono vendo a página real num
+     monitor largo — sobrava muita margem branca dos dois lados. --maxw é a
+     ÚNICA fonte (todo .wrap do site lê daqui), então isto alarga TODAS as
+     páginas de uma vez, sem precisar tocar página por página. 1440 já é valor
+     testado neste projeto (mesma medida usada na 1a rodada de "full", em
+     2026-06-24, antes da migração para o tema claro). */
+  --maxw:1440px;
 
   /* ══ ESCALA DE BREAKPOINTS — ÚNICA PARA TODA A ROTA `.cl` ══════════════════
      Antes existiam SEIS larguras escolhidas arquivo a arquivo (1180, 1000,
@@ -191,19 +197,25 @@
 /* Degradê exato do .grad no light.css original: azul → violeta → rosa. */
 .cl .grad{background:linear-gradient(96deg,var(--brand),#5B3CFF 55%,var(--cta));-webkit-background-clip:text;background-clip:text;color:transparent}
 
-/* buttons */
-.cl .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid transparent;border-radius:12px;font:600 15.5px var(--text);padding:15px 24px;transition:transform .2s var(--ease),box-shadow .25s var(--ease),background .25s,color .25s}
-.cl .btn:active{transform:scale(.985)}
+/* buttons — 2026-08-16: pedido do dono ("os botões de ação precisam ter
+   efeitos para destaque"). Já existia lift+sombra no hover; ficou mais forte
+   (lift maior, leve escala, brilho colorido) + focus-visible com o mesmo
+   destaque (quem navega por teclado precisa ver a mesma resposta que o
+   mouse). Sem novo mecanismo: é o mesmo transform/box-shadow que já existia,
+   só calibrado mais alto. */
+.cl .btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;border:1px solid transparent;border-radius:12px;font:600 15.5px var(--text);padding:15px 24px;transition:transform .2s var(--ease),box-shadow .25s var(--ease),background .25s,color .25s,border-color .25s}
+.cl .btn:active{transform:scale(.97)}
+.cl .btn:focus-visible{outline:2px solid var(--acc,var(--brand));outline-offset:3px}
 /* Botão primário: mesmo tratamento do light.css original (fundo sólido rosa,
    texto branco — #E0165F é escuro o bastante pra branco passar contraste). */
 .cl .btn-p{background:var(--cta);color:#fff;box-shadow:0 12px 28px -14px rgba(224,22,95,.7)}
-.cl .btn-p:hover{background:var(--cta-d);color:#fff;transform:translateY(-2px);box-shadow:0 18px 38px -14px rgba(224,22,95,.75)}
+.cl .btn-p:hover,.cl .btn-p:focus-visible{background:var(--cta-d);color:#fff;transform:translateY(-3px) scale(1.015);box-shadow:0 22px 46px -16px rgba(224,22,95,.85)}
 .cl .btn-s{background:#fff;color:var(--ink);border-color:var(--line);box-shadow:var(--sh-1)}
-.cl .btn-s:hover{border-color:#C7CFDE;color:var(--ink);transform:translateY(-2px);box-shadow:var(--sh-2)}
+.cl .btn-s:hover,.cl .btn-s:focus-visible{border-color:var(--acc,#C7CFDE);color:var(--acc,var(--ink));transform:translateY(-3px) scale(1.015);box-shadow:var(--sh-2),0 0 0 1px var(--acc-soft,transparent)}
 .cl .btn-d{background:var(--ink);color:#fff}
-.cl .btn-d:hover{background:#1A2436;color:#fff;transform:translateY(-2px)}
+.cl .btn-d:hover,.cl .btn-d:focus-visible{background:#1A2436;color:#fff;transform:translateY(-3px) scale(1.015);box-shadow:0 18px 38px -16px rgba(11,18,32,.55)}
 .cl .btn-wa{background:var(--wa);color:#fff}
-.cl .btn-wa:hover{background:#0B8146;color:#fff;transform:translateY(-2px)}
+.cl .btn-wa:hover,.cl .btn-wa:focus-visible{background:#0B8146;color:#fff;transform:translateY(-3px) scale(1.015);box-shadow:0 18px 38px -16px rgba(11,159,73,.55)}
 
 /* cards */
 .cl .card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-1);transition:box-shadow .3s var(--ease),transform .3s var(--ease),border-color .3s}
