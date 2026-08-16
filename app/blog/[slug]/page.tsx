@@ -7,7 +7,7 @@ import { blogPosts, getPost, type BlogPost } from "@/lib/blog-posts";
 import { getService, pillarOf } from "@/lib/site-services";
 import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
 import PageShellClaro from "@/components/site/PageShellClaro";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens, ogImage } from "@/lib/seo";
 
 /* /blog/[slug] — migrado do tema escuro para o shell claro.
 
@@ -37,7 +37,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       url: `${SITE_URL}/blog/${p.slug}`,
       type: "article",
       publishedTime: p.date,
-      images: ["/media/launch-poster.png"],
+      images: ogImagens("blog"),
     },
     twitter: { card: "summary_large_image", title, description: p.description },
   };
@@ -197,7 +197,7 @@ export default function BlogPostPage({ params }: { params: { slug: string } }) {
         author: { "@type": "Organization", name: "HyperGrow", url: SITE_URL },
         publisher: { "@type": "Organization", name: "HyperGrow", url: SITE_URL },
         mainEntityOfPage: { "@type": "WebPage", "@id": `${SITE_URL}/blog/${p.slug}` },
-        image: `${SITE_URL}/media/launch-poster.png`,
+        image: ogImage("blog"),
       },
       {
         "@type": "BreadcrumbList",

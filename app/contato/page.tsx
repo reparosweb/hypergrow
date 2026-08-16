@@ -2,7 +2,7 @@ import "../claro-tokens.css";
 import type { Metadata } from "next";
 import PageShellClaro, { Check } from "@/components/site/PageShellClaro";
 import ContactForm from "@/components/site/ContactForm";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens } from "@/lib/seo";
 
 /* /contato — a página que faltava.
    "Contato" era só uma âncora da home (#contato). Uma âncora não tem título
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   alternates: { canonical: `${SITE_URL}/contato` },
-  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/contato`, type: "website", images: ["/media/launch-poster.png"] },
+  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/contato`, type: "website", images: ogImagens("contato") },
   twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 

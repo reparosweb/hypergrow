@@ -7,7 +7,7 @@ import ServiceGlyph from "@/components/site/ServiceGlyphs";
 import PlatformShowcase from "@/components/site/PlatformShowcase";
 import PageShellClaro from "@/components/site/PageShellClaro";
 import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens, OG_POR_PILAR } from "@/lib/seo";
 
 /* /servicos/[slug] — as 19 páginas de serviço, migradas para o tema claro.
 
@@ -38,7 +38,17 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     title,
     description,
     alternates: { canonical: `${SITE_URL}/servicos/${s.slug}` },
-    openGraph: { title, description, url: `${SITE_URL}/servicos/${s.slug}`, type: "website", images: ["/media/launch-poster.png"] },
+    // Arte por DEPARTAMENTO, não uma só para as 22 páginas: quem compartilha
+    // "Criação de site" e quem compartilha "Produção de vídeo" vê cards
+    // diferentes. `OG_POR_PILAR` cai em "servicos" se um departamento novo
+    // aparecer sem arte própria — degrada, não quebra.
+    openGraph: {
+      title,
+      description,
+      url: `${SITE_URL}/servicos/${s.slug}`,
+      type: "website",
+      images: ogImagens(OG_POR_PILAR[pillarOf(s.slug).key] ?? "servicos", title),
+    },
     twitter: { card: "summary_large_image", title, description },
   };
 }

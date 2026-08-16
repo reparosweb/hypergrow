@@ -5,7 +5,7 @@ import EstilosFerramentas from "@/components/ferramentas/EstilosFerramentas";
 import { ConviteFerramenta, OutrasFerramentas, SeloGratis } from "@/components/ferramentas/PecasFerramenta";
 import GeradorWhatsApp from "@/components/ferramentas/GeradorWhatsApp";
 import { getFerramenta } from "@/lib/ferramentas";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens } from "@/lib/seo";
 
 /* PÁGINA ESTÁTICA: sem route.ts, sem `export const dynamic`, sem cookies(),
    headers() ou searchParams, sem server action. O estado vive no componente
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   title: F.titulo,
   description: F.descricao,
   alternates: { canonical: URL_PAGINA },
-  openGraph: { title: F.titulo, description: F.descricao, url: URL_PAGINA, type: "website", images: ["/media/launch-poster.png"] },
+  openGraph: { title: F.titulo, description: F.descricao, url: URL_PAGINA, type: "website", images: ogImagens("ferramentas") },
   twitter: { card: "summary_large_image", title: F.titulo, description: F.descricao },
 };
 

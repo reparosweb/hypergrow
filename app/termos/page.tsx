@@ -1,7 +1,7 @@
 import "../claro-tokens.css";
 import type { Metadata } from "next";
 import PageShellClaro from "@/components/site/PageShellClaro";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens } from "@/lib/seo";
 
 /* /termos — mesma situação de /privacidade: Tailwind escuro, sem cabeçalho e
    sem rodapé. Migrada para o shell claro; texto preservado. */
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   alternates: { canonical: `${SITE_URL}/termos` },
-  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/termos`, type: "website", images: ["/media/launch-poster.png"] },
+  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/termos`, type: "website", images: ogImagens("institucional") },
 };
 
 export default function TermosPage() {

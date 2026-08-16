@@ -5,7 +5,7 @@ import { siteServices, PILLARS, type PillarKey } from "@/lib/site-services";
 import ServiceGlyph from "@/components/site/ServiceGlyphs";
 import PageShellClaro, { Arrow } from "@/components/site/PageShellClaro";
 import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens } from "@/lib/seo";
 
 /* HUB DE SERVIÇOS — /servicos
    Esta rota NÃO existia: dava 404. Duas consequências reais, medidas na
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   alternates: { canonical: `${SITE_URL}/servicos` },
-  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/servicos`, type: "website", images: ["/media/launch-poster.png"] },
+  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/servicos`, type: "website", images: ogImagens("servicos") },
   twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 

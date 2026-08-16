@@ -6,7 +6,7 @@ import PageShellClaro from "@/components/site/PageShellClaro";
 import EstilosFerramentas from "@/components/ferramentas/EstilosFerramentas";
 import { IconeDaFerramenta, SeloGratis } from "@/components/ferramentas/PecasFerramenta";
 import { FERRAMENTAS } from "@/lib/ferramentas";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens } from "@/lib/seo";
 
 /* /ferramentas — a porta de entrada das ferramentas grátis.
 
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   alternates: { canonical: `${SITE_URL}/ferramentas` },
-  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/ferramentas`, type: "website", images: ["/media/launch-poster.png"] },
+  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/ferramentas`, type: "website", images: ogImagens("ferramentas") },
   twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 

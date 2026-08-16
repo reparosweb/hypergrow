@@ -6,7 +6,7 @@ import { blogPosts, type BlogPost } from "@/lib/blog-posts";
 import { pillarOf } from "@/lib/site-services";
 import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
 import PageShellClaro from "@/components/site/PageShellClaro";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens } from "@/lib/seo";
 
 /* /blog — migrado do tema escuro para o shell claro.
 
@@ -25,7 +25,7 @@ export const metadata: Metadata = {
   // SUBSTITUI o do pai inteiro (não faz merge campo a campo), então sem esta
   // linha /blog era a única página do site sem og:image — link compartilhado
   // saía sem imagem nenhuma.
-  openGraph: { title: "Blog — HyperGrow", description: "Guias práticos sobre tecnologia, e-commerce, marketing e IA.", url: `${SITE_URL}/blog`, type: "website", images: ["/media/launch-poster.png"] },
+  openGraph: { title: "Blog — HyperGrow", description: "Guias práticos sobre tecnologia, e-commerce, marketing e IA.", url: `${SITE_URL}/blog`, type: "website", images: ogImagens("blog") },
 };
 
 function fmtDate(iso: string) {

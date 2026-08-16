@@ -1,7 +1,7 @@
 import "../claro-tokens.css";
 import type { Metadata } from "next";
 import PageShellClaro from "@/components/site/PageShellClaro";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens } from "@/lib/seo";
 
 /* /privacidade — era a página mais destoante do site: Tailwind escuro
    (`text-slate-300` sobre o fundo do body), SEM cabeçalho nenhum e sem rodapé.
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   alternates: { canonical: `${SITE_URL}/privacidade` },
-  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/privacidade`, type: "website", images: ["/media/launch-poster.png"] },
+  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/privacidade`, type: "website", images: ogImagens("institucional") },
 };
 
 export default function PrivacidadePage() {

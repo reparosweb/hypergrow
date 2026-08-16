@@ -5,7 +5,7 @@ import PageShellClaro, { Check } from "@/components/site/PageShellClaro";
 import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
 import { StackedShowcase } from "@/components/site/DeviceMockup";
 import { PROJECTS } from "@/lib/projects";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens } from "@/lib/seo";
 
 /* /sobre — a página que faltava.
    Antes, "Sobre" era só uma âncora dentro da home (#sobre). Uma âncora não é uma
@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   alternates: { canonical: `${SITE_URL}/sobre` },
-  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/sobre`, type: "website", images: ["/media/launch-poster.png"] },
+  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/sobre`, type: "website", images: ogImagens("sobre") },
   twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 

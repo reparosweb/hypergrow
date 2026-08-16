@@ -6,7 +6,7 @@ import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
 import ServiceGlyph from "@/components/site/ServiceGlyphs";
 import { getService } from "@/lib/site-services";
 import { pillarOf } from "@/lib/pillars";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImagens } from "@/lib/seo";
 
 /* /para/clinicas — página de VERTICAL, não de serviço.
    Diferença deliberada: um serviço mora em lib/site-services.ts e vira uma
@@ -33,7 +33,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
   alternates: { canonical: `${SITE_URL}/para/clinicas` },
-  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/para/clinicas`, type: "website", images: ["/media/launch-poster.png"] },
+  openGraph: { title: TITLE, description: DESC, url: `${SITE_URL}/para/clinicas`, type: "website", images: ogImagens("clinicas") },
   twitter: { card: "summary_large_image", title: TITLE, description: DESC },
 };
 

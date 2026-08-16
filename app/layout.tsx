@@ -3,7 +3,7 @@ import { Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 import ConsentBanner from "@/components/ConsentBanner";
-import { SITE_URL } from "@/lib/seo";
+import { SITE_URL, ogImage, ogImagens } from "@/lib/seo";
 
 /* Sistema tipográfico: Archivo (display) + IBM Plex Sans (corpo) + IBM Plex Mono
    (dados/rótulos). Auto-hospedadas via next/font — não bloqueiam a renderização.
@@ -67,15 +67,17 @@ export const metadata: Metadata = {
     locale: "pt_BR",
     url: SITE_URL,
     siteName: "HyperGrow",
-    // Dimensões REAIS do arquivo (auditoria pegou declarado 1200x630 num PNG de 720x405).
-    images: [{ url: "/media/launch-poster.png", width: 720, height: 405, alt: "HyperGrow — agência de tecnologia e crescimento para e-commerce" }],
+    // 1200x630 de verdade agora (public/og/home.png). O arquivo anterior era
+    // um PNG de 720x405 declarado como 1200x630 — abaixo do mínimo que
+    // WhatsApp e LinkedIn pedem para mostrar o card grande.
+    images: ogImagens("home"),
   },
   twitter: {
     card: "summary_large_image",
     title: "HyperGrow — Crescimento Exponencial Através da Tecnologia",
     description:
       "Websites, sistemas, automação e inteligência artificial para a sua empresa.",
-    images: ["/media/launch-poster.png"],
+    images: [ogImage("home")],
   },
   // max-image-preview:large habilita miniatura grande na busca e elegibilidade no
   // Discover; max-snippet:-1 libera o tamanho do trecho. Sem isso o Google usa
@@ -136,7 +138,7 @@ const graphSchema = {
         "Agência de tecnologia e crescimento para e-commerce: criação de site e loja virtual, SEO, tráfego pago, redes sociais, produção de foto e vídeo, design e agentes de inteligência artificial.",
       slogan: "Crescimento exponencial",
       logo: { "@type": "ImageObject", url: `${SITE_URL}/icon.svg`, contentUrl: `${SITE_URL}/icon.svg` },
-      image: `${SITE_URL}/media/launch-poster.png`,
+      image: ogImage("home"),
       areaServed: { "@type": "Country", name: "Brasil" },
       knowsAbout: [
         "criação de sites", "loja virtual", "e-commerce", "SEO",
