@@ -109,6 +109,25 @@ const CSS = `
      em claro-tokens.css); .ni só precisa existir como o container relativo
      que ancora o .pop (âncora real é o cabeçalho, ver claro-tokens.css). */
   .cl .shc-ni { position: relative; }
+
+  /* 2026-08-16, correção: as regras ABAIXO existiam em claro-tokens.css só na
+     estrutura (tamanho, borda, fonte) — a COR (var(--dc)/var(--pa)) morava
+     dentro do <style> do próprio ClaroNav.tsx, que este arquivo não importa.
+     Resultado: o dropdown novo saía preto-e-branco (bronca real do dono).
+     Copiado 1:1 do bloco "MEGA-MENU" de ClaroNav.tsx — mesmas 4 cores do
+     mapa CLARO_PILLAR_ACCENT, nada novo. */
+  .cl .rail .dep-ic { flex-shrink: 0; color: var(--ink-3); transition: color .2s var(--ease); }
+  .cl .rail .dep:hover .dep-ic { color: var(--dc); }
+  .cl .rail .dep.on { background: var(--dc-soft); border-color: var(--dc-line); }
+  .cl .rail .dep.on .dep-ic, .cl .rail .dep.on .dep-n { color: var(--dc); }
+  .cl .pop .pan-h b { color: var(--pa); }
+  .cl .pop .pl-ic { color: var(--pa); background: var(--pa-soft); border-color: var(--pa-line);
+    transition: background .22s var(--ease), border-color .22s var(--ease), color .22s var(--ease), box-shadow .22s var(--ease); }
+  .cl .pop .pl:hover .pl-ic, .cl .pop .pl:focus-visible .pl-ic { background: var(--pa); border-color: var(--pa); color: #fff;
+    box-shadow: 0 8px 18px -10px var(--pa); }
+  .cl .pop .pl:hover, .cl .pop .pl:focus-visible { background: var(--paper-2); transform: translateX(3px);
+    box-shadow: inset 0 0 0 1px var(--pa-line); }
+  .cl .pop .pl:hover .pl-t, .cl .pop .pl:focus-visible .pl-t { color: var(--pa); }
   .cl .shc-dw-sol { display: flex; align-items: center; justify-content: space-between; width: 100%;
     min-height: 52px; padding: 0 2px; font: 600 16px var(--text); color: var(--ink);
     border-bottom: 1px solid var(--line-2); background: none; border-left: none; border-right: none; border-top: none; text-align: left; }
