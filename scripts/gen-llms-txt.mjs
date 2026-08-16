@@ -8,6 +8,10 @@
  * Rode depois de mexer em serviços ou posts:  node scripts/gen-llms-txt.mjs
  */
 import fs from "node:fs";
+// Node 24 lê .ts direto (mesmo truque já usado em scripts/gen-og.mjs) — importa
+// a fonte única do domínio em vez de redigitar a URL aqui e sair de sincronia
+// de novo quando o domínio próprio (hypergrow.com.br) entrar no ar.
+import { SITE_URL } from "../lib/seo.ts";
 
 const read = (f) => fs.readFileSync(f, "utf8");
 
@@ -31,7 +35,7 @@ function extract(file, keys) {
   return out;
 }
 
-const SITE = "https://hypergrow-lovat.vercel.app";
+const SITE = SITE_URL;
 const services = extract("lib/site-services.ts", ["title", "desc", "keyword"]);
 const posts = extract("lib/blog-posts.ts", ["title", "description", "keyword"]);
 

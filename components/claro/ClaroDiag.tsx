@@ -8,7 +8,7 @@ import {
   ArrowRight, CornerUpLeft, RotateCcw, type LucideIcon,
 } from "lucide-react";
 import { ClaroHead } from "./ClaroUI";
-import { rastrear } from "@/lib/track";
+import { EVENTOS, rastrear } from "@/lib/track";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    DIAGNÓSTICO INTERATIVO — 4 perguntas, resultado na hora. Porta quase 1:1 do
@@ -69,6 +69,17 @@ export default function ClaroDiag() {
   const res = RESULTADOS.find((r) => score <= r.max) || RESULTADOS[2];
   const pct = done ? 100 : Math.round((step / QUESTOES.length) * 100);
   const cur = QUESTOES[Math.min(step, QUESTOES.length - 1)];
+
+  /* Mede o quiz TERMINADO, com ou sem e-mail deixado — evento separado de
+     "diagnostico_lead" (que só mede quem capturou). Sem isto o site nunca
+     saberia quantas pessoas chegam ao resultado e desistem de deixar
+     contato — número que falta para calcular a taxa de conversão do campo
+     opcional de e-mail (item que motivou esta seção inteira). */
+  useEffect(() => {
+    if (!done) return;
+    rastrear(EVENTOS.diagnosticoFim, { estagio: res.stage, pontuacao: score });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [done]);
 
   async function enviarDiag(ev: React.FormEvent<HTMLFormElement>) {
     ev.preventDefault();

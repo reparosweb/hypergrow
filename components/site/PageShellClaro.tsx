@@ -76,6 +76,7 @@ const RODAPE: [string, [string, string][]][] = [
     ["Processo", "/#processo"],
     ["Resultados", "/#resultados"],
     ["Para clínicas", "/para/clinicas"],
+    ["Programa de afiliados", "/afiliados"],
   ]],
   ["Conteúdo & contato", [
     ["Blog", "/blog"],

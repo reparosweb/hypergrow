@@ -73,9 +73,24 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  /* Atribuição de afiliado: o cookie `hg_ref` foi gravado pelo
+     components/site/RefTracker.tsx quando o visitante chegou com `?ref=CODIGO`
+     na URL (ver lib/modules/mod-afiliados.ts para como o clique em si é
+     validado). Aqui não se confere se o código existe de verdade em
+     `affiliates` — isso é decidido depois, na conversão (quando o lead vira
+     cliente em mod-crm.ts). Um código inválido só faz o lead nascer com uma
+     tag que nunca vira comissão; não é motivo pra atrasar o cadastro do lead
+     com uma consulta extra ao banco.
+     `affiliate_code` (não `source`) é o campo que o programa de afiliados de
+     fato lê — por isso ele é gravado sempre que o cookie existir, mesmo
+     quando `source` continua sendo o valor que o formulário declarou. */
+  const refCookie = req.cookies.get("hg_ref")?.value?.trim().toUpperCase().slice(0, 20) || null;
+
   const source: Origem = ORIGENS.includes(body.source as Origem)
     ? (body.source as Origem)
-    : "site";
+    : refCookie
+      ? "afiliado"
+      : "site";
 
   const { error } = await supabase.from("leads").insert({
     name,
@@ -85,6 +100,7 @@ export async function POST(req: NextRequest) {
     message: message || null,
     source,
     user_agent: req.headers.get("user-agent") || null,
+    affiliate_code: refCookie,
   });
 
   if (error) {

@@ -3,6 +3,7 @@ import { Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
 import ConsentBanner from "@/components/ConsentBanner";
+import RefTracker from "@/components/site/RefTracker";
 import { SITE_URL, ogImage, ogImagens } from "@/lib/seo";
 
 /* Sistema tipográfico: Archivo (display) + IBM Plex Sans (corpo) + IBM Plex Mono
@@ -59,6 +60,9 @@ export const metadata: Metadata = {
     "transformação digital",
   ],
   authors: [{ name: "HyperGrow" }],
+  alternates: {
+    types: { "application/rss+xml": `${SITE_URL}/feed.xml` },
+  },
   openGraph: {
     title: "HyperGrow — Crescimento Exponencial Através da Tecnologia",
     description:
@@ -172,6 +176,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             links do cabeçalho em toda página antes de chegar ao conteúdo. */}
         <a href="#main" className="skip-link">Pular para o conteúdo</a>
         <Analytics />
+        {/* Sem UI — só grava o cookie `hg_ref` e avisa o servidor quando chega
+            alguém com `?ref=CODIGO` na URL. Ver components/site/RefTracker.tsx. */}
+        <RefTracker />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(graphSchema) }}

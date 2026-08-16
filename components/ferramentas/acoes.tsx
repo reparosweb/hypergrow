@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { qrParaCaminhoSvg, qrLadoTotal, type QrCode } from "@/lib/qrcode";
+import { EVENTOS, rastrear } from "@/lib/track";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    AÇÕES DE SAÍDA DAS FERRAMENTAS — copiar e baixar, no navegador.
@@ -17,8 +18,12 @@ import { qrParaCaminhoSvg, qrLadoTotal, type QrCode } from "@/lib/qrcode";
    no plano Hobby aceita 12 funções serverless e o site já usa 9).
    ──────────────────────────────────────────────────────────────────────────── */
 
-/** Copia texto e devolve `copiado` (volta a false sozinho depois de 2,2 s). */
-export function useCopiar(): [boolean, (texto: string) => void] {
+/** Copia texto e devolve `copiado` (volta a false sozinho depois de 2,2 s).
+ *  `ferramenta` é o slug em lib/ferramentas.ts (ex.: "gerador-qr-code") —
+ *  quando informado, uma cópia bem-sucedida conta como uso real da
+ *  ferramenta (evento `ferramenta_uso`), que é o sinal que faltava para
+ *  medir engajamento das ferramentas grátis do site. */
+export function useCopiar(ferramenta?: string): [boolean, (texto: string) => void] {
   const [copiado, setCopiado] = useState(false);
   const tempo = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -28,6 +33,7 @@ export function useCopiar(): [boolean, (texto: string) => void] {
     if (!texto) return;
     const marcar = () => {
       setCopiado(true);
+      if (ferramenta) rastrear(EVENTOS.ferramentaUso, { ferramenta, acao: "copiar" });
       if (tempo.current) clearTimeout(tempo.current);
       tempo.current = setTimeout(() => setCopiado(false), 2200);
     };
@@ -49,31 +55,34 @@ export function useCopiar(): [boolean, (texto: string) => void] {
     } else {
       antigo();
     }
-  }, []);
+  }, [ferramenta]);
 
   return [copiado, copiar];
 }
 
-/** Baixa um texto como arquivo (.txt, .html, .csv…). */
-export function baixarTexto(conteudo: string, nomeArquivo: string, mime: string) {
+/** Baixa um texto como arquivo (.txt, .html, .csv…). `ferramenta`, quando
+ *  informado, marca `ferramenta_uso` — baixar é a prova mais forte de que a
+ *  pessoa usou a ferramenta de verdade (mais forte que só copiar). */
+export function baixarTexto(conteudo: string, nomeArquivo: string, mime: string, ferramenta?: string) {
   const url = URL.createObjectURL(new Blob([conteudo], { type: mime + ";charset=utf-8" }));
   const a = document.createElement("a");
   a.href = url;
   a.download = nomeArquivo;
   a.click();
+  if (ferramenta) rastrear(EVENTOS.ferramentaUso, { ferramenta, acao: "baixar" });
   /* setTimeout(0): o Firefox cancela o download se a URL for revogada no mesmo
      tique em que o clique acontece. */
   setTimeout(() => URL.revokeObjectURL(url), 0);
 }
 
 /** Baixa o QR como SVG (vetor: amplia sem serrilhar — banner, fachada, adesivo). */
-export function baixarQrSvg(qr: QrCode, nomeArquivo: string, borda = 4) {
+export function baixarQrSvg(qr: QrCode, nomeArquivo: string, borda = 4, ferramenta?: string) {
   const lado = qrLadoTotal(qr, borda);
   const svg =
     '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ' + lado + " " + lado + '" width="1024" height="1024" shape-rendering="crispEdges">' +
     '<rect width="' + lado + '" height="' + lado + '" fill="#ffffff"/>' +
     '<path d="' + qrParaCaminhoSvg(qr, borda) + '" fill="#000000"/></svg>';
-  baixarTexto(svg, nomeArquivo, "image/svg+xml");
+  baixarTexto(svg, nomeArquivo, "image/svg+xml", ferramenta);
 }
 
 /**
@@ -86,7 +95,7 @@ export function baixarQrSvg(qr: QrCode, nomeArquivo: string, borda = 4) {
  * `alvoPx` = lado aproximado do arquivo final. A escala é inteira (nunca
  * fracionária) para o módulo não sair com meia borda cinza na ampliação.
  */
-export function baixarQrPng(qr: QrCode, nomeArquivo: string, borda = 4, alvoPx = 1000) {
+export function baixarQrPng(qr: QrCode, nomeArquivo: string, borda = 4, alvoPx = 1000, ferramenta?: string) {
   const lado = qrLadoTotal(qr, borda);
   const escala = Math.max(4, Math.ceil(alvoPx / lado));
   const canvas = document.createElement("canvas");
@@ -109,6 +118,7 @@ export function baixarQrPng(qr: QrCode, nomeArquivo: string, borda = 4, alvoPx =
     a.href = url;
     a.download = nomeArquivo;
     a.click();
+    if (ferramenta) rastrear(EVENTOS.ferramentaUso, { ferramenta, acao: "baixar" });
     setTimeout(() => URL.revokeObjectURL(url), 0);
   }, "image/png");
 }

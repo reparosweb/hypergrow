@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo, useRef, useState } from "react";
 import { gerarQr, qrParaCaminhoSvg, qrLadoTotal } from "@/lib/qrcode";
+import { EVENTOS, rastrear } from "@/lib/track";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    GERADOR DE LINK + QR CODE DO WHATSAPP — 100% no navegador.
@@ -121,6 +122,7 @@ export default function GeradorWhatsApp() {
       document.body.removeChild(area);
     }
     setCopiado(true);
+    rastrear(EVENTOS.ferramentaUso, { ferramenta: "gerador-link-whatsapp", acao: "copiar" });
     if (tempo.current) clearTimeout(tempo.current);
     tempo.current = setTimeout(() => setCopiado(false), 2200);
   }, [link]);
@@ -142,6 +144,7 @@ export default function GeradorWhatsApp() {
       a.download = nome;
       a.click();
       URL.revokeObjectURL(url);
+      rastrear(EVENTOS.ferramentaUso, { ferramenta: "gerador-link-whatsapp", acao: "baixar_svg" });
       return;
     }
 
@@ -170,6 +173,7 @@ export default function GeradorWhatsApp() {
       a.download = nome;
       a.click();
       URL.revokeObjectURL(url);
+      rastrear(EVENTOS.ferramentaUso, { ferramenta: "gerador-link-whatsapp", acao: "baixar_png" });
     }, "image/png");
   }, [qr, ddiLimpo, digitos]);
 
@@ -314,7 +318,8 @@ export default function GeradorWhatsApp() {
                   <Icone nome={copiado ? "ok" : "copiar"} />
                   {copiado ? "Copiado!" : "Copiar link"}
                 </button>
-                <a className="ft-mini" href={link} target="_blank" rel="noopener noreferrer" style={{ flex: "1 1 auto" }}>
+                <a className="ft-mini" href={link} target="_blank" rel="noopener noreferrer" style={{ flex: "1 1 auto" }}
+                  onClick={() => rastrear(EVENTOS.ferramentaUso, { ferramenta: "gerador-link-whatsapp", acao: "testar_link" })}>
                   <Icone nome="abrir" />
                   Testar agora
                 </a>

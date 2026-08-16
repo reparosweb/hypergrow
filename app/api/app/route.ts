@@ -9,6 +9,7 @@ import { modUsuarios } from "@/lib/modules/mod-usuarios";
 import { modAgenda } from "@/lib/modules/mod-agenda";
 import { modRelatorios } from "@/lib/modules/mod-relatorios";
 import { modAutomacoes } from "@/lib/modules/mod-automacoes";
+import { modAfiliados } from "@/lib/modules/mod-afiliados";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -39,6 +40,10 @@ const MODULOS: Record<string, (action: string, ctx: Ctx) => Promise<Record<strin
   agenda: modAgenda,
   relatorios: modRelatorios,
   automacoes: modAutomacoes,
+  // Chave "afiliado" (singular) de propósito: é o nome já registrado em
+  // MODULE_ACCESS de lib/permissions.ts. O arquivo do módulo se chama
+  // mod-afiliados.ts (plural) só por convenção de nome de arquivo.
+  afiliado: modAfiliados,
 };
 
 /* ─────────────────────────────────────────────────────────────────────────────
@@ -50,9 +55,14 @@ const MODULOS: Record<string, (action: string, ctx: Ctx) => Promise<Record<strin
    "público" não significa "sem prova": significa que a prova é o token, não o
    cookie.
 
+   O clique de afiliado (`afiliado:clique`) entra pelo MESMO motivo: acontece
+   na primeira visita de um estranho ao site, que não tem sessão nenhuma. A
+   ação em si não confia no `code` da URL — ela confere no banco se o código
+   existe antes de gravar qualquer coisa (ver mod-afiliados.ts).
+
    ⚠️ Nunca adicione aqui uma ação que LEIA ou ALTERE dados de negócio.
    ──────────────────────────────────────────────────────────────────────────── */
-const PUBLIC_ACTIONS = new Set<string>(["usuarios:aceitar-convite"]);
+const PUBLIC_ACTIONS = new Set<string>(["usuarios:aceitar-convite", "afiliado:clique"]);
 
 export async function POST(req: Request) {
   const url = new URL(req.url);
@@ -79,7 +89,12 @@ export async function POST(req: Request) {
 
   const action = String(url.searchParams.get("action") || body.action || "");
 
-  const ctx: Ctx = { supabase, body, user: null };
+  // Só usado hoje pelo módulo de afiliados (hash de clique, ver
+  // mod-afiliados.ts). Fica extraído aqui porque é o único lugar do roteador
+  // com acesso ao `Request` cru — os módulos só recebem `Ctx`.
+  const ip = (req.headers.get("x-forwarded-for") || "").split(",")[0]?.trim() || null;
+
+  const ctx: Ctx = { supabase, body, user: null, ip };
 
   if (!PUBLIC_ACTIONS.has(`${modulo}:${action}`)) {
     const user = await requireUser(supabase);

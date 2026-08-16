@@ -1,4 +1,5 @@
 import { Ctx, ModResult, ok, fail, str, isEmail, parseValor, assertGravou } from "./_shared";
+import { registrarConversaoAfiliado } from "./mod-afiliados";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    CRM — leads e o kanban.
@@ -111,13 +112,34 @@ export async function modCrm(action: string, ctx: Ctx): Promise<ModResult> {
         patch.lost_reason = null;
       }
 
-      const { data, error } = await supabase.from("leads").update(patch).eq("id", id).select("id,status,stage_order");
+      // Além dos campos que a tela precisa de volta, pede email/value/
+      // affiliate_code — é o que o hook de afiliados logo abaixo usa. Custa
+      // nada a mais (mesma query) e evita uma segunda ida ao banco.
+      const { data, error } = await supabase
+        .from("leads")
+        .update(patch)
+        .eq("id", id)
+        .select("id,status,stage_order,email,value,affiliate_code");
       try {
         assertGravou(data, error, "Mover lead");
-        return ok();
       } catch (e) {
         return fail((e as Error).message, 500);
       }
+
+      // Hook do programa de afiliados: lead virou cliente → apura comissão
+      // (se ele tiver vindo de indicação). FIRE-AND-FORGET DE VERDADE: o move
+      // do lead já foi gravado no banco na linha acima; nada que aconteça
+      // daqui pra baixo pode fazer esta ação devolver erro para a tela do CRM.
+      if (status === "cliente") {
+        try {
+          const lead = (data as Array<{ id: string; email: string | null; value: number | null; affiliate_code: string | null }>)[0];
+          await registrarConversaoAfiliado(supabase, lead);
+        } catch (e) {
+          console.error("[mod-crm] conversão de afiliado falhou (não propagado ao move):", e);
+        }
+      }
+
+      return ok();
     }
 
     /* ── Reordena vários de uma vez (soltar entre dois cards) ───────────── */

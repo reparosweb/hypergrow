@@ -23,7 +23,10 @@ export default function AdminLogin() {
       });
       const json = await res.json();
       if (res.ok && json.ok) {
-        router.push("/admin");
+        // Papel "afiliado" não tem nada pra fazer no painel principal (CRM,
+        // financeiro etc. são todos vetados a ele em lib/permissions.ts) — vai
+        // direto para o portal dele. Todo o resto continua indo para /admin.
+        router.push(json.role === "afiliado" ? "/afiliado" : "/admin");
         router.refresh();
       } else {
         setError(json.error || "Não foi possível entrar.");

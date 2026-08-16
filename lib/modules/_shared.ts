@@ -23,8 +23,13 @@ export type Ctx = {
   supabase: Supa;
   body: Record<string, unknown>;
   /** Quem está logado. `null` só nas ações da whitelist PUBLIC_ACTIONS do
-   *  roteador (hoje: aceitar convite, que acontece antes de existir sessão). */
+   *  roteador (hoje: aceitar convite e o clique de afiliado, que acontecem
+   *  antes de existir sessão). */
   user: UsuarioSessao | null;
+  /** IP do visitante (de `x-forwarded-for`), já extraído pelo roteador. Só o
+   *  módulo de afiliados usa isto hoje (para o hash de clique, ver
+   *  mod-afiliados.ts) — `null` quando o header não vem no request. */
+  ip?: string | null;
 };
 
 export type ModResult = { status?: number; [k: string]: unknown };

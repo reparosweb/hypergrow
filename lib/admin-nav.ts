@@ -47,21 +47,13 @@ export const NAV: GrupoNav[] = [
     id: "operacao",
     titulo: "Operação",
     itens: [
-      /* ⚠️ `disponivel: false` nos itens cuja TELA ainda não existe.
-         O módulo de API já responde (mod-agenda, mod-relatorios,
-         mod-automacoes estão no roteador) e os componentes MeuDia.tsx e
-         Agenda.tsx já foram escritos — falta só a página que os monta.
-         Enquanto isso, o item aparece apagado em vez de virar um link que
-         devolve 404: o dono precisa ver o mapa completo do painel, mas não
-         pode clicar e cair em erro. Ao criar a página, apague esta linha. */
       {
         slug: "meu-dia",
         href: "/admin/meu-dia",
         rotulo: "Meu dia",
         icone: Sun,
         modulo: "agenda",
-        descricao: "Em construção",
-        disponivel: false,
+        descricao: "Compromissos, leads sem contato e a receber de hoje",
       },
       {
         slug: "agenda",
@@ -69,8 +61,7 @@ export const NAV: GrupoNav[] = [
         rotulo: "Agenda",
         icone: CalendarDays,
         modulo: "agenda",
-        descricao: "Em construção",
-        disponivel: false,
+        descricao: "Compromissos e reuniões",
       },
     ],
   },
@@ -108,8 +99,7 @@ export const NAV: GrupoNav[] = [
         rotulo: "Relatórios",
         icone: BarChart3,
         modulo: "relatorios",
-        descricao: "Em construção",
-        disponivel: false,
+        descricao: "Funil, origem e receita",
       },
     ],
   },
@@ -131,10 +121,7 @@ export const NAV: GrupoNav[] = [
         rotulo: "Afiliados",
         icone: Share2,
         modulo: "afiliado",
-        descricao: "Ainda não construído",
-        // O papel "afiliado" já existe no controle de acesso, mas a TELA dele
-        // não foi feita. Fica visível e apagado em vez de virar link quebrado.
-        disponivel: false,
+        descricao: "Quem indica, comissão e aprovação de pagamento",
       },
       {
         slug: "automacoes",
@@ -142,8 +129,7 @@ export const NAV: GrupoNav[] = [
         rotulo: "Automações",
         icone: Workflow,
         modulo: "automacoes",
-        descricao: "Em construção",
-        disponivel: false,
+        descricao: "Réguas de mensagem — motor ainda não ligado",
       },
     ],
   },

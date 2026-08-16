@@ -13,6 +13,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${SITE_URL}/servicos`, lastModified: now, changeFrequency: "monthly", priority: 0.9 },
     { url: `${SITE_URL}/sobre`, lastModified: now, changeFrequency: "monthly", priority: 0.5 },
     { url: `${SITE_URL}/contato`, lastModified: now, changeFrequency: "monthly", priority: 0.7 },
+    { url: `${SITE_URL}/afiliados`, lastModified: now, changeFrequency: "monthly", priority: 0.4 },
     // Página de vertical (não é serviço, então não vem do map de siteServices).
     { url: `${SITE_URL}/para/clinicas`, lastModified: now, changeFrequency: "monthly", priority: 0.6 },
     // Hub das ferramentas grátis: porta de entrada de busca por conta pronta

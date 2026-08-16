@@ -110,7 +110,7 @@ export default function GeradorQrCode() {
   const [seguranca, setSeguranca] = useState<Seguranca>("WPA");
   const [oculta, setOculta] = useState(false);
   const [nivel, setNivel] = useState<NivelEcc>("M");
-  const [copiado, copiar] = useCopiar();
+  const [copiado, copiar] = useCopiar("gerador-qr-code");
 
   /* O texto EXATO que será gravado no QR. Fica visível na tela de propósito:
      quem imprime um QR precisa poder conferir o que está dentro dele. */
@@ -166,7 +166,7 @@ export default function GeradorQrCode() {
           </span>
         </span>
         {qr && (
-          <button type="button" className="ft-mini" onClick={() => baixarQrPng(qr, nomeArquivo + ".png")}>
+          <button type="button" className="ft-mini" onClick={() => baixarQrPng(qr, nomeArquivo + ".png", 4, 1000, "gerador-qr-code")}>
             <IconeAcao nome="baixar" />
             PNG
           </button>
@@ -472,7 +472,7 @@ export default function GeradorQrCode() {
                 <button
                   type="button"
                   className="ft-mini"
-                  onClick={() => baixarQrPng(qr, nomeArquivo + ".png")}
+                  onClick={() => baixarQrPng(qr, nomeArquivo + ".png", 4, 1000, "gerador-qr-code")}
                   style={{ flex: "1 1 auto" }}
                 >
                   <IconeAcao nome="baixar" />
@@ -481,7 +481,7 @@ export default function GeradorQrCode() {
                 <button
                   type="button"
                   className="ft-mini"
-                  onClick={() => baixarQrSvg(qr, nomeArquivo + ".svg")}
+                  onClick={() => baixarQrSvg(qr, nomeArquivo + ".svg", 4, "gerador-qr-code")}
                   style={{ flex: "1 1 auto" }}
                 >
                   <IconeAcao nome="baixar" />

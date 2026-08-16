@@ -36,11 +36,17 @@ A HyperGrow cria, coloca no ar e opera soluções digitais de ponta a ponta para
 - [CRM com IA](https://hypergrow-lovat.vercel.app/servicos/crm-com-ia): CRM com dashboard de funil de vendas, leads organizados e IA lendo o que os números escondem.
 - [SDR com IA](https://hypergrow-lovat.vercel.app/servicos/sdr-com-ia): Agente de IA que qualifica leads e entrega ao seu time só quem está pronto para comprar.
 
-## Artigos (4)
+## Artigos (10)
 - [Quanto custa criar um site profissional em 2026?](https://hypergrow-lovat.vercel.app/blog/quanto-custa-criar-um-site): Quanto custa criar um site em 2026? Veja faixas reais de preço no Brasil para landing page, site institucional e e-commerce, e o que muda no valor.
 - [Agente de IA: como atender clientes 24h por dia](https://hypergrow-lovat.vercel.app/blog/agente-de-ia-atendimento-24h): Agente de IA para atendimento: o que é, como funciona no WhatsApp, como qualifica e agenda clientes 24h e a diferença para o chatbot antigo.
 - [Quanto custa criar uma loja virtual no Brasil?](https://hypergrow-lovat.vercel.app/blog/quanto-custa-loja-virtual): Quanto custa loja virtual? De R$0 a R$80 mil. Veja faixas reais de preço, custos recorrentes (plataforma, gateway, frete) e quando vale cada caminho.
 - [Como aparecer no ChatGPT e ser citado pela IA](https://hypergrow-lovat.vercel.app/blog/como-aparecer-no-chatgpt): Como aparecer no ChatGPT? Estruture conteúdo em formato de resposta, use dados, schema e autoridade. Guia prático de GEO/AEO para sua empresa ser citada.
+- [Meu site não aparece no Google: o que fazer](https://hypergrow-lovat.vercel.app/blog/site-nao-aparece-no-google): Seu site não aparece no Google? Veja como checar em 1 minuto se ele está indexado, as causas mais comuns e o que corrigir ainda nesta semana.
+- [Taxas de marketplace: quanto sobra por venda](https://hypergrow-lovat.vercel.app/blog/taxas-marketplace-quanto-sobra): Comissão, tarifa fixa, frete e imposto saem do seu preço. Veja a conta completa do que sobra por venda e onde achar as taxas oficiais de cada canal.
+- [Como saber se o anúncio está dando lucro](https://hypergrow-lovat.vercel.app/blog/anuncio-esta-dando-lucro): ROAS, CPA e margem sem mistério: a conta que mostra se o anúncio dá lucro, por que o painel não bate com o caixa e como rastrear a origem com UTM.
+- [Como não perder cliente no WhatsApp](https://hypergrow-lovat.vercel.app/blog/nao-perder-cliente-no-whatsapp): Cliente some por demora, conversa sem dono e mensagem fora do horário. Veja como organizar link, QR Code, respostas e automação sem trocar de sistema.
+- [Política de privacidade e LGPD no seu site](https://hypergrow-lovat.vercel.app/blog/politica-de-privacidade-lgpd-site): Site com formulário, chat ou pixel precisa de política de privacidade. Veja o que a LGPD exige que ela diga, o que muda para empresa pequena e como publicar.
+- [Quanto cobrar por hora de serviço](https://hypergrow-lovat.vercel.app/blog/quanto-cobrar-por-hora): A conta que define seu preço por hora: custos fixos, pró-labore, horas realmente faturáveis, imposto e margem — com o passo a passo para revisar o seu.
 
 ## Páginas principais
 - [Catálogo completo de serviços](https://hypergrow-lovat.vercel.app/servicos): os 22 serviços agrupados em 4 frentes, com tabela de qual frente resolve qual problema.

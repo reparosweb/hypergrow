@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { EVENTOS, rastrear } from "@/lib/track";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    FORMULÁRIO DE ORÇAMENTO — componente único.
@@ -34,8 +35,15 @@ export default function ContactForm() {
         body: JSON.stringify({ name: form.nome, email: form.email, phone: form.zap, product: form.servico, message: form.msg }),
       });
       const j = await res.json();
-      if (res.ok && j.ok) setSent(true);
-      else setErr(j.error || "Não foi possível enviar. Tente novamente.");
+      if (res.ok && j.ok) {
+        setSent(true);
+        // Só depois do sucesso confirmado pelo servidor, mesmo evento e
+        // mesmo formato de props que o formulário embutido na home usa
+        // (ver ClaroClose.tsx) — /contato é outro ponto de entrada do
+        // MESMO formulário, então o relatório de conversão precisa contar
+        // os dois como "lead_enviado", não como eventos diferentes.
+        rastrear(EVENTOS.leadEnviado, { frente: form.servico || "nao_informado" });
+      } else setErr(j.error || "Não foi possível enviar. Tente novamente.");
     } catch {
       setErr("Sem conexão. Tente novamente em instantes.");
     } finally {

@@ -385,6 +385,7 @@ export function ClaroContato() {
             <div className="rv cl-ct-l">
               {wa.ativo ? (
                 <a className="card cl-ct-row lit" href={wa.url} target="_blank" rel="noreferrer"
+                  onClick={() => rastrear(EVENTOS.whatsapp, { origem: "card_contato" })}
                   style={{ ["--beam" as string]: "var(--wa)" }}>
                   <span className="cl-ct-ic glow" style={{ background: "rgba(15,157,88,.1)", color: "var(--wa)" }}><MessageCircle size={19} /></span>
                   <span><b className="glow-t">WhatsApp</b><em>resposta no mesmo dia útil</em></span>
@@ -594,6 +595,7 @@ const RODAPE: [string, [string, string][]][] = [
     ["Resultados", "#resultados"],
     ["Diagnóstico gratuito", "#diagnostico"],
     ["Portfólio", "#portfolio"],
+    ["Programa de afiliados", "/afiliados"],
   ]],
 ];
 

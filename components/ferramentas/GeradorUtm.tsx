@@ -137,7 +137,7 @@ export default function GeradorUtm() {
     utm_term: "",
     utm_content: "",
   });
-  const [copiado, copiar] = useCopiar();
+  const [copiado, copiar] = useCopiar("gerador-utm");
 
   const setValor = (c: Chave, v: string) => setValores((a) => ({ ...a, [c]: v }));
 
