@@ -47,13 +47,21 @@ export const NAV: GrupoNav[] = [
     id: "operacao",
     titulo: "Operação",
     itens: [
+      /* ⚠️ `disponivel: false` nos itens cuja TELA ainda não existe.
+         O módulo de API já responde (mod-agenda, mod-relatorios,
+         mod-automacoes estão no roteador) e os componentes MeuDia.tsx e
+         Agenda.tsx já foram escritos — falta só a página que os monta.
+         Enquanto isso, o item aparece apagado em vez de virar um link que
+         devolve 404: o dono precisa ver o mapa completo do painel, mas não
+         pode clicar e cair em erro. Ao criar a página, apague esta linha. */
       {
         slug: "meu-dia",
         href: "/admin/meu-dia",
         rotulo: "Meu dia",
         icone: Sun,
         modulo: "agenda",
-        descricao: "O que precisa da sua atenção hoje",
+        descricao: "Em construção",
+        disponivel: false,
       },
       {
         slug: "agenda",
@@ -61,7 +69,8 @@ export const NAV: GrupoNav[] = [
         rotulo: "Agenda",
         icone: CalendarDays,
         modulo: "agenda",
-        descricao: "Reuniões e compromissos",
+        descricao: "Em construção",
+        disponivel: false,
       },
     ],
   },
@@ -99,7 +108,8 @@ export const NAV: GrupoNav[] = [
         rotulo: "Relatórios",
         icone: BarChart3,
         modulo: "relatorios",
-        descricao: "Funil, origem, perdas e receita",
+        descricao: "Em construção",
+        disponivel: false,
       },
     ],
   },
@@ -132,7 +142,8 @@ export const NAV: GrupoNav[] = [
         rotulo: "Automações",
         icone: Workflow,
         modulo: "automacoes",
-        descricao: "Réguas de mensagem e histórico de envios",
+        descricao: "Em construção",
+        disponivel: false,
       },
     ],
   },
