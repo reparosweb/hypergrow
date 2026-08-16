@@ -59,13 +59,16 @@
   --sh-1:0 1px 2px rgba(11,18,32,.05);
   --sh-2:0 10px 30px -12px rgba(11,18,32,.14),0 2px 6px rgba(11,18,32,.05);
   --sh-3:0 28px 60px -24px rgba(11,18,32,.22),0 4px 12px rgba(11,18,32,.06);
-  /* 1180 -> 1440 em 2026-08-16: pedido direto do dono vendo a página real num
-     monitor largo — sobrava muita margem branca dos dois lados. --maxw é a
-     ÚNICA fonte (todo .wrap do site lê daqui), então isto alarga TODAS as
-     páginas de uma vez, sem precisar tocar página por página. 1440 já é valor
-     testado neste projeto (mesma medida usada na 1a rodada de "full", em
-     2026-06-24, antes da migração para o tema claro). */
-  --maxw:1440px;
+  /* 1180 -> 1440 -> 1680 no mesmo dia (2026-08-16): o dono viu a página real
+     num monitor largo e seguiu achando estreito mesmo depois do primeiro
+     degrau -- 1440px de conteúdo numa tela de 1920px ainda sobra cerca de
+     240px de margem morta de cada lado. --maxw é a ÚNICA fonte (todo .wrap
+     do site lê daqui), então este é mais um degrau real, não cosmético, e
+     alarga TODAS as páginas de uma vez. Grids e tabelas internos usam
+     auto-fit + min(Xpx, 100%) ou min-width como PISO (nunca teto), então
+     nada quebra por a página ficar mais larga -- só ganham mais respiro e
+     colunas em tela grande. */
+  --maxw:1680px;
 
   /* ══ ESCALA DE BREAKPOINTS — ÚNICA PARA TODA A ROTA `.cl` ══════════════════
      Antes existiam SEIS larguras escolhidas arquivo a arquivo (1180, 1000,
@@ -280,7 +283,11 @@
 @media(max-width:900px){.cl .split{grid-template-columns:1fr}}
 
 /* marquee */
-.cl .mq{display:flex;overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+/* 2026-08-16: a máscara de esmaecer as bordas ("fumaça") saiu por pedido
+   direto do dono — cortava as primeiras/últimas letras dos nomes de
+   plataforma de propósito (efeito "some no infinito"), mas ele leu como sujeira
+   em vez de acabamento. Esteira agora corta reto nas duas pontas do .wrap. */
+.cl .mq{display:flex;overflow:hidden}
 .cl .mq-t{display:flex;flex-shrink:0;align-items:center;gap:54px;padding-right:54px;animation:cl-mq 42s linear infinite}
 .cl .mq.rev .mq-t{animation-direction:reverse;animation-duration:52s}
 .cl .mq:hover .mq-t,.cl .mq:focus-within .mq-t{animation-play-state:paused}
@@ -293,8 +300,12 @@
    pulo visível quando a seção volta para a tela. */
 .cl .mq.mq-pause .mq-t{animation-play-state:paused}
 @keyframes cl-mq{to{transform:translateX(-100%)}}
-.cl .mq-i{white-space:nowrap;font:700 19px var(--disp);letter-spacing:-.02em;color:#5A6579;transition:color .3s}
-.cl .mq-i:hover{color:var(--ink)}
+/* 2026-08-16: hover era só cinza-claro -> cinza-escuro (quase imperceptível).
+   Pedido direto: "deve acender e trocar de cor". Agora vai para a cor de marca
+   com leve brilho de texto (text-shadow, não filter:blur -- trava scroll no
+   celular, regra já documentada neste projeto) e um piso sutil por trás. */
+.cl .mq-i{white-space:nowrap;font:700 19px var(--disp);letter-spacing:-.02em;color:#5A6579;padding:4px 10px;border-radius:8px;transition:color .3s var(--ease),text-shadow .3s var(--ease),background-color .3s var(--ease)}
+.cl .mq-i:hover{color:var(--brand);text-shadow:0 0 18px color-mix(in srgb,var(--brand) 45%,transparent);background-color:color-mix(in srgb,var(--brand) 8%,transparent)}
 @media(prefers-reduced-motion:reduce){.cl .mq-t{animation:none}}
 
 /* nav

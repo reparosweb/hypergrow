@@ -248,6 +248,10 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
           {s.body.map((b, i) => {
             const n = String(i + 1).padStart(2, "0");
             const foto = i === 0 ? SERVICE_PHOTO[s.slug] : undefined;
+            // Dado real do próprio serviço no rótulo da placa, nunca número
+            // inventado (regra 8 da hg-regras-de-bug): cicla pelas tags reais
+            // já cadastradas em lib/site-services.ts.
+            const stepTag = s.tags.length ? s.tags[i % s.tags.length] : pil.label;
             return (
               <article key={b.h} className={"svc-step" + (i % 2 === 1 ? " svc-step-flip" : "")}>
                 <div className="svc-step-txt">
@@ -256,7 +260,13 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
                     <h2 className="svc-step-h">{b.h}</h2>
                   </div>
                   <div className="svc-step-panel lit">
-                    <p className="svc-step-p">{b.p}</p>
+                    {b.p
+                      .split(/\n\s*\n/)
+                      .map((para) => para.trim())
+                      .filter(Boolean)
+                      .map((para, pi) => (
+                        <p className="svc-step-p" key={pi}>{para}</p>
+                      ))}
                   </div>
                 </div>
 
@@ -276,8 +286,17 @@ export default function ServicePage({ params }: { params: { slug: string } }) {
                   ) : (
                     <span className="svc-step-plate" aria-hidden>
                       <span className="svc-step-grid" />
+                      <span className="svc-step-glow" />
+                      <span className="svc-tick tl" />
+                      <span className="svc-tick tr" />
+                      <span className="svc-tick bl" />
+                      <span className="svc-tick br" />
                       <span className="svc-step-glyph">
                         <ServiceGlyph slug={s.slug} height={200} />
+                      </span>
+                      <span className="svc-step-badge">
+                        <span className="mono svc-step-badge-n">{n}</span>
+                        <span className="mono svc-step-badge-t">{stepTag}</span>
                       </span>
                     </span>
                   )}
@@ -489,28 +508,56 @@ const CSS = `
   .cl .svc-step-panel:hover { border-color: var(--acc-line); box-shadow: var(--sh-2); }
   .cl .svc-step-p { font: 400 clamp(15.5px, 1.25vw, 17px)/1.75 var(--text); color: var(--ink-2);
     margin: 0; text-wrap: pretty; }
+  /* Respiro entre paragrafos irmaos: lib/site-services.ts agora separa o corpo
+     em 2-3 paragrafos curtos por linha em branco, renderizados como um p por
+     trecho. Sem esta regra os paragrafos novos colam um no outro, porque a
+     regra acima zera a margem pensando num p unico por bloco. */
+  .cl .svc-step-p + .svc-step-p { margin-top: 14px; }
 
   /* elemento grafico: foto no 1o bloco, placa do grafismo nos demais */
   .cl .svc-step-fig { position: relative; margin: 0; overflow: hidden; width: 100%;
     aspect-ratio: 4 / 3; border-radius: clamp(18px, 2vw, 26px); border: 1px solid var(--line);
-    background: var(--paper-2); box-shadow: var(--sh-2); }
+    background: var(--paper-2); box-shadow: var(--sh-2), inset 0 0 0 1px rgba(255,255,255,.6);
+    transition: box-shadow .35s var(--ease), border-color .35s var(--ease); }
+  /* moldura dupla (borda + friso interno claro) e resposta propria no hover,
+     mesmo nivel de "vivo" que .svc-step-panel:hover ja tem -- antes esta
+     caixa era a unica do bloco sem NENHUMA reacao ao passar o mouse. */
+  .cl .svc-step-fig:hover { border-color: var(--acc-line);
+    box-shadow: var(--sh-3), inset 0 0 0 1px rgba(255,255,255,.6); }
   .cl .svc-step-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .cl .svc-step-plate { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
     background: radial-gradient(120% 92% at 50% -10%, var(--acc-soft), transparent 62%),
                 linear-gradient(180deg, #fff, var(--paper-2)); }
   .cl .svc-step-grid { position: absolute; inset: 0; pointer-events: none;
-    background-image: linear-gradient(rgba(11,18,32,.05) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(11,18,32,.05) 1px, transparent 1px);
-    background-size: 34px 34px; background-position: center;
-    -webkit-mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 84%);
-    mask-image: radial-gradient(70% 70% at 50% 50%, #000, transparent 84%); }
-  .cl .svc-step-glyph { position: relative; z-index: 2; width: min(68%, 380px); color: var(--acc); }
+    background-image: linear-gradient(rgba(11,18,32,.075) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(11,18,32,.075) 1px, transparent 1px);
+    background-size: 30px 30px; background-position: center;
+    -webkit-mask-image: radial-gradient(80% 78% at 50% 50%, #000, transparent 92%);
+    mask-image: radial-gradient(80% 78% at 50% 50%, #000, transparent 92%); }
+  /* halo do pilar dentro da placa -- mesmo mecanismo do .svc-plate-glow do
+     hero, gradiente puro, nunca filter:blur. Reforca a leitura de cor viva
+     na caixa que antes era so cinza quase branco com um icone no meio. */
+  .cl .svc-step-glow { position: absolute; left: 50%; top: 46%; width: 130%; aspect-ratio: 1 / 1;
+    transform: translate(-50%, -50%); pointer-events: none;
+    background: radial-gradient(circle, var(--acc-glow), transparent 60%); opacity: .85; }
+  .cl .svc-step-glyph { position: relative; z-index: 2; width: min(76%, 420px); color: var(--acc); }
   .cl .svc-step-glyph svg { width: 100%; height: auto; display: block; }
+  /* rotulo no rodape da placa, mesmo desenho do .svc-plate-foot do hero:
+     numero do passo + uma tag REAL do proprio servico (lib/site-services.ts,
+     nunca estatistica inventada -- regra 8 da hg-regras-de-bug). E o que muda
+     a caixa de "vazia" para "com dado". */
+  .cl .svc-step-badge { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex;
+    align-items: center; justify-content: space-between; gap: 12px;
+    padding: 0 clamp(14px, 2vw, 20px) clamp(12px, 1.8vw, 17px);
+    font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; }
+  .cl .svc-step-badge-n { color: var(--acc); font-weight: 700; flex-shrink: 0; }
+  .cl .svc-step-badge-t { color: #5A6579; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+    white-space: nowrap; text-align: right; }
   /* variacao discreta entre as placas para os blocos nao ficarem iguais */
   .cl .svc-step:nth-of-type(3) .svc-step-plate { background:
       radial-gradient(110% 88% at 12% 108%, var(--acc-soft), transparent 60%),
       linear-gradient(180deg, #fff, var(--paper-2)); }
-  .cl .svc-step:nth-of-type(3) .svc-step-glyph { width: min(78%, 420px); }
+  .cl .svc-step:nth-of-type(3) .svc-step-glyph { width: min(84%, 440px); }
   /* 4a placa: recorte macro do mesmo desenho (o grafismo estoura a moldura e a
      placa corta). E o que evita tres placas iguais numa pagina de 4 blocos sem
      precisar de mais uma foto de banco. */
@@ -613,10 +660,19 @@ const CSS = `
     @media (prefers-reduced-motion: no-preference) {
       .cl .svc-card, .cl .svc-rel-card, .cl .svc-faq, .cl .svc-step {
         animation: pg-reveal-in linear both; animation-timeline: view(); animation-range: entry 2% entry 58%; }
+      /* entrada do grafismo em separado do bloco: o glyph nasce um pouco menor
+         e ganha opacidade/escala conforme a placa entra na tela -- mesmo
+         padrao do .plat-rise em components/site/PlatformShowcase.tsx, so
+         transform/opacity, sem custo de layout. */
+      .cl .svc-step-glyph { animation: svc-glyph-in linear both; animation-timeline: view();
+        animation-range: entry 8% entry 62%; }
     }
   }
+  @keyframes svc-glyph-in { from { opacity: 0; transform: scale(.88); } to { opacity: 1; transform: scale(1); } }
   @media (prefers-reduced-motion: reduce) {
     .cl .svc-arrow, .cl .svc-faq summary::after { transition: none; }
     .cl .svc-rel-card:hover { transform: none; }
+    .cl .svc-step-glyph { animation: none; }
+    .cl .svc-step-fig { transition: none; }
   }
 `;

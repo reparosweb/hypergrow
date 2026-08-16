@@ -86,21 +86,19 @@ export default function SobrePage() {
         <div className="wrap">
           <StackedShowcase
             browserSrc="/portfolio/agentop.webp"
-            browserAlt="Painel do Agentop: agenda, CRM e financeiro num sistema só"
-            /* 2026-08-07: trocado sorteio.webp (print DESKTOP, 800x500 paisagem)
-               por sorteio-mobile.webp — o dono reportou "está cortando". Causa:
-               PhoneFrame recorta com object-fit:cover numa caixa 9/19 retrato;
-               cortar uma imagem PAISAGEM até 9/19 sobra só a faixa central
-               estreita, cortando o título ("PARE DE APOSTAR no palpite.") ao
-               meio. sorteio-mobile.webp já É um print de celular de verdade
-               (emulação mobile real, não a versão desktop encolhida), então o
-               mesmo corte 9/19 agora tira só uma margem fina dos dois lados —
-               o título inteiro continua visível. Print REAL, não o card de
-               marca: nutri.webp é um card desenhado (o app renderiza em branco
-               para capturador) e dentro da moldura de celular virava uma tela
-               verde chapada — parecia defeito. */
-            phoneSrc="/portfolio/sorteio-mobile.webp"
-            phoneAlt="Sorteio Bilionário IA aberto no celular, tela de gerar combinação"
+            browserAlt="Painel do Agentop no navegador: agenda, CRM e financeiro num sistema só"
+            /* 2026-08-16: era sorteio-mobile.webp — um produto DIFERENTE do que
+               aparece no navegador. Bronca real do dono: essa vitrine ilustra
+               "o mesmo site funciona bem em qualquer tela" (responsivo), e
+               mostrar dois produtos diferentes não prova isso — parece só duas
+               capturas soltas, sem relação. Capturado agentop-mobile.webp AO
+               VIVO em agentop.com.br (390×844, emulação mobile real — mesma
+               regra de sorteio-mobile.webp descrita antes 2026-08-07: nunca
+               encolher um print DESKTOP num frame de celular, sempre capturar
+               a versão mobile de verdade, senão o corte 9/19 do PhoneFrame
+               tira o título ao meio). Mesmo produto nas duas molduras agora. */
+            phoneSrc="/portfolio/agentop-mobile.webp"
+            phoneAlt="Agentop aberto no celular: mesmo painel, adaptado para tela pequena"
             title="agentop.com.br"
             priority
           />
