@@ -2,7 +2,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import Script from "next/script";
 import TrustMarquee from "./TrustMarquee";
 import ServiceGlyph from "./ServiceGlyphs";
 import ContactForm from "./ContactForm";
@@ -272,9 +271,21 @@ function Hero() {
   return (
     <section id="top" style={{ position: "relative", height: "100svh", minHeight: 620, overflow: "hidden", background: "#04060f" }}>
       <div className="hero-video-wrap" aria-hidden="true">
+        {/* Fonte trocada de launch.mp4 para hero-v2.mp4 em 2026-08-15.
+            launch.mp4 (11.250.999 bytes) foi APAGADO de public/: era o maior
+            arquivo do repositório e nenhuma rota o baixava — só este componente
+            (que rota nenhuma monta) e o ClaroBanner (removido no mesmo passo)
+            apontavam para ele. hero-v2.mp4 já está em public/media, é 1920×1080
+            nativo com faststart e 4,97 MB, ou seja, o tema escuro fica com um
+            vídeo ESTRITAMENTE melhor sem custar um byte novo de deploy.
+            O comentário mora AQUI, e não dentro do ternário: logo depois de
+            abrir o ternário o JSX espera um ELEMENTO, e um bloco de comentário
+            naquela posição é lido como objeto vazio — foi o que quebrou o
+            build. Regra prática: comentário de JSX vai antes da expressão,
+            nunca no primeiro ramo dela. */}
         {vidOn ? (
           <video ref={vidRef} className="hero-video" poster="/media/launch-poster.webp" autoPlay muted loop playsInline preload="metadata">
-            <source src="/media/launch.mp4" type="video/mp4" />
+            <source src="/media/hero-v2.mp4" type="video/mp4" />
           </video>
         ) : (
           /* eslint-disable-next-line @next/next/no-img-element */
@@ -1022,27 +1033,40 @@ export default function HypergrowSite({ services }: { services: ServiceCardData[
     document.querySelectorAll(".reveal").forEach((el) => io.observe(el));
     return () => io.disconnect();
   }, []);
-  /* ⚠️ CORRIDA COM A HIDRATAÇÃO (erro React #418/#423/#425 medido em PRODUÇÃO).
-     O `createIcons()` do lucide TROCA cada <i data-lucide> por um <svg> direto no
-     DOM. Com `strategy="afterInteractive"`, esse script de 348 KB podia executar
-     no MEIO da hidratação — o React então encontrava <svg> onde tinha escrito
-     <i>, acusava divergência e DESCARTAVA o HTML do servidor, re-renderizando a
-     página inteira no cliente. É o mesmo estrago que o bug do `useId()` já tinha
-     causado aqui, por outro caminho.
+  /* ⚠️⚠️ LEIA ANTES DE REMONTAR ESTE COMPONENTE — OS ÍCONES NÃO APARECEM MAIS.
 
-     Correção: `mounted` é false no servidor E na primeira renderização do
-     cliente (a de hidratação), então a tag <Script> só entra na árvore DEPOIS
-     que a hidratação terminou — a corrida deixa de existir. Efeito colateral
-     bom: tira 348 KB do caminho crítico. Custo: os ícones aparecem um instante
-     depois. */
-  const [mounted, setMounted] = useState(false);
-  useEffect(() => { setMounted(true); }, []);
-  // lucide icons — refresh after every render (covers dynamic icon swaps)
-  useEffect(() => { try { window.lucide?.createIcons?.(); } catch {} });
+     Em 2026-08-15 o arquivo `public/lucide.min.js` (355.975 bytes, servido com
+     `Cache-Control: max-age=31536000, immutable`) foi APAGADO do repositório,
+     junto com a tag <Script> que o carregava, que ficava exatamente aqui.
+
+     Por que: este componente é o ÚNICO lugar do projeto que usava o runtime do
+     lucide, e rota nenhuma monta este componente desde 2026-08-05 (a home
+     passou a ser ClaroSite — ver app/page.tsx). Confirmado por medição, não por
+     leitura: a home em produção faz 39 requisições e `lucide.min.js` não está
+     em nenhuma delas. Eram 348 KB parados no deploy para servir código morto.
+
+     CONSEQUÊNCIA: as ~40 tags `<i data-lucide="...">` deste arquivo agora
+     renderizam VAZIAS (o elemento existe, o desenho não). Nada quebra, nada
+     dá erro — só não há ícone.
+
+     COMO REVIVER O TEMA ESCURO, se um dia for a decisão do dono: NÃO volte o
+     script. Troque cada `<i data-lucide="nome">` por um import nomeado de
+     `lucide-react` (a biblioteca já é dependência do projeto e é o padrão que
+     o tema claro usa — ver components/claro/ClaroExtra.tsx). É tree-shaken:
+     custa ~1 KB por ícone em vez de 348 KB de uma vez, e resolve de brinde a
+     corrida com a hidratação documentada abaixo.
+
+     HISTÓRICO que motivou o cuidado (mantido porque a lição continua válida):
+     o `createIcons()` do lucide TROCAVA cada <i data-lucide> por um <svg>
+     direto no DOM. Com `strategy="afterInteractive"` isso podia acontecer no
+     MEIO da hidratação — o React encontrava <svg> onde tinha escrito <i>,
+     acusava divergência (#418/#423/#425, medido em produção) e DESCARTAVA o
+     HTML do servidor, re-renderizando a página inteira no cliente. A correção
+     da época era só montar o <Script> depois da hidratação, via um estado
+     `mounted` — que saiu junto, porque não sobrou nada para ele guardar. */
 
   return (
     <>
-      {mounted && <Script src="/lucide.min.js" strategy="afterInteractive" onLoad={() => { try { window.lucide?.createIcons?.(); } catch {} }} />}
       <div id="bg-field" aria-hidden="true"></div>
       <div className="grain" aria-hidden="true"></div>
       <SiteHeader variant="home" />

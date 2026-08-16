@@ -9,9 +9,11 @@ import ClaroSolucoes from "./ClaroSolucoes";
 import ClaroServicos from "./ClaroServicos";
 import ClaroDiag from "./ClaroDiag";
 import ClaroCaptura from "./ClaroCaptura";
-/* `ClaroBanner` existe em ClaroExtra.tsx mas NÃO é montado aqui — ver nota
-   sobre o banner na ordem das seções, logo abaixo. O componente ficou no
-   arquivo (não apaguei código) caso o dono queira trazer de volta. */
+/* `ClaroBanner` não existe mais: foi APAGADO de ClaroExtra.tsx em 2026-08-15.
+   Ficou um ano sem ser montado por rota nenhuma, e era o último consumidor de
+   `public/media/launch.mp4` (10,73 MB, o maior arquivo do repositório) no tema
+   claro — o vídeo saiu junto. Motivo completo no lugar onde ele estava, em
+   ClaroExtra.tsx; para trazer de volta, `git log` daquele arquivo. */
 import {
   ClaroFluxo, ClaroPortfolio, ClaroClientes, ClaroSobre, ClaroBlog,
 } from "./ClaroExtra";

@@ -53,8 +53,12 @@ export default function Kanban({ initialLeads, dbError }: { initialLeads: Lead[]
     setBusy(id);
     setLeads((ls) => ls.map((l) => (l.id === id ? { ...l, status } : l)));
     try {
-      const res = await fetch("/api/admin/leads", {
-        method: "PATCH",
+      /* `/api/admin/leads` foi absorvida pelo roteador único (limite de 12
+         funções da Vercel). Este componente hoje é código morto — nenhuma rota
+         o importa, quem está no ar é o CrmView — mas apontar para uma rota que
+         não existe mais deixaria uma armadilha para quem reaproveitasse ele. */
+      const res = await fetch("/api/app?module=crm&action=move", {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id, status }),
       });

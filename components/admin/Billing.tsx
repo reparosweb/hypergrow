@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Loader2, Copy, Check, AlertTriangle, RefreshCw } from "lucide-react";
+import { Loader2, Copy, Check, AlertTriangle } from "lucide-react";
 
 export type Charge = {
   id: string;
@@ -42,7 +42,10 @@ export default function Billing({ initialCharges, asaasReady, dbReady }: { initi
     e.preventDefault();
     setLoading(true); setError(""); setResult(null);
     try {
-      const res = await fetch("/api/admin/charge", {
+      /* Antes: `/api/admin/charge`, uma rota serverless só para isto. Agora a
+         mesma lógica vive em `lib/modules/mod-cobrancas.ts` e entra pelo
+         roteador único — o projeto ganhou duas funções de folga na Vercel. */
+      const res = await fetch("/api/app?module=cobrancas&action=create", {
         method: "POST", headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ ...form, value: parseFloat(form.value) }),
       });
@@ -60,20 +63,9 @@ export default function Billing({ initialCharges, asaasReady, dbReady }: { initi
   }
 
   return (
-    <main className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-white/10 bg-ink-950/80 backdrop-blur">
-        <div className="mx-auto flex max-w-[1100px] items-center justify-between px-4 py-3">
-          <div className="flex items-center gap-2 font-display text-lg font-bold">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-500 to-accent-cyan text-white">H</span>
-            Hyper<span className="gradient-text">grow</span><span className="ml-1 text-xs font-normal text-slate-500">· Cobranças</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <button onClick={() => router.refresh()} className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200 hover:bg-white/10"><RefreshCw size={15} /> Atualizar</button>
-            <a href="/admin" className="inline-flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-sm text-slate-200 hover:bg-white/10"><ArrowLeft size={15} /> Pipeline</a>
-          </div>
-        </div>
-      </header>
-
+    <main>
+      {/* Cabeçalho e navegação agora são do AdminShell — esta tela não desenha
+          mais o seu próprio menu com links digitados à mão. */}
       <div className="mx-auto max-w-[1100px] px-4 py-6">
         {(!asaasReady || !dbReady) && (
           <div className="mb-4 flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">
@@ -108,6 +100,14 @@ export default function Billing({ initialCharges, asaasReady, dbReady }: { initi
             {result && (
               <div className="mt-4 rounded-xl border border-emerald-400/30 bg-emerald-400/10 p-4">
                 <p className="text-sm font-semibold text-emerald-300">Cobrança criada!</p>
+                {/* A cobrança existe no Asaas mesmo quando o registro local
+                    falha. Avisar é obrigatório: sem isso o operador geraria
+                    outra e cobraria o cliente duas vezes. */}
+                {result.aviso && (
+                  <p className="mt-2 flex items-start gap-1.5 rounded-lg border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200">
+                    <AlertTriangle size={13} className="mt-0.5 shrink-0" /> {result.aviso}
+                  </p>
+                )}
                 {result.pixQr && <img src={`data:image/png;base64,${result.pixQr}`} alt="QR PIX" className="mx-auto mt-3 h-44 w-44 rounded-lg bg-white p-1" />}
                 {result.pixPayload && (
                   <button onClick={copyPix} className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs text-white hover:bg-white/10">

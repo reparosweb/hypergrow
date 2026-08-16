@@ -1,8 +1,14 @@
 import { NextResponse } from "next/server";
 import { getServerSupabase } from "@/lib/supabase";
-import { isAuthed, type Ctx } from "@/lib/modules/_shared";
+import { requireUser, type Ctx } from "@/lib/modules/_shared";
+import { userCanAccess } from "@/lib/permissions";
 import { modCrm } from "@/lib/modules/mod-crm";
 import { modFinanceiro } from "@/lib/modules/mod-financeiro";
+import { modCobrancas } from "@/lib/modules/mod-cobrancas";
+import { modUsuarios } from "@/lib/modules/mod-usuarios";
+import { modAgenda } from "@/lib/modules/mod-agenda";
+import { modRelatorios } from "@/lib/modules/mod-relatorios";
+import { modAutomacoes } from "@/lib/modules/mod-automacoes";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -11,9 +17,10 @@ export const dynamic = "force-dynamic";
    ROTEADOR ÚNICO do painel — `POST /api/app?module=X&action=Y`
 
    Por que não uma rota por recurso: a Vercel no plano Hobby aceita no máximo
-   12 funções serverless e cada `route.ts` vira uma. O site já usa 8; CRM,
-   financeiro, agenda, Google e e-mail em rotas separadas passariam de 15 e o
-   deploy falharia. Aqui tudo entra em UMA função.
+   12 funções serverless e cada `route.ts` vira uma. O site usa 7 (as duas
+   rotas legadas de admin — leads e charge — foram absorvidas aqui). CRM,
+   financeiro, cobranças, usuários, agenda, relatórios e automações em rotas
+   separadas passariam de 15 e o deploy falharia. Aqui tudo entra em UMA função.
 
    Ficam de fora, por necessidade e não por gosto:
    · `/api/oauth-callback` — o Google exige uma URL de retorno fixa e própria;
@@ -27,13 +34,27 @@ export const dynamic = "force-dynamic";
 const MODULOS: Record<string, (action: string, ctx: Ctx) => Promise<Record<string, unknown>>> = {
   crm: modCrm,
   financeiro: modFinanceiro,
+  cobrancas: modCobrancas,
+  usuarios: modUsuarios,
+  agenda: modAgenda,
+  relatorios: modRelatorios,
+  automacoes: modAutomacoes,
 };
 
-export async function POST(req: Request) {
-  if (!isAuthed()) {
-    return NextResponse.json({ ok: false, error: "Sessão expirada. Entre de novo." }, { status: 401 });
-  }
+/* ─────────────────────────────────────────────────────────────────────────────
+   Ações que rodam SEM sessão. Lista fechada, no formato `modulo:acao`.
 
+   Só entra aqui o que, por definição, acontece antes de existir login: aceitar
+   o convite é o usuário criando a própria senha — ele ainda não tem sessão
+   nenhuma. A própria ação valida o token do convite (hash + prazo), então
+   "público" não significa "sem prova": significa que a prova é o token, não o
+   cookie.
+
+   ⚠️ Nunca adicione aqui uma ação que LEIA ou ALTERE dados de negócio.
+   ──────────────────────────────────────────────────────────────────────────── */
+const PUBLIC_ACTIONS = new Set<string>(["usuarios:aceitar-convite"]);
+
+export async function POST(req: Request) {
   const url = new URL(req.url);
   const modulo = url.searchParams.get("module") || "";
   const handler = MODULOS[modulo];
@@ -58,8 +79,24 @@ export async function POST(req: Request) {
 
   const action = String(url.searchParams.get("action") || body.action || "");
 
+  const ctx: Ctx = { supabase, body, user: null };
+
+  if (!PUBLIC_ACTIONS.has(`${modulo}:${action}`)) {
+    const user = await requireUser(supabase);
+    if (!user) {
+      return NextResponse.json({ ok: false, error: "Sessão expirada. Entre de novo." }, { status: 401 });
+    }
+    if (!userCanAccess(user, modulo)) {
+      return NextResponse.json(
+        { ok: false, error: "Seu acesso não inclui este módulo. Fale com o administrador." },
+        { status: 403 }
+      );
+    }
+    ctx.user = user;
+  }
+
   try {
-    const r = await handler(action, { supabase, body });
+    const r = await handler(action, ctx);
     const status = typeof r.status === "number" ? (r.status as number) : r.ok === false ? 400 : 200;
     delete r.status;
     return NextResponse.json(r, { status });

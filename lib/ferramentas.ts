@@ -3,14 +3,22 @@
 
    Quem consome: a página-hub /ferramentas, cada página de ferramenta (título,
    descrição, cor, serviço relacionado) e o `app/sitemap.ts`. Ferramenta nova
-   entra AQUI e já nasce listada no hub e no sitemap — foi assim que os 19
-   serviços evitaram ficar fora do mapa do site.
+   entra AQUI e já nasce listada no hub e no sitemap — foi assim que o catálogo
+   de serviços evitou ficar fora do mapa do site.
 
    Módulo LEVE de propósito: só texto e cor, nada de componente. Ele é
    importado por página estática; não pode arrastar peso para o cliente.
    ──────────────────────────────────────────────────────────────────────────── */
 
-export type IconeFerramenta = "whatsapp" | "etiqueta" | "alvo" | "busca";
+export type IconeFerramenta =
+  | "whatsapp"
+  | "etiqueta"
+  | "alvo"
+  | "busca"
+  | "escudo"
+  | "elo"
+  | "qr"
+  | "relogio";
 
 export type Ferramenta = {
   slug: string;
@@ -87,6 +95,62 @@ export const FERRAMENTAS: Ferramenta[] = [
     servico: { slug: "seo", rotulo: "SEO: site no topo dos buscadores" },
     accent: "#1550E8",
     icone: "busca",
+  },
+  {
+    slug: "gerador-politica-privacidade",
+    nome: "Gerador de política de privacidade (LGPD)",
+    titulo: "Gerador de política de privacidade LGPD grátis — HyperGrow",
+    descricao:
+      "Gere a política de privacidade do seu site conforme a Lei 13.709/2018 (LGPD): responda seis perguntas, copie o texto pronto e baixe em .txt ou .html. Grátis, sem cadastro.",
+    resolve:
+      "Monta o texto da política de privacidade do seu site a partir do que você realmente coleta, já citando os artigos da LGPD — pronto para copiar, baixar e publicar.",
+    chamada:
+      "Um modelo-base honesto, montado com os seus dados e com a lei citada onde ela se aplica. Não substitui advogado — e a página diz isso em letra grande.",
+    servico: { slug: "criacao-de-site", rotulo: "Criação de site e landing pages" },
+    accent: "#5B3CFF",
+    icone: "escudo",
+  },
+  {
+    slug: "gerador-utm",
+    nome: "Gerador de link UTM",
+    titulo: "Gerador de link UTM para GA4 e anúncios — HyperGrow",
+    descricao:
+      "Monte links com utm_source, utm_medium e utm_campaign sem quebrar o relatório: a ferramenta avisa sobre espaço, maiúscula, acento e URL que já tem query string.",
+    resolve:
+      "Monta o link rastreável e avisa antes dos erros que sujam o relatório: espaço, letra maiúscula, acento e URL que já tinha parâmetro.",
+    chamada:
+      "O link pronto para colar no anúncio, no e-mail ou na bio — com os erros clássicos apontados enquanto você digita, não três meses depois no relatório.",
+    servico: { slug: "marketing-trafego", rotulo: "Marketing e tráfego pago" },
+    accent: "#B31356",
+    icone: "elo",
+  },
+  {
+    slug: "gerador-qr-code",
+    nome: "Gerador de QR Code",
+    titulo: "Gerador de QR Code grátis em PNG e SVG — HyperGrow",
+    descricao:
+      "Crie QR Code de link, PIX copia e cola, rede Wi-Fi ou texto e baixe em PNG ou SVG. Sem marca d'água, sem cadastro e sem prazo de validade — o QR é desenhado no seu navegador.",
+    resolve:
+      "Transforma link, código PIX, senha do Wi-Fi ou qualquer texto em um QR Code que você baixa em PNG ou SVG e usa para sempre.",
+    chamada:
+      "Sem marca d'água, sem cadastro e sem link intermediário que pode sair do ar: o desenho sai pronto do seu próprio navegador.",
+    servico: { slug: "cartao-interativo", rotulo: "Cartão de visita interativo" },
+    accent: "#0B6B5B",
+    icone: "qr",
+  },
+  {
+    slug: "calculadora-preco-hora",
+    nome: "Calculadora de preço por hora",
+    titulo: "Calculadora de preço por hora e de projeto — HyperGrow",
+    descricao:
+      "Descubra quanto cobrar por hora a partir dos seus custos fixos, do pró-labore, das horas produtivas, da margem e dos impostos — e o preço do projeto pelas horas estimadas.",
+    resolve:
+      "Responde quanto a sua hora precisa custar para pagar as contas, o seu salário, o imposto e ainda sobrar lucro — com a conta aberta linha por linha.",
+    chamada:
+      "O piso da sua hora, calculado a partir do que a sua operação realmente custa — e o preço do projeto a partir dele.",
+    servico: { slug: "auditoria-comercial", rotulo: "Auditoria comercial" },
+    accent: "#7A2E8E",
+    icone: "relogio",
   },
 ];
 

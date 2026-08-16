@@ -27,67 +27,25 @@ import { ClaroHead } from "./ClaroUI";
    2026-08-06 com autorização do dono. Detalhe do porquê logo acima da seção
    Clientes, mais abaixo neste mesmo arquivo. */
 
-/* ── Banner full-bleed em vídeo ───────────────────────────────────────────── */
-export function ClaroBanner() {
-  const v = useRef<HTMLVideoElement>(null);
-  useEffect(() => {
-    const el = v.current; if (!el) return;
-    /* Quem pediu menos movimento no sistema não recebe vídeo rodando em loop
-       atrás do texto: fica no poster. `autoPlay` é atributo, então não basta
-       "não chamar play()" — tem que pausar de fato depois que o browser começa. */
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.pause();
-      const trava = () => el.pause();
-      el.addEventListener("play", trava);
-      return () => el.removeEventListener("play", trava);
-    }
-    const kick = () => el.play().catch(() => {});
-    el.addEventListener("loadeddata", kick);
-    el.addEventListener("canplay", kick);
-    kick();
-    return () => { el.removeEventListener("loadeddata", kick); el.removeEventListener("canplay", kick); };
-  }, []);
-  return (
-    <section className="cl-bn">
-      <video ref={v} className="cl-bn-v" poster="/media/launch-poster.webp" autoPlay muted loop playsInline preload="metadata" aria-hidden="true" tabIndex={-1}>
-        <source src="/media/launch.mp4" type="video/mp4" />
-      </video>
-      <div className="cl-bn-grade" aria-hidden />
-      <div className="wrap cl-bn-in">
-        <div className="eyebrow" style={{ color: "rgba(255,255,255,.72)" }}><i style={{ background: "#E0165F" }} />Operação em ignição</div>
-        <h2 className="h2 cl-bn-h" style={{ color: "#fff", marginTop: 16, maxWidth: 720 }}>
-          Empresa boa não precisa de sorte.<br />Precisa de <span style={{ color: "#9FB2FF" }}>estrutura para escalar</span>.
-        </h2>
-        <p className="lead cl-bn-p" style={{ color: "rgba(255,255,255,.86)", marginTop: 18, maxWidth: 560 }}>
-          Loja, anúncio, atendimento e time comercial funcionando como um sistema — não como seis fornecedores diferentes.
-        </p>
-        <div className="cl-bn-cta">
-          <Link href="#diagnostico" className="btn btn-p">Fazer o diagnóstico gratuito <ArrowRight className="cl-arw" size={17} /></Link>
-          <Link href="#contato" className="btn cl-bn-b2">Falar com especialista</Link>
-        </div>
-      </div>
-      {/* Sem backdrop-filter no botão sobre o vídeo: blur em cima de vídeo que
-          está tocando repinta a cada frame e já custou travamento de scroll no
-          mobile neste projeto. Fundo translúcido sólido dá o mesmo efeito. */}
-      <style dangerouslySetInnerHTML={{ __html: `
-        .cl-bn{position:relative;min-height:min(520px,70vh);display:flex;align-items:center;overflow:hidden;background:#0D1013}
-        .cl-bn-v{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:58% 42%}
-        .cl-bn-grade{position:absolute;inset:0;background:linear-gradient(96deg,rgba(13,16,19,.94) 0%,rgba(13,16,19,.72) 42%,rgba(13,16,19,.3) 74%,rgba(13,16,19,.55) 100%)}
-        .cl-bn-in{position:relative;padding:76px 34px}
-        .cl-bn-h{text-shadow:0 2px 24px rgba(6,8,11,.45)}
-        .cl-bn-p{text-shadow:0 1px 14px rgba(6,8,11,.5)}
-        .cl-bn-cta{display:flex;gap:12px;flex-wrap:wrap;margin-top:30px}
-        .cl-bn-b2{background:rgba(255,255,255,.13);color:#fff;border:1px solid rgba(255,255,255,.34)}
-        .cl-bn-b2:hover{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.85);color:#fff;transform:translateY(-2px)}
-        .cl-bn-cta .btn:focus-visible{outline:2px solid #fff;outline-offset:3px}
-        .cl-bn .cl-arw{transition:transform .25s var(--ease)}
-        .cl-bn .btn:hover .cl-arw{transform:translateX(3px)}
-        @media(prefers-reduced-motion:reduce){.cl-bn .btn:hover{transform:none}.cl-bn .btn:hover .cl-arw{transform:none}}
-        @media(max-width:760px){.cl-bn{min-height:460px}.cl-bn-in{padding:60px 20px}.cl-bn-grade{background:linear-gradient(180deg,rgba(13,16,19,.6),rgba(13,16,19,.92))}.cl-bn-cta .btn{width:100%}}
-      `}} />
-    </section>
-  );
-}
+/* ── Banner full-bleed em vídeo — REMOVIDO em 2026-08-15 ─────────────────────
+   O componente `ClaroBanner` vivia aqui. Foi apagado, não comentado, por três
+   fatos medidos (não deduzidos):
+
+   1. Era código morto de verdade: exportado, nunca importado. O próprio
+      ClaroSite.tsx já registrava "existe em ClaroExtra.tsx mas NÃO é montado
+      aqui". Nenhuma outra rota o chamava.
+   2. Era o último consumidor de `public/media/launch.mp4` no tema claro —
+      11.250.999 bytes (10,73 MB), o maior arquivo do repositório, servido com
+      cache de 1 ano e baixado por ninguém. O arquivo saiu junto.
+   3. A copy dele ("Empresa boa não precisa de sorte", "Operação em ignição")
+      não existe em nenhuma página no ar, então nada de conteúdo se perdeu —
+      não havia texto aqui que a home não dissesse melhor.
+
+   Se um dia quiserem um banner em vídeo de novo: o vídeo a usar é
+   `/media/hero-v2.mp4` (1920×1080 nativo, faststart, já no repo), NUNCA
+   ressuscitar o launch.mp4 quadrado — o motivo está documentado por extenso
+   no cabeçalho de ClaroHero.tsx, item 4. O CSS antigo (.cl-bn*) foi embora
+   junto; recuperar por `git log` deste arquivo. ─────────────────────────── */
 
 /* ── Fluxo do processo — MESMA copy já aprovada no site escuro (Process(),
    HypergrowSite.tsx), não uma nova redação para esta rota. ─────────────────── */

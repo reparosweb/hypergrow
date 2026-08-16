@@ -1,9 +1,8 @@
 "use client";
 
 import { useCallback, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
 import {
-  LogOut, RefreshCw, Mail, Phone, Tag, AlertTriangle, CreditCard, Plus, Search, X, Trash2, Wallet,
+  Mail, Phone, Tag, AlertTriangle, CreditCard, Plus, Search, X, Trash2,
 } from "lucide-react";
 import KanbanBoard, { type KanbanStage } from "./KanbanBoard";
 
@@ -53,7 +52,6 @@ async function api(action: string, body: Record<string, unknown> = {}) {
 }
 
 export default function CrmView({ initialLeads, dbError }: { initialLeads: Lead[]; dbError?: boolean }) {
-  const router = useRouter();
   const [leads, setLeads] = useState<Lead[]>(initialLeads);
   const [busca, setBusca] = useState("");
   const [erro, setErro] = useState<string | null>(null);
@@ -114,11 +112,13 @@ export default function CrmView({ initialLeads, dbError }: { initialLeads: Lead[
 
   return (
     <div className="mx-auto max-w-[1400px] px-4 py-6 sm:px-6">
-      <header className="mb-5 flex flex-wrap items-center gap-3">
-        <div className="mr-auto">
-          <h1 className="text-lg font-semibold text-white">Leads</h1>
-          <p className="text-sm text-slate-400">{leads.length} no total · arraste os cards entre as colunas</p>
-        </div>
+      {/* Sem cabeçalho próprio: título, atualizar, sair e navegação entre telas
+          agora vivem no AdminShell (`lib/admin-nav.ts` é a fonte única). Aqui
+          fica só o que é específico do CRM. */}
+      <div className="mb-5 flex flex-wrap items-center gap-3">
+        <p className="mr-auto text-sm text-slate-400">
+          {leads.length} leads · arraste os cards entre as colunas
+        </p>
 
         <div className="relative">
           <Search size={15} className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
@@ -129,20 +129,10 @@ export default function CrmView({ initialLeads, dbError }: { initialLeads: Lead[
           />
         </div>
 
-        <a href="/admin/financeiro" className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/10 px-4 text-sm text-slate-200 hover:bg-white/5">
-          <Wallet size={15} /> Financeiro
-        </a>
         <button onClick={() => setNovo(true)} className="inline-flex h-10 items-center gap-2 rounded-xl bg-brand-500 px-4 text-sm font-semibold text-white hover:bg-brand-400">
           <Plus size={16} /> Novo lead
         </button>
-        <button onClick={() => router.refresh()} aria-label="Atualizar" className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-slate-300 hover:bg-white/5">
-          <RefreshCw size={16} />
-        </button>
-        <button onClick={async () => { await fetch("/api/admin/logout", { method: "POST" }); router.push("/admin/login"); }}
-          aria-label="Sair" className="inline-flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 text-slate-300 hover:bg-white/5">
-          <LogOut size={16} />
-        </button>
-      </header>
+      </div>
 
       {dbError && (
         <p className="mb-4 flex items-center gap-2 rounded-xl border border-amber-500/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-200">

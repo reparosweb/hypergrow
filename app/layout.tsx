@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Archivo, IBM_Plex_Sans, IBM_Plex_Mono } from "next/font/google";
 import "./globals.css";
 import Analytics from "@/components/Analytics";
+import ConsentBanner from "@/components/ConsentBanner";
 import { SITE_URL } from "@/lib/seo";
 
 /* Sistema tipográfico: Archivo (display) + IBM Plex Sans (corpo) + IBM Plex Mono
@@ -174,6 +175,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(graphSchema) }}
         />
         {children}
+        {/* Depois de {children} de propósito: o banner é `position:fixed`, não
+            participa do fluxo, e ficar por último evita que ele entre na ordem
+            de Tab ANTES do conteúdo da página (quem navega por teclado quer
+            chegar no conteúdo, não ser barrado por cookie). */}
+        <ConsentBanner />
       </body>
     </html>
   );

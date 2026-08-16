@@ -1,7 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { getServerSupabase } from "@/lib/supabase";
+import { notificarLeadNovo } from "@/lib/notificar";
 
 export const runtime = "nodejs";
+
+/** Origens aceitas. Lista fechada de propósito: `source` alimenta o relatório
+ *  de origem no painel, e aceitar string livre do cliente encheria o relatório
+ *  de lixo (ou de valor forjado por quem chamasse a API na mão). */
+const ORIGENS = ["site", "diagnostico", "afiliado", "ferramenta"] as const;
+type Origem = (typeof ORIGENS)[number];
 
 type LeadPayload = {
   name?: string;
@@ -9,6 +16,8 @@ type LeadPayload = {
   phone?: string;
   product?: string;
   message?: string;
+  /** De onde veio (ver ORIGENS). Ausente ou inválido cai em "site". */
+  source?: string;
   // honeypot — bots fill this, humans never see it
   company_website?: string;
 };
@@ -64,13 +73,17 @@ export async function POST(req: NextRequest) {
     );
   }
 
+  const source: Origem = ORIGENS.includes(body.source as Origem)
+    ? (body.source as Origem)
+    : "site";
+
   const { error } = await supabase.from("leads").insert({
     name,
     email,
     phone: phone || null,
     product: product || null,
     message: message || null,
-    source: "site",
+    source,
     user_agent: req.headers.get("user-agent") || null,
   });
 
@@ -81,6 +94,16 @@ export async function POST(req: NextRequest) {
       { status: 500 }
     );
   }
+
+  /* Avisa a equipe. `await` de propósito (e não fire-and-forget): em ambiente
+     serverless a função pode ser congelada assim que a resposta é devolvida, e
+     uma promessa solta seria descartada no meio — o aviso simplesmente não
+     sairia, de forma intermitente e difícil de diagnosticar. O custo é ~200ms
+     na resposta do formulário.
+     `notificarLeadNovo` nunca lança e nunca bloqueia o sucesso: o lead já está
+     salvo neste ponto, e falhar o envio do aviso não pode virar erro na tela
+     de quem preencheu. */
+  await notificarLeadNovo({ name, email, phone, product, message, source });
 
   return NextResponse.json({ ok: true });
 }

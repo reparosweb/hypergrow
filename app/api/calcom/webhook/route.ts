@@ -9,9 +9,21 @@ export const dynamic = "force-dynamic";
 // no CRM no estágio "reuniao". Configure no Cal.com: Settings > Webhooks,
 // URL = https://SEU_DOMINIO/api/calcom/webhook, secret = CALCOM_WEBHOOK_SECRET.
 
+/* FAIL-CLOSED (corrigido em 2026-08-08). Antes: `if (!secret) return true` —
+   sem a env var configurada, o endpoint aceitava QUALQUER POST da internet e
+   criava/movia lead no CRM. Como a env nunca foi setada, o furo estava aberto
+   em produção: bastava alguém descobrir a URL para poluir o funil (ou pior,
+   para inserir dado forjado que a equipe trataria como reunião real).
+   Agora, sem segredo, o endpoint recusa tudo — o webhook simplesmente não
+   funciona até o dono configurar `CALCOM_WEBHOOK_SECRET` na Vercel e colar o
+   mesmo valor em Cal.com > Settings > Webhooks. Recusar é o comportamento
+   certo: um webhook que não valida ninguém não é um webhook, é uma porta. */
 function verify(raw: string, sig: string | null): boolean {
   const secret = process.env.CALCOM_WEBHOOK_SECRET;
-  if (!secret) return true; // sem secret configurado, aceita (menos seguro)
+  if (!secret) {
+    console.error("[calcom] CALCOM_WEBHOOK_SECRET ausente — requisição recusada.");
+    return false;
+  }
   if (!sig) return false;
   const expect = crypto.createHmac("sha256", secret).update(raw).digest("hex");
   try {

@@ -43,8 +43,10 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-/* Ícones inline: esta rota NÃO carrega o script do lucide (ele vive dentro do
-   HypergrowSite, só na home), então <i data-lucide> renderizaria vazio aqui. */
+/* Ícones inline: `<i data-lucide>` renderizaria vazio aqui. Desde 2026-08-15
+   isso vale para o site inteiro — `public/lucide.min.js` foi apagado (348 KB
+   que rota nenhuma baixava), então não existe mais runtime de lucide em página
+   nenhuma. Ícone novo: SVG inline ou import nomeado de `lucide-react`. */
 function Check() {
   return (
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden style={{ flexShrink: 0, marginTop: 3 }}>

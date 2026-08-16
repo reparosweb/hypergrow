@@ -8,6 +8,7 @@ import {
   ArrowRight, CornerUpLeft, RotateCcw, type LucideIcon,
 } from "lucide-react";
 import { ClaroHead } from "./ClaroUI";
+import { rastrear } from "@/lib/track";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    DIAGNÓSTICO INTERATIVO — 4 perguntas, resultado na hora. Porta quase 1:1 do
@@ -43,6 +44,15 @@ const RESULTADOS = [
 export default function ClaroDiag() {
   const [step, setStep] = useState(0);
   const [ans, setAns] = useState<number[]>([]);
+  /* Captura opcional do resultado (2026-08-08). O quiz era 100% client-side e
+     não deixava rastro: o visitante MAIS engajado do site — que respondeu 4
+     perguntas sobre a própria operação — saía sem virar lead e sem a agência
+     sequer saber que ele existiu. Agora o resultado continua saindo de graça,
+     e quem quiser o plano detalhado deixa o e-mail. */
+  const [email, setEmail] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [enviado, setEnviado] = useState(false);
+  const [erroCap, setErroCap] = useState("");
   /* Foco: cada clique DESMONTA o botão clicado (a pergunta some), e o foco do
      teclado cai no <body> — o próximo Tab volta para o topo do site. Aqui o
      foco vai para o painel da etapa nova, que contém o título e as opções.
@@ -59,6 +69,45 @@ export default function ClaroDiag() {
   const res = RESULTADOS.find((r) => score <= r.max) || RESULTADOS[2];
   const pct = done ? 100 : Math.round((step / QUESTOES.length) * 100);
   const cur = QUESTOES[Math.min(step, QUESTOES.length - 1)];
+
+  async function enviarDiag(ev: React.FormEvent<HTMLFormElement>) {
+    ev.preventDefault();
+    const limpo = email.trim();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(limpo)) {
+      setErroCap("Confira o e-mail: falta algo nele.");
+      return;
+    }
+    setErroCap("");
+    setEnviando(true);
+    try {
+      const r = await fetch("/api/lead", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          // O nome é obrigatório na API e aqui não perguntamos (pedir nome
+          // dobraria o atrito para um campo que o comercial descobre na
+          // primeira resposta). Marcamos a origem no lugar do nome para o
+          // painel mostrar de onde veio sem parecer cadastro real.
+          name: "Diagnóstico do site",
+          email: limpo,
+          product: res.stage,
+          message: `Resultado do diagnóstico: ${res.stage} (pontuação ${score} de 8). Respostas: ${ans.join(", ")}.`,
+          source: "diagnostico",
+        }),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) {
+        setEnviado(true);
+        rastrear("diagnostico_lead", { estagio: res.stage, pontuacao: score });
+      } else {
+        setErroCap(j.error || "Não foi possível enviar agora. Tente pelo formulário abaixo.");
+      }
+    } catch {
+      setErroCap("Sem conexão. Tente pelo formulário abaixo.");
+    } finally {
+      setEnviando(false);
+    }
+  }
 
   return (
     <section id="diagnostico" className="sec">
@@ -123,9 +172,38 @@ export default function ClaroDiag() {
                       </div>
                     ))}
                   </div>
+                  {/* Captura OPCIONAL. O resultado inteiro já foi entregue
+                      acima — quem não quiser deixar contato leva o diagnóstico
+                      do mesmo jeito. Pedir dado ANTES de mostrar o resultado
+                      converteria mais no papel e destruiria a confiança que a
+                      seção inteira existe para construir. */}
+                  {enviado ? (
+                    <p className="cl-dg-ok" role="status">
+                      <CheckCheck size={16} aria-hidden /> Recebido. Vamos te mandar o plano do {res.stage.toLowerCase()}.
+                    </p>
+                  ) : (
+                    <form className="cl-dg-cap" onSubmit={enviarDiag}>
+                      <label className="cl-dg-cap-l" htmlFor="cl-dg-email">
+                        Quer receber o plano detalhado do seu estágio?
+                      </label>
+                      <div className="cl-dg-cap-row">
+                        <input
+                          id="cl-dg-email" type="email" inputMode="email" autoComplete="email"
+                          placeholder="seu@email.com.br" value={email}
+                          onChange={(e) => setEmail(e.target.value)}
+                          aria-invalid={!!erroCap} aria-describedby={erroCap ? "cl-dg-email-e" : undefined}
+                        />
+                        <button type="submit" className="btn btn-p" disabled={enviando}>
+                          {enviando ? "Enviando..." : "Receber"}
+                        </button>
+                      </div>
+                      {erroCap && <span className="cl-dg-cap-e" id="cl-dg-email-e">{erroCap}</span>}
+                      <span className="cl-dg-cap-note">Sem spam. Só o plano e nada mais.</span>
+                    </form>
+                  )}
                   <div className="cl-dg-cta">
-                    <Link href="#contato" className="btn btn-p">Falar com um estrategista <ArrowRight className="cl-dg-arw" size={16} aria-hidden /></Link>
-                    <button type="button" className="cl-dg-back cl-dg-back--fim" onClick={() => { mexeu.current = true; setAns([]); setStep(0); }}><RotateCcw size={14} aria-hidden /> refazer</button>
+                    <Link href="#contato" className="btn btn-d">Falar com um estrategista <ArrowRight className="cl-dg-arw" size={16} aria-hidden /></Link>
+                    <button type="button" className="cl-dg-back cl-dg-back--fim" onClick={() => { mexeu.current = true; setAns([]); setStep(0); setEnviado(false); setErroCap(""); }}><RotateCcw size={14} aria-hidden /> refazer</button>
                   </div>
                 </div>
               )}
@@ -147,6 +225,26 @@ export default function ClaroDiag() {
         #diagnostico .cl-dg-bar span{display:block;height:100%;transition:width .5s var(--ease),background .4s}
         #diagnostico .cl-dg-in{animation:cl-dgin .4s var(--ease)}
         @keyframes cl-dgin{from{opacity:0;transform:translateY(8px)}}
+        /* Captura opcional do resultado. Fica DEPOIS do plano completo de
+           propósito: o visitante ja recebeu tudo antes de ver este campo. */
+        #diagnostico .cl-dg-cap{margin-top:24px;padding-top:22px;border-top:1px solid var(--line-2)}
+        #diagnostico .cl-dg-cap-l{display:block;font:600 14.5px var(--text);color:var(--ink)}
+        #diagnostico .cl-dg-cap-row{display:flex;gap:9px;margin-top:10px;flex-wrap:wrap}
+        #diagnostico .cl-dg-cap-row input{flex:1;min-width:190px;min-height:48px;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:#fff;font:400 15px var(--text);color:var(--ink);transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
+        #diagnostico .cl-dg-cap-row input::placeholder{color:#9AA4B4}
+        #diagnostico .cl-dg-cap-row input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(21,80,232,.18)}
+        #diagnostico .cl-dg-cap-row input[aria-invalid=true]{border-color:var(--cta);background:rgba(224,22,95,.035)}
+        #diagnostico .cl-dg-cap-row .btn{flex-shrink:0}
+        #diagnostico .cl-dg-cap-e{display:block;margin-top:7px;font:500 12.5px var(--text);color:#B0155F}
+        #diagnostico .cl-dg-cap-note{display:block;margin-top:9px;font:400 12.5px var(--text);color:var(--ink-3)}
+        #diagnostico .cl-dg-ok{display:flex;align-items:center;gap:9px;margin-top:24px;padding:14px 16px;border-radius:12px;background:rgba(15,157,88,.08);border:1px solid rgba(15,157,88,.24);font:500 14.5px var(--text);color:#0B7A4C}
+        /* No celular o botao vai para a linha de baixo, largura total: campo de
+           e-mail espremido ao lado de um botao e o erro classico de formulario
+           em tela pequena. */
+        @media(max-width:600px){
+          #diagnostico .cl-dg-cap-row input{min-width:100%}
+          #diagnostico .cl-dg-cap-row .btn{width:100%}
+        }
         /* o painel recebe foco por programa (tabIndex -1): anel só quando o
            teclado está em uso, nunca no clique de mouse. */
         #diagnostico .cl-dg-stage:focus{outline:none}

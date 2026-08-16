@@ -4,9 +4,13 @@ import { FERRAMENTAS, type IconeFerramenta } from "@/lib/ferramentas";
 /* ─────────────────────────────────────────────────────────────────────────────
    PEÇAS REPETIDAS DAS PÁGINAS DE FERRAMENTA — todas server components.
 
-   Ícones em SVG inline: estas rotas NÃO carregam o script do lucide (ele vive
-   dentro da home, em HypergrowSite.tsx). Um <i data-lucide> aqui renderizaria
-   vazio — bug já cometido neste projeto e registrado em hg-regras-de-bug.
+   Ícones em SVG inline: um <i data-lucide> aqui renderizaria vazio — bug já
+   cometido neste projeto e registrado em hg-regras-de-bug (item 7).
+   ATUALIZAÇÃO 2026-08-15: o script do lucide não existe mais em lugar NENHUM
+   do projeto (`public/lucide.min.js` foi apagado — 348 KB que rota nenhuma
+   baixava). Ou seja, a regra ficou mais forte, não mais fraca: `<i data-lucide>`
+   agora renderiza vazio em QUALQUER rota, sem exceção. Ícone novo = SVG inline
+   ou import nomeado de `lucide-react`.
    ──────────────────────────────────────────────────────────────────────────── */
 
 export function IconeDaFerramenta({ nome, tamanho = 24 }: { nome: IconeFerramenta; tamanho?: number }) {
@@ -31,6 +35,36 @@ export function IconeDaFerramenta({ nome, tamanho = 24 }: { nome: IconeFerrament
         <circle cx="12" cy="12" r="8.6" stroke="currentColor" strokeWidth="1.9" />
         <circle cx="12" cy="12" r="4.6" stroke="currentColor" strokeWidth="1.9" />
         <circle cx="12" cy="12" r="1.5" fill="currentColor" />
+      </svg>
+    );
+  if (nome === "escudo")
+    return (
+      <svg {...p}>
+        <path d="M12 3 4.6 6v5.7c0 4.4 3 8.1 7.4 9.3 4.4-1.2 7.4-4.9 7.4-9.3V6L12 3Z" stroke="currentColor" strokeWidth="1.9" strokeLinejoin="round" />
+        <path d="m8.9 12.1 2.2 2.2 4-4.4" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  if (nome === "elo")
+    return (
+      <svg {...p}>
+        <path d="M10.1 13.9a3.6 3.6 0 0 0 5.1 0l2.9-2.9a3.6 3.6 0 0 0-5.1-5.1l-1.2 1.2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+        <path d="M13.9 10.1a3.6 3.6 0 0 0-5.1 0l-2.9 2.9a3.6 3.6 0 0 0 5.1 5.1l1.2-1.2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
+  if (nome === "qr")
+    return (
+      <svg {...p}>
+        <rect x="3.4" y="3.4" width="7" height="7" rx="1.4" stroke="currentColor" strokeWidth="1.9" />
+        <rect x="13.6" y="3.4" width="7" height="7" rx="1.4" stroke="currentColor" strokeWidth="1.9" />
+        <rect x="3.4" y="13.6" width="7" height="7" rx="1.4" stroke="currentColor" strokeWidth="1.9" />
+        <path d="M13.6 13.6h3v3h-3zM17.6 17.6h3v3h-3z" fill="currentColor" />
+      </svg>
+    );
+  if (nome === "relogio")
+    return (
+      <svg {...p}>
+        <circle cx="12" cy="12" r="8.6" stroke="currentColor" strokeWidth="1.9" />
+        <path d="M12 7.2V12l3.2 2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
   return (

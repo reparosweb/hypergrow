@@ -3,7 +3,7 @@
 import { useCallback, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
-  ArrowLeft, LogOut, RefreshCw, Plus, X, Trash2, Check, AlertTriangle,
+  Plus, X, Trash2, Check, AlertTriangle,
   TrendingUp, TrendingDown, Wallet, FileBarChart, Search,
 } from "lucide-react";
 
@@ -164,26 +164,12 @@ export default function Financeiro({
   }
 
   return (
-    <main className="min-h-screen">
-      <header className="sticky top-0 z-20 border-b border-white/10 bg-ink-950/80 backdrop-blur">
-        <div className="mx-auto flex max-w-[1300px] flex-wrap items-center gap-3 px-4 py-3">
-          <div className="mr-auto flex items-center gap-2 font-display text-lg font-bold">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-gradient-to-br from-brand-500 to-accent-cyan text-white">H</span>
-            Hyper<span className="gradient-text">grow</span><span className="ml-1 text-xs font-normal text-slate-500">· Financeiro</span>
-          </div>
-          <button onClick={() => router.refresh()} className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-slate-200 hover:bg-white/10">
-            <RefreshCw size={15} /> Atualizar
-          </button>
-          <a href="/admin" className="inline-flex h-10 items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-3 text-sm text-slate-200 hover:bg-white/10">
-            <ArrowLeft size={15} /> Pipeline
-          </a>
-          <button onClick={async () => { await fetch("/api/admin/logout", { method: "POST" }); router.push("/admin/login"); }}
-            aria-label="Sair" className="inline-flex h-10 w-10 items-center justify-center rounded-lg border border-white/10 text-slate-300 hover:bg-white/5">
-            <LogOut size={16} />
-          </button>
-        </div>
-
-        <nav className="mx-auto flex max-w-[1300px] gap-1 px-4 pb-2">
+    <main>
+      {/* O cabeçalho com logo, "Atualizar", "Pipeline" e "Sair" saiu daqui: é o
+          AdminShell que cuida disso agora, igual em todas as telas. Ficam só as
+          abas, que são de fato deste módulo. */}
+      <div className="border-b border-white/10 bg-ink-950/90">
+        <nav className="mx-auto flex max-w-[1300px] gap-1 overflow-x-auto px-4 py-2">
           {([
             ["receber", "A receber", TrendingUp],
             ["pagar", "A pagar", TrendingDown],
@@ -191,13 +177,13 @@ export default function Financeiro({
             ["dre", "DRE", FileBarChart],
           ] as const).map(([key, label, Icon]) => (
             <button key={key} onClick={() => setAba(key)}
-              className={"inline-flex items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition " +
+              className={"inline-flex shrink-0 items-center gap-1.5 rounded-lg px-3 py-1.5 text-sm font-medium transition " +
                 (aba === key ? "bg-brand-500 text-white" : "text-slate-400 hover:bg-white/5 hover:text-slate-200")}>
               <Icon size={14} /> {label}
             </button>
           ))}
         </nav>
-      </header>
+      </div>
 
       <div className="mx-auto max-w-[1300px] px-4 py-6">
         {dbError && (

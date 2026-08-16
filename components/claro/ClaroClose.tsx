@@ -11,6 +11,7 @@ import { HOME_FAQ } from "@/lib/home-faq";
    portfólio e /sobre já consomem. Ver nota no topo de lib/projects.ts. */
 import { PROJECTS } from "@/lib/projects";
 import { PILLARS } from "@/lib/pillars";
+import { EVENTOS, rastrear } from "@/lib/track";
 import { ClaroLogo, ClaroHead } from "./ClaroUI";
 
 const WHATSAPP = process.env.NEXT_PUBLIC_WHATSAPP || "";
@@ -339,7 +340,12 @@ export function ClaroContato() {
         body: JSON.stringify({ name: form.nome, email: form.email, phone: form.zap, product: form.servico || form.empresa, message: form.msg }),
       });
       const j = await res.json();
-      if (res.ok && j.ok) setSent(true);
+      if (res.ok && j.ok) {
+        setSent(true);
+        // Só depois do sucesso confirmado pelo servidor: medir "enviou" no
+        // clique contaria como conversão até tentativa que falhou.
+        rastrear(EVENTOS.leadEnviado, { frente: form.servico || "nao_informado" });
+      }
       else setErr(j.error || "Não foi possível enviar. Tente novamente.");
     } catch {
       setErr("Sem conexão. Tente novamente em instantes.");
@@ -676,7 +682,9 @@ export function ClaroWa() {
     <>
       {/* aria-label explícito: no celular o rótulo de texto some (CSS) e sobra
           só o ícone — sem isso o leitor de tela anuncia um link sem nome. */}
-      <a className="wa-f cl-wa" href={wa.url} target="_blank" rel="noreferrer" aria-label="Falar no WhatsApp (abre em nova aba)">
+      <a className="wa-f cl-wa" href={wa.url} target="_blank" rel="noreferrer"
+        onClick={() => rastrear(EVENTOS.whatsapp, { origem: "botao_flutuante" })}
+        aria-label="Falar no WhatsApp (abre em nova aba)">
         <MessageCircle size={20} aria-hidden /><span>Falar no WhatsApp</span>
       </a>
       <style dangerouslySetInnerHTML={{ __html: `
