@@ -48,7 +48,12 @@ const TONE_CLARO: Record<PlatformCategory, string> = {
   marketplace: "#B0155F", // rosa — 6,58:1
 };
 
-const tone = (c: string) => ({ "--tone": c } as CSSProperties);
+/* `--beam` é o que a classe `.lit` (app/servicos/[slug]/page.tsx e o resto do
+   site) lê para colorir a luz que viaja na borda no hover/foco — mesmo valor
+   de `--tone`, só com o nome que o mecanismo compartilhado espera. Assim cada
+   grupo (loja/erp/hub/marketplace) acende na SUA cor, sem reescrever nada do
+   `.lit` em si. */
+const tone = (c: string) => ({ "--tone": c, "--beam": c } as CSSProperties);
 
 function StepMark({ n }: { n: number }) {
   return (
@@ -100,7 +105,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
 
             <ul className="plat-grid plat-rise">
               {platformsOf(g.key).map((p) => (
-                <li key={p.name} className="plat-tile">
+                <li key={p.name} className="plat-tile lit">
                   <span className="plat-tile-top">
                     <span className="plat-mark" aria-hidden />
                     <span className="plat-origin mono">{p.origin}</span>
@@ -193,7 +198,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
           </p>
 
           <div className="plat-ops-grid plat-rise">
-            <article className="plat-op" style={tone(TONE_CLARO.loja)}>
+            <article className="plat-op lit" style={tone(TONE_CLARO.loja)}>
               <StepMark n={1} />
               <h4 className="plat-op-h">Cadastro de produto que aguenta escala</h4>
               <p className="plat-op-p">
@@ -205,7 +210,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
               </p>
             </article>
 
-            <article className="plat-op" style={tone(TONE_CLARO.erp)}>
+            <article className="plat-op lit" style={tone(TONE_CLARO.erp)}>
               <StepMark n={2} />
               <h4 className="plat-op-h">ERP ligado à loja, não ao lado dela</h4>
               <p className="plat-op-p">
@@ -217,7 +222,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
               </p>
             </article>
 
-            <article className="plat-op" style={tone(TONE_CLARO.marketplace)}>
+            <article className="plat-op lit" style={tone(TONE_CLARO.marketplace)}>
               <StepMark n={3} />
               <h4 className="plat-op-h">Hub, a partir do segundo canal</h4>
               <p className="plat-op-p">
@@ -233,23 +238,30 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
 
       <style dangerouslySetInnerHTML={{ __html: `
         /* ═══ Plataformas — grid de wordmarks + tabela comparativa ═════════
-           Paleta: grafite + jade + cobre + champanhe. Zero azul, zero violeta.
+           MIGRADO PARA O TEMA CLARO em 2026-08-16: esta seção nasceu para um
+           fundo escuro (grafite + texto branco/creme) e nunca foi atualizada
+           quando /servicos/[slug] virou claro — texto branco sobre página
+           branca ficava ilegível e os cards liam como "mortos" (bronca real
+           do dono, com print). Agora usa os MESMOS tokens do resto da página
+           (--ink, --ink-2, --card, --line, --paper-2, --sh-*) em vez de cor
+           literal. --tone/--beam (por TONE_CLARO, calibrado ≥5:1 sobre
+           #FBFBFD) continuam fazendo o acento por categoria.
            ═══════════════════════════════════════════════════════════════ */
 
-        .plat { --edge: rgba(232,226,217,0.09); --tone: #2DD4A0; }
+        .plat { --tone: var(--acc); }
 
         .plat-kicker {
           display: inline-block; font: 600 10.5px var(--font-mono);
-          letter-spacing: 0.22em; text-transform: uppercase; color: #2DD4A0;
+          letter-spacing: 0.22em; text-transform: uppercase; color: var(--acc);
         }
         .plat-h {
           font: 800 clamp(26px, 3.4vw, 40px)/1.06 var(--font-display);
-          letter-spacing: -0.035em; color: #fff; margin: 12px 0 0;
+          letter-spacing: -0.035em; color: var(--ink); margin: 12px 0 0;
           text-wrap: balance; max-width: 20ch;
         }
         .plat-lede {
           font: 400 clamp(15.5px, 1.4vw, 17px)/1.65 var(--font-sans);
-          color: rgba(232,226,217,0.62); margin: 18px 0 0; max-width: 62ch; text-wrap: pretty;
+          color: var(--ink-2); margin: 18px 0 0; max-width: 62ch; text-wrap: pretty;
         }
 
         /* ── contadores ───────────────────────────────────────────────── */
@@ -262,9 +274,9 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         .plat-stat {
           display: flex; flex-direction: column; gap: 4px;
           padding: 14px 16px; border-radius: 4px;
-          border: 1px solid var(--edge);
+          border: 1px solid var(--line);
           border-left: 2px solid var(--tone);
-          background: linear-gradient(180deg, rgba(232,226,217,0.045), rgba(232,226,217,0.012));
+          background: var(--card);
         }
         .plat-stat-n {
           font-size: 21px; font-weight: 600; letter-spacing: -0.02em; color: var(--tone);
@@ -272,7 +284,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         }
         .plat-stat-l {
           font: 500 11px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase;
-          color: rgba(232,226,217,0.5);
+          color: #5A6579;
         }
 
         /* ── cabeçalho de cada grupo ──────────────────────────────────── */
@@ -291,15 +303,15 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         .plat-group-h {
           display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap;
           font: 700 clamp(18px, 2vw, 23px)/1.2 var(--font-display);
-          letter-spacing: -0.025em; color: #fff; margin: 0;
+          letter-spacing: -0.025em; color: var(--ink); margin: 0;
         }
         .plat-group-c {
           font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
-          color: rgba(232,226,217,0.4);
+          color: #5A6579;
         }
         .plat-group-c::before { content: '· '; }
         .plat-group-p {
-          font: 400 14.5px/1.6 var(--font-sans); color: rgba(232,226,217,0.58);
+          font: 400 14.5px/1.6 var(--font-sans); color: var(--ink-2);
           margin: 8px 0 0; max-width: 68ch; text-wrap: pretty;
         }
 
@@ -311,16 +323,16 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
           grid-template-columns: repeat(auto-fit, minmax(min(100%, 232px), 1fr));
           gap: 12px;
         }
+        /* A classe .lit (compartilhada) cuida da luz que viaja na borda no
+           hover/foco via --beam; aqui só o repouso e o levantar no hover. */
         .plat-tile {
           position: relative; display: flex; flex-direction: column; min-width: 0;
           padding: 16px 17px 18px; border-radius: 12px;
-          border: 1px solid var(--edge);
-          background:
-            linear-gradient(180deg, rgba(232,226,217,0.05), rgba(232,226,217,0.014)),
-            #14181D;
-          box-shadow: 0 1px 0 rgba(232,226,217,0.05) inset;
-          transition: border-color .4s var(--ease-silk), transform .4s var(--ease-spring),
-                      background .4s var(--ease-silk), box-shadow .4s var(--ease-silk);
+          border: 1px solid var(--line);
+          background: var(--card);
+          box-shadow: var(--sh-1);
+          transition: border-color .3s var(--ease), transform .3s var(--ease),
+                      box-shadow .3s var(--ease);
         }
         .plat-tile-top {
           display: flex; align-items: center; justify-content: space-between; gap: 10px;
@@ -333,48 +345,44 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         }
         .plat-origin {
           font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-          color: rgba(232,226,217,0.46);
+          color: #5A6579;
           padding: 3px 7px; border-radius: 3px;
-          border: 1px solid rgba(232,226,217,0.11);
-          background: rgba(232,226,217,0.03);
+          border: 1px solid var(--line);
+          background: var(--paper-2);
         }
         .plat-name {
           font: 700 clamp(16px, 1.55vw, 19px)/1.18 var(--font-display);
-          letter-spacing: -0.028em; color: #F2EEE7; overflow-wrap: break-word; hyphens: none;
+          letter-spacing: -0.028em; color: var(--ink); overflow-wrap: break-word; hyphens: none;
         }
         .plat-rule {
           display: block; width: 26px; height: 2px; margin: 11px 0 10px; border-radius: 1px;
           background: linear-gradient(90deg, var(--tone), transparent);
-          opacity: 0.85; transition: width .4s var(--ease-silk);
+          opacity: 0.85; transition: width .4s var(--ease);
         }
         .plat-note {
-          font: 400 12.8px/1.5 var(--font-sans); color: rgba(232,226,217,0.56);
+          font: 400 12.8px/1.5 var(--font-sans); color: var(--ink-2);
           margin-top: auto; text-wrap: pretty;
         }
         .plat-tile:hover {
           transform: translateY(-2px);
-          border-color: color-mix(in srgb, var(--tone) 38%, transparent);
-          background:
-            linear-gradient(180deg, rgba(232,226,217,0.075), rgba(232,226,217,0.02)),
-            #161B21;
-          box-shadow: 0 1px 0 rgba(232,226,217,0.07) inset, 0 20px 44px -30px rgba(0,0,0,0.9);
+          border-color: color-mix(in srgb, var(--tone) 34%, var(--line));
+          box-shadow: var(--sh-2);
         }
         .plat-tile:hover .plat-rule { width: 44px; }
-        .plat-tile:hover .plat-name { color: #fff; }
 
         /* ── tabela comparativa ───────────────────────────────────────── */
         .plat-hint {
           display: none; align-items: center; gap: 6px;
           font: 500 11.5px var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase;
-          color: rgba(232,226,217,0.38); margin: 20px 0 8px;
+          color: #5A6579; margin: 20px 0 8px;
         }
         @media (max-width: 860px) { .plat-hint { display: flex; } }
 
         .plat-tablewrap {
           margin-top: clamp(18px, 2.4vw, 26px);
           overflow-x: auto; -webkit-overflow-scrolling: touch;
-          border: 1px solid var(--edge); border-radius: 14px;
-          background: linear-gradient(180deg, rgba(232,226,217,0.04), rgba(232,226,217,0.01));
+          border: 1px solid var(--line); border-radius: 14px;
+          background: var(--card);
         }
         .plat-table {
           width: 100%; min-width: 720px;
@@ -384,7 +392,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
            legenda viraria um bloco de 720px que só se lê rolando de lado. */
         .plat-caption {
           caption-side: top; text-align: left;
-          font: 400 12.5px/1.5 var(--font-sans); color: rgba(232,226,217,0.44);
+          font: 400 12.5px/1.5 var(--font-sans); color: #5A6579;
           padding: 15px clamp(14px, 2vw, 20px) 14px;
           max-width: min(660px, 84vw);
         }
@@ -393,62 +401,62 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
            da tabela. */
         .plat-table th, .plat-table td {
           padding: 13px clamp(12px, 1.6vw, 18px);
-          border-bottom: 1px solid rgba(232,226,217,0.06);
+          border-bottom: 1px solid var(--line);
           vertical-align: top;
         }
         .plat-table thead th {
           font: 600 10px var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase;
-          color: rgba(232,226,217,0.42); white-space: nowrap;
-          background: rgba(232,226,217,0.025);
-          border-top: 1px solid var(--edge);
-          border-bottom: 1px solid rgba(232,226,217,0.12);
+          color: #5A6579; white-space: nowrap;
+          background: var(--paper-2);
+          border-top: 1px solid var(--line);
+          border-bottom: 1px solid var(--line);
         }
-        .plat-table tbody tr { transition: background .3s var(--ease-silk); }
-        .plat-table tbody tr:nth-child(even) { background: rgba(232,226,217,0.018); }
-        .plat-table tbody tr:hover { background: rgba(232,226,217,0.05); }
+        .plat-table tbody tr { transition: background .3s var(--ease); }
+        .plat-table tbody tr:nth-child(even) { background: var(--paper-2); }
+        .plat-table tbody tr:hover { background: var(--acc-soft); }
         .plat-table tbody tr:last-child th,
         .plat-table tbody tr:last-child td { border-bottom: none; }
         .plat-table th.plat-td-name {
-          font: 700 14.5px/1.35 var(--font-display); letter-spacing: -0.02em; color: #F2EEE7;
+          font: 700 14.5px/1.35 var(--font-display); letter-spacing: -0.02em; color: var(--ink);
           white-space: nowrap;
         }
-        .plat-table td { font: 400 14px/1.5 var(--font-sans); color: rgba(232,226,217,0.68); }
+        .plat-table td { font: 400 14px/1.5 var(--font-sans); color: var(--ink-2); }
         /* Mesma força do seletor .plat-table td acima: o shorthand "font" dele
            zeraria font-size/font-family de qualquer regra mais fraca. */
         .plat-table td.plat-td-origin {
           font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
-          text-transform: uppercase; color: rgba(232,226,217,0.5); white-space: nowrap;
+          text-transform: uppercase; color: #5A6579; white-space: nowrap;
         }
         /* o ponto de categoria vai inline: um <td> com display:flex sai do
            layout de tabela e a coluna deixa de calcular largura direito. */
         .plat-table td.plat-td-cat {
-          white-space: nowrap; font-size: 13px; color: rgba(232,226,217,0.6);
+          white-space: nowrap; font-size: 13px; color: var(--ink-2);
         }
         .plat-table td.plat-td-cat .plat-mark {
           display: inline-block; margin-right: 8px; vertical-align: middle;
         }
 
         .plat-legend {
-          font: 400 12.5px/1.6 var(--font-sans); color: rgba(232,226,217,0.42);
+          font: 400 12.5px/1.6 var(--font-sans); color: #5A6579;
           margin: 14px 0 0; max-width: 70ch;
         }
         .plat-legend strong {
           font-family: var(--font-mono); font-size: 11.5px; font-weight: 600;
-          letter-spacing: 0.08em; color: rgba(232,226,217,0.66);
+          letter-spacing: 0.08em; color: var(--ink-2);
         }
 
         /* ── bloco de operação ────────────────────────────────────────── */
         .plat-ops {
           margin-top: clamp(48px, 6vw, 76px);
           padding-top: clamp(30px, 3.6vw, 42px);
-          border-top: 1px solid rgba(232,226,217,0.08);
+          border-top: 1px solid var(--line);
         }
         .plat-ops-h {
           font: 700 clamp(21px, 2.6vw, 29px)/1.14 var(--font-display);
-          letter-spacing: -0.03em; color: #fff; margin: 0; text-wrap: balance;
+          letter-spacing: -0.03em; color: var(--ink); margin: 0; text-wrap: balance;
         }
         .plat-ops-p {
-          font: 400 15.5px/1.65 var(--font-sans); color: rgba(232,226,217,0.6);
+          font: 400 15.5px/1.65 var(--font-sans); color: var(--ink-2);
           margin: 14px 0 0; max-width: 66ch; text-wrap: pretty;
         }
         .plat-ops-grid {
@@ -457,18 +465,20 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         }
         .plat-op {
           min-width: 0; padding: clamp(20px, 2.4vw, 26px); border-radius: 14px;
-          border: 1px solid var(--edge);
+          border: 1px solid var(--line);
           border-top: 2px solid var(--tone);
-          background: linear-gradient(180deg, rgba(232,226,217,0.045), rgba(232,226,217,0.012));
-          box-shadow: 0 1px 0 rgba(232,226,217,0.05) inset;
+          background: var(--card);
+          box-shadow: var(--sh-1);
+          transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
         }
+        .plat-op:hover { border-color: color-mix(in srgb, var(--tone) 34%, var(--line)); box-shadow: var(--sh-2); }
         .plat-op .plat-step { display: block; padding-top: 0; margin-bottom: 12px; }
         .plat-op-h {
-          font: 700 16.5px/1.3 var(--font-display); letter-spacing: -0.022em; color: #fff;
+          font: 700 16.5px/1.3 var(--font-display); letter-spacing: -0.022em; color: var(--ink);
           margin: 0 0 10px; text-wrap: balance;
         }
         .plat-op-p {
-          font: 400 14.2px/1.62 var(--font-sans); color: rgba(232,226,217,0.62);
+          font: 400 14.2px/1.62 var(--font-sans); color: var(--ink-2);
           margin: 0; text-wrap: pretty;
         }
 
