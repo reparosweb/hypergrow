@@ -111,12 +111,23 @@ export async function POST(req: NextRequest) {
      diagnóstico) falhava com "não foi possível salvar agora", porque este
      INSERT tenta gravar uma coluna que ainda não existe no banco.
      Captura de lead é o coração do funil: não pode depender de uma migração
-     opcional ter rodado. Se o erro for especificamente sobre essa coluna
-     (código 42703 do Postgres = "undefined_column"), tenta de novo sem ela —
-     o lead se salva normalmente, só sem a atribuição de afiliado (que pode
-     ser reconciliada depois, uma vez a migração rodada). Qualquer OUTRO erro
-     de banco continua caindo no fallback normal abaixo. */
-  if (error?.code === "42703" && /affiliate_code/.test(error.message)) {
+     opcional ter rodado. Se o erro for especificamente sobre essa coluna,
+     tenta de novo sem ela — o lead se salva normalmente, só sem a atribuição
+     de afiliado (reconciliável depois, uma vez a migração rodada). Qualquer
+     OUTRO erro de banco continua caindo no fallback normal abaixo.
+
+     CÓDIGO CONFERIDO AO VIVO (não suposto): a primeira versão deste fix
+     testava error.code === "42703" (o código do Postgres puro) e NÃO
+     resolveu em produção — expus error.code/message temporariamente na
+     resposta e testei com curl. O Supabase-js fala PostgREST, que tem seu
+     PRÓPRIO código pra isso: "PGRST204" ("Could not find the 'affiliate_code'
+     column of 'leads' in the schema cache"), não 42703. Guardo os dois
+     porque não sei se a mensagem exata muda depois que a migração roda
+     (poderia virar um erro de permissão/RLS com outro código, por exemplo). */
+  if (
+    (error?.code === "PGRST204" || error?.code === "42703") &&
+    /affiliate_code/.test(error.message)
+  ) {
     console.warn("[lead] coluna affiliate_code ainda não existe (008_afiliados.sql pendente) — salvando sem atribuição de afiliado.");
     const { affiliate_code: _omitido, ...semAfiliado } = linha;
     void _omitido;
@@ -125,11 +136,8 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     console.error("[lead] erro ao salvar:", error.message);
-    // DIAGNÓSTICO TEMPORÁRIO (2026-08-16) — remover assim que a causa real
-    // for confirmada. O fix por código 42703 não resolveu o bug ao vivo;
-    // preciso ver a mensagem real do Postgres em vez de continuar advinhando.
     return NextResponse.json(
-      { error: "Não foi possível salvar agora. Tente novamente.", _debugCode: error.code, _debugMsg: error.message },
+      { error: "Não foi possível salvar agora. Tente novamente." },
       { status: 500 }
     );
   }
