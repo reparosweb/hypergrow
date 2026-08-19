@@ -92,7 +92,7 @@ export async function POST(req: NextRequest) {
       ? "afiliado"
       : "site";
 
-  const { error } = await supabase.from("leads").insert({
+  const linha = {
     name,
     email,
     phone: phone || null,
@@ -101,7 +101,27 @@ export async function POST(req: NextRequest) {
     source,
     user_agent: req.headers.get("user-agent") || null,
     affiliate_code: refCookie,
-  });
+  };
+
+  let { error } = await supabase.from("leads").insert(linha);
+
+  /* Bug real, achado em produção (2026-08-16): a coluna affiliate_code só
+     existe depois que o dono roda supabase/008_afiliados.sql no editor do
+     Supabase — e até isso acontecer, TODO lead do site (não só o
+     diagnóstico) falhava com "não foi possível salvar agora", porque este
+     INSERT tenta gravar uma coluna que ainda não existe no banco.
+     Captura de lead é o coração do funil: não pode depender de uma migração
+     opcional ter rodado. Se o erro for especificamente sobre essa coluna
+     (código 42703 do Postgres = "undefined_column"), tenta de novo sem ela —
+     o lead se salva normalmente, só sem a atribuição de afiliado (que pode
+     ser reconciliada depois, uma vez a migração rodada). Qualquer OUTRO erro
+     de banco continua caindo no fallback normal abaixo. */
+  if (error?.code === "42703" && /affiliate_code/.test(error.message)) {
+    console.warn("[lead] coluna affiliate_code ainda não existe (008_afiliados.sql pendente) — salvando sem atribuição de afiliado.");
+    const { affiliate_code: _omitido, ...semAfiliado } = linha;
+    void _omitido;
+    ({ error } = await supabase.from("leads").insert(semAfiliado));
+  }
 
   if (error) {
     console.error("[lead] erro ao salvar:", error.message);
