@@ -125,8 +125,11 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     console.error("[lead] erro ao salvar:", error.message);
+    // DIAGNÓSTICO TEMPORÁRIO (2026-08-16) — remover assim que a causa real
+    // for confirmada. O fix por código 42703 não resolveu o bug ao vivo;
+    // preciso ver a mensagem real do Postgres em vez de continuar advinhando.
     return NextResponse.json(
-      { error: "Não foi possível salvar agora. Tente novamente." },
+      { error: "Não foi possível salvar agora. Tente novamente.", _debugCode: error.code, _debugMsg: error.message },
       { status: 500 }
     );
   }
