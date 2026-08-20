@@ -16,29 +16,52 @@ import { EVENTOS, rastrear } from "@/lib/track";
    alegação sobre a empresa — não se aplica a regra de "placeholder pendente de
    dado real" aqui. Roda 100% no navegador, nada é enviado. ───────────────── */
 
-type Q = { q: string; s: string; a: [string, number, LucideIcon][] };
+type Q = {
+  q: string; s: string; a: [string, number, LucideIcon][];
+  /* Usados só quando a resposta a ESTA pergunta valeu 0 — ver `weakIdx` mais
+     abaixo. `weakArea` parafraseia a própria resposta fraca (nenhum fato
+     novo); `weakService` é um serviço REAL de lib/site-services.ts (título e
+     slug conferidos ao vivo) — nunca um nome inventado. */
+  weakArea: string; weakService: { slug: string; title: string };
+};
 
 const QUESTOES: Q[] = [
   { q: "Hoje, de onde vem a maior parte dos seus clientes?", s: "Responda pelo que acontece, não pelo que devia acontecer.",
-    a: [["Indicação e sorte", 0, Lightbulb], ["Redes sociais, sem previsão", 1, Share2], ["Canais pagos que eu meço", 2, Target]] },
+    a: [["Indicação e sorte", 0, Lightbulb], ["Redes sociais, sem previsão", 1, Share2], ["Canais pagos que eu meço", 2, Target]],
+    weakArea: "a origem dos seus clientes ainda é indicação e sorte, sem canal previsível",
+    weakService: { slug: "marketing-trafego", title: "Marketing Digital & Tráfego Pago" } },
   { q: "Quando um cliente manda mensagem às 22h, o que acontece?", s: "É aqui que a maioria perde dinheiro sem perceber.",
-    a: [["Respondo quando dá", 0, Clock], ["Alguém responde no horário comercial", 1, User], ["Automação atende e qualifica na hora", 2, Sparkles]] },
+    a: [["Respondo quando dá", 0, Clock], ["Alguém responde no horário comercial", 1, User], ["Automação atende e qualifica na hora", 2, Sparkles]],
+    weakArea: "cliente que manda mensagem à noite só recebe resposta quando dá",
+    weakService: { slug: "automacoes-ia", title: "Automações & IA" } },
   { q: "Você sabe quanto custa conquistar um cliente?", s: "Valor aproximado já conta. \"Não sei\" também é resposta.",
-    a: [["Não tenho ideia", 0, HelpCircle], ["Tenho uma noção", 1, Calculator], ["Sei o CAC e o retorno por canal", 2, BarChart3]] },
+    a: [["Não tenho ideia", 0, HelpCircle], ["Tenho uma noção", 1, Calculator], ["Sei o CAC e o retorno por canal", 2, BarChart3]],
+    weakArea: "você ainda não sabe quanto custa conquistar um cliente",
+    weakService: { slug: "consultoria-ecommerce", title: "Consultoria E-commerce & Marketplaces" } },
   { q: "Sua operação de vendas tem processo escrito?", s: "Script, cadência de follow-up e CRM alimentado todo dia.",
-    a: [["Cada um faz do seu jeito", 0, Shuffle], ["Existe, mas ninguém segue", 1, FileWarning], ["Sim, com metas e rotina", 2, CheckCheck]] },
+    a: [["Cada um faz do seu jeito", 0, Shuffle], ["Existe, mas ninguém segue", 1, FileWarning], ["Sim, com metas e rotina", 2, CheckCheck]],
+    weakArea: "a venda não tem processo escrito, cada um faz do seu jeito",
+    weakService: { slug: "auditoria-comercial", title: "Auditoria Comercial" } },
 ];
 
+/* `next` usa só títulos REAIS de lib/site-services.ts (conferidos ao vivo) —
+   antes eram nomes inventados ("Diagnóstico de maturidade", "Indicadores e
+   BI"...) que não batiam com nenhum serviço do site. `bodyGeneric` é o
+   fallback de quem não teve nenhuma resposta 0 (ver `weak`/`bodySecond`
+   abaixo, onde a 2ª frase passa a citar o ponto fraco real quando existe). */
 const RESULTADOS = [
   { max: 2, stage: "Estágio 1 · Improviso", hex: "#B0155F", verdict: "Sua empresa cresce por esforço, não por sistema.",
-    body: "Você já provou que o produto funciona. O que falta é parar de depender de sorte — antes de colocar mais dinheiro em anúncio, fechamos o balde furado.",
-    next: ["Diagnóstico de maturidade", "Site ou loja que converte", "Automação de WhatsApp"] },
+    bodyIntro: "Você já provou que o produto funciona.",
+    bodyGeneric: "O que falta é parar de depender de sorte — antes de colocar mais dinheiro em anúncio, fechamos o balde furado.",
+    next: ["Criação de Site & Landing Pages", "Automações & IA", "Marketing Digital & Tráfego Pago"] },
   { max: 5, stage: "Estágio 2 · Tração", hex: "#A8560B", verdict: "Você tem demanda. Ainda não tem previsibilidade.",
-    body: "Entra pedido, sai venda, mas ninguém consegue prometer o mês que vem. O gargalo quase sempre está na passagem do marketing para o comercial.",
-    next: ["Estruturação comercial", "Tráfego pago com meta de CAC", "CRM implantado de verdade"] },
+    bodyIntro: "Entra pedido, sai venda, mas ninguém consegue prometer o mês que vem.",
+    bodyGeneric: "O gargalo quase sempre está na passagem do marketing para o comercial.",
+    next: ["Auditoria Comercial", "Marketing Digital & Tráfego Pago", "CRM com IA"] },
   { max: 8, stage: "Estágio 3 · Escala", hex: "#1550E8", verdict: "A base está de pé. Agora é multiplicar.",
-    body: "Você mede, tem processo e time. Daqui para frente o ganho vem de eficiência: baixar o custo de aquisição e abrir canais novos sem quebrar o que já funciona.",
-    next: ["SEO avançado e GEO/AEO", "Agentes de IA no atendimento", "Indicadores e BI"] },
+    bodyIntro: "Você mede, tem processo e time.",
+    bodyGeneric: "Daqui para frente o ganho vem de eficiência: baixar o custo de aquisição e abrir canais novos sem quebrar o que já funciona.",
+    next: ["SEO: Site no Topo dos Buscadores", "Automações & IA", "CRM com IA"] },
 ];
 
 export default function ClaroDiag() {
@@ -67,6 +90,19 @@ export default function ClaroDiag() {
   const done = step >= QUESTOES.length;
   const score = ans.reduce((a, b) => a + b, 0);
   const res = RESULTADOS.find((r) => score <= r.max) || RESULTADOS[2];
+  /* Ponto fraco real: primeira pergunta (na ordem do quiz) cuja resposta
+     valeu 0. Critério auditável, sem inventar peso entre as 4 perguntas —
+     e resolve o caso de alguém fraco numa área específica mas com score alto
+     no total (cairia num estágio cujo texto nem menciona o problema real,
+     porque `res` só olha a soma; `weak` olha a resposta individual). */
+  const weakIdx = ans.findIndex((a) => a === 0);
+  const weak = weakIdx > -1 ? QUESTOES[weakIdx] : null;
+  const bodySecond = weak
+    ? `O ponto mais fraco hoje: ${weak.weakArea} — é ali que entra ${weak.weakService.title}.`
+    : res.bodyGeneric;
+  const nextList = weak
+    ? [weak.weakService.title, ...res.next.filter((n) => n !== weak.weakService.title)].slice(0, 3)
+    : res.next;
   const pct = done ? 100 : Math.round((step / QUESTOES.length) * 100);
   const cur = QUESTOES[Math.min(step, QUESTOES.length - 1)];
 
@@ -169,15 +205,25 @@ export default function ClaroDiag() {
               ) : (
                 <div className="cl-dg-in">
                   <div className="mono" style={{ color: res.hex }}>Seu retrato</div>
-                  <div className="cl-dg-meter" aria-hidden>
-                    {[0, 1, 2].map((i) => <span key={i} style={{ background: RESULTADOS.indexOf(res) >= i ? res.hex : "var(--line)", animationDelay: i * 0.11 + "s" }} />)}
+                  {/* Rótulo de TEXTO real (não aria-hidden) — antes o medidor
+                      não tinha nenhuma explicação por perto e lia como uma
+                      barra de progresso pela metade, não uma escala de
+                      maturidade já concluída. Palavra diferente de "Pergunta
+                      X de 4" de propósito, pra não herdar a associação de
+                      progresso-em-andamento. */}
+                  <div className="mono cl-dg-meter-cap">Nível de maturidade: estágio {RESULTADOS.indexOf(res) + 1} de {RESULTADOS.length}</div>
+                  <div className="cl-dg-meter">
+                    {RESULTADOS.map((r, i) => (
+                      <span key={r.stage} aria-hidden className={"cl-dg-meter-seg" + (r === res ? " atual" : "")}
+                        style={{ background: r.hex, animationDelay: i * 0.11 + "s" }} />
+                    ))}
                   </div>
                   <h3 className="h3 cl-dg-stg">{res.stage}</h3>
                   <p className="cl-dg-vd" style={{ color: res.hex }}>{res.verdict}</p>
-                  <p className="body cl-dg-bd">{res.body}</p>
+                  <p className="body cl-dg-bd">{res.bodyIntro} {bodySecond}</p>
                   <div className="cl-dg-next">
                     <span className="mono cl-dg-step">Por onde começar</span>
-                    {res.next.map((n, i) => (
+                    {nextList.map((n, i) => (
                       <div className="cl-dg-next-row" key={n}>
                         <span className="cl-dg-n" style={{ color: res.hex, borderColor: res.hex + "44" }}>{i + 1}</span>{n}
                       </div>
@@ -278,12 +324,16 @@ export default function ClaroDiag() {
         #diagnostico .cl-dg-back:hover{color:var(--ink);transform:translateX(-3px)}
         #diagnostico .cl-dg-back:focus-visible{outline:2px solid var(--brand);outline-offset:2px;color:var(--ink)}
         #diagnostico .cl-dg-back--fim{margin-top:0}
-        #diagnostico .cl-dg-meter{display:flex;gap:7px;margin-top:18px}
-        /* as 3 barras do medidor nascem preenchendo da esquerda, em cascata —
-           antes tinham transition sem estado anterior, ou seja, não animavam
-           nada: o resultado aparecia pronto. */
-        #diagnostico .cl-dg-meter span{height:6px;flex:1;border-radius:99px;transform-origin:left;animation:cl-dgm .5s var(--ease) both}
-        @keyframes cl-dgm{from{transform:scaleX(0);opacity:.35}}
+        #diagnostico .cl-dg-meter-cap{margin-top:18px;color:var(--ink-3)}
+        /* Cada segmento usa a cor do PRÓPRIO estágio (nunca var(--line)/cinza
+           condicional) — é essa troca que muda a leitura de "barra de
+           progresso enchendo" pra "escala de 3 posições fixas com uma
+           marcada". align-items:flex-end + o segmento atual mais alto dá um
+           efeito de equalizador/sinaleira, não de trilho a completar. */
+        #diagnostico .cl-dg-meter{display:flex;align-items:flex-end;gap:7px;margin-top:8px}
+        #diagnostico .cl-dg-meter-seg{height:6px;flex:1;border-radius:99px;opacity:.32;transform-origin:left;transition:opacity .3s var(--ease),height .3s var(--ease);animation:cl-dgm .5s var(--ease) both}
+        #diagnostico .cl-dg-meter-seg.atual{opacity:1;height:9px}
+        @keyframes cl-dgm{from{transform:scaleX(0);opacity:.15}}
         #diagnostico .cl-dg-stg{margin-top:18px}
         #diagnostico .cl-dg-vd{font:600 17px/1.5 var(--text);margin-top:11px;text-wrap:pretty}
         #diagnostico .cl-dg-bd{margin-top:11px}
@@ -302,7 +352,7 @@ export default function ClaroDiag() {
           #diagnostico .cl-dg-opt,#diagnostico .cl-dg-opt-go,#diagnostico .cl-dg-back,#diagnostico .cl-dg-arw{transition:none}
           #diagnostico .cl-dg-opt:hover,#diagnostico .cl-dg-opt:focus-visible,#diagnostico .cl-dg-opt:active,#diagnostico .cl-dg-back:hover{transform:none}
           #diagnostico .cl-dg-opt:hover .cl-dg-opt-go,#diagnostico .cl-dg-opt:focus-visible .cl-dg-opt-go,#diagnostico .cl-dg-cta .btn:hover .cl-dg-arw{transform:none}
-          #diagnostico .cl-dg-meter span{animation:none}
+          #diagnostico .cl-dg-meter-seg{animation:none;transition:none}
         }
       `}} />
     </section>
