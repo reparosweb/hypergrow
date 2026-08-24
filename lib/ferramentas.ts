@@ -18,7 +18,8 @@ export type IconeFerramenta =
   | "escudo"
   | "elo"
   | "qr"
-  | "relogio";
+  | "relogio"
+  | "imagem";
 
 export type Ferramenta = {
   slug: string;
@@ -151,6 +152,20 @@ export const FERRAMENTAS: Ferramenta[] = [
     servico: { slug: "auditoria-comercial", rotulo: "Auditoria comercial" },
     accent: "#7A2E8E",
     icone: "relogio",
+  },
+  {
+    slug: "biblioteca-prompts-imagens-ia",
+    nome: "Biblioteca de prompts para imagens com IA",
+    titulo: "Biblioteca de prompts para imagens com IA — HyperGrow",
+    descricao:
+      "24 prompts prontos para colar em geradores de imagem (ChatGPT, Gemini): produto, post, anúncio, marca e apresentação. Grátis, sem cadastro.",
+    resolve:
+      "Reúne prompts específicos e testáveis por categoria — produto, redes sociais, anúncio, marca, apresentação e ambiente — para você não perder tempo escrevendo do zero toda vez que precisar de uma imagem.",
+    chamada:
+      "Escolha a categoria, copie o prompt e cole no seu gerador de imagem preferido. Sem cadastro, sem limite de uso.",
+    servico: { slug: "design-identidade", rotulo: "Design & Publicidade" },
+    accent: "#16A34A",
+    icone: "imagem",
   },
 ];
 

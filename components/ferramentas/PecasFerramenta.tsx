@@ -67,6 +67,14 @@ export function IconeDaFerramenta({ nome, tamanho = 24 }: { nome: IconeFerrament
         <path d="M12 7.2V12l3.2 2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     );
+  if (nome === "imagem")
+    return (
+      <svg {...p}>
+        <rect x="3.4" y="4.4" width="17.2" height="15.2" rx="2" stroke="currentColor" strokeWidth="1.9" />
+        <circle cx="8.6" cy="9.2" r="1.6" fill="currentColor" />
+        <path d="m4.4 16.6 4.6-4.6a1.6 1.6 0 0 1 2.3 0l1.5 1.5a1.6 1.6 0 0 0 2.3 0l1.5-1.5a1.6 1.6 0 0 1 2.3 0l2.7 2.7" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
+      </svg>
+    );
   return (
     <svg {...p}>
       <circle cx="10.6" cy="10.6" r="6.6" stroke="currentColor" strokeWidth="1.9" />
