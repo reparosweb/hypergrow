@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { ArrowRight, Bot, ChevronDown, LayoutTemplate, Palette, ShoppingCart, TrendingUp, type LucideIcon } from "lucide-react";
+import { ArrowRight, Bot, ChevronDown, LayoutTemplate, Palette, ShoppingCart, Sparkles, TrendingUp, type LucideIcon } from "lucide-react";
 import { ClaroLogo } from "@/components/claro/ClaroUI";
 import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
 import { PILLARS, type PillarKey } from "@/lib/pillars";
@@ -305,6 +305,12 @@ export default function SiteHeaderClaro() {
                 {rotulo}
               </Link>
             ))}
+
+            {/* Mesmo botão de destaque da home — estilo em .nav-shop
+                (claro-tokens.css), compartilhado entre os dois cabeçalhos. */}
+            <Link href="/ferramentas/biblioteca-prompts-imagens-ia" className="nav-shop">
+              <Sparkles size={15} className="nav-shop-ic" aria-hidden /> Shop de Prompt IA
+            </Link>
           </nav>
 
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -353,6 +359,16 @@ export default function SiteHeaderClaro() {
               </svg>
             </button>
           </div>
+
+          {/* Shop de Prompt IA em destaque no topo da gaveta — igual à home. */}
+          <Link
+            href="/ferramentas/biblioteca-prompts-imagens-ia"
+            className="btn btn-p"
+            onClick={() => setOpen(false)}
+            style={{ width: "100%", marginBottom: 18, gap: 8 }}
+          >
+            <Sparkles size={16} aria-hidden /> Shop de Prompt IA
+          </Link>
 
           <nav className="shc-dw-links" aria-label="Navegação principal (celular)">
             <button

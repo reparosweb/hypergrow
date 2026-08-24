@@ -4,6 +4,7 @@ import PageShellClaro from "@/components/site/PageShellClaro";
 import EstilosFerramentas from "@/components/ferramentas/EstilosFerramentas";
 import { ConviteFerramenta, OutrasFerramentas, SeloGratis } from "@/components/ferramentas/PecasFerramenta";
 import BibliotecaPrompts from "@/components/ferramentas/BibliotecaPrompts";
+import { IaCompatBadge } from "@/components/claro/IaCompatBadge";
 import { getFerramenta } from "@/lib/ferramentas";
 import { SITE_URL, ogImagens } from "@/lib/seo";
 
@@ -109,8 +110,9 @@ export default function Page() {
           <span className="pg-kicker">Ferramenta grátis</span>
           <h1 className="pg-h1">Biblioteca de prompts prontos<br />para imagens com IA</h1>
           <p className="pg-lede">{F.chamada}</p>
-          <div style={{ marginTop: 20 }}>
+          <div style={{ marginTop: 20, display: "flex", flexWrap: "wrap", gap: 16, alignItems: "center" }}>
             <SeloGratis />
+            <IaCompatBadge />
           </div>
         </div>
       </section>

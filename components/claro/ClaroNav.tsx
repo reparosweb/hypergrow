@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState, type CSSProperties } from "react";
 import Link from "next/link";
-import { ArrowRight, Bot, ChevronDown, LayoutTemplate, Menu, Palette, ShoppingCart, TrendingUp, X, type LucideIcon } from "lucide-react";
+import { ArrowRight, Bot, ChevronDown, LayoutTemplate, Menu, Palette, ShoppingCart, Sparkles, TrendingUp, X, type LucideIcon } from "lucide-react";
 import { PILLARS, type PillarKey, type ServiceCardData } from "@/lib/pillars";
 import { ClaroLogo } from "./ClaroUI";
 import { ClaroServiceIcon } from "./ClaroServiceIcon";
@@ -355,6 +355,12 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
             {DIRECT_LINKS.slice(1).map(([label, href]) => (
               <a key={href} href={href}>{label}</a>
             ))}
+
+            {/* Botão de destaque para a biblioteca de prompts (rota real, não
+                âncora). Pílula preenchida — estilo em .nav-shop (claro-tokens.css). */}
+            <Link href="/ferramentas/biblioteca-prompts-imagens-ia" className="nav-shop">
+              <Sparkles size={15} className="nav-shop-ic" aria-hidden /> Shop de Prompt IA
+            </Link>
           </nav>
 
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
@@ -399,6 +405,17 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
               <X size={18} aria-hidden />
             </button>
           </div>
+
+          {/* Shop de Prompt IA em destaque no topo da gaveta — no celular o
+              botão do topo some com o menu, então o acesso mora aqui. */}
+          <Link
+            href="/ferramentas/biblioteca-prompts-imagens-ia"
+            className="btn btn-p"
+            onClick={() => setDrawerOpen(false)}
+            style={{ width: "100%", marginBottom: 18, gap: 8 }}
+          >
+            <Sparkles size={16} aria-hidden /> Shop de Prompt IA
+          </Link>
 
           {PILLARS.map((p) => {
             const Icon = PILLAR_ICON[p.key];

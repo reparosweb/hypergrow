@@ -337,6 +337,16 @@
 .cl .hd:not(.on) .nl>a,.cl .hd:not(.on) .nt{color:rgba(255,255,255,.86)}
 .cl .hd:not(.on) .nl>a:hover,.cl .hd:not(.on) .nt:hover,.cl .hd:not(.on) .ni:hover .nt{color:#fff;background:rgba(255,255,255,.14)}
 .cl .hd:not(.on) .burger{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.32);color:#fff}
+/* Botão de destaque "Shop de Prompt IA" no menu (2026-08-16). Pílula PREENCHIDA
+   de propósito: fica legível tanto sobre o hero escuro (header transparente)
+   quanto sobre o header branco (rolado), sem depender do estado. Cor de marca
+   (azul) para se diferenciar do CTA rosa "Falar com especialista" ao lado.
+   Vive dentro de .nl, então some junto com o menu no mobile (<=1180px) — o
+   acesso no celular fica pela gaveta. Especificidade .cl .nl>a.nav-shop (0,3,1)
+   vence a regra base .cl .nl>a e a de header transparente .cl .hd:not(.on) .nl>a. */
+.cl .nl>a.nav-shop,.cl .hd:not(.on) .nl>a.nav-shop{background:var(--brand);color:#fff;font-weight:600;padding:9px 15px;box-shadow:0 8px 20px -10px rgba(21,80,232,.6)}
+.cl .nl>a.nav-shop:hover,.cl .hd:not(.on) .nl>a.nav-shop:hover{background:var(--brand-d);color:#fff}
+.cl .nav-shop-ic{color:#fff}
 .cl .ni{position:relative}
 .cl .ni .chev{transition:transform .25s var(--ease)}
 .cl .ni:hover .chev{transform:rotate(180deg)}

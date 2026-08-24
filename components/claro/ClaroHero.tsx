@@ -5,6 +5,7 @@ import { ArrowRight, ChevronDown } from "lucide-react";
 import { platformsOf } from "@/lib/ecommerce-platforms";
 import { ClaroHead } from "./ClaroUI";
 import ClaroVitrine from "./ClaroVitrine";
+import ClaroShopPrompt from "./ClaroShopPrompt";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    HERO — vídeo de fundo + faixa de compatibilidade.
@@ -153,6 +154,10 @@ export default function ClaroHero() {
           <ChevronDown size={18} aria-hidden />
         </a>
       </section>
+
+      {/* Destaque "Shop de Prompt IA" — logo abaixo do banner de tela cheia,
+          pedido do dono. Faixa escura que costura a transição hero→conteúdo. */}
+      <ClaroShopPrompt />
 
       {/* Seção de vitrine (foto + cartões flutuantes + números). Vem do design
           original (`LHero` em lit-hero.jsx) e estava faltando — o dono apontou
