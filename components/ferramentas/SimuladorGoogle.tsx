@@ -90,6 +90,49 @@ export default function SimuladorGoogle() {
   const [url, setUrl] = useState("https://www.sualoja.com.br/camisetas/algodao-pima");
   const [aba, setAba] = useState<"desktop" | "mobile">("desktop");
 
+  /* Analisar uma página real. O navegador NÃO pode ler o HTML de outro site
+     (CORS), então quem busca é o /api/seo-preview no servidor — ele devolve o
+     <title> e a <meta description> atuais para preencher os campos. O resto da
+     ferramenta (contagem, pixel, prévia) continua no navegador. */
+  const [carregando, setCarregando] = useState(false);
+  const [erroBusca, setErroBusca] = useState("");
+  const [aviso, setAviso] = useState("");
+
+  async function analisar(ev?: React.FormEvent) {
+    ev?.preventDefault();
+    const alvo = url.trim();
+    if (!alvo) {
+      setErroBusca("Cole o endereço da página primeiro.");
+      return;
+    }
+    setErroBusca("");
+    setAviso("");
+    setCarregando(true);
+    try {
+      const r = await fetch("/api/seo-preview?url=" + encodeURIComponent(alvo));
+      const j = await r.json().catch(() => ({}));
+      if (!r.ok) {
+        setErroBusca(j.error || "Não consegui analisar essa página. Você pode preencher os campos na mão.");
+        return;
+      }
+      // A rota pode responder 200 com só um dos dois, ou nenhum (aviso).
+      if (!j.titulo && !j.descricao) {
+        setAviso(j.error || "A página abriu, mas não tinha título nem descrição. Preencha na mão.");
+        return;
+      }
+      if (j.titulo) setTitulo(j.titulo);
+      if (j.descricao) setDescricao(j.descricao);
+      if (j.url) setUrl(j.url);
+      if (!j.descricao) setAviso("Peguei o título. Essa página não tem descrição definida — escreva uma abaixo.");
+      else if (!j.titulo) setAviso("Peguei a descrição. Essa página não tem título definido — escreva um abaixo.");
+      else setAviso("Pronto: título e descrição atuais da página, carregados abaixo. Ajuste à vontade.");
+    } catch {
+      setErroBusca("Sem conexão para analisar agora. Você pode preencher os campos na mão.");
+    } finally {
+      setCarregando(false);
+    }
+  }
+
   const pxTitulo = useLarguraPx(titulo, "20px arial, sans-serif");
   const u = useMemo(() => partesDaUrl(url), [url]);
 
@@ -103,10 +146,41 @@ export default function SimuladorGoogle() {
     <div className="ft-lay">
       <div>
         <div className="ft-card">
-          <p className="ft-h">Seus textos</p>
+          <p className="ft-h">1. Cole o endereço da sua página</p>
           <p className="ft-sub">
-            Comece trocando o exemplo abaixo pelos textos da sua página. A prévia ao lado muda
-            enquanto você digita.
+            A ferramenta abre a página e traz o título e a descrição atuais para você ver como
+            aparecem na busca — e o que dá para melhorar. Sem endereço em mãos? Preencha os textos
+            na mão logo abaixo.
+          </p>
+
+          <form className="ft-analisar" onSubmit={analisar}>
+            <input
+              className="ft-in"
+              type="text"
+              inputMode="url"
+              value={url}
+              onChange={(e) => setUrl(e.target.value)}
+              placeholder="https://www.suaempresa.com.br/"
+              aria-label="Endereço da página para analisar"
+            />
+            <button type="submit" className="btn btn-p" disabled={carregando}>
+              {carregando ? "Analisando…" : "Analisar página"}
+            </button>
+          </form>
+          {erroBusca && <div className="ft-alert bad" role="alert"><span>{erroBusca}</span></div>}
+          {aviso && !erroBusca && <div className="ft-alert info" role="status"><span>{aviso}</span></div>}
+          <span className="ft-hint" style={{ marginTop: 10 }}>
+            {u.ok
+              ? "O Google mostra o caminho em migalhas: " + [u.host, ...u.trilha].join(" › ")
+              : "Para analisar, o endereço é enviado ao nosso servidor uma vez, só para ler o título e a descrição da página. O resto do simulador roda no seu navegador."}
+          </span>
+        </div>
+
+        <div className="ft-card">
+          <p className="ft-h">2. Ajuste os textos</p>
+          <p className="ft-sub">
+            A prévia ao lado muda enquanto você digita. Os campos vêm preenchidos pela análise
+            acima — edite à vontade e veja o efeito na hora.
           </p>
 
           <div className="ft-fields">
@@ -142,17 +216,6 @@ export default function SimuladorGoogle() {
                 {estDesc === "warn" && descricao.length < 70 && "Curta: você está deixando espaço grátis de anúncio sem usar."}
                 {estDesc === "warn" && descricao.length >= 70 && "Acima do que costuma aparecer. O fim provavelmente será cortado."}
                 {estDesc === "bad" && "Bem acima do limite. Ponha o argumento principal nas duas primeiras linhas."}
-              </span>
-            </div>
-
-            <div className="ft-f ft-full">
-              <label className="ft-lbl" htmlFor="ft-url">Endereço da página (URL)</label>
-              <input id="ft-url" className="ft-in" type="text" inputMode="url" value={url}
-                onChange={(e) => setUrl(e.target.value)} placeholder="https://seusite.com.br/categoria/pagina" />
-              <span className="ft-hint">
-                {u.ok
-                  ? "O Google mostra o caminho em migalhas: " + [u.host, ...u.trilha].join(" › ")
-                  : "Digite o endereço completo para ver como o caminho aparece no resultado."}
               </span>
             </div>
           </div>
@@ -249,6 +312,18 @@ export default function SimuladorGoogle() {
           </div>
         </div>
       </div>
+
+      {/* Linha URL + botão. Sem crase dentro deste bloco — é template literal e
+          uma crase aqui fecharia a string (bug recorrente neste projeto). */}
+      <style dangerouslySetInnerHTML={{ __html: `
+        .cl .ft-analisar { display: flex; gap: 10px; flex-wrap: wrap; }
+        .cl .ft-analisar .ft-in { flex: 1; min-width: 200px; }
+        .cl .ft-analisar .btn { flex-shrink: 0; white-space: nowrap; }
+        @media (max-width: 460px) {
+          .cl .ft-analisar .ft-in { min-width: 100%; }
+          .cl .ft-analisar .btn { width: 100%; }
+        }
+      ` }} />
     </div>
   );
 }
