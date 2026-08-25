@@ -337,30 +337,30 @@ const CSS = `
      quase BRANCO, entao aqui viraria um rodape branco com texto branco. Fixado
      em var(--paper-2), navy escuro, que recebe bem o texto branco/rgba abaixo.
      Sem crase neste comentario: isto vive dentro de template literal de CSS. */
-  .cl .pgc-ft { background: var(--paper-2); color: #fff; padding-top: 62px; margin-top: clamp(48px, 6vw, 84px); }
+  .cl .pgc-ft { background: var(--paper-2); color: var(--ink); padding-top: 62px; margin-top: clamp(48px, 6vw, 84px); }
   .cl .pgc-ft-g { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 34px; }
-  .cl .pgc-ft-logo { font: 700 26px var(--disp); letter-spacing: -.04em; color: #fff; }
+  .cl .pgc-ft-logo { font: 700 26px var(--disp); letter-spacing: -.04em; color: var(--ink); }
   .cl .pgc-ft-logo-g { background: linear-gradient(96deg, #6E8DFF, #9E8CFF 55%, #FF6FA3);
     -webkit-background-clip: text; background-clip: text; color: transparent; }
-  .cl .pgc-ft-p { font: 400 15px/1.6 var(--text); color: rgba(255,255,255,.68); margin-top: 16px; max-width: 300px; }
-  .cl .pgc-ft-h { color: rgba(255,255,255,.5); }
+  .cl .pgc-ft-p { font: 400 15px/1.6 var(--text); color: var(--ink-2); margin-top: 16px; max-width: 300px; }
+  .cl .pgc-ft-h { color: var(--ink-3); }
   .cl .pgc-ft-c { display: flex; flex-direction: column; align-items: flex-start; margin-top: 12px; }
   .cl .pgc-ft-c a { display: inline-flex; align-items: center; min-height: 44px; font: 400 15px var(--text);
     color: rgba(255,255,255,.74); transition: color .25s var(--ease), transform .25s var(--ease); }
   .cl .pgc-ft-c a span { position: relative; }
   .cl .pgc-ft-c a span::after { content: ""; position: absolute; left: 0; right: 0; bottom: -3px; height: 1px;
     background: currentColor; transform: scaleX(0); transform-origin: left; transition: transform .28s var(--ease); }
-  .cl .pgc-ft-c a:hover { color: #fff; transform: translateX(3px); }
+  .cl .pgc-ft-c a:hover { color: var(--ink); transform: translateX(3px); }
   .cl .pgc-ft-c a:hover span::after { transform: scaleX(1); }
-  .cl .pgc-ft-c a:focus-visible { outline: 2px solid #fff; outline-offset: 3px; color: #fff; }
-  .cl .pgc-ft-b { border-top: 1px solid rgba(255,255,255,.14); margin-top: 44px; display: flex;
+  .cl .pgc-ft-c a:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; color: var(--ink); }
+  .cl .pgc-ft-b { border-top: 1px solid var(--line); margin-top: 44px; display: flex;
     justify-content: space-between; gap: 14px; flex-wrap: wrap; align-items: center;
     padding: 20px 0 calc(28px + env(safe-area-inset-bottom, 0px)); }
-  .cl .pgc-ft-b .small { color: rgba(255,255,255,.55); }
+  .cl .pgc-ft-b .small { color: var(--ink-3); }
   .cl .pgc-ft-home { display: inline-flex; align-items: center; min-height: 44px; font: 500 14px var(--text);
     color: rgba(255,255,255,.74); }
-  .cl .pgc-ft-home:hover { color: #fff; }
-  .cl .pgc-ft-home:focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
+  .cl .pgc-ft-home:hover { color: var(--ink); }
+  .cl .pgc-ft-home:focus-visible { outline: 2px solid var(--brand); outline-offset: 3px; }
   @media (max-width: 1180px) { .cl .pgc-ft-g { gap: 26px; } }
   @media (max-width: 900px) { .cl .pgc-ft-g { grid-template-columns: 1fr 1fr; } }
   @media (max-width: 600px) { .cl .pgc-ft-g { grid-template-columns: 1fr; gap: 28px; } }
