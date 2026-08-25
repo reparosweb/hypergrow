@@ -7,6 +7,7 @@ import { PILLARS, type PillarKey, type ServiceCardData } from "@/lib/pillars";
 import { ClaroLogo } from "./ClaroUI";
 import { ClaroServiceIcon } from "./ClaroServiceIcon";
 import { CLARO_PILLAR_ACCENT } from "./claroPillarAccent";
+import ThemeToggle from "./ThemeToggle";
 
 /* ─────────────────────────────────────────────────────────────────────────────
    NAV da rota /claro — header fixo com progresso de leitura, mega-menu em
@@ -372,6 +373,9 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
                 entao esconder este aqui em telas pequenas nao tira acesso
                 nenhum -- so evita a disputa de espaco. Classe extra (hd-cta)
                 escopa o CSS so nesta instancia, sem tocar no CTA do drawer. */}
+            {/* Botão claro/escuro — antes do CTA e do burger, visível em todas
+                as larguras (é pequeno e não disputa espaço com o burger). */}
+            <ThemeToggle />
             <a href="#contato" className="btn btn-p hd-cta">Falar com especialista</a>
             <button
               type="button"

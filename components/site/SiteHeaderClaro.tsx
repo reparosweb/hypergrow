@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ArrowRight, Bot, ChevronDown, LayoutTemplate, Palette, ShoppingCart, Sparkles, TrendingUp, type LucideIcon } from "lucide-react";
 import { ClaroLogo } from "@/components/claro/ClaroUI";
 import { CLARO_PILLAR_ACCENT } from "@/components/claro/claroPillarAccent";
+import ThemeToggle from "@/components/claro/ThemeToggle";
 import { PILLARS, type PillarKey } from "@/lib/pillars";
 import { siteServices } from "@/lib/site-services";
 import ServiceGlyph from "./ServiceGlyphs";
@@ -314,6 +315,8 @@ export default function SiteHeaderClaro() {
           </nav>
 
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            {/* Mesmo botão claro/escuro do header da home. */}
+            <ThemeToggle />
             {/* Nunca escondido no celular: só troca o rótulo. */}
             <Link href="/contato" className="btn btn-p shc-cta">
               <span className="shc-cta-full">Solicitar orçamento</span>

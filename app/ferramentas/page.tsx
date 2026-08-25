@@ -22,7 +22,7 @@ import { SITE_URL, ogImagens } from "@/lib/seo";
    pedágio em ferramenta grátis é a forma mais rápida de queimar a confiança que
    ela deveria construir. */
 
-const TITLE = "8 ferramentas grátis para vender mais online — HyperGrow";
+const TITLE = "9 ferramentas grátis para vender mais online — HyperGrow";
 const DESC =
   "Gerador de link, QR Code e política de privacidade, calculadora de preço para marketplace e por hora, calculadora de ROAS, simulador do Google e gerador de UTM. Grátis, sem cadastro.";
 
@@ -77,7 +77,7 @@ export default function FerramentasPage() {
       <section className="sec" style={{ paddingBottom: 0 }}>
         <div className="wrap pg-in">
           <span className="pg-kicker">Ferramentas grátis</span>
-          <h1 className="pg-h1">Oito contas que<br />todo negócio online erra.</h1>
+          <h1 className="pg-h1">Nove contas que<br />todo negócio online erra.</h1>
           <p className="pg-lede">
             Preço que não fecha, anúncio que gasta mais do que traz, relatório de campanha
             bagunçado, link de WhatsApp que não abre, QR Code que expira, site sem política de

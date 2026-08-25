@@ -146,6 +146,35 @@
   --fab-2:calc(var(--fab-b) + var(--fab-size) + var(--fab-gap));
 }
 
+/* ══ TEMA CLARO OPCIONAL (2026-08-16) ══════════════════════════════════════════
+   O site é ESCURO por padrão (tokens acima). O dono pediu um botão para o
+   VISITANTE escolher claro ou escuro. Isto reaplica a paleta CLARA original
+   quando `<html data-theme="light">` — como quase tudo lê `var(--token)`, trocar
+   os tokens aqui reverte a maior parte sozinho. As poucas cores que foram
+   chumbadas ESCURAS na virada (btn-d, header sólido, alertas das ferramentas)
+   ganham override explícito logo abaixo. Um script inline em app/layout.tsx
+   aplica a escolha salva ANTES da 1a pintura (sem flash de tema errado). */
+html[data-theme="light"]{
+  --paper:#FBFBFD; --paper-2:#F2F4F8; --card:#FFFFFF;
+  --ink:#0B1220; --ink-2:#3E4A61; --ink-3:#6B7688; --line:#E3E7EF; --line-2:#EEF1F6;
+  --brand:#1550E8; --brand-d:#0F3CB5;
+  --cta:#E0165F; --cta-d:#B90E4C;
+  --wa:#0F9D58;
+  --d-ecom:#3B2FCC; --d-aqui:#A8560B; --d-cont:#B0155F; --d-auto:#0A6C9E;
+  --sh-1:0 1px 2px rgba(11,18,32,.05);
+  --sh-2:0 10px 30px -12px rgba(11,18,32,.14),0 2px 6px rgba(11,18,32,.05);
+  --sh-3:0 28px 60px -24px rgba(11,18,32,.22),0 4px 12px rgba(11,18,32,.06);
+}
+/* Overrides das cores que foram chumbadas escuras — voltam ao claro só no tema claro. */
+html[data-theme="light"] .cl .btn-d{background:var(--ink);color:#fff;border-color:transparent}
+html[data-theme="light"] .cl .btn-d:hover,html[data-theme="light"] .cl .btn-d:focus-visible{background:#1A2436;box-shadow:0 18px 38px -16px rgba(11,18,32,.55)}
+html[data-theme="light"] .cl .hd.on{background:rgba(255,255,255,.92);box-shadow:0 1px 0 rgba(13,16,19,.03)}
+@media(max-width:900px){html[data-theme="light"] .cl .hd.on{background:rgba(255,255,255,.97)}}
+/* alertas das ferramentas voltam aos pastéis claros no tema claro */
+html[data-theme="light"] .cl .ft-alert.warn{background:#FFF7E8;border-color:#F2DCAE;color:#6B4A05}
+html[data-theme="light"] .cl .ft-alert.bad{background:#FDEDF2;border-color:#F3C6D6;color:#8A0F3C}
+html[data-theme="light"] .cl .ft-alert.ok{background:#EAF7F0;border-color:#BFE5D2;color:#0B5637}
+
 /* Os degraus da escala. Só variável entra aqui — assim dá para ler a página
    inteira de respiro/densidade num bloco de cinco linhas. */
 @media(max-width:1180px){:root{--wrap-x:28px;--sec-y:88px;--hd-h:72px;--gap-split:40px}}
@@ -428,6 +457,15 @@
 
 @media(max-width:1180px){.cl .nl{display:none}.cl .burger{display:inline-flex!important}}
 .cl .burger{display:none;width:46px;height:46px;border-radius:11px;border:1px solid var(--line);background:var(--card);align-items:center;justify-content:center;color:var(--ink);flex-shrink:0}
+/* Botão claro/escuro (components/claro/ThemeToggle.tsx). Mesma silhueta do
+   burger para os dois ficarem irmãos no cabeçalho. Sempre visível — inclusive
+   no celular, onde o burger aparece ao lado. */
+.cl .cl-theme-btn{width:44px;height:44px;border-radius:11px;border:1px solid var(--line);background:var(--card);display:inline-flex;align-items:center;justify-content:center;color:var(--ink-2);flex-shrink:0;cursor:pointer;transition:color .2s var(--ease),border-color .2s var(--ease),background .2s var(--ease),transform .2s var(--ease)}
+.cl .cl-theme-btn:hover{color:var(--brand);border-color:var(--brand);transform:translateY(-2px)}
+.cl .cl-theme-btn:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+/* Sobre o hero escuro (header transparente) o botão vira vidro claro, igual ao burger. */
+.cl .hd:not(.on) .cl-theme-btn{background:rgba(255,255,255,.14);border-color:rgba(255,255,255,.32);color:#fff}
+.cl .hd:not(.on) .cl-theme-btn:hover{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.5);color:#fff}
 /* BUG CRITICO achado pelo auditor (2026-08-06): nada protegia o espaco do
    burger -- em qualquer iphone padrao (390px) o CTA "Falar com especialista"
    do cabecalho (.hd-cta, ClaroNav.tsx) empurrava o botao de menu quase

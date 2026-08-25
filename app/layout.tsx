@@ -169,6 +169,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         {/* substitui o apple-mobile-web-app-capable (deprecado) que o Next injeta via appleWebApp */}
         <meta name="mobile-web-app-capable" content="yes" />
+        {/* TEMA CLARO/ESCURO — aplica a escolha salva ANTES da primeira pintura.
+            Sem isto, quem escolheu claro veria o site escuro por um instante a
+            cada carregamento (flash de tema errado), porque o React só monta
+            depois. Roda inline, síncrono, no <head>: é a única forma de acertar
+            a 1a pintura. `dark` é o padrão do site quando não há escolha salva. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{var t=localStorage.getItem('hg-theme');document.documentElement.setAttribute('data-theme',t==='light'?'light':'dark')}catch(e){document.documentElement.setAttribute('data-theme','dark')}})()",
+          }}
+        />
       </head>
       <body>
         {/* WCAG 2.4.1: primeiro elemento focável da página, invisível até receber

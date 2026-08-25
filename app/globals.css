@@ -45,6 +45,17 @@ html:has(.cl) body {
   color: #EDF1FB;
   overscroll-behavior-y: none;
 }
+/* Tema claro opcional (o visitante escolhe pelo botão do topo): o documento e o
+   color-scheme voltam ao claro para barra de rolagem, <select> e autofill
+   acompanharem. */
+html[data-theme="light"]:has(.cl) {
+  color-scheme: light;
+  background: #FBFBFD;
+}
+html[data-theme="light"]:has(.cl) body {
+  background-color: #FBFBFD;
+  color: #0B1220;
+}
 
 /* ─── SKIP LINK ──────────────────────────────────────────────────────────────
    `app/layout.tsx` renderiza <a class="skip-link"> em TODA rota, mas a regra
