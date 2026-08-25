@@ -289,7 +289,10 @@
    em vez de acabamento. Esteira agora corta reto nas duas pontas do .wrap. */
 .cl .mq{display:flex;overflow:hidden}
 .cl .mq-t{display:flex;flex-shrink:0;align-items:center;gap:54px;padding-right:54px;animation:cl-mq 42s linear infinite}
-.cl .mq.rev .mq-t{animation-direction:reverse;animation-duration:52s}
+/* 2026-08-16: a segunda esteira (Canais/ERPs) rodava a 52s -- mais lenta que a
+   primeira (42s). Pedido do dono: "mesma velocidade do acima". Agora as duas
+   correm em 42s; a `.rev` mantem so o sentido invertido, nao mais a lentidao. */
+.cl .mq.rev .mq-t{animation-direction:reverse;animation-duration:42s}
 .cl .mq:hover .mq-t,.cl .mq:focus-within .mq-t{animation-play-state:paused}
 /* `.mq-pause` é ligada/desligada pelo observador em components/claro/ClaroNav.tsx
    (efeito "esteiras fora da tela"): as duas esteiras do topo e a de clientes

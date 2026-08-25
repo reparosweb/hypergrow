@@ -9,6 +9,7 @@ import ClaroSolucoes from "./ClaroSolucoes";
 import ClaroServicos from "./ClaroServicos";
 import ClaroDiag from "./ClaroDiag";
 import ClaroFerramentas from "./ClaroFerramentas";
+import ClaroNews from "./ClaroNews";
 import ClaroCaptura from "./ClaroCaptura";
 /* `ClaroBanner` não existe mais: foi APAGADO de ClaroExtra.tsx em 2026-08-15.
    Ficou um ano sem ser montado por rota nenhuma, e era o último consumidor de
@@ -107,6 +108,9 @@ export default function ClaroSite({ services }: { services: ServiceCardData[] })
         <ClaroBlog />
         <ClaroFaq />
         <ClaroContato />
+        {/* Cadastro de novidades (e-mail + WhatsApp) — captura ativa via
+            /api/lead (source=newsletter). Fica no fim, depois do contato. */}
+        <ClaroNews />
       </main>
       <ClaroFooter />
       <ClaroWa />

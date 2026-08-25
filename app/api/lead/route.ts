@@ -7,7 +7,7 @@ export const runtime = "nodejs";
 /** Origens aceitas. Lista fechada de propósito: `source` alimenta o relatório
  *  de origem no painel, e aceitar string livre do cliente encheria o relatório
  *  de lixo (ou de valor forjado por quem chamasse a API na mão). */
-const ORIGENS = ["site", "diagnostico", "afiliado", "ferramenta"] as const;
+const ORIGENS = ["site", "diagnostico", "afiliado", "ferramenta", "newsletter"] as const;
 type Origem = (typeof ORIGENS)[number];
 
 type LeadPayload = {
