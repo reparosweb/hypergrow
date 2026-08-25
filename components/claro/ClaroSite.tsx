@@ -8,6 +8,7 @@ import ClaroShow from "./ClaroShow";
 import ClaroSolucoes from "./ClaroSolucoes";
 import ClaroServicos from "./ClaroServicos";
 import ClaroDiag from "./ClaroDiag";
+import ClaroFerramentas from "./ClaroFerramentas";
 import ClaroCaptura from "./ClaroCaptura";
 /* `ClaroBanner` não existe mais: foi APAGADO de ClaroExtra.tsx em 2026-08-15.
    Ficou um ano sem ser montado por rota nenhuma, e era o último consumidor de
@@ -96,6 +97,10 @@ export default function ClaroSite({ services }: { services: ServiceCardData[] })
         <ClaroCaptura />
         <ClaroServicos services={services} />
         <ClaroDiag />
+        {/* Faixa escura de destaque para as ferramentas grátis (/ferramentas).
+            Entre Diag(plain) e Clientes(alt): tem fundo próprio, então não
+            participa da alternância --paper/--paper-2 das duas vizinhas. */}
+        <ClaroFerramentas />
         <ClaroClientes />
         <ClaroDepoimentos />
         <ClaroSobre />
