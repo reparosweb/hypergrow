@@ -101,8 +101,8 @@ export function ClaroFluxo() {
            Repor o levantar exige especificidade maior, daí o prefixo de id.
            O transition-delay inline (cascata de entrada) também valeria para o
            hover, atrasando o levantar — zera junto. */
-        #processo .cl-fx-node:hover{transition-delay:0s!important;transform:translateY(-4px);border-color:#D6DDEA;box-shadow:var(--sh-2)}
-        .cl-fx-ic{width:44px;height:44px;border-radius:13px;border:1px solid;display:inline-flex;align-items:center;justify-content:center;background:#fff;transition:background .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
+        #processo .cl-fx-node:hover{transition-delay:0s!important;transform:translateY(-4px);border-color:var(--line);box-shadow:var(--sh-2)}
+        .cl-fx-ic{width:44px;height:44px;border-radius:13px;border:1px solid;display:inline-flex;align-items:center;justify-content:center;background:var(--card);transition:background .3s var(--ease),color .3s var(--ease),box-shadow .3s var(--ease),transform .3s var(--ease)}
         .cl-fx-node:hover .cl-fx-ic{transform:translateY(-2px)}
         .cl-fx-n{display:block;margin-top:16px}
         .cl-fx-node b{display:block;font:600 17px var(--disp);letter-spacing:-.02em;color:var(--ink);margin-top:6px;transition:color .3s}
@@ -184,8 +184,8 @@ export function ClaroPortfolio() {
       <style dangerouslySetInnerHTML={{ __html: `
         #portfolio .cl-pf{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:22px;margin-top:44px}
         /* mesma correção de transição explicada na seção do processo */
-        #portfolio .cl-pf-c{display:block;border-radius:18px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--sh-1);transition:opacity .6s var(--ease),transform .34s var(--ease),box-shadow .34s var(--ease),border-color .3s var(--ease);text-decoration:none;color:inherit}
-        #portfolio a.cl-pf-c:hover{transform:translateY(-5px);box-shadow:var(--sh-3);border-color:#D6DDEA}
+        #portfolio .cl-pf-c{display:block;border-radius:18px;overflow:hidden;background:var(--card);border:1px solid var(--line);box-shadow:var(--sh-1);transition:opacity .6s var(--ease),transform .34s var(--ease),box-shadow .34s var(--ease),border-color .3s var(--ease);text-decoration:none;color:inherit}
+        #portfolio a.cl-pf-c:hover{transform:translateY(-5px);box-shadow:var(--sh-3);border-color:var(--line)}
         #portfolio a.cl-pf-c:focus-visible{outline:2px solid var(--brand);outline-offset:3px;transform:translateY(-5px);box-shadow:var(--sh-3)}
         #portfolio .cl-pf-c--fixo{cursor:default}
         #portfolio .dv-screen__img{transition:transform .8s var(--ease)}
@@ -193,7 +193,7 @@ export function ClaroPortfolio() {
         .cl-pf-b{padding:20px}
         .cl-pf-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:11px}
         .cl-pf-tags span{font:600 10.5px var(--text);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2);background:var(--paper-2);border:1px solid var(--line);border-radius:99px;padding:4px 9px;transition:border-color .3s,color .3s}
-        a.cl-pf-c:hover .cl-pf-tags span{border-color:#D6DDEA;color:var(--ink)}
+        a.cl-pf-c:hover .cl-pf-tags span{border-color:var(--line);color:var(--ink)}
         .cl-pf-h{display:flex;align-items:center;gap:10px}
         .cl-pf-b b{display:block;font:600 17.5px var(--disp);letter-spacing:-.02em;color:var(--ink);transition:color .3s}
         .cl-pf-go{flex-shrink:0;margin-left:auto;width:30px;height:30px;border-radius:99px;display:inline-flex;align-items:center;justify-content:center;color:var(--ink-3);background:var(--paper-2);border:1px solid var(--line);transition:transform .3s var(--ease),background .3s var(--ease),color .3s var(--ease),border-color .3s}
@@ -433,7 +433,7 @@ export function ClaroBlog() {
         /* transição completa + hover reposto: ver comentário da causa raiz na
            seção do processo (o .rv.in dos tokens travava o transform). */
         #blog .cl-bl-c{padding:24px;display:flex;flex-direction:column;text-decoration:none;transition:opacity .6s var(--ease),transform .34s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
-        #blog .cl-bl-c:hover{transform:translateY(-4px);box-shadow:var(--sh-2);border-color:#D6DDEA}
+        #blog .cl-bl-c:hover{transform:translateY(-4px);box-shadow:var(--sh-2);border-color:var(--line)}
         #blog .cl-bl-c:focus-visible{outline:2px solid var(--beam,var(--brand));outline-offset:3px;transform:translateY(-4px);box-shadow:var(--sh-2)}
         #blog .cl-bl-meta{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
         #blog .cl-bl-cat{padding:4px 10px;font-size:12px;transition:border-color .3s,color .3s,background .3s}

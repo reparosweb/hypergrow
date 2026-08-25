@@ -81,9 +81,9 @@ const LINKS: [string, string][] = [
 ];
 
 const CSS = `
-  .cl .shc { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: #fff;
+  .cl .shc { position: fixed; top: 0; left: 0; right: 0; z-index: 1000; background: var(--card);
     border-bottom: 1px solid var(--line); transition: box-shadow .35s var(--ease); }
-  .cl .shc.lift { box-shadow: 0 10px 30px -26px rgba(11,18,32,.5); }
+  .cl .shc.lift { box-shadow: 0 10px 30px -26px rgba(0,0,0,.6); }
   .cl .shc-in { display: flex; align-items: center; justify-content: space-between; gap: 18px; height: 88px; }
   .cl .shc-logo { display: inline-flex; align-items: center; min-height: 44px; flex-shrink: 0; }
   .cl .shc-spacer { height: 88px; }
@@ -97,7 +97,7 @@ const CSS = `
   .cl .shc-dw-links a:last-of-type { border-bottom: none; }
   .cl .shc-dw-links a:hover { color: var(--brand); }
   .cl .shc-dw-close { width: 40px; height: 40px; border-radius: 10px; border: 1px solid var(--line);
-    display: inline-flex; align-items: center; justify-content: center; color: var(--ink); background: #fff; }
+    display: inline-flex; align-items: center; justify-content: center; color: var(--ink); background: var(--card); }
 
   @media (max-width: 1180px) {
     .cl .shc-cta { padding: 12px 16px !important; font-size: 13.5px !important; }

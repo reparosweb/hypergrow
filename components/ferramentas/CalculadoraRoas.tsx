@@ -110,7 +110,7 @@ export default function CalculadoraRoas() {
             </div>
 
             <div className="ft-f">
-              <label className="ft-lbl" htmlFor="ft-conv">Taxa de conversão <span style={{ fontWeight: 400, color: "#5A6579" }}>(opcional)</span></label>
+              <label className="ft-lbl" htmlFor="ft-conv">Taxa de conversão <span style={{ fontWeight: 400, color: "var(--ink-3)" }}>(opcional)</span></label>
               <div className="ft-inwrap">
                 <input id="ft-conv" className="ft-in suf" type="text" inputMode="decimal"
                   value={conversao} onChange={(e) => setConversao(e.target.value)} placeholder="2" />
@@ -138,7 +138,7 @@ export default function CalculadoraRoas() {
         </div>
 
         <div className="ft-card">
-          <p className="ft-h">Compare com o que você paga hoje <span style={{ fontWeight: 400, color: "#5A6579" }}>(opcional)</span></p>
+          <p className="ft-h">Compare com o que você paga hoje <span style={{ fontWeight: 400, color: "var(--ink-3)" }}>(opcional)</span></p>
           <p className="ft-sub">Informe o CPC médio da sua campanha e veja, por venda, se está sobrando ou saindo dinheiro.</p>
           <div className="ft-fields">
             <div className="ft-f">

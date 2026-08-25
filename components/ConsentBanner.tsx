@@ -80,19 +80,19 @@ export default function ConsentBanner() {
           fora da rota clara. Cores literais da paleta de propósito.
           Sem crase nos comentarios: isto vive dentro de template literal. */}
       <style dangerouslySetInnerHTML={{ __html: `
-        .hg-consent{position:fixed;z-index:70;left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));max-width:760px;margin-inline:auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 18px;border-radius:16px;background:#FFFFFF;border:1px solid #E3E7EF;box-shadow:0 18px 48px -18px rgba(11,18,32,.28),0 2px 8px rgba(11,18,32,.06);animation:hg-consent-in .38s cubic-bezier(.2,.6,.2,1) both}
+        .hg-consent{position:fixed;z-index:70;left:max(16px,env(safe-area-inset-left));right:max(16px,env(safe-area-inset-right));bottom:calc(16px + env(safe-area-inset-bottom));max-width:760px;margin-inline:auto;display:flex;align-items:center;gap:14px;flex-wrap:wrap;padding:16px 18px;border-radius:16px;background:#151C33;border:1px solid #28324E;box-shadow:0 18px 48px -18px rgba(0,0,0,.6),0 2px 8px rgba(0,0,0,.4);animation:hg-consent-in .38s cubic-bezier(.2,.6,.2,1) both}
         @keyframes hg-consent-in{from{opacity:0;transform:translateY(14px)}}
-        .hg-consent-ic{flex-shrink:0;width:38px;height:38px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;color:#1550E8;background:rgba(21,80,232,.09)}
-        .hg-consent-tx{flex:1;min-width:220px;margin:0;font:400 14px/1.55 var(--font-sans,system-ui,sans-serif);color:#3E4A61}
-        .hg-consent-tx a{color:#1550E8;font-weight:600;text-decoration:underline;text-underline-offset:2px}
+        .hg-consent-ic{flex-shrink:0;width:38px;height:38px;border-radius:11px;display:inline-flex;align-items:center;justify-content:center;color:#4F7CFF;background:rgba(79,124,255,.14)}
+        .hg-consent-tx{flex:1;min-width:220px;margin:0;font:400 14px/1.55 var(--font-sans,system-ui,sans-serif);color:#AEB9D4}
+        .hg-consent-tx a{color:#4F7CFF;font-weight:600;text-decoration:underline;text-underline-offset:2px}
         .hg-consent-btns{display:flex;gap:9px;flex-shrink:0}
         .hg-consent-b{min-height:44px;padding:0 18px;border-radius:11px;font:600 14px var(--font-sans,system-ui,sans-serif);border:1px solid transparent;cursor:pointer;transition:background .2s,border-color .2s,color .2s,transform .2s}
         .hg-consent-b:active{transform:scale(.985)}
-        .hg-consent-b--no{background:#fff;color:#3E4A61;border-color:#E3E7EF}
-        .hg-consent-b--no:hover{border-color:#C7CFDE;color:#0B1220}
+        .hg-consent-b--no{background:#1C2540;color:#AEB9D4;border-color:#28324E}
+        .hg-consent-b--no:hover{border-color:#3E4A6E;color:#EDF1FB}
         .hg-consent-b--yes{background:#1550E8;color:#fff}
         .hg-consent-b--yes:hover{background:#0F3CB5}
-        .hg-consent-b:focus-visible{outline:2px solid #1550E8;outline-offset:3px}
+        .hg-consent-b:focus-visible{outline:2px solid #4F7CFF;outline-offset:3px}
         /* No celular os dois botoes ocupam a linha inteira, lado a lado: alvo
            de toque generoso e nenhum deles escondido abaixo da dobra do card. */
         @media(max-width:560px){

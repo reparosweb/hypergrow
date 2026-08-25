@@ -164,10 +164,10 @@ export default function PageShellClaro({
   );
 }
 
-/* `#5A6579` é o cinza de texto pequeno: `--ink-3` (#6B7688) mede 4,49:1 sobre o
-   papel (#FBFBFD) e reprova por um fio no piso de 4,5:1 da WCAG. Este mede
-   5,74:1 e é o mesmo tom que o token já usa em `.mq-i`. Texto corrido usa
-   `--ink-2` (8,70:1) e título usa `--ink` (17,4:1). */
+/* Texto pequeno e discreto (trilha, legenda de tabela, descrição de card) usa
+   `var(--ink-3)`: no tema escuro tom-Agentop vale um cinza-azulado claro o
+   bastante para passar o piso de 4,5:1 da WCAG sobre as superfícies escuras
+   (--card / --paper-2). Texto corrido usa `--ink-2` e título usa `--ink`. */
 const CSS = `
   /* --beam: a cor da borda de luz viajante (.lit, definida em
      app/claro-tokens.css). Publicar aqui, no shell, e o que UNIFICA o efeito:
@@ -212,9 +212,9 @@ const CSS = `
      10px, então o respiro na tela continua praticamente o mesmo: só a área
      clicável cresceu. */
   .cl .pgc-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; padding-top: 10px;
-    font: 500 12.5px var(--code); letter-spacing: .02em; color: #5A6579; }
+    font: 500 12.5px var(--code); letter-spacing: .02em; color: var(--ink-3); }
   .cl .pgc-crumbs a, .cl .pgc-crumb-now { display: inline-flex; align-items: center; min-height: 44px; }
-  .cl .pgc-crumbs a { color: #5A6579; text-decoration: none; transition: color .2s; }
+  .cl .pgc-crumbs a { color: var(--ink-3); text-decoration: none; transition: color .2s; }
   .cl .pgc-crumbs a:hover { color: var(--acc); }
   .cl .pgc-crumb-now { color: var(--acc); }
 
@@ -232,7 +232,7 @@ const CSS = `
     text-wrap: pretty; }
   .cl .pg-p:last-child { margin-bottom: 0; }
   .cl .pg-p strong { color: var(--ink); font-weight: 600; }
-  .cl .pg-small { font: 400 14px/1.6 var(--text); color: #5A6579; }
+  .cl .pg-small { font: 400 14px/1.6 var(--text); color: var(--ink-3); }
 
   /* filete: substitui o .hairline do tema escuro sem exigir troca de markup */
   .cl .hairline, .cl .pg-hr { border: 0; height: 1px; background: var(--line); margin: 0; }
@@ -247,11 +247,11 @@ const CSS = `
     border-radius: 14px; background: var(--card); box-shadow: var(--sh-1); }
   .cl .pg-table { width: 100%; border-collapse: collapse; min-width: 560px; }
   .cl .pg-table caption { text-align: left; padding: 16px 18px 2px; font: 400 13px/1.5 var(--text);
-    color: #5A6579; caption-side: top; max-width: min(660px, 84vw); }
+    color: var(--ink-3); caption-side: top; max-width: min(660px, 84vw); }
   .cl .pg-table th, .cl .pg-table td { text-align: left; padding: 13px 18px; font: 400 14.5px/1.55 var(--text);
     color: var(--ink-2); border-bottom: 1px solid var(--line-2); vertical-align: top; }
   .cl .pg-table thead th { font: 600 11.5px var(--code); letter-spacing: .09em; text-transform: uppercase;
-    color: #5A6579; background: var(--paper-2); border-bottom: 1px solid var(--line); white-space: nowrap; }
+    color: var(--ink-3); background: var(--paper-2); border-bottom: 1px solid var(--line); white-space: nowrap; }
   .cl .pg-table tbody tr:last-child td, .cl .pg-table tbody tr:last-child th { border-bottom: none; }
   .cl .pg-table tbody th { font: 600 14.5px var(--text); color: var(--ink); }
   .cl .pg-table tbody tr { transition: background .25s var(--ease); }
@@ -263,7 +263,7 @@ const CSS = `
   .cl .pg-table td a, .cl .pg-table tbody th a { display: inline-flex; align-items: center;
     min-height: 44px; margin-block: -10px; }
   .cl .pg-tablehint { display: none; align-items: center; gap: 6px; font: 500 11.5px var(--code);
-    letter-spacing: .1em; text-transform: uppercase; color: #5A6579; margin: 18px 0 8px; }
+    letter-spacing: .1em; text-transform: uppercase; color: var(--ink-3); margin: 18px 0 8px; }
   @media (max-width: 860px) { .cl .pg-tablehint { display: flex; } }
 
   /* ── listas ── */
@@ -280,7 +280,7 @@ const CSS = `
     transition: transform .28s var(--ease), border-color .28s var(--ease), box-shadow .28s var(--ease); }
   .cl .pg-card-t { font: 600 17.5px/1.3 var(--disp); letter-spacing: -.02em; color: var(--ink); margin: 0 0 7px;
     transition: color .25s var(--ease); }
-  .cl .pg-card-d { font: 400 14px/1.6 var(--text); color: #5A6579; margin: 0; }
+  .cl .pg-card-d { font: 400 14px/1.6 var(--text); color: var(--ink-3); margin: 0; }
   .cl .pg-card-go { display: inline-flex; align-items: center; gap: 7px; margin-top: 14px; font: 600 13.5px var(--text);
     color: var(--acc); transition: gap .2s var(--ease); }
   .cl a.pg-card:hover, .cl a.pg-card:focus-visible { transform: translateY(-3px); box-shadow: var(--sh-2);
@@ -310,7 +310,7 @@ const CSS = `
   /* ── bloco de chamada ── */
   .cl .pg-cta { position: relative; overflow: hidden; text-align: center; border-radius: 24px;
     padding: clamp(32px, 5vw, 58px) clamp(20px, 4vw, 44px);
-    background: linear-gradient(180deg, #fff, var(--paper-2)); border: 1px solid var(--line);
+    background: linear-gradient(180deg, var(--card), var(--paper-2)); border: 1px solid var(--line);
     box-shadow: var(--sh-2); }
   .cl .pg-cta::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
     background: linear-gradient(90deg, var(--acc), #5B3CFF 55%, var(--cta)); }
@@ -332,7 +332,12 @@ const CSS = `
   @keyframes pg-reveal-in { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: none; } }
 
   /* ── rodapé (mesmo desenho do rodapé da home) ── */
-  .cl .pgc-ft { background: var(--ink); color: #fff; padding-top: 62px; margin-top: clamp(48px, 6vw, 84px); }
+  /* Faixa escura de rodape. No tema claro o fundo era var(--ink), o token mais
+     escuro da paleta (quase preto). Ao virar escuro, var(--ink) passou a ser
+     quase BRANCO, entao aqui viraria um rodape branco com texto branco. Fixado
+     em var(--paper-2), navy escuro, que recebe bem o texto branco/rgba abaixo.
+     Sem crase neste comentario: isto vive dentro de template literal de CSS. */
+  .cl .pgc-ft { background: var(--paper-2); color: #fff; padding-top: 62px; margin-top: clamp(48px, 6vw, 84px); }
   .cl .pgc-ft-g { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 34px; }
   .cl .pgc-ft-logo { font: 700 26px var(--disp); letter-spacing: -.04em; color: #fff; }
   .cl .pgc-ft-logo-g { background: linear-gradient(96deg, #6E8DFF, #9E8CFF 55%, #FF6FA3);

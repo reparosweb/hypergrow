@@ -450,12 +450,12 @@ const CSS = `
     display: flex; align-items: center; justify-content: center;
     border-radius: clamp(18px, 2vw, 28px); border: 1px solid var(--line);
     background: radial-gradient(120% 90% at 50% -12%, var(--acc-soft), transparent 60%),
-                linear-gradient(180deg, #fff, var(--paper-2));
+                linear-gradient(180deg, var(--card), var(--paper-2));
     box-shadow: var(--sh-3); }
   /* grade técnica, esmaecida nas bordas por máscara (sem blur) */
   .cl .svc-plate-grid { position: absolute; inset: 0; pointer-events: none;
-    background-image: linear-gradient(rgba(11,18,32,.055) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(11,18,32,.055) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(255,255,255,.05) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.05) 1px, transparent 1px);
     background-size: 38px 38px; background-position: center;
     -webkit-mask-image: radial-gradient(72% 72% at 50% 50%, #000, transparent 82%);
     mask-image: radial-gradient(72% 72% at 50% 50%, #000, transparent 82%); }
@@ -476,7 +476,7 @@ const CSS = `
   .cl .svc-plate-foot { position: absolute; left: 0; right: 0; bottom: 0; z-index: 2; display: flex;
     align-items: center; justify-content: space-between; gap: 14px;
     padding: 0 clamp(16px, 2.4vw, 24px) clamp(14px, 2vw, 20px);
-    font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: #5A6579; }
+    font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
   .cl .svc-plate-foot span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .cl .svc-plate-foot-r { color: var(--acc); text-align: right; }
 
@@ -517,20 +517,20 @@ const CSS = `
   /* elemento grafico: foto no 1o bloco, placa do grafismo nos demais */
   .cl .svc-step-fig { position: relative; margin: 0; overflow: hidden; width: 100%;
     aspect-ratio: 4 / 3; border-radius: clamp(18px, 2vw, 26px); border: 1px solid var(--line);
-    background: var(--paper-2); box-shadow: var(--sh-2), inset 0 0 0 1px rgba(255,255,255,.6);
+    background: var(--paper-2); box-shadow: var(--sh-2), inset 0 0 0 1px rgba(255,255,255,.07);
     transition: box-shadow .35s var(--ease), border-color .35s var(--ease); }
   /* moldura dupla (borda + friso interno claro) e resposta propria no hover,
      mesmo nivel de "vivo" que .svc-step-panel:hover ja tem -- antes esta
      caixa era a unica do bloco sem NENHUMA reacao ao passar o mouse. */
   .cl .svc-step-fig:hover { border-color: var(--acc-line);
-    box-shadow: var(--sh-3), inset 0 0 0 1px rgba(255,255,255,.6); }
+    box-shadow: var(--sh-3), inset 0 0 0 1px rgba(255,255,255,.07); }
   .cl .svc-step-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
   .cl .svc-step-plate { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
     background: radial-gradient(120% 92% at 50% -10%, var(--acc-soft), transparent 62%),
-                linear-gradient(180deg, #fff, var(--paper-2)); }
+                linear-gradient(180deg, var(--card), var(--paper-2)); }
   .cl .svc-step-grid { position: absolute; inset: 0; pointer-events: none;
-    background-image: linear-gradient(rgba(11,18,32,.075) 1px, transparent 1px),
-                      linear-gradient(90deg, rgba(11,18,32,.075) 1px, transparent 1px);
+    background-image: linear-gradient(rgba(255,255,255,.06) 1px, transparent 1px),
+                      linear-gradient(90deg, rgba(255,255,255,.06) 1px, transparent 1px);
     background-size: 30px 30px; background-position: center;
     -webkit-mask-image: radial-gradient(80% 78% at 50% 50%, #000, transparent 92%);
     mask-image: radial-gradient(80% 78% at 50% 50%, #000, transparent 92%); }
@@ -551,19 +551,19 @@ const CSS = `
     padding: 0 clamp(14px, 2vw, 20px) clamp(12px, 1.8vw, 17px);
     font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; }
   .cl .svc-step-badge-n { color: var(--acc); font-weight: 700; flex-shrink: 0; }
-  .cl .svc-step-badge-t { color: #5A6579; min-width: 0; overflow: hidden; text-overflow: ellipsis;
+  .cl .svc-step-badge-t { color: var(--ink-3); min-width: 0; overflow: hidden; text-overflow: ellipsis;
     white-space: nowrap; text-align: right; }
   /* variacao discreta entre as placas para os blocos nao ficarem iguais */
   .cl .svc-step:nth-of-type(3) .svc-step-plate { background:
       radial-gradient(110% 88% at 12% 108%, var(--acc-soft), transparent 60%),
-      linear-gradient(180deg, #fff, var(--paper-2)); }
+      linear-gradient(180deg, var(--card), var(--paper-2)); }
   .cl .svc-step:nth-of-type(3) .svc-step-glyph { width: min(84%, 440px); }
   /* 4a placa: recorte macro do mesmo desenho (o grafismo estoura a moldura e a
      placa corta). E o que evita tres placas iguais numa pagina de 4 blocos sem
      precisar de mais uma foto de banco. */
   .cl .svc-step:nth-of-type(4) .svc-step-plate { background:
       radial-gradient(100% 84% at 92% 6%, var(--acc-soft), transparent 58%),
-      linear-gradient(180deg, #fff, var(--paper-2)); }
+      linear-gradient(180deg, var(--card), var(--paper-2)); }
   .cl .svc-step:nth-of-type(4) .svc-step-glyph { width: min(118%, 620px); transform: translateX(-13%); }
   @media (max-width: 600px) {
     .cl .svc-step:nth-of-type(4) .svc-step-glyph { width: min(100%, 420px); transform: none; }
@@ -621,7 +621,7 @@ const CSS = `
     max-width: 68ch; text-wrap: pretty; }
 
   /* ── outros serviços do mesmo pilar ───────────────────────────────────── */
-  .cl .svc-rel-sub { font: 400 15.5px/1.6 var(--text); color: #5A6579; margin: 12px 0 0; max-width: 56ch; }
+  .cl .svc-rel-sub { font: 400 15.5px/1.6 var(--text); color: var(--ink-3); margin: 12px 0 0; max-width: 56ch; }
   .cl .svc-rel { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 250px), 1fr));
     gap: 16px; margin-top: clamp(24px, 3vw, 32px); }
   .cl .svc-rel-card { display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
@@ -635,7 +635,7 @@ const CSS = `
   .cl .svc-rel-title { font: 700 16.5px/1.3 var(--disp); letter-spacing: -.02em; color: var(--ink);
     transition: color .25s var(--ease); }
   .cl .svc-rel-card:hover .svc-rel-title { color: var(--acc); }
-  .cl .svc-rel-desc { font: 400 14px/1.55 var(--text); color: #5A6579; }
+  .cl .svc-rel-desc { font: 400 14px/1.55 var(--text); color: var(--ink-3); }
   .cl .svc-rel-go { margin-top: auto; padding-top: 10px; display: inline-flex; align-items: center; gap: 7px;
     font: 600 13px var(--text); color: var(--acc); }
   .cl .svc-rel-card:hover .svc-arrow { transform: translateX(3px); }
@@ -646,7 +646,7 @@ const CSS = `
     border-top: 1px solid var(--line); }
   .cl .svc-all-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
   .cl .svc-all-h { font: 600 12px var(--text); text-transform: uppercase; letter-spacing: .16em;
-    color: #5A6579; margin: 0; }
+    color: var(--ink-3); margin: 0; }
   .cl .svc-all-link { display: inline-flex; align-items: center; min-height: 44px; gap: 7px;
     font: 600 13.5px var(--text); color: var(--acc); text-decoration: none; }
   .cl .svc-all-link:hover .svc-arrow { transform: translateX(3px); }

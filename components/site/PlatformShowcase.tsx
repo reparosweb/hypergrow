@@ -41,11 +41,13 @@ import {
      é dado compartilhado e o tom escuro continua válido para quem usá-lo.
    ──────────────────────────────────────────────────────────────────────────── */
 
+/* 2026-08-16: clareadas para o tema escuro (as originais eram calibradas sobre
+   papel branco e sumiam sobre o card navy). Mesmas famílias, mais vivas. */
 const TONE_CLARO: Record<PlatformCategory, string> = {
-  loja: "#1550E8",        // azul de marca — 6,14:1
-  erp: "#3B2FCC",         // violeta — 8,32:1
-  hub: "#0A6C9E",         // azul-petróleo — 5,62:1
-  marketplace: "#B0155F", // rosa — 6,58:1
+  loja: "#5B84FF",        // azul de marca
+  erp: "#7C6BFF",         // violeta
+  hub: "#38A9E0",         // azul-petróleo
+  marketplace: "#FF5C93", // rosa
 };
 
 /* `--beam` é o que a classe `.lit` (app/servicos/[slug]/page.tsx e o resto do
@@ -284,7 +286,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         }
         .plat-stat-l {
           font: 500 11px var(--font-sans); letter-spacing: 0.14em; text-transform: uppercase;
-          color: #5A6579;
+          color: var(--ink-3);
         }
 
         /* ── cabeçalho de cada grupo ──────────────────────────────────── */
@@ -307,7 +309,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         }
         .plat-group-c {
           font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
-          color: #5A6579;
+          color: var(--ink-3);
         }
         .plat-group-c::before { content: '· '; }
         .plat-group-p {
@@ -345,7 +347,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         }
         .plat-origin {
           font-size: 9.5px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
-          color: #5A6579;
+          color: var(--ink-3);
           padding: 3px 7px; border-radius: 3px;
           border: 1px solid var(--line);
           background: var(--paper-2);
@@ -374,7 +376,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         .plat-hint {
           display: none; align-items: center; gap: 6px;
           font: 500 11.5px var(--font-mono); letter-spacing: 0.1em; text-transform: uppercase;
-          color: #5A6579; margin: 20px 0 8px;
+          color: var(--ink-3); margin: 20px 0 8px;
         }
         @media (max-width: 860px) { .plat-hint { display: flex; } }
 
@@ -392,7 +394,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
            legenda viraria um bloco de 720px que só se lê rolando de lado. */
         .plat-caption {
           caption-side: top; text-align: left;
-          font: 400 12.5px/1.5 var(--font-sans); color: #5A6579;
+          font: 400 12.5px/1.5 var(--font-sans); color: var(--ink-3);
           padding: 15px clamp(14px, 2vw, 20px) 14px;
           max-width: min(660px, 84vw);
         }
@@ -406,7 +408,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         }
         .plat-table thead th {
           font: 600 10px var(--font-mono); letter-spacing: 0.18em; text-transform: uppercase;
-          color: #5A6579; white-space: nowrap;
+          color: var(--ink-3); white-space: nowrap;
           background: var(--paper-2);
           border-top: 1px solid var(--line);
           border-bottom: 1px solid var(--line);
@@ -425,7 +427,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
            zeraria font-size/font-family de qualquer regra mais fraca. */
         .plat-table td.plat-td-origin {
           font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.12em;
-          text-transform: uppercase; color: #5A6579; white-space: nowrap;
+          text-transform: uppercase; color: var(--ink-3); white-space: nowrap;
         }
         /* o ponto de categoria vai inline: um <td> com display:flex sai do
            layout de tabela e a coluna deixa de calcular largura direito. */
@@ -437,7 +439,7 @@ export default function PlatformShowcase({ id = "plataformas" }: { id?: string }
         }
 
         .plat-legend {
-          font: 400 12.5px/1.6 var(--font-sans); color: #5A6579;
+          font: 400 12.5px/1.6 var(--font-sans); color: var(--ink-3);
           margin: 14px 0 0; max-width: 70ch;
         }
         .plat-legend strong {

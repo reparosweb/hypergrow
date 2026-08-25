@@ -177,8 +177,8 @@ const CSS = `
      na vertical. Um ícone SVG não é texto de mesma altura de linha, então aqui
      a centralização é garantida explicitamente em vez de confiar no mesmo
      comportamento herdado. */
-  .bp-search-ic { top: 50%; transform: translateY(-50%); display: flex; align-items: center; color: #8A94A6; }
-  .bp-count { flex: 0 0 auto; font: 500 13px var(--text); color: #5A6579; white-space: nowrap; }
+  .bp-search-ic { top: 50%; transform: translateY(-50%); display: flex; align-items: center; color: var(--ink-3); }
+  .bp-count { flex: 0 0 auto; font: 500 13px var(--text); color: var(--ink-3); white-space: nowrap; }
 
   /* fileira de categorias: rola de lado no celular (não cabem sete chips numa
      tela de 360px), vira fileira que quebra normalmente a partir de 640px. */
@@ -210,7 +210,7 @@ const CSS = `
   .bp-card-t { font: 600 17.5px/1.32 var(--disp); letter-spacing: -.02em; color: var(--ink); margin: 2px 0 0; }
   .bp-card-r { font: 400 14px/1.55 var(--text); color: var(--ink-2); margin: 0; }
   .bp-prompt-k { font: 600 10.5px var(--code); letter-spacing: .12em; text-transform: uppercase;
-    color: #5A6579; margin-top: 4px; }
+    color: var(--ink-3); margin-top: 4px; }
   .bp-prompt { margin: 0; max-height: 240px; overflow-y: auto; -webkit-overflow-scrolling: touch; }
   .bp-card .ft-mini { width: 100%; margin-top: auto; }
 

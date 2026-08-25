@@ -399,7 +399,7 @@ export default function ClaroNav({ services }: { services: ServiceCardData[] }) 
               style={{
                 width: 40, height: 40, borderRadius: 10, border: "1px solid var(--line)",
                 display: "inline-flex", alignItems: "center", justifyContent: "center",
-                color: "var(--ink)", background: "#fff",
+                color: "var(--ink)", background: "var(--card)",
               }}
             >
               <X size={18} aria-hidden />

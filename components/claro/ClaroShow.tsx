@@ -54,13 +54,15 @@ type ShowItem = {
   Scene: (props: { c: string }) => JSX.Element;
 };
 
+/* Cores clareadas para o tema escuro (2026-08-16): as originais eram do mockup
+   claro e ficavam apagadas sobre o navy. Mesmas famílias, mais vivas. */
 const ITEMS: ShowItem[] = [
-  { key: "ecom", titulo: "E-commerce & operação", frase: "Produto entrando na loja e o estoque batendo com o ERP.", Icon: ShoppingBag,  hex: "#3B2FCC", Scene: SceneEcom },
-  { key: "pres", titulo: "Presença & autoridade", frase: "Sua marca escalando até a primeira posição.",              Icon: Search,      hex: "#07835C", Scene: SceneSEO },
-  { key: "aqui", titulo: "Aquisição paga",        frase: "Cliques entrando no funil e saindo como venda.",           Icon: Target,      hex: "#A8560B", Scene: SceneFunil },
-  { key: "auto", titulo: "Automação & IA",        frase: "Uma conversa que se resolve sozinha às 22h47.",            Icon: Sparkles,    hex: "#0A6C9E", Scene: SceneChat },
-  { key: "cont", titulo: "Conteúdo & mídia",      frase: "Publicação no ar e o engajamento subindo.",                Icon: Clapperboard,hex: "#B0155F", Scene: SceneSocial },
-  { key: "estr", titulo: "Estrutura comercial",   frase: "O negócio andando de etapa em etapa, com previsão.",       Icon: GitMerge,    hex: "#1B3B8B", Scene: SceneCRM },
+  { key: "ecom", titulo: "E-commerce & operação", frase: "Produto entrando na loja e o estoque batendo com o ERP.", Icon: ShoppingBag,  hex: "#7C6BFF", Scene: SceneEcom },
+  { key: "pres", titulo: "Presença & autoridade", frase: "Sua marca escalando até a primeira posição.",              Icon: Search,      hex: "#22C39A", Scene: SceneSEO },
+  { key: "aqui", titulo: "Aquisição paga",        frase: "Cliques entrando no funil e saindo como venda.",           Icon: Target,      hex: "#E0913E", Scene: SceneFunil },
+  { key: "auto", titulo: "Automação & IA",        frase: "Uma conversa que se resolve sozinha às 22h47.",            Icon: Sparkles,    hex: "#38A9E0", Scene: SceneChat },
+  { key: "cont", titulo: "Conteúdo & mídia",      frase: "Publicação no ar e o engajamento subindo.",                Icon: Clapperboard,hex: "#FF5C93", Scene: SceneSocial },
+  { key: "estr", titulo: "Estrutura comercial",   frase: "O negócio andando de etapa em etapa, com previsão.",       Icon: GitMerge,    hex: "#5B84FF", Scene: SceneCRM },
 ];
 
 const AUTO_MS = 5600;
@@ -231,13 +233,13 @@ export default function ClaroShow() {
 const STAGE_CSS = `
   .shw { display: grid; grid-template-columns: .86fr 1.14fr; gap: 32px; margin-top: 44px; align-items: center; }
   .shw-rail { display: flex; flex-direction: column; gap: 10px; }
-  .shw-btn { position: relative; overflow: hidden; display: flex; align-items: flex-start; gap: 13px; text-align: left; padding: 16px 17px; border-radius: 16px; border: 1px solid var(--line); background: #fff; box-shadow: var(--sh-1); transition: border-color .26s var(--ease), background .26s var(--ease), box-shadow .26s var(--ease), transform .26s var(--ease); }
+  .shw-btn { position: relative; overflow: hidden; display: flex; align-items: flex-start; gap: 13px; text-align: left; padding: 16px 17px; border-radius: 16px; border: 1px solid var(--line); background: var(--card); box-shadow: var(--sh-1); transition: border-color .26s var(--ease), background .26s var(--ease), box-shadow .26s var(--ease), transform .26s var(--ease); }
   .shw-btn::before { content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 3px 3px 0; background: var(--beam); opacity: 0; transform: scaleY(.25); transition: opacity .26s var(--ease), transform .26s var(--ease); }
   .shw-btn.on::before, .shw-btn:hover::before, .shw-btn:focus-visible::before { opacity: 1; transform: none; }
   .shw-btn:hover { border-color: color-mix(in srgb, var(--beam) 42%, var(--line)); transform: translateX(3px); box-shadow: var(--sh-2); }
-  .shw-btn.on { background: color-mix(in srgb, var(--beam) 5%, white); border-color: color-mix(in srgb, var(--beam) 32%, var(--line)); box-shadow: var(--sh-2); }
+  .shw-btn.on { background: color-mix(in srgb, var(--beam) 5%, var(--card)); border-color: color-mix(in srgb, var(--beam) 32%, var(--line)); box-shadow: var(--sh-2); }
   .shw-btn:focus-visible { outline: 2px solid var(--beam); outline-offset: 3px; }
-  .shw-ic { flex-shrink: 0; width: 42px; height: 42px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--beam) 20%, white); background: color-mix(in srgb, var(--beam) 8%, white); color: var(--beam); display: inline-flex; align-items: center; justify-content: center; transition: color .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease); }
+  .shw-ic { flex-shrink: 0; width: 42px; height: 42px; border-radius: 12px; border: 1px solid color-mix(in srgb, var(--beam) 20%, var(--card)); background: color-mix(in srgb, var(--beam) 8%, var(--card)); color: var(--beam); display: inline-flex; align-items: center; justify-content: center; transition: color .3s var(--ease), background .3s var(--ease), border-color .3s var(--ease), box-shadow .3s var(--ease); }
   .shw-btn.on .shw-ic, .shw-btn:hover .shw-ic, .shw-btn:focus-visible .shw-ic { color: #fff; background: var(--beam); border-color: var(--beam); box-shadow: 0 10px 24px -10px var(--beam); }
   .shw-tx { min-width: 0; flex: 1; }
   .shw-tx b { display: block; font: 600 15px/1.3 var(--text); color: var(--ink); transition: color .3s var(--ease); }

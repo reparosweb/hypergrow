@@ -49,16 +49,18 @@ const QUESTOES: Q[] = [
    BI"...) que não batiam com nenhum serviço do site. `bodyGeneric` é o
    fallback de quem não teve nenhuma resposta 0 (ver `weak`/`bodySecond`
    abaixo, onde a 2ª frase passa a citar o ponto fraco real quando existe). */
+/* hex dos estágios clareados para o tema escuro (2026-08-16): rosa/âmbar/azul
+   mais vivos para acender o medidor e o veredito sobre o card navy. */
 const RESULTADOS = [
-  { max: 2, stage: "Estágio 1 · Improviso", hex: "#B0155F", verdict: "Sua empresa cresce por esforço, não por sistema.",
+  { max: 2, stage: "Estágio 1 · Improviso", hex: "#FF5C93", verdict: "Sua empresa cresce por esforço, não por sistema.",
     bodyIntro: "Você já provou que o produto funciona.",
     bodyGeneric: "O que falta é parar de depender de sorte — antes de colocar mais dinheiro em anúncio, fechamos o balde furado.",
     next: ["Criação de Site & Landing Pages", "Automações & IA", "Marketing Digital & Tráfego Pago"] },
-  { max: 5, stage: "Estágio 2 · Tração", hex: "#A8560B", verdict: "Você tem demanda. Ainda não tem previsibilidade.",
+  { max: 5, stage: "Estágio 2 · Tração", hex: "#E0913E", verdict: "Você tem demanda. Ainda não tem previsibilidade.",
     bodyIntro: "Entra pedido, sai venda, mas ninguém consegue prometer o mês que vem.",
     bodyGeneric: "O gargalo quase sempre está na passagem do marketing para o comercial.",
     next: ["Auditoria Comercial", "Marketing Digital & Tráfego Pago", "CRM com IA"] },
-  { max: 8, stage: "Estágio 3 · Escala", hex: "#1550E8", verdict: "A base está de pé. Agora é multiplicar.",
+  { max: 8, stage: "Estágio 3 · Escala", hex: "#5B84FF", verdict: "A base está de pé. Agora é multiplicar.",
     bodyIntro: "Você mede, tem processo e time.",
     bodyGeneric: "Daqui para frente o ganho vem de eficiência: baixar o custo de aquisição e abrir canais novos sem quebrar o que já funciona.",
     next: ["SEO: Site no Topo dos Buscadores", "Automações & IA", "CRM com IA"] },
@@ -287,14 +289,14 @@ export default function ClaroDiag() {
         #diagnostico .cl-dg-cap{margin-top:24px;padding-top:22px;border-top:1px solid var(--line-2)}
         #diagnostico .cl-dg-cap-l{display:block;font:600 14.5px var(--text);color:var(--ink)}
         #diagnostico .cl-dg-cap-row{display:flex;gap:9px;margin-top:10px;flex-wrap:wrap}
-        #diagnostico .cl-dg-cap-row input{flex:1;min-width:190px;min-height:48px;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:#fff;font:400 15px var(--text);color:var(--ink);transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
-        #diagnostico .cl-dg-cap-row input::placeholder{color:#9AA4B4}
+        #diagnostico .cl-dg-cap-row input{flex:1;min-width:190px;min-height:48px;padding:12px 14px;border:1px solid var(--line);border-radius:11px;background:var(--card);font:400 15px var(--text);color:var(--ink);transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
+        #diagnostico .cl-dg-cap-row input::placeholder{color:var(--ink-3)}
         #diagnostico .cl-dg-cap-row input:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(21,80,232,.18)}
         #diagnostico .cl-dg-cap-row input[aria-invalid=true]{border-color:var(--cta);background:rgba(224,22,95,.035)}
         #diagnostico .cl-dg-cap-row .btn{flex-shrink:0}
-        #diagnostico .cl-dg-cap-e{display:block;margin-top:7px;font:500 12.5px var(--text);color:#B0155F}
+        #diagnostico .cl-dg-cap-e{display:block;margin-top:7px;font:500 12.5px var(--text);color:var(--cta)}
         #diagnostico .cl-dg-cap-note{display:block;margin-top:9px;font:400 12.5px var(--text);color:var(--ink-3)}
-        #diagnostico .cl-dg-ok{display:flex;align-items:center;gap:9px;margin-top:24px;padding:14px 16px;border-radius:12px;background:rgba(15,157,88,.08);border:1px solid rgba(15,157,88,.24);font:500 14.5px var(--text);color:#0B7A4C}
+        #diagnostico .cl-dg-ok{display:flex;align-items:center;gap:9px;margin-top:24px;padding:14px 16px;border-radius:12px;background:rgba(15,157,88,.08);border:1px solid rgba(15,157,88,.24);font:500 14.5px var(--text);color:var(--wa)}
         /* No celular o botao vai para a linha de baixo, largura total: campo de
            e-mail espremido ao lado de um botao e o erro classico de formulario
            em tela pequena. */
@@ -310,7 +312,7 @@ export default function ClaroDiag() {
         #diagnostico .cl-dg-q{margin-top:13px;text-wrap:pretty}
         #diagnostico .cl-dg-s{margin-top:9px}
         #diagnostico .cl-dg-opts{display:flex;flex-direction:column;gap:10px;margin-top:24px}
-        #diagnostico .cl-dg-opt{display:flex;align-items:center;gap:13px;width:100%;min-height:56px;text-align:left;padding:15px 16px;border-radius:13px;border:1px solid var(--line);background:#fff;font:500 15.5px var(--text);color:var(--ink);transition:transform .24s var(--ease),border-color .24s var(--ease),background .24s var(--ease),box-shadow .24s var(--ease)}
+        #diagnostico .cl-dg-opt{display:flex;align-items:center;gap:13px;width:100%;min-height:56px;text-align:left;padding:15px 16px;border-radius:13px;border:1px solid var(--line);background:var(--card);font:500 15.5px var(--text);color:var(--ink);transition:transform .24s var(--ease),border-color .24s var(--ease),background .24s var(--ease),box-shadow .24s var(--ease)}
         #diagnostico .cl-dg-opt-t{flex:1}
         #diagnostico .cl-dg-opt:hover{border-color:var(--brand);background:rgba(21,80,232,.05);transform:translateX(4px);box-shadow:var(--sh-2)}
         #diagnostico .cl-dg-opt:focus-visible{outline:2px solid var(--brand);outline-offset:2px;border-color:var(--brand);transform:translateX(4px)}

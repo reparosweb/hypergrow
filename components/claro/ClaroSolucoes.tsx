@@ -182,12 +182,12 @@ export default function ClaroSolucoes({ services }: { services: ServiceCardData[
       <style dangerouslySetInnerHTML={{ __html: `
         /* ── abas ───────────────────────────────────────────────────────── */
         #solucoes .sol-tabs{display:flex;gap:10px;flex-wrap:wrap;margin-top:40px}
-        #solucoes .sol-tab{position:relative;display:inline-flex;align-items:center;min-height:44px;gap:9px;padding:11px 17px;border-radius:99px;border:1px solid var(--line);background:#fff;font:500 14.5px var(--text);color:var(--ink-2);box-shadow:var(--sh-1);transition:color .26s var(--ease),background .26s var(--ease),border-color .26s var(--ease),box-shadow .26s var(--ease),transform .26s var(--ease)}
+        #solucoes .sol-tab{position:relative;display:inline-flex;align-items:center;min-height:44px;gap:9px;padding:11px 17px;border-radius:99px;border:1px solid var(--line);background:var(--card);font:500 14.5px var(--text);color:var(--ink-2);box-shadow:var(--sh-1);transition:color .26s var(--ease),background .26s var(--ease),border-color .26s var(--ease),box-shadow .26s var(--ease),transform .26s var(--ease)}
         #solucoes .sol-tab-ic{display:inline-flex;align-items:center;color:var(--ink-3);transition:color .26s var(--ease)}
         #solucoes .sol-tab-n{font:600 11px var(--code);background:var(--paper-2);color:var(--ink-3);border-radius:99px;padding:2px 7px;transition:color .26s var(--ease),background .26s var(--ease)}
         #solucoes .sol-tab:not(.on):hover{color:var(--ink);border-color:color-mix(in srgb,var(--beam) 40%,var(--line));transform:translateY(-2px);box-shadow:var(--sh-2)}
         #solucoes .sol-tab:not(.on):hover .sol-tab-ic{color:var(--beam)}
-        #solucoes .sol-tab:not(.on):hover .sol-tab-n{background:color-mix(in srgb,var(--beam) 12%,white);color:var(--beam)}
+        #solucoes .sol-tab:not(.on):hover .sol-tab-n{background:color-mix(in srgb,var(--beam) 12%,var(--card));color:var(--beam)}
         #solucoes .sol-tab.on{font-weight:600;color:#fff;background:var(--beam);border-color:var(--beam);box-shadow:0 12px 26px -14px var(--beam)}
         #solucoes .sol-tab.on .sol-tab-ic{color:#fff}
         #solucoes .sol-tab.on .sol-tab-n{background:rgba(255,255,255,.24);color:#fff}
@@ -200,7 +200,7 @@ export default function ClaroSolucoes({ services }: { services: ServiceCardData[
         @keyframes sol-figin{from{opacity:0;transform:translateY(10px)}}
         #solucoes .sol-fig img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 30%;filter:contrast(1.04) saturate(.95);transition:transform .65s var(--ease)}
         #solucoes .sol-fig:hover img{transform:scale(1.045)}
-        #solucoes .sol-fig figcaption{position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;gap:11px;background:rgba(255,255,255,.95);border-radius:14px;padding:13px 15px;box-shadow:var(--sh-2);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
+        #solucoes .sol-fig figcaption{position:absolute;left:14px;right:14px;bottom:14px;display:flex;align-items:center;gap:11px;background:var(--card);border-radius:14px;padding:13px 15px;box-shadow:var(--sh-2);transition:transform .35s var(--ease),box-shadow .35s var(--ease)}
         #solucoes .sol-fig:hover figcaption{transform:translateY(-3px);box-shadow:var(--sh-3)}
         #solucoes .sol-cap-dot{width:8px;height:8px;border-radius:99px;flex-shrink:0;background:var(--beam)}
         #solucoes .sol-fig b{display:block;font:600 14px/1.3 var(--text);color:var(--ink)}
@@ -224,7 +224,7 @@ export default function ClaroSolucoes({ services }: { services: ServiceCardData[
         /* mesmo brilho de borda do :hover (regra .lit em app/claro-tokens.css),
            agora também para quem navega por teclado. */
         #solucoes .sol-card:focus-visible::after{opacity:1;animation:cl-ba 2.4s linear infinite}
-        #solucoes .sol-ic{flex-shrink:0;width:40px;height:40px;border-radius:11px;border:1px solid color-mix(in srgb,var(--beam) 15%,white);background:color-mix(in srgb,var(--beam) 7%,white);color:var(--beam);display:inline-flex;align-items:center;justify-content:center;transition:color .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
+        #solucoes .sol-ic{flex-shrink:0;width:40px;height:40px;border-radius:11px;border:1px solid color-mix(in srgb,var(--beam) 15%,var(--card));background:color-mix(in srgb,var(--beam) 7%,var(--card));color:var(--beam);display:inline-flex;align-items:center;justify-content:center;transition:color .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
         #solucoes .sol-card:hover .sol-ic,#solucoes .sol-card:focus-visible .sol-ic{color:#fff!important;background:var(--beam)!important;border-color:var(--beam);box-shadow:0 10px 24px -10px var(--beam)}
         /* textos escopados em .sol-tx (e não em ".sol-card span"): a regra
            genérica antiga vencia por especificidade e virava display:block no

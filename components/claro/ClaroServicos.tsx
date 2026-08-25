@@ -202,7 +202,7 @@ export default function ClaroServicos({ services }: { services: ServiceCardData[
         #catalogo .svm-flag{position:absolute;top:14px;right:14px;padding:4px 10px;font-size:11.5px;z-index:2}
         #catalogo .svm-card:has(.svm-flag) .svm-t{padding-right:96px}
         @media(max-width:600px){#catalogo .svm-card:has(.svm-flag) .svm-t{padding-right:0}#catalogo .svm-flag{position:static;align-self:flex-start}}
-        #catalogo .svm-ic{flex-shrink:0;width:44px;height:44px;border-radius:12px;border:1px solid color-mix(in srgb,var(--beam) 18%,white);background:color-mix(in srgb,var(--beam) 8%,white);color:var(--beam);display:inline-flex;align-items:center;justify-content:center;transition:color .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
+        #catalogo .svm-ic{flex-shrink:0;width:44px;height:44px;border-radius:12px;border:1px solid color-mix(in srgb,var(--beam) 18%,var(--card));background:color-mix(in srgb,var(--beam) 8%,var(--card));color:var(--beam);display:inline-flex;align-items:center;justify-content:center;transition:color .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
         #catalogo .svm-t{font:600 16px/1.35 var(--text);color:var(--ink);transition:color .3s var(--ease)}
         #catalogo .svm-d{flex:1;font:400 14px/1.55 var(--text);color:var(--ink-2);display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:2;overflow:hidden}
         #catalogo .svm-go{display:inline-flex;align-items:center;gap:6px;margin-top:2px;font:600 13.5px var(--text);color:var(--beam);opacity:0;transform:translateX(-5px);transition:opacity .28s var(--ease),transform .28s var(--ease)}

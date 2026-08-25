@@ -379,7 +379,7 @@ export default function GeradorUtm() {
                     {c.obrig ? (
                       <span style={{ fontWeight: 600, color: "var(--acc)" }}>obrigatório</span>
                     ) : (
-                      <span style={{ fontWeight: 400, color: "#5A6579" }}>(opcional)</span>
+                      <span style={{ fontWeight: 400, color: "var(--ink-3)" }}>(opcional)</span>
                     )}
                   </label>
                   <input
@@ -394,7 +394,7 @@ export default function GeradorUtm() {
                     value={valores[c.chave]}
                     onChange={(e) => setValor(c.chave, e.target.value)}
                   />
-                  <span className="ft-hint" style={lista.length ? { color: "#8A5A00", fontWeight: 500 } : undefined}>
+                  <span className="ft-hint" style={lista.length ? { color: "#F2C27A", fontWeight: 500 } : undefined}>
                     {lista.length ? "Tem " + lista.join(", ") + " — isso divide o relatório em linhas separadas." : c.dica}
                   </span>
                 </div>

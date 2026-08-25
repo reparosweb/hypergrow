@@ -41,24 +41,39 @@
   --text:var(--font-sans);
   --code:var(--font-mono);
 
-  /* superfícies claras — valores exatos do light.css original */
-  --paper:#FBFBFD; --paper-2:#F2F4F8; --card:#FFFFFF;
-  --ink:#0B1220; --ink-2:#3E4A61; --ink-3:#6B7688; --line:#E3E7EF; --line-2:#EEF1F6;
+  /* ══ TEMA ESCURO tom-Agentop (2026-08-16) ══════════════════════════════════
+     REVERSÃO EXPLÍCITA da paleta clara. O dono viu o site claro e pediu, com
+     confirmação direta nesta sessão ("o site TODO vira escuro tom-Agentop"),
+     para virar tudo escuro nos tons do hero do Agentop (navy + azul + violeta +
+     magenta), "os mesmos tons mas modifique um pouco pra não ficar igual".
+     Base do Agentop medida ao vivo em agentop.com.br: navy ~#050B18, azul
+     #1565FF, violeta #5B3CFF, magenta #FF2D7A. Aqui: navy um pouco mais claro e
+     azulado (#0A0F1E), azul mais vivo pro fundo escuro (#4F7CFF) — a
+     modificação pedida, não é cópia exata.
 
-  /* marca — azul + rosa do mockup original */
-  --brand:#1550E8; --brand-d:#0F3CB5;
-  --cta:#E0165F; --cta-d:#B90E4C;
-  --wa:#0F9D58; /* verde do WhatsApp: cor esperada do canal, não faz parte da paleta de marca */
+     Como funciona a virada: quase tudo no site lê `var(--paper/--card/--ink/
+     --line/--sh-*)`, então mudar estes valores no centro escurece a maior parte
+     sozinho. O que estava com cor CLARA chumbada nos componentes (ex.:
+     `background:#fff`) foi varrido à parte — cor chumbada não segue o token. */
+  --paper:#0A0F1E; --paper-2:#111730; --card:#151C33;
+  --ink:#EDF1FB; --ink-2:#AEB9D4; --ink-3:#7C89A6; --line:#28324E; --line-2:#1C2540;
 
-  /* 4 cores de pilar, herdadas dos 6 "departamentos" do mockup original —
-     usadas só pelo mapa em components/claro/claroPillarAccent.ts, nunca em
-     lib/pillars.ts (compartilhado com produção). */
-  --d-ecom:#3B2FCC; --d-aqui:#A8560B; --d-cont:#B0155F; --d-auto:#0A6C9E;
+  /* marca — azul do Agentop levemente mais vivo (fundo escuro pede acento mais
+     claro) + magenta do Agentop no CTA. */
+  --brand:#4F7CFF; --brand-d:#3A63EA;
+  --cta:#FF2D7A; --cta-d:#E01463;
+  --wa:#22C36B; /* verde do WhatsApp, levemente mais vivo pro escuro */
+
+  /* 4 cores de pilar. No escuro elas viram acento sobre navy: mantidas na
+     mesma família mas clareadas para passar contraste sobre --card escuro.
+     Usadas só por components/claro/claroPillarAccent.ts. */
+  --d-ecom:#7C6BFF; --d-aqui:#E0913E; --d-cont:#FF5C93; --d-auto:#38A9E0;
 
   --ease:cubic-bezier(.2,.6,.2,1);
-  --sh-1:0 1px 2px rgba(11,18,32,.05);
-  --sh-2:0 10px 30px -12px rgba(11,18,32,.14),0 2px 6px rgba(11,18,32,.05);
-  --sh-3:0 28px 60px -24px rgba(11,18,32,.22),0 4px 12px rgba(11,18,32,.06);
+  /* sombras no escuro = preto mais fundo (a sombra clara some no navy). */
+  --sh-1:0 1px 2px rgba(0,0,0,.5);
+  --sh-2:0 10px 30px -12px rgba(0,0,0,.62),0 2px 6px rgba(0,0,0,.45);
+  --sh-3:0 28px 60px -24px rgba(0,0,0,.78),0 4px 12px rgba(0,0,0,.5);
   /* 1180 -> 1440 -> 1680 no mesmo dia (2026-08-16): o dono viu a página real
      num monitor largo e seguiu achando estreito mesmo depois do primeiro
      degrau -- 1440px de conteúdo numa tela de 1920px ainda sobra cerca de
@@ -213,10 +228,12 @@
    texto branco — #E0165F é escuro o bastante pra branco passar contraste). */
 .cl .btn-p{background:var(--cta);color:#fff;box-shadow:0 12px 28px -14px rgba(224,22,95,.7)}
 .cl .btn-p:hover,.cl .btn-p:focus-visible{background:var(--cta-d);color:#fff;transform:translateY(-3px) scale(1.015);box-shadow:0 22px 46px -16px rgba(224,22,95,.85)}
-.cl .btn-s{background:#fff;color:var(--ink);border-color:var(--line);box-shadow:var(--sh-1)}
+.cl .btn-s{background:var(--card);color:var(--ink);border-color:var(--line);box-shadow:var(--sh-1)}
 .cl .btn-s:hover,.cl .btn-s:focus-visible{border-color:var(--acc,#C7CFDE);color:var(--acc,var(--ink));transform:translateY(-3px) scale(1.015);box-shadow:var(--sh-2),0 0 0 1px var(--acc-soft,transparent)}
-.cl .btn-d{background:var(--ink);color:#fff}
-.cl .btn-d:hover,.cl .btn-d:focus-visible{background:#1A2436;color:#fff;transform:translateY(-3px) scale(1.015);box-shadow:0 18px 38px -16px rgba(11,18,32,.55)}
+/* No tema escuro o "botao escuro" nao pode usar var(--ink) (agora quase branco):
+   ele vira uma superficie navy um pouco mais clara que o card, com texto claro. */
+.cl .btn-d{background:#26315A;color:#fff;border-color:rgba(255,255,255,.1)}
+.cl .btn-d:hover,.cl .btn-d:focus-visible{background:#303E70;color:#fff;transform:translateY(-3px) scale(1.015);box-shadow:0 18px 38px -16px rgba(0,0,0,.6)}
 .cl .btn-wa{background:var(--wa);color:#fff}
 .cl .btn-wa:hover,.cl .btn-wa:focus-visible{background:#0B8146;color:#fff;transform:translateY(-3px) scale(1.015);box-shadow:0 18px 38px -16px rgba(11,159,73,.55)}
 
@@ -248,7 +265,7 @@
 /* paridade de teclado: a borda de luz também acende no foco, não só no hover */
 .cl .lit:focus-visible::after,.cl .lit:focus-within::after{opacity:1;animation:cl-ba 2.4s linear infinite}
 @media(prefers-reduced-motion:reduce){.cl .lit:hover::after,.cl .lit:focus-visible::after,.cl .lit:focus-within::after{animation:none}}
-.cl .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:#fff;border-radius:99px;padding:6px 12px;font:500 13px var(--text);color:var(--ink-2)}
+.cl .chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:var(--card);border-radius:99px;padding:6px 12px;font:500 13px var(--text);color:var(--ink-2)}
 
 /* reveal — mesmo princípio do .reveal do site escuro, escopado à rota /claro */
 .cl .rv{opacity:0;transform:translateY(20px);transition:opacity .7s var(--ease),transform .7s var(--ease)}
@@ -307,7 +324,7 @@
    Pedido direto: "deve acender e trocar de cor". Agora vai para a cor de marca
    com leve brilho de texto (text-shadow, não filter:blur -- trava scroll no
    celular, regra já documentada neste projeto) e um piso sutil por trás. */
-.cl .mq-i{white-space:nowrap;font:700 19px var(--disp);letter-spacing:-.02em;color:#5A6579;padding:4px 10px;border-radius:8px;transition:color .3s var(--ease),text-shadow .3s var(--ease),background-color .3s var(--ease)}
+.cl .mq-i{white-space:nowrap;font:700 19px var(--disp);letter-spacing:-.02em;color:var(--ink-2);padding:4px 10px;border-radius:8px;transition:color .3s var(--ease),text-shadow .3s var(--ease),background-color .3s var(--ease)}
 .cl .mq-i:hover{color:var(--brand);text-shadow:0 0 18px color-mix(in srgb,var(--brand) 45%,transparent);background-color:color-mix(in srgb,var(--brand) 8%,transparent)}
 @media(prefers-reduced-motion:reduce){.cl .mq-t{animation:none}}
 
@@ -322,14 +339,14 @@
    do conteúdo do corpo (que ganhou o padding compensatório) e o cabeçalho
    "pularia" alguns pixels no instante em que o menu abre. */
 .cl .hd{position:fixed;inset:0 0 auto;z-index:900;padding-top:var(--sa-t);padding-right:var(--cl-sb,0px);transition:background .35s var(--ease),box-shadow .35s,border-color .35s;border-bottom:1px solid transparent}
-.cl .hd.on{background:rgba(255,255,255,.92);backdrop-filter:blur(14px);border-color:var(--line);box-shadow:0 1px 0 rgba(13,16,19,.03)}
+.cl .hd.on{background:rgba(11,16,32,.86);backdrop-filter:blur(14px);border-color:var(--line);box-shadow:0 1px 0 rgba(0,0,0,.4)}
 /* Regra 5 da skill hg-regras-de-bug: NUNCA backdrop-filter em elemento grande e
    fixo — é o que já travou a rolagem no mobile deste projeto. A barra ocupa a
    largura inteira da tela e fica fixa: em aparelho sem ponteiro fino (celular e
    tablet) o desfoque é trocado por um branco quase opaco, que dá a mesma
    leitura de "vidro" sem repintar a cada quadro de rolagem. */
 @media(hover:none),(max-width:900px){
-  .cl .hd.on{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(255,255,255,.97)}
+  .cl .hd.on{backdrop-filter:none;-webkit-backdrop-filter:none;background:rgba(11,16,32,.97)}
 }
 .cl .hd-in{display:flex;align-items:center;justify-content:space-between;height:var(--hd-h);gap:18px}
 .cl .nl{display:flex;align-items:center;gap:6px}
@@ -353,7 +370,7 @@
 .cl .ni{position:relative}
 .cl .ni .chev{transition:transform .25s var(--ease)}
 .cl .ni:hover .chev{transform:rotate(180deg)}
-.cl .pop{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(8px);opacity:0;visibility:hidden;background:#fff;border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-3);padding:12px;transition:opacity .24s var(--ease),transform .24s var(--ease);z-index:950}
+.cl .pop{position:absolute;top:calc(100% + 10px);left:50%;transform:translateX(-50%) translateY(8px);opacity:0;visibility:hidden;background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--sh-3);padding:12px;transition:opacity .24s var(--ease),transform .24s var(--ease);z-index:950}
 .cl .ni:hover .pop{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
 .cl .pop::before{content:'';position:absolute;top:-12px;left:0;right:0;height:12px}
 
@@ -398,7 +415,7 @@
    por baixo (scroll chaining). A outra metade é a trava de `body` feita no
    ClaroNav. Padding: entalhe em cima, barra de gestos embaixo, e o lado direito
    nunca menor que a área segura (iPhone deitado). */
-.cl .dw-p{position:absolute;inset:0 0 0 auto;width:min(400px,90vw);max-width:100%;background:#fff;padding:calc(22px + var(--sa-t)) max(22px,var(--sa-r)) calc(22px + var(--sa-b)) 22px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;box-shadow:-24px 0 60px -20px rgba(13,16,19,.3);animation:cl-dwin .34s var(--ease)}
+.cl .dw-p{position:absolute;inset:0 0 0 auto;width:min(400px,90vw);max-width:100%;background:var(--card);padding:calc(22px + var(--sa-t)) max(22px,var(--sa-r)) calc(22px + var(--sa-b)) 22px;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch;box-shadow:-24px 0 60px -20px rgba(0,0,0,.6);animation:cl-dwin .34s var(--ease)}
 @keyframes cl-dwin{from{transform:translateX(100%)}}
 @media(prefers-reduced-motion:reduce){.cl .dw-p{animation:none}}
 .cl .acc{border-bottom:1px solid var(--line-2)}
@@ -410,7 +427,7 @@
 .cl .acc-b a:hover{background:var(--paper-2);color:var(--ink)}
 
 @media(max-width:1180px){.cl .nl{display:none}.cl .burger{display:inline-flex!important}}
-.cl .burger{display:none;width:46px;height:46px;border-radius:11px;border:1px solid var(--line);background:#fff;align-items:center;justify-content:center;color:var(--ink);flex-shrink:0}
+.cl .burger{display:none;width:46px;height:46px;border-radius:11px;border:1px solid var(--line);background:var(--card);align-items:center;justify-content:center;color:var(--ink);flex-shrink:0}
 /* BUG CRITICO achado pelo auditor (2026-08-06): nada protegia o espaco do
    burger -- em qualquer iphone padrao (390px) o CTA "Falar com especialista"
    do cabecalho (.hd-cta, ClaroNav.tsx) empurrava o botao de menu quase

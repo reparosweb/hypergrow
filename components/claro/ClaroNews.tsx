@@ -132,7 +132,7 @@ export default function ClaroNews() {
         .cl .cl-news-form{min-width:0;display:flex;flex-direction:column;gap:12px}
         .cl .cl-news-row{display:flex;flex-direction:column;gap:6px}
         .cl .cl-news-lbl{font:600 13px var(--font-sans);color:var(--ink)}
-        .cl .cl-news-in{width:100%;min-height:50px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:#fff;font:400 15px var(--font-sans);color:var(--ink);
+        .cl .cl-news-in{width:100%;min-height:50px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);font:400 15px var(--font-sans);color:var(--ink);
           transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
         .cl .cl-news-in::placeholder{color:#9AA4B4}
         .cl .cl-news-in:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--acc-soft)}

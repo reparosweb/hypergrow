@@ -36,7 +36,7 @@ const CSS = `
     box-shadow: var(--sh-1); padding: clamp(15px, 3.6vw, 26px); min-width: 0; }
   .cl .ft-card + .ft-card { margin-top: 16px; }
   .cl .ft-h { font: 600 15.5px/1.35 var(--text); color: var(--ink); margin: 0 0 4px; }
-  .cl .ft-sub { font: 400 13.5px/1.55 var(--text); color: #5A6579; margin: 0 0 16px; }
+  .cl .ft-sub { font: 400 13.5px/1.55 var(--text); color: var(--ink-3); margin: 0 0 16px; }
   .cl .ft-sub:last-child { margin-bottom: 0; }
 
   /* ══ campos ═════════════════════════════════════════════════════════════ */
@@ -44,17 +44,17 @@ const CSS = `
   .cl .ft-f { display: flex; flex-direction: column; gap: 7px; min-width: 0; }
   .cl .ft-full { grid-column: 1 / -1; }
   .cl .ft-lbl { font: 600 13px/1.35 var(--text); color: var(--ink-2); }
-  .cl .ft-hint { font: 400 12px/1.45 var(--text); color: #5A6579; }
+  .cl .ft-hint { font: 400 12px/1.45 var(--text); color: var(--ink-3); }
   .cl .ft-inwrap { position: relative; display: flex; align-items: center; min-width: 0; }
-  .cl .ft-pre, .cl .ft-suf { position: absolute; font: 600 14px var(--text); color: #5A6579; pointer-events: none; }
+  .cl .ft-pre, .cl .ft-suf { position: absolute; font: 600 14px var(--text); color: var(--ink-3); pointer-events: none; }
   .cl .ft-pre { left: 13px; }
   .cl .ft-suf { right: 13px; }
   .cl .ft-in { width: 100%; min-width: 0; min-height: 50px; border: 1px solid var(--line); border-radius: 12px;
-    background: #fff; color: var(--ink); font: 500 16px var(--text); padding: 12px 14px;
+    background: var(--card); color: var(--ink); font: 500 16px var(--text); padding: 12px 14px;
     transition: border-color .2s var(--ease), box-shadow .2s var(--ease); }
   .cl .ft-in.pre { padding-left: 42px; }
   .cl .ft-in.suf { padding-right: 40px; }
-  .cl .ft-in::placeholder { color: #9AA4B4; font-weight: 400; }
+  .cl .ft-in::placeholder { color: var(--ink-3); font-weight: 400; }
   /* Sem outline:none aqui: isso apagaria tambem o anel de :focus-visible e
      quem navega por teclado ficaria sem saber onde esta. */
   .cl .ft-in:focus { border-color: var(--acc); box-shadow: 0 0 0 3px var(--acc-soft); }
@@ -63,15 +63,15 @@ const CSS = `
   /* ══ etiquetas clicaveis (presets) ══════════════════════════════════════ */
   .cl .ft-chips { display: flex; flex-wrap: wrap; gap: 8px; }
   .cl .ft-chip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 8px 14px;
-    border-radius: 99px; border: 1px solid var(--line); background: #fff; color: var(--ink-2);
+    border-radius: 99px; border: 1px solid var(--line); background: var(--card); color: var(--ink-2);
     font: 600 13px var(--text); transition: border-color .2s var(--ease), color .2s var(--ease), background .2s var(--ease); }
-  .cl .ft-chip:hover { border-color: #C7CFDE; }
+  .cl .ft-chip:hover { border-color: var(--ink-3); }
   .cl .ft-chip[aria-pressed="true"] { border-color: var(--acc); color: var(--acc); background: var(--acc-soft); }
   .cl .ft-chip small { font: 500 12px var(--code); opacity: .72; }
 
   /* ══ resultado ══════════════════════════════════════════════════════════ */
   .cl .ft-res { border-radius: 18px; padding: clamp(16px, 3.8vw, 24px); min-width: 0;
-    background: linear-gradient(152deg, var(--ink) 0%, #1A2439 100%); box-shadow: var(--sh-2); }
+    background: linear-gradient(152deg, #1F2B4E 0%, #141B31 100%); box-shadow: var(--sh-2); }
   .cl .ft-res-k { font: 600 10.5px var(--code); letter-spacing: .14em; text-transform: uppercase;
     color: rgba(255,255,255,.64); margin: 0 0 7px; }
   .cl .ft-res-v { font: 700 clamp(28px, 8.4vw, 40px)/1.04 var(--disp); letter-spacing: -.03em; color: #fff;
@@ -95,7 +95,7 @@ const CSS = `
      de resultado ja mora na coluna da direita. Sem blur: so degrade. */
   .cl .ft-live { position: sticky; top: 88px; z-index: 6; display: flex; align-items: center; gap: 10px;
     flex-wrap: wrap; justify-content: space-between; margin: 0 0 14px; padding: 10px 15px; border-radius: 14px;
-    background: linear-gradient(120deg, var(--ink), #1B2540); box-shadow: 0 16px 32px -20px rgba(11,18,32,.75); }
+    background: linear-gradient(120deg, #1F2B4E, #141B31); box-shadow: 0 16px 32px -20px rgba(0,0,0,.7); }
   .cl .ft-live-k { font: 600 10px var(--code); letter-spacing: .12em; text-transform: uppercase;
     color: rgba(255,255,255,.62); display: block; }
   .cl .ft-live-v { font: 700 19px/1.15 var(--disp); letter-spacing: -.02em; color: #fff; overflow-wrap: anywhere; }
@@ -115,9 +115,9 @@ const CSS = `
   .cl .ft-alert { display: flex; gap: 10px; align-items: flex-start; border-radius: 13px; padding: 12px 14px;
     font: 400 13.5px/1.5 var(--text); margin-top: 14px; }
   .cl .ft-alert svg { flex-shrink: 0; margin-top: 1px; }
-  .cl .ft-alert.warn { background: #FFF7E8; border: 1px solid #F2DCAE; color: #6B4A05; }
-  .cl .ft-alert.bad { background: #FDEDF2; border: 1px solid #F3C6D6; color: #8A0F3C; }
-  .cl .ft-alert.ok { background: #EAF7F0; border: 1px solid #BFE5D2; color: #0B5637; }
+  .cl .ft-alert.warn { background: rgba(240,180,60,.12); border: 1px solid rgba(240,180,60,.32); color: #F2C27A; }
+  .cl .ft-alert.bad { background: rgba(255,45,122,.12); border: 1px solid rgba(255,45,122,.32); color: #FF9DBF; }
+  .cl .ft-alert.ok { background: rgba(34,195,107,.13); border: 1px solid rgba(34,195,107,.32); color: #6FE0A6; }
   .cl .ft-alert.info { background: var(--paper-2); border: 1px solid var(--line); color: var(--ink-2); }
   .cl .ft-alert b { font-weight: 600; }
 
@@ -125,9 +125,9 @@ const CSS = `
   .cl .ft-acts { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 16px; }
   .cl .ft-acts .btn { flex: 1 1 auto; min-width: min(190px, 100%); min-height: 50px; }
   .cl .ft-mini { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px;
-    padding: 10px 15px; border-radius: 11px; border: 1px solid var(--line); background: #fff; color: var(--ink-2);
+    padding: 10px 15px; border-radius: 11px; border: 1px solid var(--line); background: var(--card); color: var(--ink-2);
     font: 600 13.5px var(--text); transition: border-color .2s var(--ease), color .2s var(--ease); }
-  .cl .ft-mini:hover { border-color: #C7CFDE; color: var(--ink); }
+  .cl .ft-mini:hover { border-color: var(--ink-3); color: var(--ink); }
   .cl .ft-mini.on { border-color: var(--acc); color: var(--acc); background: var(--acc-soft); }
 
   /* ══ saida de texto (link gerado) ═══════════════════════════════════════ */
@@ -147,10 +147,10 @@ const CSS = `
 
   /* ══ contadores (simulador do Google) ═══════════════════════════════════ */
   .cl .ft-meter { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap;
-    font: 500 12.5px var(--text); color: #5A6579; }
+    font: 500 12.5px var(--text); color: var(--ink-3); }
   .cl .ft-meter b { font: 600 12.5px var(--code); color: var(--ink-2); }
-  .cl .ft-meter.warn b { color: #8A5A00; }
-  .cl .ft-meter.bad b { color: #B90E4C; }
+  .cl .ft-meter.warn b { color: #F2C27A; }
+  .cl .ft-meter.bad b { color: #FF9DBF; }
   .cl .ft-track { height: 5px; border-radius: 99px; background: var(--line-2); overflow: hidden; margin-top: 7px; }
   .cl .ft-fill { height: 100%; border-radius: 99px; background: var(--acc); transition: width .25s var(--ease), background .25s; }
   .cl .ft-fill.warn { background: #E0A008; }
@@ -178,7 +178,7 @@ const CSS = `
     border: 1px solid var(--line); margin-bottom: 14px; }
   .cl .ft-tab { min-height: 40px; padding: 8px 16px; border-radius: 9px; border: 0; background: transparent;
     font: 600 13.5px var(--text); color: var(--ink-2); transition: background .2s var(--ease), color .2s var(--ease); }
-  .cl .ft-tab[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: var(--sh-1); }
+  .cl .ft-tab[aria-selected="true"] { background: var(--card); color: var(--ink); box-shadow: var(--sh-1); }
 
   /* ══ conteudo de apoio (formulas, perguntas) ════════════════════════════ */
   .cl .ft-form { display: grid; gap: 12px; margin: 0; }
@@ -205,5 +205,5 @@ const CSS = `
 
   /* ══ selo de gratuito ═══════════════════════════════════════════════════ */
   .cl .ft-free { display: inline-flex; align-items: center; gap: 7px; border-radius: 99px; padding: 7px 13px;
-    background: #EAF7F0; border: 1px solid #BFE5D2; color: #0B5637; font: 600 12px var(--text); }
+    background: rgba(34,195,107,.13); border: 1px solid rgba(34,195,107,.32); color: #6FE0A6; font: 600 12px var(--text); }
 `;

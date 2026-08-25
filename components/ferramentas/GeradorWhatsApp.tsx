@@ -251,7 +251,7 @@ export default function GeradorWhatsApp() {
 
             <div className="ft-f ft-full">
               <label className="ft-lbl" htmlFor="ft-msg">
-                Mensagem que já vem digitada <span style={{ fontWeight: 400, color: "#5A6579" }}>(opcional)</span>
+                Mensagem que já vem digitada <span style={{ fontWeight: 400, color: "var(--ink-3)" }}>(opcional)</span>
               </label>
               <textarea
                 id="ft-msg"

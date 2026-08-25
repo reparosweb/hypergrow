@@ -85,7 +85,7 @@ export function ClaroResultados() {
         #resultados .cl-res-c{position:relative;padding:32px 26px 28px;transition:opacity .6s var(--ease),transform .34s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
         /* hover reposto com id: ".cl .rv.in{transform:none}" da folha de tokens
            vence o ".cl .card:hover" e travava o levantar de todo card revelado. */
-        #resultados .cl-res-c:hover{transition-delay:0s!important;transform:translateY(-4px);box-shadow:var(--sh-2);border-color:#D6DDEA}
+        #resultados .cl-res-c:hover{transition-delay:0s!important;transform:translateY(-4px);box-shadow:var(--sh-2);border-color:var(--line)}
         #resultados .cl-res-n{position:absolute;top:-16px;left:26px;width:36px;height:36px;border-radius:99px;color:#fff;display:inline-flex;align-items:center;justify-content:center;font:700 15px var(--disp);box-shadow:var(--sh-2);transition:transform .32s var(--ease),box-shadow .32s var(--ease);z-index:5}
         #resultados .cl-res-c:hover .cl-res-n{transform:scale(1.1) translateY(-2px);box-shadow:0 12px 24px -10px var(--beam,var(--brand))}
         #resultados .cl-res-k{display:block}
@@ -182,7 +182,7 @@ export function ClaroDepoimentos() {
         #depoimentos .cl-dp{margin-top:44px}
         /* mesma correção de transição explicada em #resultados */
         #depoimentos .cl-dp-c{padding:26px;display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:opacity .6s var(--ease),transform .34s var(--ease),box-shadow .3s var(--ease),border-color .3s var(--ease)}
-        #depoimentos .cl-dp-c:hover{transform:translateY(-4px);box-shadow:var(--sh-2);border-color:#D6DDEA}
+        #depoimentos .cl-dp-c:hover{transform:translateY(-4px);box-shadow:var(--sh-2);border-color:var(--line)}
         #depoimentos .cl-dp-c:focus-visible{outline:2px solid var(--beam);outline-offset:3px;transform:translateY(-4px);box-shadow:var(--sh-2)}
         #depoimentos .cl-dp-tag{align-self:flex-start;display:inline-flex;align-items:center;padding:4px 10px;border-radius:99px;border:1px solid;font:600 11.5px var(--text)}
         #depoimentos .cl-dp-n{display:block;font:700 17.5px/1.3 var(--disp);letter-spacing:-.02em;color:var(--ink);margin-top:14px;transition:color .3s var(--ease)}
@@ -240,8 +240,8 @@ export function ClaroFaq() {
         #faq .cl-faq-i{position:relative;padding:0;overflow:hidden;transition:opacity .6s var(--ease),transform .34s var(--ease),border-color .3s var(--ease),box-shadow .3s var(--ease)}
         /* acordeão não levanta no hover: o card fica parado e responde com
            borda + fundo, senão o item pula debaixo do cursor ao abrir. */
-        #faq .cl-faq-i:hover{transform:none;border-color:#CFD8E8;box-shadow:var(--sh-2)}
-        #faq .cl-faq-i.on{border-color:#C9D6F5;box-shadow:var(--sh-2)}
+        #faq .cl-faq-i:hover{transform:none;border-color:var(--line);box-shadow:var(--sh-2)}
+        #faq .cl-faq-i.on{border-color:var(--line);box-shadow:var(--sh-2)}
         #faq .cl-faq-i::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--brand),#5B3CFF);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease)}
         #faq .cl-faq-i.on::before{transform:scaleY(1)}
         #faq .cl-faq-b{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:none;border:none;border-radius:17px;padding:20px 22px;min-height:64px;font:600 16.5px/1.4 var(--text);color:var(--ink);transition:background .25s var(--ease),color .25s var(--ease)}
@@ -491,7 +491,7 @@ export function ClaroContato() {
       </div>
       <style dangerouslySetInnerHTML={{ __html: `
         #contato .cl-ct-face{display:flex;align-items:center;gap:13px;margin-top:24px}
-        #contato .cl-ct-face img{width:72px;height:72px;border-radius:99px;object-fit:cover;object-position:50% 22%;flex-shrink:0;box-shadow:var(--sh-2);border:2px solid #fff;outline:1px solid var(--line)}
+        #contato .cl-ct-face img{width:72px;height:72px;border-radius:99px;object-fit:cover;object-position:50% 22%;flex-shrink:0;box-shadow:var(--sh-2);border:2px solid var(--paper);outline:1px solid var(--line)}
         #contato .cl-ct-face b{display:block;font:600 14.5px var(--text);color:var(--ink)}
         #contato .cl-ct-face em{display:block;font:400 13px/1.4 var(--text);font-style:normal;color:var(--ink-3);margin-top:2px}
         #contato .cl-ct-l{margin-top:18px;display:flex;flex-direction:column;gap:12px}
@@ -536,22 +536,22 @@ export function ClaroContato() {
         #contato .cl-f--mt{margin-top:15px}
         #contato .cl-f label{display:block;font:600 13.5px var(--text);color:var(--ink-2)}
         #contato .cl-f label i{font-style:normal;color:var(--cta)}
-        #contato .cl-f input,#contato .cl-f select,#contato .cl-f textarea{display:block;width:100%;box-sizing:border-box;margin-top:7px;min-height:48px;padding:13px 14px;border:1px solid var(--line);border-radius:11px;background:#fff;font:400 15.5px var(--text);color:var(--ink);transition:border-color .2s var(--ease),box-shadow .2s var(--ease),background .2s}
-        #contato .cl-f input::placeholder,#contato .cl-f textarea::placeholder{color:#9AA4B4}
-        #contato .cl-f input:hover,#contato .cl-f select:hover,#contato .cl-f textarea:hover{border-color:#C7CFDE}
+        #contato .cl-f input,#contato .cl-f select,#contato .cl-f textarea{display:block;width:100%;box-sizing:border-box;margin-top:7px;min-height:48px;padding:13px 14px;border:1px solid var(--line);border-radius:11px;background:var(--card);font:400 15.5px var(--text);color:var(--ink);transition:border-color .2s var(--ease),box-shadow .2s var(--ease),background .2s}
+        #contato .cl-f input::placeholder,#contato .cl-f textarea::placeholder{color:var(--ink-3)}
+        #contato .cl-f input:hover,#contato .cl-f select:hover,#contato .cl-f textarea:hover{border-color:var(--line)}
         /* foco: anel grosso o bastante para enxergar de longe, na cor da marca */
         #contato .cl-f input:focus,#contato .cl-f select:focus,#contato .cl-f textarea:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px rgba(21,80,232,.18)}
         /* erro: borda + fundo + ícone + texto, não só uma borda vermelha */
         #contato .cl-f input[aria-invalid=true],#contato .cl-f textarea[aria-invalid=true]{border-color:var(--cta);background:rgba(224,22,95,.035)}
         #contato .cl-f input[aria-invalid=true]:focus,#contato .cl-f textarea[aria-invalid=true]:focus{border-color:var(--cta);box-shadow:0 0 0 3px rgba(224,22,95,.18)}
-        #contato .cl-f-e{display:flex;align-items:center;gap:6px;margin-top:6px;font:500 12.5px var(--text);color:#B0155F}
+        #contato .cl-f-e{display:flex;align-items:center;gap:6px;margin-top:6px;font:500 12.5px var(--text);color:var(--cta)}
         #contato .cl-f textarea{resize:vertical;min-height:112px}
         #contato .cl-f-sel{position:relative}
         #contato .cl-f-sel select{appearance:none;-webkit-appearance:none;padding-right:42px;cursor:pointer}
         #contato .cl-f-sel svg{position:absolute;right:14px;bottom:16px;color:var(--ink-3);pointer-events:none;transition:transform .25s var(--ease),color .25s}
         #contato .cl-f-sel:hover svg{color:var(--ink-2)}
         #contato .cl-f-sel select:focus + svg{color:var(--brand);transform:translateY(1px)}
-        #contato .cl-fm-err{display:flex;align-items:center;gap:8px;margin-top:14px;padding:12px 14px;border-radius:11px;background:rgba(224,22,95,.07);border:1px solid rgba(224,22,95,.25);font:500 14px var(--text);color:#B0155F}
+        #contato .cl-fm-err{display:flex;align-items:center;gap:8px;margin-top:14px;padding:12px 14px;border-radius:11px;background:rgba(224,22,95,.07);border:1px solid rgba(224,22,95,.25);font:500 14px var(--text);color:var(--cta)}
         #contato .cl-fm-b{width:100%;margin-top:20px}
         #contato .cl-fm-b .cl-arw{transition:transform .25s var(--ease)}
         #contato .cl-fm-b:hover .cl-arw{transform:translateX(3px)}
@@ -636,7 +636,7 @@ export function ClaroFooter() {
           Agora têm 40px de alvo, sublinhado que cresce da esquerda e anel de
           foco visível — é o bloco mais usado por quem navega só de teclado. */}
       <style dangerouslySetInnerHTML={{ __html: `
-        .cl-ft{background:var(--ink);color:#fff;padding-top:66px}
+        .cl-ft{background:var(--paper-2);color:#fff;padding-top:66px}
         .cl-ft-g{display:grid;grid-template-columns:1.4fr 1fr 1fr 1fr;gap:34px}
         /* LG da escala oficial: a partir de 1180px o menu já virou burger, então
            o corpo também comprime — quatro colunas com 34px de gap deixavam a

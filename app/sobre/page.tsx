@@ -152,7 +152,7 @@ export default function SobrePage() {
                           No ar ↗
                         </a>
                       ) : (
-                        <span style={{ color: "#5A6579" }}>Uso interno</span>
+                        <span style={{ color: "var(--ink-3)" }}>Uso interno</span>
                       )}
                     </td>
                   </tr>

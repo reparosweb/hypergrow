@@ -13,10 +13,15 @@ import type { PillarKey } from "@/lib/pillars";
    Todas saem da paleta desta rota (azul #1550E8 → violeta #3B2FCC/#5B3CFF →
    rosa #E0165F, mais os tons de apoio do mockup): nenhuma cor inventada.
    ──────────────────────────────────────────────────────────────────────────── */
+/* 2026-08-16: tema virou ESCURO tom-Agentop. As cores acima eram calibradas
+   para passar contraste sobre PAPEL BRANCO; sobre o navy escuro (--card #151C33)
+   elas ficavam fracas (violeta e petróleo escuros quase sumiam). Aqui estão as
+   MESMAS famílias, clareadas para acender sobre o escuro — é a cor que tinge a
+   página inteira do serviço (via PageShellClaro), então precisa de brilho. */
 export const CLARO_PILLAR_ACCENT: Record<PillarKey, string> = {
-  site: "#1550E8", // azul de marca — o site é a base de tudo
-  ecommerce: "#3B2FCC", // violeta — herdou a cor que era do "vender online"
-  marketing: "#A8560B", // laranja — mesma de antes ("atrair demanda")
-  midia: "#B0155F", // rosa — mesma de antes ("marca & conteúdo")
-  ia: "#0A6C9E", // azul petróleo — mesma de antes ("operar com IA")
+  site: "#5B84FF", // azul de marca, mais vivo pro escuro
+  ecommerce: "#7C6BFF", // violeta clareado
+  marketing: "#E0913E", // laranja/âmbar clareado
+  midia: "#FF5C93", // rosa clareado
+  ia: "#38A9E0", // azul petróleo clareado
 };

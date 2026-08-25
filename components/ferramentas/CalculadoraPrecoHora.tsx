@@ -183,7 +183,7 @@ export default function CalculadoraPrecoHora() {
         </div>
 
         <div className="ft-card">
-          <p className="ft-h">Preço de um projeto específico <span style={{ fontWeight: 400, color: "#5A6579" }}>(opcional)</span></p>
+          <p className="ft-h">Preço de um projeto específico <span style={{ fontWeight: 400, color: "var(--ink-3)" }}>(opcional)</span></p>
           <p className="ft-sub">Informe as horas estimadas de um projeto para ver o valor total nesse preço por hora.</p>
           <div className="ft-fields">
             <div className="ft-f">

@@ -30,16 +30,19 @@ body {
    2. O `body` continuava #0D1013 com dois raios índigo/ciano fixos. Como `.cl`
       é só uma <div>, esse fundo escuro aparecia no rubber-band do iOS e atrás
       de qualquer área não pintada. */
+/* 2026-08-16: tema virou ESCURO tom-Agentop (ver claro-tokens.css). color-scheme
+   volta a dark para barra de rolagem, <select> e autofill ficarem escuros dentro
+   do site escuro; o fundo do documento acompanha o --paper novo (#0A0F1E) para
+   o rubber-band do iOS não revelar branco atrás. */
 html:has(.cl) {
-  color-scheme: light;
-  /* impede que o rubber-band revele o que estiver atrás do documento */
+  color-scheme: dark;
   overscroll-behavior-y: none;
-  background: #FBFBFD;
+  background: #0A0F1E;
 }
 html:has(.cl) body {
-  background-color: #FBFBFD;
+  background-color: #0A0F1E;
   background-image: none;
-  color: #0B1220;
+  color: #EDF1FB;
   overscroll-behavior-y: none;
 }
 

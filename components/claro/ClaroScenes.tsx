@@ -232,22 +232,22 @@ export const SCENE_CSS = `
   /* o padding de baixo (56px, não 30) reserva a faixa da .st-tag: sem ele, a
      cena mais alta (ranking + barras) encostava na etiqueta em telas curtas. */
 
-  .st-tag { position: absolute; left: 20px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 8px 14px; font: 600 13px var(--text); color: var(--ink); box-shadow: var(--sh-2); animation: stfade .5s var(--ease) 1.4s both; }
+  .st-tag { position: absolute; left: 20px; bottom: 18px; display: inline-flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 8px 14px; font: 600 13px var(--text); color: var(--ink); box-shadow: var(--sh-2); animation: stfade .5s var(--ease) 1.4s both; }
   .st-tag-ok::before { content: ''; width: 7px; height: 7px; border-radius: 99px; background: var(--c); box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 22%, transparent); }
   @keyframes stfade { from { opacity: 0; transform: translateY(8px); } }
 
-  .st-win { width: min(420px, 100%); background: #fff; border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--sh-2); overflow: hidden; }
+  .st-win { width: min(420px, 100%); background: var(--card); border: 1px solid var(--line); border-radius: 14px; box-shadow: var(--sh-2); overflow: hidden; }
   .st-bar { display: flex; gap: 6px; padding: 11px 13px; border-bottom: 1px solid var(--line-2); background: var(--paper-2); }
-  .st-bar i { width: 8px; height: 8px; border-radius: 99px; background: #D3DAE7; }
+  .st-bar i { width: 8px; height: 8px; border-radius: 99px; background: var(--line); }
   .st-prods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 14px; }
   .st-prod { border: 1px solid var(--line-2); border-radius: 10px; padding: 9px; animation: stpop .5s var(--ease) both; }
-  .st-prod b { display: block; height: 34px; border-radius: 7px; background: linear-gradient(120deg, color-mix(in srgb, var(--c) 16%, #fff), var(--paper-2)); }
-  .st-prod em { display: block; height: 6px; border-radius: 99px; background: #E6EAF2; margin-top: 8px; }
-  .st-prod u { display: block; height: 6px; width: 55%; border-radius: 99px; background: color-mix(in srgb, var(--c) 45%, #fff); margin-top: 5px; }
+  .st-prod b { display: block; height: 34px; border-radius: 7px; background: linear-gradient(120deg, color-mix(in srgb, var(--c) 16%, var(--card)), var(--paper-2)); }
+  .st-prod em { display: block; height: 6px; border-radius: 99px; background: var(--line); margin-top: 8px; }
+  .st-prod u { display: block; height: 6px; width: 55%; border-radius: 99px; background: color-mix(in srgb, var(--c) 45%, var(--card)); margin-top: 5px; }
   @keyframes stpop { from { opacity: 0; transform: translateY(10px) scale(.96); } }
 
   .st-sync { display: flex; align-items: center; gap: 12px; }
-  .st-pill { font: 600 12.5px var(--text); color: var(--ink); background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 7px 14px; box-shadow: var(--sh-1); }
+  .st-pill { font: 600 12.5px var(--text); color: var(--ink); background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 7px 14px; box-shadow: var(--sh-1); }
   .st-wire { position: relative; width: 110px; height: 2px; background: var(--line); border-radius: 99px; overflow: hidden; }
   /* translateX no lugar do 'left' do design: 'left' recalcula layout a cada
      quadro. O ponto tem 30% da largura do fio, então 466% dele percorre
@@ -256,7 +256,7 @@ export const SCENE_CSS = `
   @keyframes stwire { from { transform: translateX(0); } to { transform: translateX(466%); } }
 
   .st-rank { width: min(400px, 100%); display: flex; flex-direction: column; gap: 7px; }
-  .st-row { display: flex; align-items: center; gap: 11px; background: #fff; border: 1px solid var(--line); border-radius: 11px; padding: 11px 13px; font: 500 14px var(--text); color: var(--ink-2); box-shadow: var(--sh-1); animation: strow .55s var(--ease) both; }
+  .st-row { display: flex; align-items: center; gap: 11px; background: var(--card); border: 1px solid var(--line); border-radius: 11px; padding: 11px 13px; font: 500 14px var(--text); color: var(--ink-2); box-shadow: var(--sh-1); animation: strow .55s var(--ease) both; }
   .st-row b { width: 24px; height: 24px; flex-shrink: 0; border-radius: 7px; background: var(--paper-2); color: var(--ink-3); display: inline-flex; align-items: center; justify-content: center; font: 700 12px var(--code); }
   .st-row.me { border-color: var(--c); color: var(--ink); font-weight: 600; box-shadow: 0 10px 26px -14px var(--c); }
   .st-row.me b { background: var(--c); color: #fff; }
@@ -264,11 +264,11 @@ export const SCENE_CSS = `
   @keyframes strow { from { opacity: 0; transform: translateX(-14px); } }
 
   .st-bars { display: flex; align-items: flex-end; gap: 9px; height: 74px; }
-  .st-bars span { width: 26px; border-radius: 7px 7px 3px 3px; background: linear-gradient(180deg, var(--c), color-mix(in srgb, var(--c) 35%, #fff)); height: var(--h); animation: stbar .8s var(--ease) both; transform-origin: bottom; }
+  .st-bars span { width: 26px; border-radius: 7px 7px 3px 3px; background: linear-gradient(180deg, var(--c), color-mix(in srgb, var(--c) 35%, var(--card))); height: var(--h); animation: stbar .8s var(--ease) both; transform-origin: bottom; }
   @keyframes stbar { from { transform: scaleY(.05); } }
 
   .st-funnel { width: min(400px, 100%); display: flex; flex-direction: column; align-items: center; gap: 8px; }
-  .st-fl { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: #fff; border: 1px solid var(--line); border-radius: 11px; padding: 11px 15px; box-shadow: var(--sh-1); animation: stfl .6s var(--ease) both; }
+  .st-fl { display: flex; align-items: center; justify-content: space-between; gap: 12px; background: var(--card); border: 1px solid var(--line); border-radius: 11px; padding: 11px 15px; box-shadow: var(--sh-1); animation: stfl .6s var(--ease) both; }
   .st-fl b { font: 500 13.5px var(--text); color: var(--ink-2); }
   .st-fl em { font: 700 14px var(--code); font-style: normal; color: var(--c); }
   @keyframes stfl { from { opacity: 0; transform: translateY(-8px) scaleX(.9); } }
@@ -279,9 +279,9 @@ export const SCENE_CSS = `
 
   .st-chat { width: min(400px, 100%); display: flex; flex-direction: column; gap: 9px; }
   .st-b { max-width: 80%; padding: 11px 14px; border-radius: 14px; font: 400 14.5px/1.45 var(--text); animation: stb .45s var(--ease) both; box-shadow: var(--sh-1); }
-  .st-b.in { align-self: flex-start; background: #fff; border: 1px solid var(--line); color: var(--ink); border-bottom-left-radius: 5px; }
+  .st-b.in { align-self: flex-start; background: var(--card); border: 1px solid var(--line); color: var(--ink); border-bottom-left-radius: 5px; }
   .st-b.out { align-self: flex-end; background: var(--c); color: #fff; border-bottom-right-radius: 5px; }
-  .st-typing { align-self: flex-end; display: inline-flex; gap: 4px; background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 9px 12px; animation: stb .4s var(--ease) both; }
+  .st-typing { align-self: flex-end; display: inline-flex; gap: 4px; background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 9px 12px; animation: stb .4s var(--ease) both; }
   .st-typing i { width: 5px; height: 5px; border-radius: 99px; background: var(--ink-3); animation: sttyp 1s infinite; }
   .st-typing i:nth-child(2) { animation-delay: .15s; }
   .st-typing i:nth-child(3) { animation-delay: .3s; }
@@ -289,16 +289,16 @@ export const SCENE_CSS = `
   @keyframes stb { from { opacity: 0; transform: translateY(8px); } }
 
   .st-grid9 { display: grid; grid-template-columns: repeat(3, 64px); gap: 8px; }
-  .st-grid9 span { aspect-ratio: 1; border-radius: 9px; background: linear-gradient(140deg, color-mix(in srgb, var(--c) 22%, #fff), var(--paper-2)); border: 1px solid var(--line-2); animation: stpop .5s var(--ease) both; }
+  .st-grid9 span { aspect-ratio: 1; border-radius: 9px; background: linear-gradient(140deg, color-mix(in srgb, var(--c) 22%, var(--card)), var(--paper-2)); border: 1px solid var(--line-2); animation: stpop .5s var(--ease) both; }
   .st-metrics { display: flex; gap: 9px; flex-wrap: wrap; justify-content: center; }
-  .st-met { display: inline-flex; align-items: center; gap: 7px; background: #fff; border: 1px solid var(--line); border-radius: 99px; padding: 7px 13px; font: 600 13px var(--text); color: var(--ink); box-shadow: var(--sh-1); animation: stfade .5s var(--ease) both; }
+  .st-met { display: inline-flex; align-items: center; gap: 7px; background: var(--card); border: 1px solid var(--line); border-radius: 99px; padding: 7px 13px; font: 600 13px var(--text); color: var(--ink); box-shadow: var(--sh-1); animation: stfade .5s var(--ease) both; }
   /* o design usava <i data-lucide>; aqui o ícone é SVG de import nomeado */
   .st-met i, .st-met svg { color: var(--c); flex-shrink: 0; }
 
   .st-kanban { position: relative; display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; width: min(440px, 100%); }
   .st-col { background: var(--paper-2); border: 1px solid var(--line); border-radius: 12px; padding: 10px; display: flex; flex-direction: column; gap: 8px; min-height: 130px; }
   .st-col b { font: 600 11.5px var(--text); letter-spacing: .06em; text-transform: uppercase; color: var(--ink-3); }
-  .st-col u { display: block; height: 30px; border-radius: 8px; background: #fff; border: 1px solid var(--line); box-shadow: var(--sh-1); animation: stpop .5s var(--ease) both; }
+  .st-col u { display: block; height: 30px; border-radius: 8px; background: var(--card); border: 1px solid var(--line); box-shadow: var(--sh-1); animation: stpop .5s var(--ease) both; }
   .st-col u.ghost { background: transparent; border-style: dashed; box-shadow: none; opacity: .7; }
   .st-card-move { position: absolute; top: 34px; left: 10px; width: calc(25% - 14px); height: 30px; border-radius: 8px; background: var(--c); box-shadow: 0 10px 22px -10px var(--c); animation: stmove 4.2s var(--ease) infinite; }
   @keyframes stmove { 0%, 8% { transform: translateX(0); } 25%, 33% { transform: translateX(calc(100% + 10px)); } 50%, 58% { transform: translateX(calc(200% + 20px)); } 75%, 100% { transform: translateX(calc(300% + 30px)); } }
