@@ -8,11 +8,14 @@ import { Painel, Vazio, Erro, Carregando, Campo, Selecao, Modal, Nota } from "./
 /* ─────────────────────────────────────────────────────────────────────────────
    Automações — réguas de mensagem (`automation_rules`) e histórico (`message_log`).
 
-   ⚠️ O MOTOR NÃO EXISTE — leia `lib/modules/mod-automacoes.ts` antes de mexer.
-   As réguas cadastradas aqui NÃO disparam mensagem nenhuma: não há cron nem
-   provedor de e-mail configurado. `motorAtivo` vem do próprio módulo em cada
-   resposta (`list` e `log`) e é `false` hoje — o aviso grande no topo da tela
-   existe para o dono nunca achar que está funcionando só porque marcou "ativa".
+   ⚠️ ATUALIZADO EM 2026-08-30 — o motor JÁ EXISTE (`lib/automacoes-motor.ts`,
+   chamado por `/api/cron`), mas leia `lib/modules/mod-automacoes.ts` antes de
+   mexer aqui. `motorAtivo` vem do próprio módulo em cada resposta (`list` e
+   `log`) e só fica `true` quando `CRON_SECRET` E `RESEND_API_KEY` estão
+   configurados na Vercel. Enquanto faltar qualquer um dos dois — inclusive se
+   o cron já estiver rodando em modo ensaio, sem chave de e-mail — o aviso
+   grande abaixo continua aparecendo de propósito: o dono não pode achar que
+   está funcionando só porque marcou "ativa".
 
    ROTULO_GATILHO é replicado aqui de propósito, e não importado de
    `lib/modules/mod-automacoes.ts`: aquele arquivo importa `_shared.ts`, que
@@ -176,9 +179,9 @@ export default function Automacoes() {
           <div>
             <p className="text-sm font-bold text-amber-100">O motor de envio ainda não está ligado</p>
             <p className="mt-1 text-[13px] leading-relaxed text-amber-200/90">
-              As réguas abaixo ficam salvas, mas <b>nada é enviado de verdade</b> — não existe cron nem provedor de
-              e-mail configurado no servidor ainda. Marcar uma régua como <b>ativa</b> aqui NÃO dispara mensagem
-              nenhuma para ninguém. É só cadastro, por enquanto.
+              As réguas abaixo ficam salvas, mas <b>nada é enviado de verdade</b> — falta configurar o segredo do
+              cron e/ou o provedor de e-mail no servidor. Marcar uma régua como <b>ativa</b> aqui NÃO dispara
+              mensagem nenhuma para ninguém enquanto isso não estiver pronto. É só cadastro, por enquanto.
             </p>
           </div>
         </div>

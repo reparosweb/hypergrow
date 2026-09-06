@@ -134,14 +134,14 @@ export default function ClaroNews() {
         .cl .cl-news-lbl{font:600 13px var(--font-sans);color:var(--ink)}
         .cl .cl-news-in{width:100%;min-height:50px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--card);font:400 15px var(--font-sans);color:var(--ink);
           transition:border-color .2s var(--ease),box-shadow .2s var(--ease)}
-        .cl .cl-news-in::placeholder{color:#9AA4B4}
+        .cl .cl-news-in::placeholder{color:var(--ink-3)}
         .cl .cl-news-in:focus{outline:none;border-color:var(--brand);box-shadow:0 0 0 3px var(--acc-soft)}
         .cl .cl-news-in[aria-invalid=true]{border-color:var(--cta)}
         .cl .cl-news-btn{margin-top:2px;justify-content:center;gap:8px}
-        .cl .cl-news-err{font:500 12.5px var(--font-sans);color:#B0155F}
+        .cl .cl-news-err{font:500 12.5px var(--font-sans);color:var(--cta)}
         .cl .cl-news-note{font:400 12px/1.5 var(--font-sans);color:var(--ink-3)}
         .cl .cl-news-ok{display:flex;align-items:center;gap:10px;padding:16px 18px;border-radius:14px;
-          background:rgba(15,157,88,.08);border:1px solid rgba(15,157,88,.24);font:500 15px var(--font-sans);color:#0B7A4C}
+          background:rgba(15,157,88,.08);border:1px solid rgba(15,157,88,.24);font:500 15px var(--font-sans);color:var(--wa)}
         @media(max-width:760px){ .cl .cl-news{grid-template-columns:1fr} }
       ` }} />
     </section>

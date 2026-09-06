@@ -4,21 +4,21 @@ import { Ctx, ModResult, ok, fail, str, assertGravou } from "./_shared";
    Automações — réguas de mensagem (`automation_rules`) e o histórico
    (`message_log`).
 
-   ⚠️ O QUE EXISTE E O QUE NÃO EXISTE (dizer isto é obrigatório):
-   as duas tabelas já estão no banco desde `006_agenda.sql`, inclusive com três
-   réguas semeadas. O MOTOR que lê as réguas e dispara as mensagens NÃO existe:
-   não há cron, não há provedor de e-mail configurado, `message_log` está vazio.
+   ⚠️ ATUALIZADO EM 2026-08-30 — O MOTOR AGORA EXISTE. Esta tela continua
+   sendo só o CRUD das réguas; quem lê as réguas e dispara as mensagens é
+   `lib/automacoes-motor.ts`, chamado por `POST/GET /api/cron` (protegido por
+   `CRON_SECRET`). O dedupe usa o índice `msglog_dedupe_idx` como ÍNDICE DE
+   BUSCA (ele não é único no banco — ver o comentário grande no topo de
+   `lib/automacoes-motor.ts` para a checagem exata), com um SELECT antes do
+   INSERT em vez de depender do banco recusar duplicata.
 
-   Ou seja: esta tela cadastra e edita as réguas — ela NÃO faz nada ser enviado.
-   Marcar uma régua como ativa aqui não manda mensagem nenhuma. A interface diz
-   isso em letras grandes, de propósito: uma tela que parece funcionar e não
-   funciona é pior do que tela nenhuma, porque o dono confia e o cliente não
-   recebe o lembrete.
-
-   Para ligar de verdade faltam três coisas, nesta ordem: um provedor de e-mail
-   (Resend), uma rota de cron (`/api/cron`, que é uma das funções que ainda
-   cabem no limite da Vercel) e o motor de disparo com a idempotência que o
-   índice `msglog_dedupe_idx` já prevê.
+   `MOTOR_ATIVO` abaixo não é mais uma constante — é `true` só quando o
+   ambiente tem AMBAS as chaves (`CRON_SECRET` e `RESEND_API_KEY`). Enquanto
+   faltar qualquer uma, a tela continua avisando que o envio real está
+   desligado — mesmo que o cron já esteja rodando: sem `RESEND_API_KEY` ele
+   roda em modo ENSAIO (avalia tudo, não manda nada), o que para o dono
+   PRECISA continuar parecendo "não ligado", porque nenhum cliente recebe
+   mensagem nesse estado.
    ──────────────────────────────────────────────────────────────────────────── */
 
 export const GATILHOS = [
@@ -41,8 +41,11 @@ export const ROTULO_GATILHO: Record<Gatilho, string> = {
 const CAMPOS =
   "id,name,trigger_event,offset_minutes,channels,subject_template,message_template,is_active,created_at,updated_at";
 
-/** O motor ainda não existe — este flag é lido pela tela para avisar o dono. */
-export const MOTOR_ATIVO = false;
+/** Lido pela tela (`components/admin/Automacoes.tsx`) para decidir se mostra
+ *  o aviso de "motor desligado". Só `true` com as duas chaves configuradas na
+ *  Vercel — sem `RESEND_API_KEY` o cron roda em modo ensaio (não envia nada
+ *  de verdade), e a tela precisa continuar avisando isso. */
+export const MOTOR_ATIVO = !!(process.env.CRON_SECRET && process.env.RESEND_API_KEY);
 
 export async function modAutomacoes(action: string, ctx: Ctx): Promise<ModResult> {
   const { supabase, body } = ctx;

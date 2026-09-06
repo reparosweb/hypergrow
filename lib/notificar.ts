@@ -36,12 +36,47 @@ function remetente(): string {
   return process.env.RESEND_FROM || "HyperGrow <onboarding@resend.dev>";
 }
 
-function escapar(v: string): string {
+export function escapar(v: string): string {
   return v
     .replace(/&/g, "&amp;")
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+}
+
+/* ── Helper cru de envio, compartilhado com o motor de automações ───────────
+   Extraído em 2026-08-30 quando `lib/automacoes-motor.ts` precisou do MESMO
+   fetch cru ao Resend que `notificarLeadNovo` já fazia — em vez de duplicar a
+   chamada HTTP num segundo lugar, ela virou esta função, e `notificarLeadNovo`
+   passou a chamá-la também (mesmo comportamento externo: mesma env var, mesmo
+   remetente padrão, nunca lança). Quem chama decide o que fazer com
+   `ok:false` — aqui dentro só se resolve o transporte. */
+export type EnvioEmail = { to: string; subject: string; html: string; replyTo?: string; from?: string };
+
+export async function enviarEmailBruto(msg: EnvioEmail): Promise<{ ok: true } | { ok: false; erro: string }> {
+  const key = process.env.RESEND_API_KEY;
+  if (!key) return { ok: false, erro: "RESEND_API_KEY ausente." };
+
+  try {
+    const r = await fetch(RESEND_URL, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
+      body: JSON.stringify({
+        from: msg.from || remetente(),
+        to: [msg.to],
+        ...(msg.replyTo ? { reply_to: msg.replyTo } : {}),
+        subject: msg.subject,
+        html: msg.html,
+      }),
+    });
+    if (!r.ok) {
+      const detalhe = await r.text().catch(() => "");
+      return { ok: false, erro: `Resend recusou (${r.status}): ${detalhe.slice(0, 300)}` };
+    }
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, erro: (e as Error).message };
+  }
 }
 
 export type LeadNotificacao = {
@@ -97,27 +132,17 @@ export async function notificarLeadNovo(lead: LeadNotificacao): Promise<boolean>
       </p>
     </div>`;
 
-  try {
-    const r = await fetch(RESEND_URL, {
-      method: "POST",
-      headers: { Authorization: `Bearer ${key}`, "Content-Type": "application/json" },
-      body: JSON.stringify({
-        from: remetente(),
-        to: [para],
-        // `reply_to` no e-mail do lead: responder o aviso já responde a pessoa,
-        // sem copiar e colar endereço.
-        reply_to: lead.email,
-        subject: `Lead novo: ${lead.name}${lead.product ? ` — ${lead.product}` : ""}`,
-        html: corpo,
-      }),
-    });
-    if (!r.ok) {
-      console.error("[lead] Resend recusou:", r.status, await r.text().catch(() => ""));
-      return false;
-    }
-    return true;
-  } catch (e) {
-    console.error("[lead] falha ao notificar:", (e as Error).message);
+  // `replyTo` no e-mail do lead: responder o aviso já responde a pessoa, sem
+  // copiar e colar endereço.
+  const r = await enviarEmailBruto({
+    to: para,
+    subject: `Lead novo: ${lead.name}${lead.product ? ` — ${lead.product}` : ""}`,
+    html: corpo,
+    replyTo: lead.email,
+  });
+  if (!r.ok) {
+    console.error("[lead] Resend recusou:", r.erro);
     return false;
   }
+  return true;
 }

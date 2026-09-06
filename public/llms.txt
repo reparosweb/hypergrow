@@ -36,7 +36,7 @@ A HyperGrow cria, coloca no ar e opera soluções digitais de ponta a ponta para
 - [CRM com IA](https://hypergrow-lovat.vercel.app/servicos/crm-com-ia): CRM com dashboard de funil de vendas, leads organizados e IA lendo o que os números escondem.
 - [SDR com IA](https://hypergrow-lovat.vercel.app/servicos/sdr-com-ia): Agente de IA que qualifica leads e entrega ao seu time só quem está pronto para comprar.
 
-## Artigos (10)
+## Artigos (16)
 - [Quanto custa criar um site profissional em 2026?](https://hypergrow-lovat.vercel.app/blog/quanto-custa-criar-um-site): Quanto custa criar um site em 2026? Veja faixas reais de preço no Brasil para landing page, site institucional e e-commerce, e o que muda no valor.
 - [Agente de IA: como atender clientes 24h por dia](https://hypergrow-lovat.vercel.app/blog/agente-de-ia-atendimento-24h): Agente de IA para atendimento: o que é, como funciona no WhatsApp, como qualifica e agenda clientes 24h e a diferença para o chatbot antigo.
 - [Quanto custa criar uma loja virtual no Brasil?](https://hypergrow-lovat.vercel.app/blog/quanto-custa-loja-virtual): Quanto custa loja virtual? De R$0 a R$80 mil. Veja faixas reais de preço, custos recorrentes (plataforma, gateway, frete) e quando vale cada caminho.
@@ -47,6 +47,12 @@ A HyperGrow cria, coloca no ar e opera soluções digitais de ponta a ponta para
 - [Como não perder cliente no WhatsApp](https://hypergrow-lovat.vercel.app/blog/nao-perder-cliente-no-whatsapp): Cliente some por demora, conversa sem dono e mensagem fora do horário. Veja como organizar link, QR Code, respostas e automação sem trocar de sistema.
 - [Política de privacidade e LGPD no seu site](https://hypergrow-lovat.vercel.app/blog/politica-de-privacidade-lgpd-site): Site com formulário, chat ou pixel precisa de política de privacidade. Veja o que a LGPD exige que ela diga, o que muda para empresa pequena e como publicar.
 - [Quanto cobrar por hora de serviço](https://hypergrow-lovat.vercel.app/blog/quanto-cobrar-por-hora): A conta que define seu preço por hora: custos fixos, pró-labore, horas realmente faturáveis, imposto e margem — com o passo a passo para revisar o seu.
+- [Como criar prompts para fotos de produto com IA](https://hypergrow-lovat.vercel.app/blog/prompts-imagens-produto-ia): Prompt de imagem de produto com IA: veja a fórmula (produto, cenário, luz, ângulo, estilo), os limites reais e prompts prontos grátis para testar.
+- [Orçamento de anúncios no Google e na Meta](https://hypergrow-lovat.vercel.app/blog/orcamento-anuncios-google-meta): Aprenda o método para montar o orçamento de anúncios: CAC alvo pela margem, teto de CPC e quanto testar antes de escalar. Sem número de mercado chutado.
+- [Como criar link de WhatsApp com mensagem pronta](https://hypergrow-lovat.vercel.app/blog/link-whatsapp-mensagem-pronta): Guia completo do link wa.me: formato do número, como escrever a mensagem pronta na URL, erros comuns e onde usar o link e o QR Code. Grátis.
+- [LGPD para sites pequenos: o que é obrigatório](https://hypergrow-lovat.vercel.app/blog/lgpd-para-sites-pequenos): Mito x obrigação real da LGPD para sites pequenos: o que a lei exige de verdade, o que é opcional e o que o regulamento de pequeno porte simplifica.
+- [Loja própria ou marketplace: onde vender primeiro](https://hypergrow-lovat.vercel.app/blog/loja-propria-ou-marketplace): Marketplace dá audiência pronta; loja própria dá controle da margem e do cliente. Veja o método para decidir onde vender primeiro, sem regra genérica.
+- [AEO e GEO: checklist para aparecer nas respostas de IA](https://hypergrow-lovat.vercel.app/blog/aeo-geo-checklist): Checklist prático de AEO/GEO: llms.txt, dados estruturados, rastreadores de IA e o teste de conteúdo citável. Sem promessa de resultado garantido.
 
 ## Páginas principais
 - [Catálogo completo de serviços](https://hypergrow-lovat.vercel.app/servicos): os 22 serviços agrupados em 4 frentes, com tabela de qual frente resolve qual problema.

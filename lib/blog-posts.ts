@@ -326,6 +326,204 @@ export const blogPosts: BlogPost[] = [
     related: ["auditoria-comercial", "marketing-trafego"],
     tools: ["calculadora-preco-hora", "calculadora-roas"],
   },
+
+  /* ───────────────────────────────────────────────────────────────────────────
+     LOTE 2026-08-30 — seis pautas novas por busca real do público da agência.
+     Data real de publicação (conferida no relógio do sistema nesta sessão),
+     não antedatada — mesmo compromisso do LOTE 2026-08-15 acima.
+
+     Quatro destes temas ficam perto de posts já publicados; o ângulo de cada
+     um foi escolhido de propósito para NÃO repetir a mesma intenção de busca
+     (evita canibalização de palavra-chave):
+       - "orcamento-anuncios-google-meta" é sobre MONTAR o orçamento antes de
+         rodar a campanha (CAC alvo, teto de CPC); "anuncio-esta-dando-lucro"
+         é sobre DIAGNOSTICAR uma campanha que já está no ar.
+       - "link-whatsapp-mensagem-pronta" é o guia TÉCNICO da sintaxe do link
+         (wa.me, codificação, formatação do número); "nao-perder-cliente-no-
+         whatsapp" é sobre organização de atendimento, não sobre montar o link.
+       - "lgpd-para-sites-pequenos" separa mito de obrigação real (o que é
+         opcional por porte/risco); "politica-de-privacidade-lgpd-site" é o
+         guia de COMO ESCREVER a política em si.
+       - "aeo-geo-checklist" traz o que o post antigo não cobre (llms.txt,
+         rastreadores de IA nomeados no robots.txt, teste de trecho citável);
+         "como-aparecer-no-chatgpt" é a introdução em 5 passos ao tema.
+
+     Nenhum número de mercado inventado. Onde a conta é aritmética (CAC, CPC
+     máximo), a fórmula está no texto para o leitor conferir.
+     ────────────────────────────────────────────────────────────────────────── */
+  {
+    slug: "prompts-imagens-produto-ia",
+    title: "Como criar prompts para fotos de produto com IA",
+    description: "Prompt de imagem de produto com IA: veja a fórmula (produto, cenário, luz, ângulo, estilo), os limites reais e prompts prontos grátis para testar.",
+    date: "2026-08-30",
+    category: "Inteligência Artificial",
+    keyword: "prompts para imagens de produto com ia",
+    accent: "#D3B78E",
+    intro: "Um prompt de imagem de produto com IA funciona melhor quando descreve cinco coisas: o produto, o cenário, a luz, o ângulo e o estilo. Quanto mais dessas peças você escrever, menos a ferramenta precisa adivinhar. Pedidos vagos, como 'foto profissional de produto', devolvem imagem genérica. E existe um limite real: texto e logo dentro da imagem raramente saem perfeitos — use o resultado como cenário, não como arte final de embalagem.",
+    body: [
+      { h: "As cinco peças de um prompt completo", p: "Escreva nesta ordem: o produto (o que é, material, cor), o cenário (mesa de madeira, fundo branco, cozinha), a luz (natural, softbox, contraluz), o ângulo (de frente, 45 graus, de cima) e o estilo (still de catálogo, lifestyle, minimalista). Cinco frases curtas já formam um prompt completo." },
+      { h: "Por que 'foto profissional de produto' não funciona", p: "Esse pedido não diz nada específico, então a IA decide sozinha cenário, luz e ângulo — e a chance de bater com o que você imaginou é baixa. Troque adjetivo vago por descrição concreta: não 'iluminação bonita', e sim 'luz natural suave vinda da esquerda'." },
+      { h: "Um exemplo linha a linha", p: "'Tênis de corrida branco e verde, sobre piso de concreto claro, luz natural de manhã vinda de lado, ângulo de 45 graus, still de catálogo com fundo desfocado.' Cada vírgula é uma das cinco peças — trocar só uma já muda a imagem inteira." },
+      { h: "O que a IA ainda erra: texto e logo", p: "Modelos de imagem por IA têm dificuldade real para reproduzir texto e logo com exatidão — letras tortas, marca deformada. Use a imagem gerada como fundo, cenário ou contexto de anúncio, e finalize embalagem e rótulo com a arte original em software de edição." },
+      { h: "Imagem do zero ou a partir da sua foto", p: "Gerar do zero cria um cenário novo para um produto que só existe em texto. Partir de uma foto real do seu produto, quando a ferramenta aceita imagem de referência, preserva as formas certas e só troca fundo, luz ou composição ao redor." },
+      { h: "Refine em rodadas pequenas, não tudo de uma vez", p: "Mude uma peça por vez — só o cenário, depois só a luz — e compare os resultados lado a lado. Prompt longo demais, com dez pedidos ao mesmo tempo, costuma confundir a ferramenta mais do que ajudar." },
+      { h: "Direitos de uso: confira antes de publicar em anúncio", p: "Cada ferramenta de geração de imagem tem seus próprios termos de uso comercial, e eles mudam entre plataformas e planos. Antes de usar uma imagem gerada em anúncio pago ou embalagem, leia a política de uso da ferramenta que você usou." },
+      { h: "Prompts prontos para não começar do zero", p: "A Biblioteca de prompts para imagens com IA, aqui do site, reúne prompts testáveis por categoria — produto, post, anúncio, marca e ambiente — prontos para copiar e colar. Depois é só ajustar cenário e estilo ao seu produto." },
+    ],
+    faq: [
+      { q: "Qual a estrutura de um bom prompt de imagem de produto?", a: "Produto, cenário, luz, ângulo e estilo, nessa ordem, em frases curtas e específicas. Quanto mais concreta cada peça, menos a IA precisa adivinhar e mais parecido com o que você imaginou fica o resultado." },
+      { q: "A IA consegue gerar minha embalagem com o texto certo?", a: "Raramente com exatidão. Modelos de imagem ainda erram letras e deformam logos. Use a imagem gerada como fundo ou cenário, e finalize texto e marca em software de edição a partir da arte original." },
+      { q: "Preciso pagar para gerar imagens de produto com IA?", a: "Depende da ferramenta e do volume de uso — cada plataforma tem seu próprio plano gratuito e pago. Confira os limites e os termos de uso comercial diretamente na ferramenta antes de decidir." },
+      { q: "Posso usar a imagem gerada por IA em anúncio pago?", a: "Cada ferramenta define os próprios termos de uso comercial, e eles variam entre plataformas e planos. Leia a política da ferramenta específica que você usou antes de publicar a imagem em anúncio." },
+      { q: "Onde encontro prompts prontos para testar?", a: "Na Biblioteca de prompts para imagens com IA, aqui no site: prompts organizados por categoria — produto, post, anúncio, marca e ambiente —, grátis e sem cadastro, prontos para copiar e ajustar ao seu caso." },
+    ],
+    related: ["design-identidade", "loja-virtual"],
+    tools: ["biblioteca-prompts-imagens-ia"],
+  },
+  {
+    slug: "orcamento-anuncios-google-meta",
+    title: "Orçamento de anúncios no Google e na Meta",
+    description: "Aprenda o método para montar o orçamento de anúncios: CAC alvo pela margem, teto de CPC e quanto testar antes de escalar. Sem número de mercado chutado.",
+    date: "2026-08-30",
+    category: "Tráfego pago",
+    keyword: "orçamento de anúncios google e meta",
+    accent: "#E09A63",
+    intro: "O orçamento de anúncio certo não vem de uma porcentagem do faturamento copiada da internet — vem do seu CAC alvo, calculado a partir da margem de cada venda. Descubra quanto sobra por venda, defina até quanto vale pagar por um cliente novo sem estourar essa margem, e só depois decida o valor total a investir. Google e Meta cumprem papéis diferentes: um capta quem já procura, o outro gera demanda em quem ainda não procurou.",
+    body: [
+      { h: "Por que 'gaste X% do faturamento' não serve", p: "Esse número ignora a sua margem, o seu ticket e o seu ciclo de venda. Duas empresas do mesmo setor, com margens diferentes, aguentam orçamentos de anúncio completamente diferentes. O ponto de partida certo é o seu CAC alvo, não uma média de mercado sem fonte." },
+      { h: "Passo 1: descubra a margem por venda", p: "Pegue o ticket médio e tire tudo o que sai antes de sobrar dinheiro: custo do produto, imposto sobre o faturamento e taxa do meio de pagamento. O que sobra é a margem em reais de uma venda — e é o teto absoluto do que você pode pagar para conseguir essa venda." },
+      { h: "Passo 2: defina o CAC alvo, não o CAC máximo", p: "O CAC máximo, o teto que empata a conta, é igual à margem em reais. O CAC alvo deve ficar abaixo disso, porque parte da margem precisa cobrir estrutura e lucro de verdade. Decida antes qual fatia da margem você aceita gastar para trazer um cliente novo." },
+      { h: "Passo 3: transforme o CAC alvo em teto de clique", p: "Se você sabe, ou estima testando, a taxa de conversão da sua página, o cálculo é direto: CPC máximo igual ao CAC alvo multiplicado pela taxa de conversão. Página que converte 2% e CAC alvo de R$ 100 aguenta pagar até R$ 2 por clique sem estourar a conta." },
+      { h: "Google e Meta não competem pelo mesmo papel", p: "O Google Ads capta quem já está procurando o que você vende — a intenção já existe. O Meta Ads aparece para quem ainda não procurou, e a campanha precisa despertar o interesse. Produto com busca ativa tende a ir melhor primeiro no Google; produto visual e de impulso, no Meta." },
+      { h: "Orçamento de teste: o mínimo para enxergar alguma coisa", p: "Poucas vendas não formam amostra confiável — qualquer conclusão tirada de três ou quatro resultados é ruído, não performance. Reserve um período mínimo de teste antes de julgar uma campanha boa ou ruim, e evite decidir com o número de um único dia." },
+      { h: "De teste para escala: só depois que a conta fecha", p: "Escalar orçamento faz sentido quando o CAC real, calculado no seu financeiro e não só no painel do anúncio, fica dentro do CAC alvo por um período consistente. Aumentar verba de uma campanha que ainda não provou a própria conta só multiplica o prejuízo." },
+      { h: "A ferramenta que faz essa conta por você", p: "A calculadora de ROAS e teto de anúncio, aqui do site, calcula o CPA máximo, o ROAS de equilíbrio e o CPC máximo a partir do seu ticket e da sua margem, com a fórmula de cada número na tela — para você conferir a conta, não só confiar." },
+    ],
+    faq: [
+      { q: "Quanto devo investir em anúncios no Google e na Meta?", a: "Não existe um valor ou percentual universal. Calcule a margem em reais de uma venda, defina o CAC alvo abaixo desse teto e multiplique pelo número de vendas que você quer gerar — esse é o orçamento que a sua operação sustenta." },
+      { q: "Devo anunciar primeiro no Google ou na Meta?", a: "Depende da intenção de busca do seu produto. Se as pessoas já procuram o que você vende, o Google capta essa demanda pronta primeiro. Se o produto depende de despertar interesse, visual ou de impulso, o Meta costuma performar melhor no início." },
+      { q: "Como calcular o CPC máximo que vale a pena pagar?", a: "Multiplique o CAC alvo pela taxa de conversão da sua página. Com CAC alvo de R$ 100 e conversão de 2%, o teto de clique é R$ 2 — pagar mais que isso, mantendo o resto igual, coloca a conta no vermelho." },
+      { q: "Por quanto tempo devo testar antes de julgar uma campanha?", a: "O suficiente para reunir um número de vendas que não seja pura coincidência — três ou quatro resultados isolados não provam nada. Evite decidir pausar ou escalar com base no desempenho de um único dia." },
+      { q: "O que muda entre orçamento de teste e orçamento de escala?", a: "O de teste existe para descobrir se o CAC real fica dentro do CAC alvo. Só depois que essa conta fecha de forma consistente, e não em um dia isolado, faz sentido aumentar o investimento e escalar a campanha." },
+    ],
+    related: ["marketing-trafego", "auditoria-comercial"],
+    tools: ["calculadora-roas"],
+  },
+  {
+    slug: "link-whatsapp-mensagem-pronta",
+    title: "Como criar link de WhatsApp com mensagem pronta",
+    description: "Guia completo do link wa.me: formato do número, como escrever a mensagem pronta na URL, erros comuns e onde usar o link e o QR Code. Grátis.",
+    date: "2026-08-30",
+    category: "Automação",
+    keyword: "link de whatsapp com mensagem pronta",
+    accent: "#7FD8C0",
+    intro: "Um link de WhatsApp com mensagem pronta segue o formato https://wa.me/ mais o número em código internacional, seguido de ?text= mais a mensagem já escrita. Quem clica abre a conversa direto, com o texto pronto no campo, sem precisar salvar o seu contato antes. Os erros mais comuns são esquecer o código do país, deixar espaço ou acento sem codificar na mensagem e testar o link só no seu próprio celular, onde o número já está salvo.",
+    body: [
+      { h: "O formato exato do link", p: "https://wa.me/ seguido do código do país, DDD e número colados, sem espaço: 55, DDD com dois dígitos, número sem traço nem parêntese. O ?text= no final é o que abre a conversa já com a mensagem escrita no campo de digitação." },
+      { h: "Por que o número precisa estar sem formatação", p: "Traço, parêntese, espaço e o zero antes do DDD quebram o link. O WhatsApp lê só dígitos: código do país, DDD e número colados. Um link com formatação errada abre o WhatsApp, mas não encontra ninguém do outro lado." },
+      { h: "Codificando a mensagem: espaço, acento e quebra de linha", p: "Espaço na mensagem vira %20 ou + na URL; acentos e caracteres especiais precisam de codificação própria. Escrever a mensagem direto na barra de endereço, sem codificar, costuma cortar o texto ou quebrar o link no celular de quem clica." },
+      { h: "wa.me e api.whatsapp.com: qual usar", p: "Os dois abrem a conversa do mesmo jeito; wa.me é o link curto oficial do WhatsApp, mais fácil de digitar e de caber num QR Code. Use wa.me como padrão, a menos que uma ferramenta específica exija o formato mais longo." },
+      { h: "Uma mensagem por canal, para saber o que funciona", p: "Um link no story pode abrir com 'Vim pelo story', e o do rodapé do site com 'Vim pelo site'. O atendente sabe de onde veio o contato antes de ler qualquer coisa, e você descobre qual canal realmente gera conversa." },
+      { h: "Teste antes de publicar — em outro celular", p: "No seu próprio aparelho, o número já está salvo e o teste engana. Peça para outra pessoa, num celular diferente, clicar no link do zero e confirmar que a conversa abre certa, com a mensagem completa e sem corte." },
+      { h: "Onde colocar o link e o QR Code", p: "Bio das redes, botão do site, Perfil da Empresa no Google, assinatura de e-mail, orçamento em PDF e anúncio recebem o link. QR Code impresso serve para balcão, vitrine, embalagem, cardápio e cartão — onde a pessoa já está com o celular na mão." },
+      { h: "Gere o seu sem digitar nada à mão", p: "O gerador de link e QR Code do WhatsApp, aqui do site, monta o link certo e o QR Code em segundos: você preenche número e mensagem, ele cuida da formatação e da codificação — e o número não sai do seu navegador." },
+    ],
+    faq: [
+      { q: "Qual o formato certo do link de WhatsApp com mensagem pronta?", a: "https://wa.me/ seguido do número em código internacional (55, DDD, número, tudo colado e sem espaço ou traço) e depois ?text= com a mensagem. Clicar no link abre a conversa já com o texto pronto no campo de digitação." },
+      { q: "Por que meu link de WhatsApp não está funcionando?", a: "As causas mais comuns são número com traço, parêntese ou zero antes do DDD, e mensagem com espaço ou acento sem codificação. Teste sempre em outro celular, porque no seu próprio aparelho o contato já está salvo e mascara o erro." },
+      { q: "Qual a diferença entre wa.me e api.whatsapp.com?", a: "Os dois abrem a mesma conversa. O wa.me é o link curto oficial do WhatsApp, mais fácil de digitar e de imprimir em QR Code; use-o como padrão, salvo quando uma ferramenta específica exigir o outro formato." },
+      { q: "Posso usar mensagens diferentes em cada canal?", a: "Sim, e vale a pena. Um texto pronto diferente por canal (bio, site, anúncio) mostra de onde a pessoa veio assim que a conversa abre, sem precisar perguntar, e ajuda a medir qual canal realmente gera contato." },
+      { q: "Como gerar o link e o QR Code sem digitar tudo manualmente?", a: "Use o gerador de link e QR Code do WhatsApp aqui do site: você informa número e mensagem, ele monta o link já formatado e codificado e entrega o QR Code em PNG ou SVG, sem cadastro." },
+    ],
+    related: ["automacoes-ia", "cartao-interativo"],
+    tools: ["gerador-link-whatsapp", "gerador-qr-code"],
+  },
+  {
+    slug: "lgpd-para-sites-pequenos",
+    title: "LGPD para sites pequenos: o que é obrigatório",
+    description: "Mito x obrigação real da LGPD para sites pequenos: o que a lei exige de verdade, o que é opcional e o que o regulamento de pequeno porte simplifica.",
+    date: "2026-08-30",
+    category: "LGPD",
+    keyword: "lgpd para sites pequenos",
+    accent: "#2DD4A0",
+    intro: "Para um site pequeno, o obrigatório de verdade pela LGPD (Lei nº 13.709/2018) é três coisas: informar o que é coletado e para quê (artigo 9º), ter uma base legal para cada tratamento (artigo 7º) e manter um canal que responde quando alguém exerce um direito (artigo 18). Encarregado de dados, relatório de impacto e consentimento assinado para tudo são exigências que dependem do risco e do volume da operação — nem todo site pequeno precisa de todos eles.",
+    body: [
+      { h: "Mito: preciso de consentimento assinado para tudo", p: "Consentimento é só uma das bases legais do artigo 7º da LGPD, ao lado de execução de contrato, cumprimento de obrigação legal e legítimo interesse, entre outras. Um formulário de orçamento pode se sustentar em execução de contrato, sem exigir uma caixinha de consentimento separada para cada campo." },
+      { h: "Mito: site pequeno está isento da lei", p: "A ANPD publicou um regulamento específico para agentes de tratamento de pequeno porte, que simplifica parte das obrigações conforme o porte e o risco da operação — mas simplificação não é isenção. Informar o titular e manter um canal de contato continuam obrigatórios." },
+      { h: "Mito: só preciso publicar a política de privacidade", p: "A política é o documento que informa, mas a lei também exige que os direitos do artigo 18 sejam de fato exercíveis: acesso, correção, eliminação e revogação de consentimento. Um e-mail de contato que ninguém lê é pior do que não publicar nada." },
+      { h: "O que depende do risco: encarregado (DPO)", p: "O artigo 41 prevê a indicação de um encarregado, mas permite que a ANPD defina exceções conforme o porte e o volume de dados tratados. Antes de nomear alguém para essa função, confira a regra vigente para o seu porte no site da ANPD, em gov.br/anpd." },
+      { h: "O que depende do risco: relatório de impacto", p: "O relatório de impacto à proteção de dados é exigido para operações de maior risco, como tratamento de dado sensível em volume relevante — não para o site institucional comum, com formulário de contato e newsletter. Se o seu negócio trata dado de saúde, busque orientação jurídica específica." },
+      { h: "Segurança básica também é obrigação, não só a política", p: "O artigo 46 exige medidas de segurança técnicas e administrativas para proteger os dados que você coleta. Na prática de um site pequeno: senha forte no painel, atualização do sistema em dia, e cuidado redobrado com quem tem acesso ao formulário e ao e-mail de contato." },
+      { h: "Cookies: informar e deixar recusar, não só aceitar", p: "Cookie que não é estritamente necessário para o site funcionar, como medição e publicidade, precisa de aviso claro e da opção real de recusa — recusar tem que ser tão fácil quanto aceitar. A ANPD publicou um guia orientativo sobre cookies em gov.br/anpd." },
+      { h: "O que fazer ainda esta semana", p: "Liste o que o site realmente coleta, identifique a base legal de cada coleta, publique uma política de privacidade fiel a essa lista e deixe um canal de contato que alguém de verdade responde. É esse conjunto mínimo, e não um documento genérico, que atende à lei de fato." },
+    ],
+    faq: [
+      { q: "Meu site pequeno precisa mesmo cumprir a LGPD?", a: "Sim. A ANPD tem um regulamento que simplifica parte das obrigações para agentes de pequeno porte, conforme risco e volume, mas não isenta ninguém. Informar o titular sobre o tratamento e manter um canal de contato continuam sendo exigências." },
+      { q: "Todo tratamento de dado precisa de consentimento?", a: "Não. O artigo 7º da LGPD prevê outras bases legais, como execução de contrato, cumprimento de obrigação legal e legítimo interesse. Um formulário de orçamento, por exemplo, pode se apoiar em execução de contrato em vez de consentimento explícito." },
+      { q: "Preciso nomear um encarregado (DPO) mesmo sendo um site pequeno?", a: "Depende. A lei permite que a ANPD defina exceções conforme o porte e o volume de dados tratados. Confira a regra vigente para o seu caso diretamente no site da autoridade, em gov.br/anpd, antes de decidir." },
+      { q: "O que a lei exige além da política de privacidade?", a: "Um canal de contato que funciona de verdade para os direitos do artigo 18 (acesso, correção, eliminação, revogação de consentimento) e medidas básicas de segurança, previstas no artigo 46, para proteger os dados coletados." },
+      { q: "Preciso de relatório de impacto à proteção de dados?", a: "Só em operações de maior risco, como tratamento relevante de dado sensível. Um site institucional comum, com formulário de contato e newsletter, normalmente não se enquadra nesse caso — mas confirme com orientação jurídica se o seu negócio trata dado sensível." },
+    ],
+    related: ["criacao-de-site", "hospedagem"],
+    tools: ["gerador-politica-privacidade"],
+  },
+  {
+    slug: "loja-propria-ou-marketplace",
+    title: "Loja própria ou marketplace: onde vender primeiro",
+    description: "Marketplace dá audiência pronta; loja própria dá controle da margem e do cliente. Veja o método para decidir onde vender primeiro, sem regra genérica.",
+    date: "2026-08-30",
+    category: "E-commerce",
+    keyword: "loja própria ou marketplace",
+    accent: "#5FD3C6",
+    intro: "Não existe canal certo para todo negócio: marketplace entrega audiência pronta e cobra comissão por isso; loja própria dá controle total de marca, preço e dado do cliente, mas exige que você traga o tráfego. Quem quer a primeira venda mais rápida costuma começar pelo marketplace; quem quer construir relacionamento e recompra desde o início costuma priorizar a loja própria. A decisão certa depende do seu produto, do seu caixa e de quanto tempo você tem para validar.",
+    body: [
+      { h: "O que o marketplace resolve rápido", p: "Audiência pronta, confiança da marca do canal e menos trabalho para o cliente te encontrar. Para quem está validando se o produto vende, é o caminho mais curto até a primeira venda real, sem depender de tráfego pago nem de SEO." },
+      { h: "O que o marketplace custa em troca", p: "Comissão por venda, menos controle sobre preço e apresentação, e o cliente pertence ao canal, não a você: sem o e-mail, o telefone ou o histórico de compra dele. Regras de frete, prazo e reputação também são do marketplace, não suas." },
+      { h: "O que a loja própria resolve", p: "Marca com a cara do seu negócio, margem maior por venda (taxa de gateway costuma pesar menos que comissão de marketplace) e, principalmente, o dado do cliente — nome, e-mail, telefone e histórico — para construir recompra e relacionamento de verdade." },
+      { h: "O que a loja própria custa em troca", p: "Você é quem precisa trazer o tráfego, com tráfego pago, SEO ou redes sociais, e isso tem custo e prazo próprios. Uma loja pronta sem verba de aquisição é uma vitrine numa rua vazia — o site não vende sozinho." },
+      { h: "Três perguntas para decidir por onde começar", p: "O produto já é procurado por nome, ou depende de você criar o desejo? Você tem caixa para investir em tráfego, ou precisa de venda com o mínimo de investimento? O negócio vive de recompra, ou é venda pontual? As respostas apontam o canal certo primeiro." },
+      { h: "Produto de marca própria pesa para loja própria", p: "Se o valor está na sua marca — design exclusivo, fórmula própria, identidade forte — o marketplace tende a comoditizar isso, comparando você por preço ao lado de concorrentes parecidos. A loja própria protege esse diferencial melhor desde o início." },
+      { h: "Produto commodity pesa para marketplace", p: "Se o produto é parecido com o de vários vendedores, competir por busca e reputação dentro do marketplace costuma trazer venda mais rápido do que tentar construir tráfego do zero para um produto sem diferencial óbvio de marca." },
+      { h: "Não é escolha permanente — é ordem de prioridade", p: "Muitos negócios acabam vendendo nos dois. A pergunta certa não é qual escolher para sempre, e sim onde validar mais rápido com o caixa que você tem hoje. Depois de provar que vende, diversificar canal é mais fácil do que recuperar caixa queimado no canal errado." },
+    ],
+    faq: [
+      { q: "É melhor vender primeiro em marketplace ou em loja própria?", a: "Depende do produto e do caixa disponível. Marketplace costuma trazer a primeira venda mais rápido, porque a audiência já existe. Loja própria exige que você traga o tráfego, mas preserva margem, marca e o dado do cliente desde o início." },
+      { q: "Marketplace ou loja própria dá mais lucro por venda?", a: "Em geral a loja própria tem custo transacional menor (a taxa do gateway costuma pesar menos que a comissão do marketplace), mas o custo de trazer o cliente é seu. Simule os dois cenários com a calculadora de preço para marketplace antes de decidir o preço em cada canal." },
+      { q: "Posso vender no marketplace e na loja própria ao mesmo tempo?", a: "Sim, e é comum fazer os dois: marketplace para girar estoque e ganhar reputação, loja própria para vender com margem a quem já conhece a marca, muitas vezes com preço e condição diferentes entre os canais." },
+      { q: "Que tipo de produto se sai melhor em marketplace?", a: "Produtos parecidos com os de outros vendedores, sem um diferencial de marca óbvio, tendem a ganhar mais com a busca e a reputação prontas do marketplace do que com uma loja própria que ainda não tem tráfego nenhum." },
+      { q: "Quando faz sentido priorizar a loja própria desde o início?", a: "Quando o produto depende da sua marca — design exclusivo, fórmula própria, identidade forte — e quando o negócio vive de recompra. Nesses casos, o relacionamento direto com o cliente que a loja própria oferece vale mais do que a audiência pronta do marketplace." },
+    ],
+    related: ["consultoria-ecommerce", "loja-virtual"],
+    tools: ["calculadora-preco-marketplace"],
+  },
+  {
+    slug: "aeo-geo-checklist",
+    title: "AEO e GEO: checklist para aparecer nas respostas de IA",
+    description: "Checklist prático de AEO/GEO: llms.txt, dados estruturados, rastreadores de IA e o teste de conteúdo citável. Sem promessa de resultado garantido.",
+    date: "2026-08-30",
+    category: "SEO & IA",
+    keyword: "AEO e GEO",
+    accent: "#E09A63",
+    intro: "Aparecer nas respostas de ChatGPT, Gemini e Perplexity depende de três frentes técnicas, além do conteúdo em si: deixar a IA rastrear o seu site, marcar o conteúdo com dados estruturados e escrever trechos que funcionam sozinhos como resposta. Nada disso garante citação — os modelos escolhem a fonte, não você. O que dá é para remover as barreiras técnicas que impedem a IA de sequer ler a sua página.",
+    body: [
+      { h: "Primeiro, confira se a IA consegue ler o seu site", p: "Empresas de IA usam rastreadores próprios, identificados por nome no robots.txt — o GPTBot da OpenAI é um exemplo documentado. Se o seu robots.txt bloqueia geral com um Disallow amplo, esses rastreadores nunca leem o conteúdo, e citação fica impossível antes mesmo de começar." },
+      { h: "llms.txt: o que é, de verdade", p: "É um arquivo de texto na raiz do site, parecido com o robots.txt, que lista os links mais importantes da página para quem usa IA ler. É uma proposta recente da comunidade, não um padrão oficial adotado por todos — implementar não garante nada, mas também não atrapalha." },
+      { h: "Dados estruturados: os tipos que mais importam aqui", p: "FAQPage marca pergunta e resposta; Article identifica autor e data; Organization consolida a identidade da marca. Depois de marcar, use uma ferramenta de teste de dados estruturados para confirmar que o schema está sem erro antes de publicar." },
+      { h: "O teste da resposta que se basta sozinha", p: "Copie um parágrafo do seu texto e leia sem o resto da página ao redor. Ele responde a pergunta completa, sozinho? Se depende do parágrafo anterior para fazer sentido, a IA provavelmente vai preferir citar uma fonte que respondeu tudo num trecho só." },
+      { h: "Números e passos concretos pesam mais que adjetivo", p: "'Rápido' e 'completo' não dão à IA nada específico para repetir. Frases com faixa de valor, prazo, passo numerado ou comparação direta são mais fáceis de extrair e de citar do que texto genérico cheio de superlativo sem dado por trás." },
+      { h: "Não existe pagar para aparecer", p: "Diferente de anúncio, não há leilão nem compra de posição dentro da resposta de um modelo de IA. A citação vem de ser, para aquele modelo, a fonte mais clara e mais fácil de extrair sobre o assunto perguntado — não de orçamento." },
+      { h: "Isso substitui SEO tradicional?", p: "Não. Boa parte do que ajuda no Google — conteúdo útil, site rápido, autoridade — também ajuda a IA a confiar na sua página. AEO e GEO somam uma camada de formato e estrutura ao trabalho de SEO que já existe, não substituem o restante." },
+      { h: "Meça sem esperar número exato", p: "Pergunte periodicamente ao ChatGPT, Gemini e Perplexity questões do seu setor e anote quem foi citado. Não existe painel oficial de 'quantas vezes fui citado' — o acompanhamento manual, repetido ao longo do tempo, é hoje a forma mais honesta de medir progresso." },
+    ],
+    faq: [
+      { q: "O que é AEO e o que é GEO?", a: "AEO (Answer Engine Optimization) e GEO (Generative Engine Optimization) são nomes para otimizar conteúdo para ser lido e citado por mecanismos de resposta com IA, como ChatGPT, Gemini e Perplexity, em vez de mirar só o link na busca tradicional." },
+      { q: "O que é o arquivo llms.txt?", a: "Um arquivo de texto na raiz do site, no formato de lista de links importantes, pensado para ferramentas de IA lerem. É uma proposta recente da comunidade, ainda não é padrão oficial universal — vale implementar, mas sem esperar garantia de resultado." },
+      { q: "Preciso bloquear ou liberar os rastreadores de IA no meu site?", a: "Isso é uma decisão sua. Bloquear o rastreador de uma empresa de IA no robots.txt impede que o conteúdo do seu site seja lido por ela, o que também impede citação. Cada empresa documenta o nome do próprio rastreador." },
+      { q: "Dados estruturados garantem que a IA cite meu site?", a: "Não garantem. Eles ajudam o modelo a entender o que é pergunta, resposta e identidade da marca na sua página, o que aumenta a chance de leitura correta — mas a decisão de citar continua sendo do modelo, não sua." },
+      { q: "Como saber se estou sendo citado pelas IAs?", a: "Pergunte diretamente ao ChatGPT, Gemini e Perplexity questões do seu setor, de tempos em tempos, e anote quem aparece como fonte. Não existe hoje um painel oficial de acompanhamento — a checagem manual e repetida é o método disponível." },
+    ],
+    related: ["seo", "criacao-de-site"],
+  },
 ];
 
 export function getPost(slug: string) {

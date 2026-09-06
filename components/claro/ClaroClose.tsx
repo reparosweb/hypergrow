@@ -51,10 +51,14 @@ function useClaroWhatsApp() {
    número. Cada frase abaixo é um compromisso operacional verificável, não
    uma estatística — inclusive a de "diagnóstico gratuito", que é o mesmo que
    o formulário de contato desta página já entrega. */
+/* Hexes 2026-08-16: eram calibrados pra papel branco (tema claro original) e
+   ficavam apagados sobre o navy do tema escuro (agora o padrão). Trocados
+   pelas versões claras da mesma família, já em uso em claroPillarAccent.ts —
+   mesma cor que tinge o resto do site escuro, não paleta nova. */
 const RESULTADOS = [
-  { t: "Diagnóstico, não promessa", d: "Antes de falar em meta, olhamos a sua operação e dizemos onde ela trava — mesmo quando a conclusão honesta é que você ainda não precisa da gente.", k: "Antes de assinar", hex: "#B0155F" },
-  { t: "Relatório sem maquiagem", d: "Todo mês, o que deu certo e o que não deu, com o número do lado. Sem gráfico bonito escondendo a campanha que não converteu.", k: "Enquanto roda", hex: "#A8560B" },
-  { t: "Uma pessoa com nome", d: "Campanha parou de entregar, pedido não caiu no ERP, site fora do ar: você chama alguém que conhece a sua operação, não abre protocolo numa fila.", k: "Quando trava", hex: "#1550E8" },
+  { t: "Diagnóstico, não promessa", d: "Antes de falar em meta, olhamos a sua operação e dizemos onde ela trava — mesmo quando a conclusão honesta é que você ainda não precisa da gente.", k: "Antes de assinar", hex: "#FF5C93" },
+  { t: "Relatório sem maquiagem", d: "Todo mês, o que deu certo e o que não deu, com o número do lado. Sem gráfico bonito escondendo a campanha que não converteu.", k: "Enquanto roda", hex: "#E0913E" },
+  { t: "Uma pessoa com nome", d: "Campanha parou de entregar, pedido não caiu no ERP, site fora do ar: você chama alguém que conhece a sua operação, não abre protocolo numa fila.", k: "Quando trava", hex: "#5B84FF" },
 ] as const;
 
 export function ClaroResultados() {
@@ -107,7 +111,7 @@ export function ClaroResultados() {
 
 /* Acento por card — mesma progressão azul → violeta → rosa do `.grad` da
    marca. Só cor de UI; nada aqui vira afirmação sobre cliente. */
-const DEP_BEAM = ["#1550E8", "#3B2FCC", "#E0165F"];
+const DEP_BEAM = ["#5B84FF", "#7C6BFF", "#FF5C93"];
 
 /* ─────────────────────────────────────────────────────────────────────────────
    PROVA REAL — substituiu os 3 depoimentos de mockup (2026-08-06).
@@ -242,7 +246,7 @@ export function ClaroFaq() {
            borda + fundo, senão o item pula debaixo do cursor ao abrir. */
         #faq .cl-faq-i:hover{transform:none;border-color:var(--line);box-shadow:var(--sh-2)}
         #faq .cl-faq-i.on{border-color:var(--line);box-shadow:var(--sh-2)}
-        #faq .cl-faq-i::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--brand),#5B3CFF);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease)}
+        #faq .cl-faq-i::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(180deg,var(--brand),#7C6BFF);transform:scaleY(0);transform-origin:top;transition:transform .4s var(--ease)}
         #faq .cl-faq-i.on::before{transform:scaleY(1)}
         #faq .cl-faq-b{display:flex;align-items:center;gap:14px;width:100%;text-align:left;background:none;border:none;border-radius:17px;padding:20px 22px;min-height:64px;font:600 16.5px/1.4 var(--text);color:var(--ink);transition:background .25s var(--ease),color .25s var(--ease)}
         #faq .cl-faq-b:hover{background:rgba(21,80,232,.04)}

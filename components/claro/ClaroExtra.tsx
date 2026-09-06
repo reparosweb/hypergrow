@@ -49,12 +49,16 @@ import { ClaroHead } from "./ClaroUI";
 
 /* ── Fluxo do processo — MESMA copy já aprovada no site escuro (Process(),
    HypergrowSite.tsx), não uma nova redação para esta rota. ─────────────────── */
+/* Hexes 2026-08-16: eram calibrados pra papel branco (tema claro original) e
+   ficavam apagados sobre o navy do tema escuro (agora o padrão). Trocados
+   pelas versões claras da mesma família, já em uso em claroPillarAccent.ts —
+   mesma cor que tinge o resto do site escuro, não paleta nova. */
 const FLUXO = [
-  { Ic: Search, t: "Diagnóstico", d: "Entendemos sua operação, metas e gargalos antes de propor qualquer solução.", hex: "#0A6C9E" },
-  { Ic: Ruler, t: "Planejamento", d: "Desenhamos a estratégia, o escopo e o roadmap de tecnologia ideal.", hex: "#1B3B8B" },
-  { Ic: Wrench, t: "Desenvolvimento", d: "Construímos com tecnologia de ponta, IA e automação — direto ao ponto.", hex: "#3B2FCC" },
-  { Ic: Gauge, t: "Implantação", d: "Colocamos no ar, integramos e treinamos sua equipe para usar.", hex: "#5B3CFF" },
-  { Ic: TrendingUp, t: "Crescimento", d: "Monitoramos, otimizamos e escalamos os resultados de forma contínua.", hex: "#E0165F" },
+  { Ic: Search, t: "Diagnóstico", d: "Entendemos sua operação, metas e gargalos antes de propor qualquer solução.", hex: "#38A9E0" },
+  { Ic: Ruler, t: "Planejamento", d: "Desenhamos a estratégia, o escopo e o roadmap de tecnologia ideal.", hex: "#5B84FF" },
+  { Ic: Wrench, t: "Desenvolvimento", d: "Construímos com tecnologia de ponta, IA e automação — direto ao ponto.", hex: "#7C6BFF" },
+  { Ic: Gauge, t: "Implantação", d: "Colocamos no ar, integramos e treinamos sua equipe para usar.", hex: "#7C6BFF" },
+  { Ic: TrendingUp, t: "Crescimento", d: "Monitoramos, otimizamos e escalamos os resultados de forma contínua.", hex: "#FF5C93" },
 ];
 
 export function ClaroFluxo() {
@@ -120,7 +124,7 @@ export function ClaroFluxo() {
   );
 }
 
-/* ── Portfólio — os 10 projetos REAIS (lib/projects.ts), tela real dentro de
+/* ── Portfólio — os projetos REAIS (lib/projects.ts), tela real dentro de
    moldura de navegador (mesmo componente já usado em /sobre) em vez de foto de
    banco de negócio fictício. Card inteiro clicável quando há URL — mesmo
    ajuste de acessibilidade feito hoje no portfólio do site escuro. ─────────── */
@@ -134,14 +138,14 @@ function hostOf(url?: string) {
    site escuro e traria cor banida para cá. Mapa determinístico, sem sorteio —
    o mesmo projeto acende sempre com a mesma cor. */
 const BEAM_POR_CAT: Record<string, string> = {
-  "E-commerce": "#3B2FCC",
-  Websites: "#1550E8",
-  Sistemas: "#0A6C9E",
-  Aplicativos: "#5B3CFF",
-  "Automações": "#0A6C9E",
-  IA: "#0A6C9E",
+  "E-commerce": "#7C6BFF",
+  Websites: "#5B84FF",
+  Sistemas: "#38A9E0",
+  Aplicativos: "#7C6BFF",
+  "Automações": "#38A9E0",
+  IA: "#38A9E0",
 };
-const beamProjeto = (cat: string[]) => BEAM_POR_CAT[cat[0]] || "#1550E8";
+const beamProjeto = (cat: string[]) => BEAM_POR_CAT[cat[0]] || "#5B84FF";
 
 export function ClaroPortfolio() {
   return (
@@ -269,7 +273,7 @@ function useClaroCount(target: number, suf: string) {
 /* Cor por cartão seguindo o mesmo degradê da marca nesta rota (azul → violeta
    → rosa, igual ao `.grad`): dá ritmo à faixa e faz a borda de luz de cada
    cartão acender com a própria cor. Só visual — número e rótulo intocados. */
-const STAT_BEAM = ["#1550E8", "#3B2FCC", "#5B3CFF", "#E0165F"];
+const STAT_BEAM = ["#5B84FF", "#7C6BFF", "#7C6BFF", "#FF5C93"];
 
 function ClaroStat({ v, suf, l, hex }: { v: number; suf: string; l: string; hex: string }) {
   const ref = useClaroCount(v, suf);
@@ -337,9 +341,9 @@ export function ClaroSobre() {
                 Cada linha ganhou o seu, e a cor acompanha o degradê da marca. */}
             <div className="cl-sb-l rv">
               {([
-                [UserRound, "Gestor humano dedicado", "Sem fila de suporte, sem chatbot para falar com a gente.", "#1550E8"],
-                [LineChart, "Relatório sem maquiagem", "Você vê o que deu certo e o que não deu — com o número do lado.", "#3B2FCC"],
-                [ShieldCheck, "Responsabilidade de dono", "Tratamos a sua operação como se o faturamento fosse nosso.", "#E0165F"],
+                [UserRound, "Gestor humano dedicado", "Sem fila de suporte, sem chatbot para falar com a gente.", "#5B84FF"],
+                [LineChart, "Relatório sem maquiagem", "Você vê o que deu certo e o que não deu — com o número do lado.", "#7C6BFF"],
+                [ShieldCheck, "Responsabilidade de dono", "Tratamos a sua operação como se o faturamento fosse nosso.", "#FF5C93"],
               ] as [typeof UserRound, string, string, string][]).map(([Ic, t, d, hex]) => (
                 <div className="card lit cl-sb-c" key={t} style={{ ["--beam" as string]: hex }}>
                   <span className="glow cl-sb-ic" style={{ color: hex, background: hex + "12" }}>
@@ -395,10 +399,10 @@ function dataCurta(iso: string) {
 /* Mesma lógica do portfólio: cor por categoria, dentro da paleta desta rota.
    `p.accent` (lib/blog-posts.ts) é jade — cor do site escuro, banida aqui. */
 const BEAM_POR_CATEGORIA: Record<string, string> = {
-  Sites: "#1550E8",
-  "E-commerce": "#3B2FCC",
-  "Inteligência Artificial": "#0A6C9E",
-  "SEO & IA": "#E0165F",
+  Sites: "#5B84FF",
+  "E-commerce": "#7C6BFF",
+  "Inteligência Artificial": "#38A9E0",
+  "SEO & IA": "#FF5C93",
 };
 
 export function ClaroBlog() {
@@ -410,7 +414,7 @@ export function ClaroBlog() {
         <div className="g g-280 cl-bl">
           {blogPosts.map((p) => (
             <Link href={`/blog/${p.slug}`} className="card lit rv cl-bl-c" key={p.slug}
-              style={{ ["--beam" as string]: BEAM_POR_CATEGORIA[p.category] || "#1550E8" }}>
+              style={{ ["--beam" as string]: BEAM_POR_CATEGORIA[p.category] || "#5B84FF" }}>
               <div className="cl-bl-meta">
                 <span className="chip cl-bl-cat">{p.category}</span>
                 <span className="small">{readingTime(p.body, p.intro)} min de leitura</span>

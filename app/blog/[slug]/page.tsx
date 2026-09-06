@@ -76,7 +76,7 @@ function tone(p: BlogPost) {
 }
 
 const CSS = `
-  .cl .hgb-meta { font: 400 11.5px var(--code); letter-spacing: .07em; color: #5A6579; text-transform: uppercase; }
+  .cl .hgb-meta { font: 400 11.5px var(--code); letter-spacing: .07em; color: var(--ink-3); text-transform: uppercase; }
   .cl .hgb-tag { display: inline-flex; align-items: center; gap: 7px; font: 600 10.5px var(--code);
     letter-spacing: .14em; text-transform: uppercase; padding: 6px 12px; border-radius: 999px;
     color: var(--acc); background: var(--acc-soft); border: 1px solid var(--acc-line); }

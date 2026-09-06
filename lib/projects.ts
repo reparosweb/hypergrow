@@ -61,6 +61,15 @@ export const PROJECTS: Project[] = [
   // um nome e abrir outro. Aguarda o endereço certo do dono.
   { id: "unixx", name: "Unixx", own: true, cat: ["Sistemas", "Automações"], tags: ["CRM", "Automação"], grad: "linear-gradient(150deg,#0A7048,#0FA968)", desc: "CRM e site integrados com disparos automáticos e funil de vendas para a equipe comercial." },
   { id: "packslog", name: "Packslog", url: "https://packslog.com.br", own: true, cat: ["Sistemas", "Automações"], tags: ["Sistema", "Logística"], grad: "linear-gradient(150deg,#C4763C,#7A4720)", desc: "Sistema de operações logísticas com rastreio, etiquetas e painel de operação em tempo real." },
+  // Adicionados 2026-09-05 (pedido direto do dono). URLs conferidas ao vivo:
+  // abrasivetextil.com.br e julianacesta.com.br abrem de verdade com o <title>
+  // esperado; FacilBicas usa facilbicas-saas.vercel.app porque o domínio
+  // facilbicas.com.br não resolve (confirmado por navegação real) — o mesmo
+  // cuidado já registrado no comentário do "sorteio" acima, para não convidar
+  // o visitante a conferir um link morto.
+  { id: "abrasive", name: "Abrasive Têxtil", url: "https://www.abrasivetextil.com.br", own: false, cat: ["E-commerce", "Websites"], tags: ["E-commerce", "Loja"], grad: "linear-gradient(150deg,#1E3A8A,#3B82F6)", desc: "Site e loja para fábrica de malhas e elásticos personalizados, com catálogo de tecidos e orçamento direto com a fábrica." },
+  { id: "juliana", name: "Juliana Cestas", url: "https://www.julianacesta.com.br", own: false, cat: ["E-commerce"], tags: ["E-commerce", "Loja"], grad: "linear-gradient(150deg,#8B5E34,#D4A574)", desc: "Loja virtual de cestas de café da manhã montadas à mão, com catálogo por ocasião e pedido sob encomenda." },
+  { id: "facilbicas", name: "FacilBicas", url: "https://facilbicas-saas.vercel.app", own: true, cat: ["Sistemas", "Automações"], tags: ["Marketplace", "Sistema"], grad: "linear-gradient(150deg,#EA580C,#F97316)", desc: "Marketplace regional de serviços, imóveis, veículos e lojas num só lugar, com busca por categoria e cidade." },
 ];
 
 /** Categorias do filtro do portfólio na home. */
